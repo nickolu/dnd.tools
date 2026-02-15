@@ -8,10 +8,10 @@ function hasActiveSpellFilters(filters: SpellFilters): boolean {
     filters.castingTime !== ALL_FILTER_VALUE ||
     filters.range !== ALL_FILTER_VALUE ||
     filters.duration !== ALL_FILTER_VALUE ||
-    filters.component !== ALL_FILTER_VALUE ||
+    filters.component.length > 0 ||
     filters.concentration !== ALL_FILTER_VALUE ||
     filters.ritual !== ALL_FILTER_VALUE ||
-    filters.classes !== ALL_FILTER_VALUE ||
+    filters.classes.length > 0 ||
     filters.level !== ALL_FILTER_VALUE ||
     filters.source !== ALL_FILTER_VALUE
   );
@@ -25,86 +25,72 @@ export function filterSpells(spells: Spell[], filters: SpellFilters): Spell[] {
   const query = filters.query.trim().toLowerCase();
 
   return spells.filter((spell) => {
-    if (
-      filters.castingTime !== ALL_FILTER_VALUE &&
-      spell.castingTime !== filters.castingTime
-    ) {
-      return false;
+    const checks: boolean[] = [];
+
+    if (query) {
+      checks.push(spell.nameNormalized.includes(query));
     }
 
-    if (filters.range !== ALL_FILTER_VALUE && spell.range !== filters.range) {
-      return false;
+    if (filters.castingTime !== ALL_FILTER_VALUE) {
+      checks.push(spell.castingTime === filters.castingTime);
     }
 
-    if (
-      filters.duration !== ALL_FILTER_VALUE &&
-      spell.duration !== filters.duration
-    ) {
-      return false;
+    if (filters.range !== ALL_FILTER_VALUE) {
+      checks.push(spell.range === filters.range);
     }
 
-    if (
-      filters.component === "verbal" &&
-      !spell.components.verbal
-    ) {
-      return false;
+    if (filters.duration !== ALL_FILTER_VALUE) {
+      checks.push(spell.duration === filters.duration);
     }
 
-    if (
-      filters.component === "somatic" &&
-      !spell.components.somatic
-    ) {
-      return false;
+    if (filters.component.length > 0) {
+      const selected = filters.component;
+      const matcher =
+        filters.groupMatchModeByKey.component === "and"
+          ? selected.every((value) => spell.components[value])
+          : selected.some((value) => spell.components[value]);
+      checks.push(matcher);
     }
 
-    if (
-      filters.component === "material" &&
-      !spell.components.material
-    ) {
-      return false;
+    if (filters.concentration === "yes") {
+      checks.push(Boolean(spell.concentration));
     }
 
-    if (
-      filters.concentration === "yes" &&
-      !spell.concentration
-    ) {
-      return false;
+    if (filters.concentration === "no") {
+      checks.push(!spell.concentration);
     }
 
-    if (
-      filters.concentration === "no" &&
-      spell.concentration
-    ) {
-      return false;
+    if (filters.ritual === "yes") {
+      checks.push(Boolean(spell.ritual));
     }
 
-    if (filters.ritual === "yes" && !spell.ritual) {
-      return false;
+    if (filters.ritual === "no") {
+      checks.push(!spell.ritual);
     }
 
-    if (filters.ritual === "no" && spell.ritual) {
-      return false;
+    if (filters.classes.length > 0) {
+      const selected = filters.classes;
+      const matcher =
+        filters.groupMatchModeByKey.classes === "and"
+          ? selected.every((value) => spell.classes.includes(value))
+          : selected.some((value) => spell.classes.includes(value));
+      checks.push(matcher);
     }
 
-    if (
-      filters.classes !== ALL_FILTER_VALUE &&
-      !spell.classes.includes(filters.classes)
-    ) {
-      return false;
+    if (filters.level !== ALL_FILTER_VALUE) {
+      checks.push(spell.level === Number(filters.level));
     }
 
-    if (filters.level !== ALL_FILTER_VALUE && spell.level !== Number(filters.level)) {
-      return false;
+    if (filters.source !== ALL_FILTER_VALUE) {
+      checks.push(spell.source === filters.source);
     }
 
-    if (filters.source !== ALL_FILTER_VALUE && spell.source !== filters.source) {
-      return false;
+    if (!checks.length) {
+      return true;
     }
 
-    if (query && !spell.nameNormalized.includes(query)) {
-      return false;
-    }
-
-    return true;
+    return filters.groupMatchMode === "or"
+      ? checks.some(Boolean)
+      : checks.every(Boolean);
   });
 }

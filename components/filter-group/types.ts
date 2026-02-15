@@ -3,11 +3,14 @@ export type FilterGroupOption = {
   value: string;
 };
 
+export type FilterGroupSelectionMode = "single" | "multi";
+
 export type FilterGroupProps = {
-  activeValue: string;
+  activeValues: string[];
   className?: string;
   label: string;
-  onChange: (value: string) => void;
+  onChange: (values: string[]) => void;
   options: FilterGroupOption[];
+  selectionMode?: FilterGroupSelectionMode;
   storageKey?: string;
 };

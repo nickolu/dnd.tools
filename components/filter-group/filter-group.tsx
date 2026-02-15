@@ -6,11 +6,12 @@ import type { FilterGroupProps } from "@/components/filter-group/types";
 import { FilterChip } from "@/components/tool-widget-card/components/filter-chip";
 
 export function FilterGroup({
-  activeValue,
+  activeValues,
   className,
   label,
   onChange,
   options,
+  selectionMode = "single",
   storageKey,
 }: FilterGroupProps) {
   const contentId = useId();
@@ -76,11 +77,26 @@ export function FilterGroup({
             <div className="flex flex-wrap w-full max-w-full gap-1.5 overflow-x-auto pb-1 pt-0.5">
               {options.map((option) => (
                 <FilterChip
-                  isActive={activeValue === option.value}
+                  isActive={activeValues.includes(option.value)}
                   key={`${label}:${option.value}`}
                   label={option.label}
                   onClick={() => {
-                    onChange(option.value);
+                    if (selectionMode === "single") {
+                      onChange([option.value]);
+                      return;
+                    }
+
+                    if (option.value === "all") {
+                      onChange(["all"]);
+                      return;
+                    }
+
+                    const withoutAll = activeValues.filter((value) => value !== "all");
+                    const nextValues = withoutAll.includes(option.value)
+                      ? withoutAll.filter((value) => value !== option.value)
+                      : [...withoutAll, option.value];
+
+                    onChange(nextValues.length ? nextValues : ["all"]);
                   }}
                 />
               ))}
