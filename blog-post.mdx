@@ -13,6 +13,7 @@ I started `dnd.tools` with one promise: make a compendium that feels native to t
 The first obstacle was data integrity. Spells and monsters needed to be typed, queryable, and consistent across the UI, so I defined the domain schemas, API routes, and query hooks, then wired up a global store with sanity tests to keep everything honest. Once that spine existed, I built a Firestore seed flow to load real compendium data so I could see how the system behaved under actual content, not mocks.
 
 Key outcomes from this phase:
+
 - Queryable schemas that stay consistent across the app.
 - Seeded data that mirrors real compendium content.
 - Early tests to catch schema drift before it hit the UI.
@@ -50,6 +51,7 @@ With that creation path working, I extended it into edit flows so existing spell
 ## Recent refinements
 
 These were small changes, but they tie the experience together:
+
 - Linked monster spell names directly to a spells view filtered by that spell, so cross-references feel instant.
 - Tweaked filter group styling to reduce visual noise and make dense rows easier to scan.
 - Polished monster skills and proficiency presentation so the card reads like a finished compendium entry.
