@@ -382,7 +382,16 @@ function SpellsPageContent() {
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {filteredSpells.map((spell) => (
-            <SpellCard isAdminMode={isAdminMode} key={spell.id} spell={spell} />
+            <SpellCard
+              isAdminMode={isAdminMode}
+              key={spell.id}
+              onSpellUpdated={async () => {
+                await refetch();
+                const syncedAt = await getCollectionLastSyncedAt("spells");
+                setLastSyncedAt(syncedAt);
+              }}
+              spell={spell}
+            />
           ))}
         </div>
       </section>

@@ -503,6 +503,11 @@ function MonstersPageContent() {
             <MonsterCard
               isAdminMode={isAdminMode}
               key={monster.id}
+              onMonsterUpdated={async () => {
+                await refetch();
+                const syncedAt = await getCollectionLastSyncedAt("monsters");
+                setLastSyncedAt(syncedAt);
+              }}
               monster={monster}
             />
           ))}
