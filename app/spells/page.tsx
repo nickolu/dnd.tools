@@ -36,6 +36,7 @@ const MULTI_SELECTABLE_GROUPS: SpellMultiSelectableGroupKey[] = [
   "component",
   "saveAbility",
   "damageType",
+  "source",
 ];
 
 const SPELL_FILTER_GROUP_LABEL_BY_KEY: Record<
@@ -48,6 +49,7 @@ const SPELL_FILTER_GROUP_LABEL_BY_KEY: Record<
   damageType: "Damage Type",
   school: "School",
   saveAbility: "Save Ability",
+  source: "Source",
 };
 
 function isMultiSelectableGroupKey(
@@ -59,7 +61,8 @@ function isMultiSelectableGroupKey(
     key === "classes" ||
     key === "component" ||
     key === "saveAbility" ||
-    key === "damageType"
+    key === "damageType" ||
+    key === "source"
   );
 }
 
@@ -86,7 +89,8 @@ function getHomeIntentFilterGroupKey(searchParams: {
     key === "damageType" ||
     key === "level" ||
     key === "ritual" ||
-    key === "saveAbility"
+    key === "saveAbility" ||
+    key === "source"
   ) {
     return key;
   }

@@ -40,6 +40,7 @@ const spell = (
     range,
     saveAbility,
     school,
+    source,
   }: {
     attackType?: NonNullable<Spell["attackType"]>;
     castingTime?: string;
@@ -52,6 +53,7 @@ const spell = (
     range?: string;
     saveAbility?: NonNullable<Spell["save"]>["ability"];
     school?: Spell["school"];
+    source?: string;
   }
 ): Spell => ({
   ...baseSpell,
@@ -68,6 +70,7 @@ const spell = (
   range: range ?? baseSpell.range,
   save: saveAbility ? { ability: saveAbility } : undefined,
   school: school ?? baseSpell.school,
+  source: source ?? baseSpell.source,
 });
 
 const spells: Spell[] = [
@@ -368,6 +371,45 @@ describe("filterSpells", () => {
     );
 
     expect(filtered.map((item) => item.id)).toEqual(["c"]);
+  });
+
+  it("filters by source with OR mode", () => {
+    const sourceSpells: Spell[] = [
+      spell("source-a", {
+        classes: ["wizard"],
+        concentration: false,
+        components: { material: false, somatic: true, verbal: true },
+        name: "Arcane Mark",
+        source: "PHB",
+      }),
+      spell("source-b", {
+        classes: ["wizard"],
+        concentration: false,
+        components: { material: false, somatic: true, verbal: true },
+        name: "Chaos Spark",
+        source: "XGE",
+      }),
+      spell("source-c", {
+        classes: ["wizard"],
+        concentration: false,
+        components: { material: false, somatic: true, verbal: true },
+        name: "Deep Sigil",
+        source: "TCE",
+      }),
+    ];
+
+    const filtered = filterSpells(
+      sourceSpells,
+      withFilters({
+        selectionModeByKey: {
+          ...DEFAULT_SPELL_FILTERS.selectionModeByKey,
+          source: "multi",
+        },
+        source: ["PHB", "XGE"],
+      })
+    );
+
+    expect(filtered.map((item) => item.id)).toEqual(["source-a", "source-b"]);
   });
 
   it("parses descriptive damage text into distinct damage types", () => {

@@ -43,6 +43,7 @@ export type SpellMultiSelectableGroupKey =
   | "classes"
   | "component"
   | "damageType"
+  | "source"
   | "school"
   | "saveAbility";
 export type SpellFilterGroupKey =
@@ -79,7 +80,7 @@ export type SpellFilters = {
   school: SpellSchoolFilter[];
   saveAbility: SpellSaveAbilityFilter[];
   selectionModeByKey: Record<SpellMultiSelectableGroupKey, SpellSelectionMode>;
-  source: string;
+  source: string[];
 };
 
 export type SpellFilterGroup = {

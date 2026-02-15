@@ -97,7 +97,6 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
     searchParams.get("classData") ?? DEFAULT_SPELL_FILTERS.classData;
   const duration =
     searchParams.get("duration") ?? DEFAULT_SPELL_FILTERS.duration;
-  const source = searchParams.get("source") ?? DEFAULT_SPELL_FILTERS.source;
   const groupMatchModeCandidate =
     searchParams.get(SPELL_GROUP_MATCH_QUERY_PARAM) ??
     DEFAULT_SPELL_FILTERS.groupMatchMode;
@@ -122,6 +121,7 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
   const schoolCandidate = searchParams.getAll("school");
   const saveAbilityCandidate = searchParams.getAll("saveAbility");
   const damageTypeCandidate = searchParams.getAll("damageType");
+  const sourceCandidate = searchParams.getAll("source");
   const attackTypeSelectionModeCandidate =
     searchParams.get(SPELL_SELECTION_MODE_QUERY_PARAM_BY_KEY.attackType) ??
     DEFAULT_SPELL_FILTERS.selectionModeByKey.attackType;
@@ -140,6 +140,9 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
   const schoolSelectionModeCandidate =
     searchParams.get(SPELL_SELECTION_MODE_QUERY_PARAM_BY_KEY.school) ??
     DEFAULT_SPELL_FILTERS.selectionModeByKey.school;
+  const sourceSelectionModeCandidate =
+    searchParams.get(SPELL_SELECTION_MODE_QUERY_PARAM_BY_KEY.source) ??
+    DEFAULT_SPELL_FILTERS.selectionModeByKey.source;
   const attackTypeMatchModeCandidate =
     searchParams.get(SPELL_GROUP_MATCH_QUERY_PARAM_BY_KEY.attackType) ??
     DEFAULT_SPELL_FILTERS.groupMatchModeByKey.attackType;
@@ -158,6 +161,9 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
   const schoolMatchModeCandidate =
     searchParams.get(SPELL_GROUP_MATCH_QUERY_PARAM_BY_KEY.school) ??
     DEFAULT_SPELL_FILTERS.groupMatchModeByKey.school;
+  const sourceMatchModeCandidate =
+    searchParams.get(SPELL_GROUP_MATCH_QUERY_PARAM_BY_KEY.source) ??
+    DEFAULT_SPELL_FILTERS.groupMatchModeByKey.source;
 
   const attackTypeSelectionMode = isSpellSelectionMode(
     attackTypeSelectionModeCandidate
@@ -186,6 +192,9 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
     : DEFAULT_SELECTION_MODE;
   const schoolSelectionMode = isSpellSelectionMode(schoolSelectionModeCandidate)
     ? schoolSelectionModeCandidate
+    : DEFAULT_SELECTION_MODE;
+  const sourceSelectionMode = isSpellSelectionMode(sourceSelectionModeCandidate)
+    ? sourceSelectionModeCandidate
     : DEFAULT_SELECTION_MODE;
   const attackType = [
     ...new Set(
@@ -234,6 +243,13 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
         )
     ),
   ];
+  const source = [
+    ...new Set(
+      sourceCandidate
+        .map((value) => value.trim())
+        .filter((value) => value && value !== ALL_FILTER_VALUE)
+    ),
+  ];
 
   return {
     attackType:
@@ -277,6 +293,9 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
       damageType: isSpellMatchMode(damageTypeMatchModeCandidate)
         ? damageTypeMatchModeCandidate
         : DEFAULT_SPELL_FILTERS.groupMatchModeByKey.damageType,
+      source: isSpellMatchMode(sourceMatchModeCandidate)
+        ? sourceMatchModeCandidate
+        : DEFAULT_SPELL_FILTERS.groupMatchModeByKey.source,
       school: isSpellMatchMode(schoolMatchModeCandidate)
         ? schoolMatchModeCandidate
         : DEFAULT_SPELL_FILTERS.groupMatchModeByKey.school,
@@ -305,10 +324,11 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
       classes: classesSelectionMode,
       component: componentSelectionMode,
       damageType: damageTypeSelectionMode,
+      source: sourceSelectionMode,
       school: schoolSelectionMode,
       saveAbility: saveAbilitySelectionMode,
     },
-    source: source || ALL_FILTER_VALUE,
+    source: sourceSelectionMode === "single" ? source.slice(0, 1) : source,
   };
 }
 

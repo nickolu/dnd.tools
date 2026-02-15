@@ -24,7 +24,7 @@ function hasActiveSpellFilters(filters: SpellFilters): boolean {
     filters.saveAbility.length > 0 ||
     filters.classes.length > 0 ||
     filters.level !== ALL_FILTER_VALUE ||
-    filters.source !== ALL_FILTER_VALUE
+    filters.source.length > 0
   );
 }
 
@@ -144,8 +144,13 @@ export function filterSpells(spells: Spell[], filters: SpellFilters): Spell[] {
       checks.push(spell.level === Number(filters.level));
     }
 
-    if (filters.source !== ALL_FILTER_VALUE) {
-      checks.push(spell.source === filters.source);
+    if (filters.source.length > 0) {
+      const selected = filters.source;
+      const matcher =
+        filters.groupMatchModeByKey.source === "and"
+          ? selected.every((value) => value === spell.source)
+          : selected.some((value) => value === spell.source);
+      checks.push(matcher);
     }
 
     if (!checks.length) {

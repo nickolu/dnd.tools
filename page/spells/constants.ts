@@ -33,6 +33,7 @@ export const DEFAULT_SPELL_FILTERS: SpellFilters = {
     classes: "or",
     component: "or",
     damageType: "or",
+    source: "or",
     school: "or",
     saveAbility: "or",
   },
@@ -47,10 +48,11 @@ export const DEFAULT_SPELL_FILTERS: SpellFilters = {
     classes: DEFAULT_SELECTION_MODE,
     component: DEFAULT_SELECTION_MODE,
     damageType: DEFAULT_SELECTION_MODE,
+    source: DEFAULT_SELECTION_MODE,
     school: DEFAULT_SELECTION_MODE,
     saveAbility: DEFAULT_SELECTION_MODE,
   },
-  source: ALL_FILTER_VALUE,
+  source: [],
 };
 
 export const SPELL_BOOLEAN_FILTER_OPTIONS: FilterGroupOption[] = [
@@ -149,6 +151,7 @@ export const SPELL_GROUP_MATCH_QUERY_PARAM_BY_KEY: Record<
   classes: "classesMode",
   component: "componentMode",
   damageType: "damageTypeMode",
+  source: "sourceMode",
   school: "schoolMode",
   saveAbility: "saveAbilityMode",
 };
@@ -161,6 +164,7 @@ export const SPELL_SELECTION_MODE_QUERY_PARAM_BY_KEY: Record<
   classes: "classesSelect",
   component: "componentSelect",
   damageType: "damageTypeSelect",
+  source: "sourceSelect",
   school: "schoolSelect",
   saveAbility: "saveAbilitySelect",
 };
