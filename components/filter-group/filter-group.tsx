@@ -21,7 +21,7 @@ export function FilterGroup({
     () => `${FILTER_GROUP_STORAGE_PREFIX}:${storageKey ?? label.toLowerCase()}`,
     [label, storageKey]
   );
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const isEffectivelyExpanded = shouldExpand || isExpanded;
   const rootClassName = className
@@ -31,7 +31,7 @@ export function FilterGroup({
   useEffect(() => {
     const syncId = window.setTimeout(() => {
       setHasMounted(true);
-      setIsExpanded(window.localStorage.getItem(persistedKey) !== "collapsed");
+      setIsExpanded(window.localStorage.getItem(persistedKey) === "expanded");
     }, 0);
 
     return () => {

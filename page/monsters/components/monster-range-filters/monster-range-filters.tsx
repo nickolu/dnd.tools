@@ -19,12 +19,12 @@ export function MonsterRangeFilters({
     () => `${FILTER_GROUP_STORAGE_PREFIX}:${MONSTER_RANGE_FILTERS_STORAGE_KEY}`,
     []
   );
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const hasHydratedPersistedState = useRef(false);
 
   useEffect(() => {
     const syncId = window.setTimeout(() => {
-      setIsExpanded(window.localStorage.getItem(persistedKey) !== "collapsed");
+      setIsExpanded(window.localStorage.getItem(persistedKey) === "expanded");
       hasHydratedPersistedState.current = true;
     }, 0);
 
