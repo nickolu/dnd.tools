@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 
+import { CopyVisibleNamesAction } from "@/components/copy-visible-names-action";
 import { FilterGroup } from "@/components/filter-group";
 import { FilterLogicPopover } from "@/components/filter-logic-popover";
 import {
@@ -334,25 +335,32 @@ function MonstersPageContent() {
           <p className="typography-body-sm text-muted">
             Last synced: {lastSyncedLabel}
           </p>
-          <button
-            className="admin-button-secondary typography-body-sm px-3 py-1"
-            disabled={isRefreshing}
-            onClick={async () => {
-              setIsRefreshing(true);
+          <div className="flex items-center gap-2">
+            <CopyVisibleNamesAction
+              disabled={isLoading || isError}
+              itemTypeLabel="monster"
+              names={filteredMonsters.map((monster) => monster.name)}
+            />
+            <button
+              className="admin-button-secondary typography-body-sm px-3 py-1"
+              disabled={isRefreshing}
+              onClick={async () => {
+                setIsRefreshing(true);
 
-              try {
-                await clearCollectionCache("monsters");
-                await refetch();
-                const syncedAt = await getCollectionLastSyncedAt("monsters");
-                setLastSyncedAt(syncedAt);
-              } finally {
-                setIsRefreshing(false);
-              }
-            }}
-            type="button"
-          >
-            {isRefreshing ? "Refreshing..." : "Refresh data"}
-          </button>
+                try {
+                  await clearCollectionCache("monsters");
+                  await refetch();
+                  const syncedAt = await getCollectionLastSyncedAt("monsters");
+                  setLastSyncedAt(syncedAt);
+                } finally {
+                  setIsRefreshing(false);
+                }
+              }}
+              type="button"
+            >
+              {isRefreshing ? "Refreshing..." : "Refresh data"}
+            </button>
+          </div>
         </div>
 
         {isError ? (
