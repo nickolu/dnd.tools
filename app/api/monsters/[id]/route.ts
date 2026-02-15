@@ -2,8 +2,10 @@ import { FieldValue } from "firebase-admin/firestore";
 import { type NextRequest } from "next/server";
 
 import { canWrite } from "@/lib/api/auth";
+import { invalidateCollectionCache } from "@/lib/api/collection-cache";
 import { API_ERROR_CODES, jsonError, jsonSuccess } from "@/lib/api/envelope";
 import { serializeMonster, toMonsterUpdateDoc } from "@/lib/api/firestore";
+import { jsonFirestoreError } from "@/lib/api/firestore-error";
 import { monsterSchema, monsterWriteSchema } from "@/lib/domain/monster.schema";
 import {
   getAdminDb,
@@ -44,11 +46,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     return jsonSuccess(monsterSchema.parse(serialized));
   } catch (error) {
     console.error(error);
-    return jsonError(
-      API_ERROR_CODES.INTERNAL_ERROR,
-      "Failed to fetch monster.",
-      500
-    );
+    return jsonFirestoreError(error, "Failed to fetch monster.");
   }
 }
 
@@ -122,16 +120,14 @@ export async function PUT(request: NextRequest, context: RouteContext) {
         { merge: true }
       );
 
+    invalidateCollectionCache("monsters");
+
     const updated = await docRef.get();
     const serialized = serializeMonster(updated.id, updated.data());
 
     return jsonSuccess(monsterSchema.parse(serialized));
   } catch (error) {
     console.error(error);
-    return jsonError(
-      API_ERROR_CODES.INTERNAL_ERROR,
-      "Failed to update monster.",
-      500
-    );
+    return jsonFirestoreError(error, "Failed to update monster.");
   }
 }

@@ -2,8 +2,10 @@ import { FieldValue } from "firebase-admin/firestore";
 import { type NextRequest } from "next/server";
 
 import { canWrite } from "@/lib/api/auth";
+import { invalidateCollectionCache } from "@/lib/api/collection-cache";
 import { API_ERROR_CODES, jsonError, jsonSuccess } from "@/lib/api/envelope";
 import { serializeSpell, toSpellUpdateDoc } from "@/lib/api/firestore";
+import { jsonFirestoreError } from "@/lib/api/firestore-error";
 import { spellSchema, spellWriteSchema } from "@/lib/domain/spell.schema";
 import {
   getAdminDb,
@@ -44,11 +46,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     return jsonSuccess(spellSchema.parse(serialized));
   } catch (error) {
     console.error(error);
-    return jsonError(
-      API_ERROR_CODES.INTERNAL_ERROR,
-      "Failed to fetch spell.",
-      500
-    );
+    return jsonFirestoreError(error, "Failed to fetch spell.");
   }
 }
 
@@ -122,16 +120,14 @@ export async function PUT(request: NextRequest, context: RouteContext) {
         { merge: true }
       );
 
+    invalidateCollectionCache("spells");
+
     const updated = await docRef.get();
     const serialized = serializeSpell(updated.id, updated.data());
 
     return jsonSuccess(spellSchema.parse(serialized));
   } catch (error) {
     console.error(error);
-    return jsonError(
-      API_ERROR_CODES.INTERNAL_ERROR,
-      "Failed to update spell.",
-      500
-    );
+    return jsonFirestoreError(error, "Failed to update spell.");
   }
 }

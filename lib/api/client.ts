@@ -30,9 +30,7 @@ const parseResponse = async (response: Response): Promise<unknown> => {
 };
 
 const getJson = async <T>(path: string, schema: z.ZodType<T>): Promise<T> => {
-  const response = await fetch(path, {
-    cache: "no-store",
-  });
+  const response = await fetch(path);
 
   return schema.parse(await parseResponse(response));
 };

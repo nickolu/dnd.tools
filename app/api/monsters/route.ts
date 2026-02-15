@@ -2,8 +2,15 @@ import { FieldValue } from "firebase-admin/firestore";
 import { type NextRequest } from "next/server";
 
 import { canWrite } from "@/lib/api/auth";
+import {
+  getCollectionCache,
+  invalidateCollectionCache,
+  refreshCollectionCacheTtl,
+  setCollectionCache,
+} from "@/lib/api/collection-cache";
 import { API_ERROR_CODES, jsonError, jsonSuccess } from "@/lib/api/envelope";
 import { serializeMonster, toMonsterFirestoreDoc } from "@/lib/api/firestore";
+import { jsonFirestoreError } from "@/lib/api/firestore-error";
 import { monsterSchema, monsterWriteSchema } from "@/lib/domain/monster.schema";
 import {
   getAdminDb,
@@ -13,6 +20,9 @@ import {
 const MONSTERS_COLLECTION = "monsters";
 const META_COLLECTION = "meta";
 const META_DOC = "collections";
+const LIST_CACHE_HEADERS = {
+  "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=600",
+};
 
 export async function GET() {
   if (!hasRequiredServerFirebaseConfig) {
@@ -24,7 +34,23 @@ export async function GET() {
   }
 
   try {
+    const cached = getCollectionCache("monsters");
+
+    if (cached && cached.expiresAt > Date.now()) {
+      return jsonSuccess(cached.data, 200, LIST_CACHE_HEADERS);
+    }
+
     const db = getAdminDb();
+    const metaSnapshot = await db.collection(META_COLLECTION).doc(META_DOC).get();
+    const nextVersion = metaSnapshot.get("monstersVersion");
+    const monstersVersion =
+      typeof nextVersion === "number" ? nextVersion : 0;
+
+    if (cached && cached.version === monstersVersion) {
+      refreshCollectionCacheTtl("monsters");
+      return jsonSuccess(cached.data, 200, LIST_CACHE_HEADERS);
+    }
+
     const snapshot = await db.collection(MONSTERS_COLLECTION).get();
 
     const monsters = snapshot.docs.map((doc) => {
@@ -32,14 +58,12 @@ export async function GET() {
       return monsterSchema.parse(serialized);
     });
 
-    return jsonSuccess(monsters);
+    setCollectionCache("monsters", monstersVersion, monsters);
+
+    return jsonSuccess(monsters, 200, LIST_CACHE_HEADERS);
   } catch (error) {
     console.error(error);
-    return jsonError(
-      API_ERROR_CODES.INTERNAL_ERROR,
-      "Failed to fetch monsters.",
-      500
-    );
+    return jsonFirestoreError(error, "Failed to fetch monsters.");
   }
 }
 
@@ -100,16 +124,14 @@ export async function POST(request: NextRequest) {
         { merge: true }
       );
 
+    invalidateCollectionCache("monsters");
+
     const created = await docRef.get();
     const serialized = serializeMonster(created.id, created.data());
 
     return jsonSuccess(monsterSchema.parse(serialized), 201);
   } catch (error) {
     console.error(error);
-    return jsonError(
-      API_ERROR_CODES.INTERNAL_ERROR,
-      "Failed to create monster.",
-      500
-    );
+    return jsonFirestoreError(error, "Failed to create monster.");
   }
 }

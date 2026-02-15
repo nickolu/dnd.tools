@@ -1,6 +1,7 @@
 import { Timestamp } from "firebase-admin/firestore";
 
 import { API_ERROR_CODES, jsonError, jsonSuccess } from "@/lib/api/envelope";
+import { jsonFirestoreError } from "@/lib/api/firestore-error";
 import { collectionVersionSchema } from "@/lib/domain/meta.schema";
 import {
   getAdminDb,
@@ -39,10 +40,6 @@ export async function GET() {
     return jsonSuccess(collectionVersionSchema.parse(payload));
   } catch (error) {
     console.error(error);
-    return jsonError(
-      API_ERROR_CODES.INTERNAL_ERROR,
-      "Failed to fetch collection versions.",
-      500
-    );
+    return jsonFirestoreError(error, "Failed to fetch collection versions.");
   }
 }

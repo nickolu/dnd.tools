@@ -5,6 +5,8 @@ export const API_ERROR_CODES = {
   FORBIDDEN: "FORBIDDEN",
   INTERNAL_ERROR: "INTERNAL_ERROR",
   NOT_FOUND: "NOT_FOUND",
+  QUOTA_EXCEEDED: "QUOTA_EXCEEDED",
+  SERVICE_UNAVAILABLE: "SERVICE_UNAVAILABLE",
   UNAUTHORIZED: "UNAUTHORIZED",
   VALIDATION_ERROR: "VALIDATION_ERROR",
 } as const;
@@ -28,14 +30,22 @@ export type ApiError = {
 
 export type ApiEnvelope<T> = ApiSuccess<T> | ApiError;
 
-export const jsonSuccess = <T>(data: T, status = 200) =>
-  NextResponse.json<ApiSuccess<T>>({ data, ok: true }, { status });
+export const jsonSuccess = <T>(
+  data: T,
+  status = 200,
+  headers?: HeadersInit
+) =>
+  NextResponse.json<ApiSuccess<T>>(
+    { data, ok: true },
+    headers ? { headers, status } : { status }
+  );
 
 export const jsonError = (
   code: ApiErrorCode,
   message: string,
   status: number,
-  details?: unknown
+  details?: unknown,
+  headers?: HeadersInit
 ) =>
   NextResponse.json<ApiError>(
     {
@@ -46,5 +56,5 @@ export const jsonError = (
       },
       ok: false,
     },
-    { status }
+    headers ? { headers, status } : { status }
   );
