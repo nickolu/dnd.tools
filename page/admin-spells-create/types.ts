@@ -22,6 +22,7 @@ export type SpellAdminFormState = {
   level: string;
   materialText: string;
   name: string;
+  publisher: string;
   range: string;
   ritual: boolean;
   saveAbility: "" | "str" | "dex" | "con" | "int" | "wis" | "cha";
@@ -41,4 +42,3 @@ export type SpellAdminFormState = {
   tagsText: string;
   updatedBy: string;
 };
-

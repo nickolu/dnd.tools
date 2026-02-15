@@ -38,6 +38,7 @@ const commonSpellFieldsSchema = z.object({
   level: z.number().int().min(0).max(9),
   name: z.string().min(1),
   nameNormalized: z.string().min(1),
+  publisher: z.string().min(1).optional(),
   range: z.string().min(1),
   ritual: z.boolean(),
   save: z

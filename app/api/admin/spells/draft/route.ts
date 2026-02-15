@@ -44,6 +44,7 @@ Optional keys:
 - higherLevel (string array)
 - attackType (melee|ranged)
 - gpCost (integer)
+- publisher (string)
 - save (object { ability: str|dex|con|int|wis|cha, optional onSuccess })
 - damage (object { type: string, optional diceBySlot object, optional cantripScaling object })
 - tags (string array)

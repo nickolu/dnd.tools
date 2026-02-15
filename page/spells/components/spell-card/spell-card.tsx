@@ -83,6 +83,11 @@ export function SpellCard({ isAdminMode = false, spell }: SpellCardProps) {
         <p>
           <span className="text-muted">Source:</span> {spell.source}
         </p>
+        {spell.publisher ? (
+          <p>
+            <span className="text-muted">Publisher:</span> {spell.publisher}
+          </p>
+        ) : null}
       </footer>
     </article>
   );

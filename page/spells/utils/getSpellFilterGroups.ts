@@ -7,6 +7,11 @@ import {
   SPELL_LEVEL_FILTER_OPTIONS,
 } from "@/page/spells/constants";
 import type { SpellFilterGroup } from "@/page/spells/types";
+import {
+  normalizeSpellCastingTimeForFilter,
+  normalizeSpellDurationForFilter,
+  normalizeSpellRangeForFilter,
+} from "@/page/spells/utils/normalizeSpellFilterValues";
 
 function toTitleCase(value: string): string {
   if (!value.length) {
@@ -64,15 +69,22 @@ export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
     {
       key: "range",
       label: "Range",
-      options: toOptions(spells.map((spell) => spell.range)),
+      options: toOptions(
+        spells.map((spell) => normalizeSpellRangeForFilter(spell.range))
+      ),
     },
     {
       key: "castingTime",
       label: "Casting Time",
-      options: toOptions(spells.map((spell) => spell.castingTime)),
+      options: toOptions(
+        spells.map((spell) => normalizeSpellCastingTimeForFilter(spell.castingTime))
+      ),
     },
-
-
+    {
+      key: "concentration",
+      label: "Concentration",
+      options: SPELL_BOOLEAN_FILTER_OPTIONS,
+    },
 
     {
       key: "ritual",
@@ -89,7 +101,9 @@ export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
     {
       key: "duration",
       label: "Duration",
-      options: toOptions(spells.map((spell) => spell.duration)),
+      options: toOptions(
+        spells.map((spell) => normalizeSpellDurationForFilter(spell.duration))
+      ),
     },
   ];
 }

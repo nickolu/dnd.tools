@@ -453,7 +453,7 @@ function SpellAdminEntryPage({ entryId }: SpellAdminEntryPageProps) {
             </label>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-3 md:grid-cols-4">
             <label className="flex flex-col gap-1">
               <span className="typography-body-sm text-secondary">
                 Duration
@@ -495,6 +495,21 @@ function SpellAdminEntryPage({ entryId }: SpellAdminEntryPageProps) {
                   }))
                 }
                 value={formState.source}
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="typography-body-sm text-secondary">
+                Publisher
+              </span>
+              <input
+                className="input-field px-3 py-2"
+                onChange={(event) =>
+                  setFormState((current) => ({
+                    ...current,
+                    publisher: event.target.value,
+                  }))
+                }
+                value={formState.publisher}
               />
             </label>
           </div>

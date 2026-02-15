@@ -97,6 +97,7 @@ Optional fields:
 - `save?: { ability: "str" | "dex" | "con" | "int" | "wis" | "cha"; onSuccess?: string }`
 - `attackType?: "melee" | "ranged"`
 - `searchTokens?: string[]`
+- `publisher?: string`
 
 ## Firestore Data Layout
 

@@ -33,6 +33,7 @@ export const DEFAULT_SPELL_ADMIN_FORM: SpellAdminFormState = {
   level: "0",
   materialText: "",
   name: "",
+  publisher: "",
   range: "",
   ritual: false,
   saveAbility: "",
@@ -44,4 +45,3 @@ export const DEFAULT_SPELL_ADMIN_FORM: SpellAdminFormState = {
   tagsText: "",
   updatedBy: "admin-ui",
 };
-

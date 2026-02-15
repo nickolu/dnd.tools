@@ -22,6 +22,7 @@ describe("spellSchema", () => {
       level: 0,
       name: "Spark",
       nameNormalized: "spark",
+      publisher: "Wizards of the Coast",
       range: "30 feet",
       ritual: false,
       schemaVersion: 1,

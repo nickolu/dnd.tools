@@ -16,7 +16,10 @@
     "lint:fix": "eslint . --fix",
     "check:firestore-flow": "tsx scripts/firestore-flow-check.ts",
     "seed:compendium": "tsx scripts/seed-compendium.ts",
-    "migrate:monsters-json": "tsx scripts/migrate-monsters-json.ts"
+    "reset:spells": "tsx scripts/reset-spells-collection.ts",
+    "migrate:monsters-json": "tsx scripts/migrate-monsters-json.ts",
+    "migrate:spells-json": "tsx scripts/migrate-spells-json.ts",
+    "audit:spells-migration": "tsx scripts/audit-spells-migration.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.6",

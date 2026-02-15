@@ -186,6 +186,10 @@ export const toSpellPayload = (
     updatedBy: state.updatedBy.trim() || state.actor.trim() || "admin-ui",
   };
 
+  if (state.publisher.trim()) {
+    payload.publisher = state.publisher.trim();
+  }
+
   if (state.attackType) {
     payload.attackType = state.attackType;
   }
@@ -286,6 +290,7 @@ export const toSpellFormState = (draft: unknown): SpellAdminFormState => {
         ? components.materialText
         : "",
     name: valueFromRecord(record, "name"),
+    publisher: valueFromRecord(record, "publisher"),
     range: valueFromRecord(record, "range"),
     ritual: booleanFromRecord(record, "ritual"),
     saveAbility:

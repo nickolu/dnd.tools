@@ -33,12 +33,14 @@ describe("admin ingest helpers", () => {
       duration: "Instantaneous",
       level: "3",
       name: "Fireball",
+      publisher: "Wizards of the Coast",
       range: "150 feet",
     });
 
     expect(payload?.id).toBe("fireball");
     expect(payload?.nameNormalized).toBe("fireball");
     expect(payload?.classes).toEqual(["wizard", "sorcerer"]);
+    expect(payload?.publisher).toBe("Wizards of the Coast");
   });
 
   it("builds monster payload from structured state", () => {

@@ -17,6 +17,11 @@ import {
 } from "@/page/spells/constants";
 import type { SpellFilters } from "@/page/spells/types";
 import { filterSpells } from "@/page/spells/utils/filterSpells";
+import {
+  normalizeSpellCastingTimeForFilter,
+  normalizeSpellDurationForFilter,
+  normalizeSpellRangeForFilter,
+} from "@/page/spells/utils/normalizeSpellFilterValues";
 
 type SearchParamsInput = URLSearchParams | ReadonlyURLSearchParams;
 
@@ -128,14 +133,20 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
   ];
 
   return {
-    castingTime: castingTime || ALL_FILTER_VALUE,
+    castingTime:
+      castingTime && castingTime !== ALL_FILTER_VALUE
+        ? normalizeSpellCastingTimeForFilter(castingTime)
+        : ALL_FILTER_VALUE,
     classes: classesSelectionMode === "single" ? classes.slice(0, 1) : classes,
     component:
       componentSelectionMode === "single" ? components.slice(0, 1) : components,
     concentration: isSpellBooleanFilter(concentrationCandidate)
       ? concentrationCandidate
       : DEFAULT_SPELL_FILTERS.concentration,
-    duration: duration || ALL_FILTER_VALUE,
+    duration:
+      duration && duration !== ALL_FILTER_VALUE
+        ? normalizeSpellDurationForFilter(duration)
+        : ALL_FILTER_VALUE,
     groupMatchMode: isSpellMatchMode(groupMatchModeCandidate)
       ? groupMatchModeCandidate
       : DEFAULT_SPELL_FILTERS.groupMatchMode,
@@ -151,7 +162,10 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
       ? levelCandidate
       : DEFAULT_SPELL_FILTERS.level,
     query: query.trim(),
-    range: range || ALL_FILTER_VALUE,
+    range:
+      range && range !== ALL_FILTER_VALUE
+        ? normalizeSpellRangeForFilter(range)
+        : ALL_FILTER_VALUE,
     ritual: isSpellBooleanFilter(ritualCandidate)
       ? ritualCandidate
       : DEFAULT_SPELL_FILTERS.ritual,

@@ -1,6 +1,11 @@
 import type { Spell } from "@/lib/domain/spell.schema";
 import { ALL_FILTER_VALUE } from "@/page/spells/constants";
 import type { SpellFilters } from "@/page/spells/types";
+import {
+  normalizeSpellCastingTimeForFilter,
+  normalizeSpellDurationForFilter,
+  normalizeSpellRangeForFilter,
+} from "@/page/spells/utils/normalizeSpellFilterValues";
 
 function hasActiveSpellFilters(filters: SpellFilters): boolean {
   return (
@@ -32,15 +37,19 @@ export function filterSpells(spells: Spell[], filters: SpellFilters): Spell[] {
     }
 
     if (filters.castingTime !== ALL_FILTER_VALUE) {
-      checks.push(spell.castingTime === filters.castingTime);
+      checks.push(
+        normalizeSpellCastingTimeForFilter(spell.castingTime) === filters.castingTime
+      );
     }
 
     if (filters.range !== ALL_FILTER_VALUE) {
-      checks.push(spell.range === filters.range);
+      checks.push(normalizeSpellRangeForFilter(spell.range) === filters.range);
     }
 
     if (filters.duration !== ALL_FILTER_VALUE) {
-      checks.push(spell.duration === filters.duration);
+      checks.push(
+        normalizeSpellDurationForFilter(spell.duration) === filters.duration
+      );
     }
 
     if (filters.component.length > 0) {
