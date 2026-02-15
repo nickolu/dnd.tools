@@ -12,7 +12,10 @@ const STORAGE_KEYS = {
   spells: "dnd-tools:cache:spells",
 } as const;
 
-type CollectionCacheResource = keyof Pick<typeof STORAGE_KEYS, "monsters" | "spells">;
+type CollectionCacheResource = keyof Pick<
+  typeof STORAGE_KEYS,
+  "monsters" | "spells"
+>;
 
 const META_REFRESH_INTERVAL_MS = 6 * 60 * 60 * 1000;
 
@@ -143,7 +146,10 @@ const getCachedMetaVersion = async (): Promise<CollectionVersion> => {
     return inFlightMetaVersionRequest;
   }
 
-  inFlightMetaVersionRequest = getJson("/api/meta/version", collectionVersionSchema)
+  inFlightMetaVersionRequest = getJson(
+    "/api/meta/version",
+    collectionVersionSchema
+  )
     .then(async (fresh) => {
       await writeCachedMetaVersion(fresh);
       return fresh;
@@ -194,7 +200,8 @@ const readCachedCollection = async <T>(
     storageKey === STORAGE_KEYS.monsters ||
     storageKey === STORAGE_KEYS.spells
   ) {
-    const resource = storageKey === STORAGE_KEYS.monsters ? "monsters" : "spells";
+    const resource =
+      storageKey === STORAGE_KEYS.monsters ? "monsters" : "spells";
     inMemoryCollectionSync[resource] = parsedSyncedAt;
   }
 
@@ -220,7 +227,8 @@ const writeCachedCollection = async <T>(
     storageKey === STORAGE_KEYS.monsters ||
     storageKey === STORAGE_KEYS.spells
   ) {
-    const resource = storageKey === STORAGE_KEYS.monsters ? "monsters" : "spells";
+    const resource =
+      storageKey === STORAGE_KEYS.monsters ? "monsters" : "spells";
     inMemoryCollectionSync[resource] = syncedAt;
   }
 
@@ -310,7 +318,9 @@ export const getCollectionLastSyncedAt = async (
   return syncedAt;
 };
 
-export const clearCollectionCache = async (resource: CollectionCacheResource) => {
+export const clearCollectionCache = async (
+  resource: CollectionCacheResource
+) => {
   inMemoryCollectionSync[resource] = null;
 
   if (!canUseBrowserStorage()) {

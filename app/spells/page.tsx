@@ -99,13 +99,7 @@ function SpellsPageContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const searchRef = useRef<HTMLInputElement>(null);
-  const {
-    data: spells = [],
-    error,
-    isError,
-    isLoading,
-    refetch,
-  } = useSpells();
+  const { data: spells = [], error, isError, isLoading, refetch } = useSpells();
   const { filteredSpells, filters } = useSpellFilters(spells, searchParams);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null);

@@ -21,7 +21,8 @@ const SPELLS_COLLECTION = "spells";
 const META_COLLECTION = "meta";
 const META_DOC = "collections";
 const LIST_CACHE_HEADERS = {
-  "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=600",
+  "Cache-Control":
+    "public, max-age=60, s-maxage=300, stale-while-revalidate=600",
 };
 
 export async function GET() {
@@ -41,10 +42,12 @@ export async function GET() {
     }
 
     const db = getAdminDb();
-    const metaSnapshot = await db.collection(META_COLLECTION).doc(META_DOC).get();
+    const metaSnapshot = await db
+      .collection(META_COLLECTION)
+      .doc(META_DOC)
+      .get();
     const nextVersion = metaSnapshot.get("spellsVersion");
-    const spellsVersion =
-      typeof nextVersion === "number" ? nextVersion : 0;
+    const spellsVersion = typeof nextVersion === "number" ? nextVersion : 0;
 
     if (cached && cached.version === spellsVersion) {
       refreshCollectionCacheTtl("spells");

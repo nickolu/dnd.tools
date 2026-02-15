@@ -30,11 +30,7 @@ export type ApiError = {
 
 export type ApiEnvelope<T> = ApiSuccess<T> | ApiError;
 
-export const jsonSuccess = <T>(
-  data: T,
-  status = 200,
-  headers?: HeadersInit
-) =>
+export const jsonSuccess = <T>(data: T, status = 200, headers?: HeadersInit) =>
   NextResponse.json<ApiSuccess<T>>(
     { data, ok: true },
     headers ? { headers, status } : { status }
