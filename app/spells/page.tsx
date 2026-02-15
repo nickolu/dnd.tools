@@ -1,11 +1,15 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 
 import { FilterGroup } from "@/components/filter-group";
 import { FilterLogicPopover } from "@/components/filter-logic-popover";
-import { getReadableFetchError } from "@/lib/api/client";
+import {
+  clearCollectionCache,
+  getCollectionLastSyncedAt,
+  getReadableFetchError,
+} from "@/lib/api/client";
 import { useSpells } from "@/lib/query/hooks/useSpells";
 import { SpellCard, SpellResultsSummary } from "@/page/spells/components";
 import {
@@ -103,6 +107,8 @@ function SpellsPageContent() {
     refetch,
   } = useSpells();
   const { filteredSpells, filters } = useSpellFilters(spells, searchParams);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null);
   const isAdminMode = searchParams.get("admin") === "true";
   const filterGroups = useMemo<SpellFilterGroupType[]>(
     () => getSpellFilterGroups(spells),
@@ -118,6 +124,26 @@ function SpellsPageContent() {
     searchRef.current?.focus();
     searchRef.current?.select();
   }, [searchParams]);
+
+  useEffect(() => {
+    let isActive = true;
+
+    void getCollectionLastSyncedAt("spells").then((syncedAt) => {
+      if (!isActive) {
+        return;
+      }
+
+      setLastSyncedAt(syncedAt);
+    });
+
+    return () => {
+      isActive = false;
+    };
+  }, [spells.length]);
+
+  const lastSyncedLabel = lastSyncedAt
+    ? new Date(lastSyncedAt).toLocaleString()
+    : "Not synced yet";
 
   const updateSearchParam = (queryParam: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -231,6 +257,30 @@ function SpellsPageContent() {
           total={spells.length}
           visible={filteredSpells.length}
         />
+        <div className="mt-2 flex items-center justify-between gap-3">
+          <p className="typography-body-sm text-muted">
+            Last synced: {lastSyncedLabel}
+          </p>
+          <button
+            className="admin-button-secondary typography-body-sm px-3 py-1"
+            disabled={isRefreshing}
+            onClick={async () => {
+              setIsRefreshing(true);
+
+              try {
+                await clearCollectionCache("spells");
+                await refetch();
+                const syncedAt = await getCollectionLastSyncedAt("spells");
+                setLastSyncedAt(syncedAt);
+              } finally {
+                setIsRefreshing(false);
+              }
+            }}
+            type="button"
+          >
+            {isRefreshing ? "Refreshing..." : "Refresh data"}
+          </button>
+        </div>
 
         {isError ? (
           <div className="surface-card mt-3 flex items-center gap-3 p-3">

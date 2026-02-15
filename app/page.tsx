@@ -1,13 +1,16 @@
 "use client";
 
-import { useMemo } from "react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   ToolWidgetCard,
   type WidgetFilterOption,
 } from "@/components/tool-widget-card";
-import { getReadableFetchError } from "@/lib/api/client";
+import {
+  clearCollectionCache,
+  getCollectionLastSyncedAt,
+  getReadableFetchError,
+} from "@/lib/api/client";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { useSpells } from "@/lib/query/hooks/useSpells";
 
@@ -61,6 +64,13 @@ export default function Home() {
     undefined
   );
   const [spellFilter, setSpellFilter] = useState<string | undefined>(undefined);
+  const [isRefreshingAll, setIsRefreshingAll] = useState(false);
+  const [lastSyncedSpellsAt, setLastSyncedSpellsAt] = useState<number | null>(
+    null
+  );
+  const [lastSyncedMonstersAt, setLastSyncedMonstersAt] = useState<
+    number | null
+  >(null);
 
   const visibleMonsters = useMemo(() => {
     const normalizedFilter = monsterSearch.trim().toLowerCase();
@@ -98,6 +108,29 @@ export default function Home() {
       ? "Loading monsters..."
       : `${visibleMonsters.length} visible of ${monsters.length} monsters`;
 
+  useEffect(() => {
+    let isActive = true;
+
+    void Promise.all([
+      getCollectionLastSyncedAt("spells"),
+      getCollectionLastSyncedAt("monsters"),
+    ]).then(([syncedSpellsAt, syncedMonstersAt]) => {
+      if (!isActive) {
+        return;
+      }
+
+      setLastSyncedSpellsAt(syncedSpellsAt);
+      setLastSyncedMonstersAt(syncedMonstersAt);
+    });
+
+    return () => {
+      isActive = false;
+    };
+  }, [spells.length, monsters.length]);
+
+  const formatSynced = (value: number | null) =>
+    value ? new Date(value).toLocaleString() : "Not synced yet";
+
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-6">
       <h1 className="typography-h1">Compendium Tools</h1>
@@ -106,6 +139,41 @@ export default function Home() {
       </p>
 
       <section className="flex flex-col gap-6">
+        <div className="surface-card flex flex-wrap items-center gap-3 p-3">
+          <p className="typography-body-sm text-muted">
+            Spells synced: {formatSynced(lastSyncedSpellsAt)}
+          </p>
+          <p className="typography-body-sm text-muted">
+            Monsters synced: {formatSynced(lastSyncedMonstersAt)}
+          </p>
+          <button
+            className="admin-button-secondary typography-body-sm ml-auto px-3 py-1"
+            disabled={isRefreshingAll}
+            onClick={async () => {
+              setIsRefreshingAll(true);
+
+              try {
+                await clearCollectionCache("spells");
+                await clearCollectionCache("monsters");
+                await Promise.all([refetchSpells(), refetchMonsters()]);
+
+                const [syncedSpellsAt, syncedMonstersAt] = await Promise.all([
+                  getCollectionLastSyncedAt("spells"),
+                  getCollectionLastSyncedAt("monsters"),
+                ]);
+
+                setLastSyncedSpellsAt(syncedSpellsAt);
+                setLastSyncedMonstersAt(syncedMonstersAt);
+              } finally {
+                setIsRefreshingAll(false);
+              }
+            }}
+            type="button"
+          >
+            {isRefreshingAll ? "Refreshing all..." : "Refresh all data"}
+          </button>
+        </div>
+
         {isSpellsError || isMonstersError ? (
           <div className="surface-card flex flex-wrap items-center gap-2 p-3">
             <p className="typography-body-sm text-secondary">

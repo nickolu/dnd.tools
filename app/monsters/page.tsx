@@ -5,7 +5,11 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 
 import { FilterGroup } from "@/components/filter-group";
 import { FilterLogicPopover } from "@/components/filter-logic-popover";
-import { getReadableFetchError } from "@/lib/api/client";
+import {
+  clearCollectionCache,
+  getCollectionLastSyncedAt,
+  getReadableFetchError,
+} from "@/lib/api/client";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import {
   MonsterCard,
@@ -102,6 +106,8 @@ function MonstersPageContent() {
     isLoading,
     refetch,
   } = useMonsters();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null);
   const isAdminMode = searchParams.get("admin") === "true";
   const { filteredMonsters, filters } = useMonsterFilters(
     monsters,
@@ -148,6 +154,26 @@ function MonstersPageContent() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    let isActive = true;
+
+    void getCollectionLastSyncedAt("monsters").then((syncedAt) => {
+      if (!isActive) {
+        return;
+      }
+
+      setLastSyncedAt(syncedAt);
+    });
+
+    return () => {
+      isActive = false;
+    };
+  }, [monsters.length]);
+
+  const lastSyncedLabel = lastSyncedAt
+    ? new Date(lastSyncedAt).toLocaleString()
+    : "Not synced yet";
 
   const updateSearchParam = (queryParam: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -304,6 +330,30 @@ function MonstersPageContent() {
           total={monsters.length}
           visible={filteredMonsters.length}
         />
+        <div className="mt-2 flex items-center justify-between gap-3">
+          <p className="typography-body-sm text-muted">
+            Last synced: {lastSyncedLabel}
+          </p>
+          <button
+            className="admin-button-secondary typography-body-sm px-3 py-1"
+            disabled={isRefreshing}
+            onClick={async () => {
+              setIsRefreshing(true);
+
+              try {
+                await clearCollectionCache("monsters");
+                await refetch();
+                const syncedAt = await getCollectionLastSyncedAt("monsters");
+                setLastSyncedAt(syncedAt);
+              } finally {
+                setIsRefreshing(false);
+              }
+            }}
+            type="button"
+          >
+            {isRefreshing ? "Refreshing..." : "Refresh data"}
+          </button>
+        </div>
 
         {isError ? (
           <div className="surface-card mt-3 flex items-center gap-3 p-3">

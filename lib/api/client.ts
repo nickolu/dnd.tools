@@ -1,4 +1,4 @@
-import { get, set } from "idb-keyval";
+import { del, get, set } from "idb-keyval";
 import { z } from "zod";
 
 import type { CollectionVersion } from "@/lib/domain/meta.schema";
@@ -12,10 +12,13 @@ const STORAGE_KEYS = {
   spells: "dnd-tools:cache:spells",
 } as const;
 
+type CollectionCacheResource = keyof Pick<typeof STORAGE_KEYS, "monsters" | "spells">;
+
 const META_REFRESH_INTERVAL_MS = 6 * 60 * 60 * 1000;
 
 type CachedCollectionPayload<T> = {
   data: T[];
+  syncedAt: number | null;
   version: number;
 };
 
@@ -55,6 +58,10 @@ const apiEnvelopeSchema = z.union([apiSuccessSchema, apiErrorSchema]);
 
 let inMemoryMetaVersionCache: CachedMetaVersionPayload | null = null;
 let inFlightMetaVersionRequest: Promise<CollectionVersion> | null = null;
+const inMemoryCollectionSync: Record<CollectionCacheResource, number | null> = {
+  monsters: null,
+  spells: null,
+};
 
 const parseResponse = async (response: Response): Promise<unknown> => {
   const payload = apiEnvelopeSchema.parse(await response.json());
@@ -170,6 +177,7 @@ const readCachedCollection = async <T>(
 
   const version = Reflect.get(raw, "version");
   const data = Reflect.get(raw, "data");
+  const syncedAt = Reflect.get(raw, "syncedAt");
 
   if (typeof version !== "number") {
     return null;
@@ -180,8 +188,19 @@ const readCachedCollection = async <T>(
     return null;
   }
 
+  const parsedSyncedAt = typeof syncedAt === "number" ? syncedAt : null;
+
+  if (
+    storageKey === STORAGE_KEYS.monsters ||
+    storageKey === STORAGE_KEYS.spells
+  ) {
+    const resource = storageKey === STORAGE_KEYS.monsters ? "monsters" : "spells";
+    inMemoryCollectionSync[resource] = parsedSyncedAt;
+  }
+
   return {
     data: parsedData.data,
+    syncedAt: parsedSyncedAt,
     version,
   };
 };
@@ -195,7 +214,17 @@ const writeCachedCollection = async <T>(
     return;
   }
 
-  await set(storageKey, { data, version });
+  const syncedAt = Date.now();
+
+  if (
+    storageKey === STORAGE_KEYS.monsters ||
+    storageKey === STORAGE_KEYS.spells
+  ) {
+    const resource = storageKey === STORAGE_KEYS.monsters ? "monsters" : "spells";
+    inMemoryCollectionSync[resource] = syncedAt;
+  }
+
+  await set(storageKey, { data, syncedAt, version });
 };
 
 const getCollectionWithPersistentCache = async <T>(
@@ -253,6 +282,42 @@ export const getReadableFetchError = (
   }
 
   return `Failed to load ${resourceLabel}.`;
+};
+
+const getCollectionStorageKey = (resource: CollectionCacheResource) =>
+  STORAGE_KEYS[resource];
+
+export const getCollectionLastSyncedAt = async (
+  resource: CollectionCacheResource
+): Promise<number | null> => {
+  const inMemory = inMemoryCollectionSync[resource];
+  if (typeof inMemory === "number") {
+    return inMemory;
+  }
+
+  const storageKey = getCollectionStorageKey(resource);
+  const raw = await get<unknown>(storageKey);
+  if (!isRecord(raw)) {
+    return null;
+  }
+
+  const syncedAt = Reflect.get(raw, "syncedAt");
+  if (typeof syncedAt !== "number") {
+    return null;
+  }
+
+  inMemoryCollectionSync[resource] = syncedAt;
+  return syncedAt;
+};
+
+export const clearCollectionCache = async (resource: CollectionCacheResource) => {
+  inMemoryCollectionSync[resource] = null;
+
+  if (!canUseBrowserStorage()) {
+    return;
+  }
+
+  await del(getCollectionStorageKey(resource));
 };
 
 export const apiClient = {
