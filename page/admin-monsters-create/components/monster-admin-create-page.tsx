@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
 import {
@@ -47,24 +47,98 @@ const parseEnvelope = async (response: Response): Promise<unknown> => {
   return payload.data;
 };
 
-const isMonsterSize = (
-  value: string
-): value is MonsterAdminFormState["size"] =>
+const isMonsterSize = (value: string): value is MonsterAdminFormState["size"] =>
   MONSTER_SIZES.some((size) => size === value);
 
+type MonsterAdminEntryPageProps = {
+  entryId?: string;
+};
+
 export function MonsterAdminCreatePage() {
-  const [mode, setMode] = useState<AdminEntryMode>("parse");
+  return <MonsterAdminEntryPage />;
+}
+
+export function MonsterAdminEditPage({ entryId }: { entryId: string }) {
+  return <MonsterAdminEntryPage entryId={entryId} />;
+}
+
+function MonsterAdminEntryPage({ entryId }: MonsterAdminEntryPageProps) {
+  const isEditing = Boolean(entryId);
+  const [mode, setMode] = useState<AdminEntryMode>(
+    isEditing ? "manual" : "parse"
+  );
   const [rawText, setRawText] = useState("");
   const [formState, setFormState] = useState<MonsterAdminFormState>(
-    DEFAULT_MONSTER_ADMIN_FORM
+    isEditing && entryId
+      ? {
+          ...DEFAULT_MONSTER_ADMIN_FORM,
+          id: entryId,
+        }
+      : DEFAULT_MONSTER_ADMIN_FORM
   );
+  const [isEntryLoading, setIsEntryLoading] = useState(isEditing);
   const [isDraftLoading, setIsDraftLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [draftValidation, setDraftValidation] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const payloadPreview = useMemo(() => toMonsterPayload(formState), [formState]);
+  const payloadPreview = useMemo(
+    () => toMonsterPayload(formState),
+    [formState]
+  );
+
+  useEffect(() => {
+    if (!entryId) {
+      return;
+    }
+
+    let isCancelled = false;
+
+    const loadMonster = async () => {
+      setIsEntryLoading(true);
+      setErrorMessage(null);
+      setSuccessMessage(null);
+
+      try {
+        const response = await fetch(
+          `/api/monsters/${encodeURIComponent(entryId)}`,
+          {
+            headers: {
+              "x-dnd-role": ROLE_HEADER,
+            },
+            method: "GET",
+          }
+        );
+        const monster = await parseEnvelope(response);
+
+        if (isCancelled) {
+          return;
+        }
+
+        setFormState(toMonsterFormState(monster));
+        setMode("manual");
+      } catch (error) {
+        if (isCancelled) {
+          return;
+        }
+
+        setErrorMessage(
+          error instanceof Error ? error.message : "Failed to load monster."
+        );
+      } finally {
+        if (!isCancelled) {
+          setIsEntryLoading(false);
+        }
+      }
+    };
+
+    void loadMonster();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [entryId]);
 
   const applyActor = (actor: string) => {
     setFormState((current) => ({
@@ -123,26 +197,41 @@ export function MonsterAdminCreatePage() {
     setSuccessMessage(null);
     const payload = payloadPreview;
     if (!payload) {
-      setErrorMessage("Form is incomplete. Fill required fields before saving.");
+      setErrorMessage(
+        "Form is incomplete. Fill required fields before saving."
+      );
+      return;
+    }
+    if (entryId && payload.id !== entryId) {
+      setErrorMessage("ID cannot be changed while editing.");
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/monsters", {
+      const endpoint = entryId
+        ? `/api/monsters/${encodeURIComponent(entryId)}`
+        : "/api/monsters";
+      const response = await fetch(endpoint, {
         body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json",
           "x-dnd-role": ROLE_HEADER,
         },
-        method: "POST",
+        method: entryId ? "PUT" : "POST",
       });
 
       await parseEnvelope(response);
-      setSuccessMessage(`Saved monster '${payload.id}'.`);
+      setSuccessMessage(
+        entryId
+          ? `Updated monster '${payload.id}'.`
+          : `Saved monster '${payload.id}'.`
+      );
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Failed to save monster.");
+      setErrorMessage(
+        error instanceof Error ? error.message : "Failed to save monster."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -152,29 +241,40 @@ export function MonsterAdminCreatePage() {
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
       <section className="surface-card p-6">
         <p className="typography-kicker text-muted">Admin</p>
-        <h1 className="typography-h1">Create Monster</h1>
+        <h1 className="typography-h1">
+          {isEditing ? "Edit Monster" : "Create Monster"}
+        </h1>
         <p className="typography-body mt-2 text-secondary">
-          Hidden route for admin ingestion. Not linked from navigation.
+          Hidden route for admin ingestion and maintenance. Not linked from
+          navigation.
         </p>
 
-        <div className="mt-4 flex flex-wrap gap-2">
-          <button
-            className="admin-button-secondary px-3 py-2 typography-body-sm"
-            data-active={mode === "parse"}
-            onClick={() => setMode("parse")}
-            type="button"
-          >
-            Parse text
-          </button>
-          <button
-            className="admin-button-secondary px-3 py-2 typography-body-sm"
-            data-active={mode === "manual"}
-            onClick={() => setMode("manual")}
-            type="button"
-          >
-            Manual form
-          </button>
-        </div>
+        {!isEditing ? (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button
+              className="admin-button-secondary px-3 py-2 typography-body-sm"
+              data-active={mode === "parse"}
+              onClick={() => setMode("parse")}
+              type="button"
+            >
+              Parse text
+            </button>
+            <button
+              className="admin-button-secondary px-3 py-2 typography-body-sm"
+              data-active={mode === "manual"}
+              onClick={() => setMode("manual")}
+              type="button"
+            >
+              Manual form
+            </button>
+          </div>
+        ) : null}
+
+        {isEntryLoading ? (
+          <p className="mt-4 typography-body-sm text-secondary">
+            Loading monster...
+          </p>
+        ) : null}
 
         <div className="mt-4 grid gap-3 md:grid-cols-3">
           <label className="flex flex-col gap-1">
@@ -186,7 +286,9 @@ export function MonsterAdminCreatePage() {
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span className="typography-body-sm text-secondary">Schema version</span>
+            <span className="typography-body-sm text-secondary">
+              Schema version
+            </span>
             <input
               className="input-field px-3 py-2"
               onChange={(event) =>
@@ -213,10 +315,12 @@ export function MonsterAdminCreatePage() {
           </label>
         </div>
 
-        {mode === "parse" ? (
+        {!isEditing && mode === "parse" ? (
           <div className="mt-4 space-y-3">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Unstructured monster text</span>
+              <span className="typography-body-sm text-secondary">
+                Unstructured monster text
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) => setRawText(event.target.value)}
@@ -245,7 +349,10 @@ export function MonsterAdminCreatePage() {
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
-                  setFormState((current) => ({ ...current, name: event.target.value }))
+                  setFormState((current) => ({
+                    ...current,
+                    name: event.target.value,
+                  }))
                 }
                 value={formState.name}
               />
@@ -255,8 +362,12 @@ export function MonsterAdminCreatePage() {
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
-                  setFormState((current) => ({ ...current, id: event.target.value }))
+                  setFormState((current) => ({
+                    ...current,
+                    id: event.target.value,
+                  }))
                 }
+                disabled={isEditing}
                 value={formState.id}
               />
             </label>
@@ -289,13 +400,18 @@ export function MonsterAdminCreatePage() {
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
-                  setFormState((current) => ({ ...current, type: event.target.value }))
+                  setFormState((current) => ({
+                    ...current,
+                    type: event.target.value,
+                  }))
                 }
                 value={formState.type}
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Alignment</span>
+              <span className="typography-body-sm text-secondary">
+                Alignment
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -311,7 +427,9 @@ export function MonsterAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-4">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Armor class</span>
+              <span className="typography-body-sm text-secondary">
+                Armor class
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -324,7 +442,9 @@ export function MonsterAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Hit points</span>
+              <span className="typography-body-sm text-secondary">
+                Hit points
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -341,7 +461,10 @@ export function MonsterAdminCreatePage() {
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
-                  setFormState((current) => ({ ...current, speed: event.target.value }))
+                  setFormState((current) => ({
+                    ...current,
+                    speed: event.target.value,
+                  }))
                 }
                 value={formState.speed}
               />
@@ -351,7 +474,10 @@ export function MonsterAdminCreatePage() {
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
-                  setFormState((current) => ({ ...current, source: event.target.value }))
+                  setFormState((current) => ({
+                    ...current,
+                    source: event.target.value,
+                  }))
                 }
                 value={formState.source}
               />
@@ -360,7 +486,9 @@ export function MonsterAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Challenge rating</span>
+              <span className="typography-body-sm text-secondary">
+                Challenge rating
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -373,7 +501,9 @@ export function MonsterAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">CR numeric</span>
+              <span className="typography-body-sm text-secondary">
+                CR numeric
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -470,7 +600,9 @@ export function MonsterAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Languages (comma)</span>
+              <span className="typography-body-sm text-secondary">
+                Languages (comma)
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -487,7 +619,10 @@ export function MonsterAdminCreatePage() {
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
-                  setFormState((current) => ({ ...current, senses: event.target.value }))
+                  setFormState((current) => ({
+                    ...current,
+                    senses: event.target.value,
+                  }))
                 }
                 value={formState.senses}
               />
@@ -496,7 +631,9 @@ export function MonsterAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-3">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Passive perception</span>
+              <span className="typography-body-sm text-secondary">
+                Passive perception
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -509,7 +646,9 @@ export function MonsterAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Proficiency bonus</span>
+              <span className="typography-body-sm text-secondary">
+                Proficiency bonus
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -522,7 +661,9 @@ export function MonsterAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Spell slots (comma integers)</span>
+              <span className="typography-body-sm text-secondary">
+                Spell slots (comma integers)
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -538,7 +679,9 @@ export function MonsterAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Saving throws (`name: value` per line)</span>
+              <span className="typography-body-sm text-secondary">
+                Saving throws (`name: value` per line)
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) =>
@@ -552,7 +695,9 @@ export function MonsterAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Skills (`name: value` per line)</span>
+              <span className="typography-body-sm text-secondary">
+                Skills (`name: value` per line)
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) =>
@@ -569,7 +714,9 @@ export function MonsterAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Damage resistances (comma)</span>
+              <span className="typography-body-sm text-secondary">
+                Damage resistances (comma)
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -582,7 +729,9 @@ export function MonsterAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Damage immunities (comma)</span>
+              <span className="typography-body-sm text-secondary">
+                Damage immunities (comma)
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -598,7 +747,9 @@ export function MonsterAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Damage vulnerabilities (comma)</span>
+              <span className="typography-body-sm text-secondary">
+                Damage vulnerabilities (comma)
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -611,7 +762,9 @@ export function MonsterAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Condition immunities (comma)</span>
+              <span className="typography-body-sm text-secondary">
+                Condition immunities (comma)
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -627,7 +780,9 @@ export function MonsterAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Spell list (comma)</span>
+              <span className="typography-body-sm text-secondary">
+                Spell list (comma)
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -640,7 +795,9 @@ export function MonsterAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Search tokens (comma)</span>
+              <span className="typography-body-sm text-secondary">
+                Search tokens (comma)
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -656,7 +813,9 @@ export function MonsterAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Special abilities JSON</span>
+              <span className="typography-body-sm text-secondary">
+                Special abilities JSON
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) =>
@@ -670,7 +829,9 @@ export function MonsterAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Actions JSON</span>
+              <span className="typography-body-sm text-secondary">
+                Actions JSON
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) =>
@@ -687,7 +848,9 @@ export function MonsterAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Reactions JSON</span>
+              <span className="typography-body-sm text-secondary">
+                Reactions JSON
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) =>
@@ -701,7 +864,9 @@ export function MonsterAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Legendary actions JSON</span>
+              <span className="typography-body-sm text-secondary">
+                Legendary actions JSON
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) =>
@@ -720,11 +885,15 @@ export function MonsterAdminCreatePage() {
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <button
             className="admin-button px-4 py-2 typography-body-sm"
-            disabled={isSubmitting}
+            disabled={isEntryLoading || isSubmitting}
             onClick={submitMonster}
             type="button"
           >
-            {isSubmitting ? "Saving..." : "Save monster"}
+            {isSubmitting
+              ? "Saving..."
+              : isEditing
+                ? "Update monster"
+                : "Save monster"}
           </button>
           {payloadPreview ? (
             <span className="typography-body-sm text-secondary">
@@ -738,10 +907,14 @@ export function MonsterAdminCreatePage() {
         </div>
 
         {draftValidation ? (
-          <p className="mt-3 typography-body-sm text-secondary">{draftValidation}</p>
+          <p className="mt-3 typography-body-sm text-secondary">
+            {draftValidation}
+          </p>
         ) : null}
         {errorMessage ? (
-          <p className="mt-3 typography-body-sm text-secondary">{errorMessage}</p>
+          <p className="mt-3 typography-body-sm text-secondary">
+            {errorMessage}
+          </p>
         ) : null}
         {successMessage ? (
           <p className="mt-3 typography-body-sm">{successMessage}</p>

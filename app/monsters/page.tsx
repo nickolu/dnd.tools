@@ -94,6 +94,7 @@ export default function MonstersPage() {
   const searchParams = useSearchParams();
   const searchRef = useRef<HTMLInputElement>(null);
   const { data: monsters = [], isLoading } = useMonsters();
+  const isAdminMode = searchParams.get("admin") === "true";
   const { filteredMonsters, filters } = useMonsterFilters(
     monsters,
     searchParams
@@ -368,7 +369,11 @@ export default function MonstersPage() {
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {filteredMonsters.map((monster) => (
-            <MonsterCard key={monster.id} monster={monster} />
+            <MonsterCard
+              isAdminMode={isAdminMode}
+              key={monster.id}
+              monster={monster}
+            />
           ))}
         </div>
       </section>

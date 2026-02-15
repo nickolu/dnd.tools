@@ -60,4 +60,25 @@ describe("admin ingest helpers", () => {
     expect(payload?.crNumeric).toBe(0.25);
     expect(payload?.proficiencyBonus).toBe(2);
   });
+
+  it("parses statblock-style skill bonuses from admin form text", () => {
+    const payload = toMonsterPayload({
+      ...DEFAULT_MONSTER_ADMIN_FORM,
+      alignment: "neutral evil",
+      armorClass: "15",
+      challengeRating: "1/4",
+      crNumeric: "0.25",
+      hitPoints: "7 (2d6)",
+      name: "Goblin",
+      skillsText: "Athletics +4, Deception +2\nStealth: 6",
+      speed: "30 ft.",
+      type: "humanoid (goblinoid)",
+    });
+
+    expect(payload?.skills).toEqual({
+      Athletics: 4,
+      Deception: 2,
+      Stealth: 6,
+    });
+  });
 });

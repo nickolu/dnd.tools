@@ -1,11 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
-import { DEFAULT_SPELL_ADMIN_FORM, SPELL_SCHOOLS } from "@/page/admin-spells-create/constants";
-import type { AdminEntryMode, SpellAdminFormState } from "@/page/admin-spells-create/types";
-import { toSpellFormState, toSpellPayload } from "@/page/admin-spells-create/utils/form-state";
+import {
+  DEFAULT_SPELL_ADMIN_FORM,
+  SPELL_SCHOOLS,
+} from "@/page/admin-spells-create/constants";
+import type {
+  AdminEntryMode,
+  SpellAdminFormState,
+} from "@/page/admin-spells-create/types";
+import {
+  toSpellFormState,
+  toSpellPayload,
+} from "@/page/admin-spells-create/utils/form-state";
 
 const draftResponseSchema = z.object({
   draft: z.unknown(),
@@ -57,12 +66,33 @@ const isSaveAbility = (
   value === "wis" ||
   value === "cha";
 
+type SpellAdminEntryPageProps = {
+  entryId?: string;
+};
+
 export function SpellAdminCreatePage() {
-  const [mode, setMode] = useState<AdminEntryMode>("parse");
+  return <SpellAdminEntryPage />;
+}
+
+export function SpellAdminEditPage({ entryId }: { entryId: string }) {
+  return <SpellAdminEntryPage entryId={entryId} />;
+}
+
+function SpellAdminEntryPage({ entryId }: SpellAdminEntryPageProps) {
+  const isEditing = Boolean(entryId);
+  const [mode, setMode] = useState<AdminEntryMode>(
+    isEditing ? "manual" : "parse"
+  );
   const [rawText, setRawText] = useState("");
   const [formState, setFormState] = useState<SpellAdminFormState>(
-    DEFAULT_SPELL_ADMIN_FORM
+    isEditing && entryId
+      ? {
+          ...DEFAULT_SPELL_ADMIN_FORM,
+          id: entryId,
+        }
+      : DEFAULT_SPELL_ADMIN_FORM
   );
+  const [isEntryLoading, setIsEntryLoading] = useState(isEditing);
   const [isDraftLoading, setIsDraftLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -70,6 +100,58 @@ export function SpellAdminCreatePage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const payloadPreview = useMemo(() => toSpellPayload(formState), [formState]);
+
+  useEffect(() => {
+    if (!entryId) {
+      return;
+    }
+
+    let isCancelled = false;
+
+    const loadSpell = async () => {
+      setIsEntryLoading(true);
+      setErrorMessage(null);
+      setSuccessMessage(null);
+
+      try {
+        const response = await fetch(
+          `/api/spells/${encodeURIComponent(entryId)}`,
+          {
+            headers: {
+              "x-dnd-role": ROLE_HEADER,
+            },
+            method: "GET",
+          }
+        );
+        const spell = await parseEnvelope(response);
+
+        if (isCancelled) {
+          return;
+        }
+
+        setFormState(toSpellFormState(spell));
+        setMode("manual");
+      } catch (error) {
+        if (isCancelled) {
+          return;
+        }
+
+        setErrorMessage(
+          error instanceof Error ? error.message : "Failed to load spell."
+        );
+      } finally {
+        if (!isCancelled) {
+          setIsEntryLoading(false);
+        }
+      }
+    };
+
+    void loadSpell();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [entryId]);
 
   const applyActor = (actor: string) => {
     setFormState((current) => ({
@@ -128,26 +210,41 @@ export function SpellAdminCreatePage() {
     setSuccessMessage(null);
     const payload = payloadPreview;
     if (!payload) {
-      setErrorMessage("Form is incomplete. Fill required fields before saving.");
+      setErrorMessage(
+        "Form is incomplete. Fill required fields before saving."
+      );
+      return;
+    }
+    if (entryId && payload.id !== entryId) {
+      setErrorMessage("ID cannot be changed while editing.");
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/spells", {
+      const endpoint = entryId
+        ? `/api/spells/${encodeURIComponent(entryId)}`
+        : "/api/spells";
+      const response = await fetch(endpoint, {
         body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json",
           "x-dnd-role": ROLE_HEADER,
         },
-        method: "POST",
+        method: entryId ? "PUT" : "POST",
       });
 
       await parseEnvelope(response);
-      setSuccessMessage(`Saved spell '${payload.id}'.`);
+      setSuccessMessage(
+        entryId
+          ? `Updated spell '${payload.id}'.`
+          : `Saved spell '${payload.id}'.`
+      );
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Failed to save spell.");
+      setErrorMessage(
+        error instanceof Error ? error.message : "Failed to save spell."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -157,29 +254,40 @@ export function SpellAdminCreatePage() {
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
       <section className="surface-card p-6">
         <p className="typography-kicker text-muted">Admin</p>
-        <h1 className="typography-h1">Create Spell</h1>
+        <h1 className="typography-h1">
+          {isEditing ? "Edit Spell" : "Create Spell"}
+        </h1>
         <p className="typography-body mt-2 text-secondary">
-          Hidden route for admin ingestion. Not linked from navigation.
+          Hidden route for admin ingestion and maintenance. Not linked from
+          navigation.
         </p>
 
-        <div className="mt-4 flex flex-wrap gap-2">
-          <button
-            className="admin-button-secondary px-3 py-2 typography-body-sm"
-            data-active={mode === "parse"}
-            onClick={() => setMode("parse")}
-            type="button"
-          >
-            Parse text
-          </button>
-          <button
-            className="admin-button-secondary px-3 py-2 typography-body-sm"
-            data-active={mode === "manual"}
-            onClick={() => setMode("manual")}
-            type="button"
-          >
-            Manual form
-          </button>
-        </div>
+        {!isEditing ? (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button
+              className="admin-button-secondary px-3 py-2 typography-body-sm"
+              data-active={mode === "parse"}
+              onClick={() => setMode("parse")}
+              type="button"
+            >
+              Parse text
+            </button>
+            <button
+              className="admin-button-secondary px-3 py-2 typography-body-sm"
+              data-active={mode === "manual"}
+              onClick={() => setMode("manual")}
+              type="button"
+            >
+              Manual form
+            </button>
+          </div>
+        ) : null}
+
+        {isEntryLoading ? (
+          <p className="mt-4 typography-body-sm text-secondary">
+            Loading spell...
+          </p>
+        ) : null}
 
         <div className="mt-4 grid gap-3 md:grid-cols-3">
           <label className="flex flex-col gap-1">
@@ -193,7 +301,9 @@ export function SpellAdminCreatePage() {
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span className="typography-body-sm text-secondary">Schema version</span>
+            <span className="typography-body-sm text-secondary">
+              Schema version
+            </span>
             <input
               className="input-field px-3 py-2"
               onChange={(event) =>
@@ -220,10 +330,12 @@ export function SpellAdminCreatePage() {
           </label>
         </div>
 
-        {mode === "parse" ? (
+        {!isEditing && mode === "parse" ? (
           <div className="mt-4 space-y-3">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Unstructured spell text</span>
+              <span className="typography-body-sm text-secondary">
+                Unstructured spell text
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) => setRawText(event.target.value)}
@@ -264,6 +376,7 @@ export function SpellAdminCreatePage() {
               <span className="typography-body-sm text-secondary">ID</span>
               <input
                 className="input-field px-3 py-2"
+                disabled={isEditing}
                 onChange={(event) =>
                   setFormState((current) => ({
                     ...current,
@@ -311,7 +424,9 @@ export function SpellAdminCreatePage() {
               </select>
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Casting time</span>
+              <span className="typography-body-sm text-secondary">
+                Casting time
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -340,7 +455,9 @@ export function SpellAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-3">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Duration</span>
+              <span className="typography-body-sm text-secondary">
+                Duration
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -353,7 +470,9 @@ export function SpellAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Classes (comma)</span>
+              <span className="typography-body-sm text-secondary">
+                Classes (comma)
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -382,7 +501,9 @@ export function SpellAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Description (one line per paragraph)</span>
+              <span className="typography-body-sm text-secondary">
+                Description (one line per paragraph)
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) =>
@@ -396,7 +517,9 @@ export function SpellAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Higher level (one line per paragraph)</span>
+              <span className="typography-body-sm text-secondary">
+                Higher level (one line per paragraph)
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) =>
@@ -449,7 +572,9 @@ export function SpellAdminCreatePage() {
                 }
                 type="checkbox"
               />
-              <span className="typography-body-sm text-secondary">Material</span>
+              <span className="typography-body-sm text-secondary">
+                Material
+              </span>
             </label>
             <label className="flex items-center gap-2 pt-6">
               <input
@@ -462,13 +587,17 @@ export function SpellAdminCreatePage() {
                 }
                 type="checkbox"
               />
-              <span className="typography-body-sm text-secondary">Concentration</span>
+              <span className="typography-body-sm text-secondary">
+                Concentration
+              </span>
             </label>
           </div>
 
           <div className="grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Material text</span>
+              <span className="typography-body-sm text-secondary">
+                Material text
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -497,7 +626,9 @@ export function SpellAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-3">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Attack type</span>
+              <span className="typography-body-sm text-secondary">
+                Attack type
+              </span>
               <select
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -516,7 +647,9 @@ export function SpellAdminCreatePage() {
               </select>
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Save ability</span>
+              <span className="typography-body-sm text-secondary">
+                Save ability
+              </span>
               <select
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -539,7 +672,9 @@ export function SpellAdminCreatePage() {
               </select>
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Save on success</span>
+              <span className="typography-body-sm text-secondary">
+                Save on success
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -555,7 +690,9 @@ export function SpellAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-3">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Damage type</span>
+              <span className="typography-body-sm text-secondary">
+                Damage type
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -581,7 +718,9 @@ export function SpellAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Tags (comma)</span>
+              <span className="typography-body-sm text-secondary">
+                Tags (comma)
+              </span>
               <input
                 className="input-field px-3 py-2"
                 onChange={(event) =>
@@ -597,7 +736,9 @@ export function SpellAdminCreatePage() {
 
           <div className="grid gap-3 md:grid-cols-2">
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Damage dice by slot (`level: dice` per line)</span>
+              <span className="typography-body-sm text-secondary">
+                Damage dice by slot (`level: dice` per line)
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) =>
@@ -611,7 +752,9 @@ export function SpellAdminCreatePage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="typography-body-sm text-secondary">Cantrip scaling (`level: dice` per line)</span>
+              <span className="typography-body-sm text-secondary">
+                Cantrip scaling (`level: dice` per line)
+              </span>
               <textarea
                 className="admin-textarea px-3 py-2"
                 onChange={(event) =>
@@ -627,7 +770,9 @@ export function SpellAdminCreatePage() {
           </div>
 
           <label className="flex flex-col gap-1">
-            <span className="typography-body-sm text-secondary">Search tokens (comma)</span>
+            <span className="typography-body-sm text-secondary">
+              Search tokens (comma)
+            </span>
             <input
               className="input-field px-3 py-2"
               onChange={(event) =>
@@ -644,11 +789,15 @@ export function SpellAdminCreatePage() {
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <button
             className="admin-button px-4 py-2 typography-body-sm"
-            disabled={isSubmitting}
+            disabled={isEntryLoading || isSubmitting}
             onClick={submitSpell}
             type="button"
           >
-            {isSubmitting ? "Saving..." : "Save spell"}
+            {isSubmitting
+              ? "Saving..."
+              : isEditing
+                ? "Update spell"
+                : "Save spell"}
           </button>
           {payloadPreview ? (
             <span className="typography-body-sm text-secondary">
@@ -662,10 +811,14 @@ export function SpellAdminCreatePage() {
         </div>
 
         {draftValidation ? (
-          <p className="mt-3 typography-body-sm text-secondary">{draftValidation}</p>
+          <p className="mt-3 typography-body-sm text-secondary">
+            {draftValidation}
+          </p>
         ) : null}
         {errorMessage ? (
-          <p className="mt-3 typography-body-sm text-secondary">{errorMessage}</p>
+          <p className="mt-3 typography-body-sm text-secondary">
+            {errorMessage}
+          </p>
         ) : null}
         {successMessage ? (
           <p className="mt-3 typography-body-sm">{successMessage}</p>

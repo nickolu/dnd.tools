@@ -68,6 +68,7 @@ export default function SpellsPage() {
   const searchRef = useRef<HTMLInputElement>(null);
   const { data: spells = [], isLoading } = useSpells();
   const { filteredSpells, filters } = useSpellFilters(spells, searchParams);
+  const isAdminMode = searchParams.get("admin") === "true";
   const filterGroups = useMemo<SpellFilterGroupType[]>(
     () => getSpellFilterGroups(spells),
     [spells]
@@ -272,7 +273,7 @@ export default function SpellsPage() {
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {filteredSpells.map((spell) => (
-            <SpellCard key={spell.id} spell={spell} />
+            <SpellCard isAdminMode={isAdminMode} key={spell.id} spell={spell} />
           ))}
         </div>
       </section>

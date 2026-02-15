@@ -2,7 +2,10 @@ import { z } from "zod";
 
 import { toNameNormalized, toSlug } from "@/lib/admin/ingest";
 import type { MonsterWriteInput } from "@/lib/domain/monster.schema";
-import { DEFAULT_MONSTER_ADMIN_FORM, MONSTER_SIZES } from "@/page/admin-monsters-create/constants";
+import {
+  DEFAULT_MONSTER_ADMIN_FORM,
+  MONSTER_SIZES,
+} from "@/page/admin-monsters-create/constants";
 import type { MonsterAdminFormState } from "@/page/admin-monsters-create/types";
 
 type MonsterNamedText = {
@@ -70,20 +73,32 @@ const toRequiredNumber = (value: string): number | null => {
 
 const mapFromLines = (value: string): Record<string, number> | undefined => {
   const parsed: Record<string, number> = {};
-  value
+  const entries = value
     .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .forEach((line) => {
-      const [key, ...rest] = line.split(":");
-      const parsedKey = key?.trim();
-      const parsedValue = Number(rest.join(":").trim());
-      if (!parsedKey || !Number.isFinite(parsedValue)) {
-        return;
-      }
+    .flatMap((line) => line.split(","))
+    .map((entry) => entry.trim())
+    .filter(Boolean);
 
-      parsed[parsedKey] = parsedValue;
-    });
+  entries.forEach((entry) => {
+    const colonMatch = entry.match(/^(.+?):\s*([+-]?\d+)$/);
+    if (colonMatch) {
+      const key = colonMatch[1]?.trim();
+      const parsedValue = Number(colonMatch[2]);
+      if (key && Number.isInteger(parsedValue)) {
+        parsed[key] = parsedValue;
+      }
+      return;
+    }
+
+    const signedMatch = entry.match(/^(.+?)\s+([+-]\d+)$/);
+    if (signedMatch) {
+      const key = signedMatch[1]?.trim();
+      const parsedValue = Number(signedMatch[2]);
+      if (key && Number.isInteger(parsedValue)) {
+        parsed[key] = parsedValue;
+      }
+    }
+  });
 
   if (!Object.keys(parsed).length) {
     return undefined;
@@ -99,7 +114,7 @@ const mapToLines = (value: Record<string, number> | undefined): string =>
         .join("\n")
     : "";
 
-const parseOptionalJsonArray = <T,>(
+const parseOptionalJsonArray = <T>(
   value: string,
   schema: z.ZodType<T>
 ): T[] | undefined => {
@@ -119,15 +134,23 @@ const parseOptionalJsonArray = <T,>(
 const toJsonString = (value: unknown): string =>
   Array.isArray(value) && value.length ? JSON.stringify(value, null, 2) : "";
 
-const stringFromRecord = (record: Record<string, unknown>, key: string): string => {
+const stringFromRecord = (
+  record: Record<string, unknown>,
+  key: string
+): string => {
   const value = record[key];
   return typeof value === "string" ? value : "";
 };
 
-const boolFromRecord = (record: Record<string, unknown>, key: string): boolean =>
-  record[key] === true;
+const boolFromRecord = (
+  record: Record<string, unknown>,
+  key: string
+): boolean => record[key] === true;
 
-const arrayFromRecord = (record: Record<string, unknown>, key: string): string[] => {
+const arrayFromRecord = (
+  record: Record<string, unknown>,
+  key: string
+): string[] => {
   const value = record[key];
   if (!Array.isArray(value)) {
     return [];
@@ -136,7 +159,10 @@ const arrayFromRecord = (record: Record<string, unknown>, key: string): string[]
   return value.filter((entry): entry is string => typeof entry === "string");
 };
 
-const numberFromRecord = (record: Record<string, unknown>, key: string): number | null => {
+const numberFromRecord = (
+  record: Record<string, unknown>,
+  key: string
+): number | null => {
   const value = record[key];
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 };
@@ -166,7 +192,8 @@ const numberArrayFromRecord = (
   }
 
   return value.filter(
-    (entry): entry is number => typeof entry === "number" && Number.isFinite(entry)
+    (entry): entry is number =>
+      typeof entry === "number" && Number.isFinite(entry)
   );
 };
 
@@ -339,31 +366,52 @@ export const toMonsterFormState = (draft: unknown): MonsterAdminFormState => {
   return {
     ...DEFAULT_MONSTER_ADMIN_FORM,
     abilityCha:
-      abilities && typeof abilities.cha === "number" ? String(abilities.cha) : "10",
+      abilities && typeof abilities.cha === "number"
+        ? String(abilities.cha)
+        : "10",
     abilityCon:
-      abilities && typeof abilities.con === "number" ? String(abilities.con) : "10",
+      abilities && typeof abilities.con === "number"
+        ? String(abilities.con)
+        : "10",
     abilityDex:
-      abilities && typeof abilities.dex === "number" ? String(abilities.dex) : "10",
+      abilities && typeof abilities.dex === "number"
+        ? String(abilities.dex)
+        : "10",
     abilityInt:
-      abilities && typeof abilities.int === "number" ? String(abilities.int) : "10",
+      abilities && typeof abilities.int === "number"
+        ? String(abilities.int)
+        : "10",
     abilityStr:
-      abilities && typeof abilities.str === "number" ? String(abilities.str) : "10",
+      abilities && typeof abilities.str === "number"
+        ? String(abilities.str)
+        : "10",
     abilityWis:
-      abilities && typeof abilities.wis === "number" ? String(abilities.wis) : "10",
+      abilities && typeof abilities.wis === "number"
+        ? String(abilities.wis)
+        : "10",
     actionsJson: toJsonString(record.actions),
-    actor: stringFromRecord(record, "createdBy") || DEFAULT_MONSTER_ADMIN_FORM.actor,
+    actor:
+      stringFromRecord(record, "createdBy") || DEFAULT_MONSTER_ADMIN_FORM.actor,
     alignment: stringFromRecord(record, "alignment"),
     armorClass: stringFromRecord(record, "armorClass"),
     challengeRating: stringFromRecord(record, "challengeRating"),
-    conditionImmunitiesText: arrayFromRecord(record, "conditionImmunities").join(", "),
+    conditionImmunitiesText: arrayFromRecord(
+      record,
+      "conditionImmunities"
+    ).join(", "),
     createdBy:
-      stringFromRecord(record, "createdBy") || DEFAULT_MONSTER_ADMIN_FORM.createdBy,
+      stringFromRecord(record, "createdBy") ||
+      DEFAULT_MONSTER_ADMIN_FORM.createdBy,
     crNumeric:
       numberFromRecord(record, "crNumeric") !== null
         ? String(numberFromRecord(record, "crNumeric"))
         : "",
-    damageImmunitiesText: arrayFromRecord(record, "damageImmunities").join(", "),
-    damageResistancesText: arrayFromRecord(record, "damageResistances").join(", "),
+    damageImmunitiesText: arrayFromRecord(record, "damageImmunities").join(
+      ", "
+    ),
+    damageResistancesText: arrayFromRecord(record, "damageResistances").join(
+      ", "
+    ),
     damageVulnerabilitiesText: arrayFromRecord(
       record,
       "damageVulnerabilities"
@@ -410,13 +458,15 @@ export const toMonsterFormState = (draft: unknown): MonsterAdminFormState => {
           )
         : undefined
     ),
-    source: stringFromRecord(record, "source") || DEFAULT_MONSTER_ADMIN_FORM.source,
+    source:
+      stringFromRecord(record, "source") || DEFAULT_MONSTER_ADMIN_FORM.source,
     specialAbilitiesJson: toJsonString(record.specialAbilities),
     speed: stringFromRecord(record, "speed"),
     spellListText: arrayFromRecord(record, "spellList").join(", "),
     spellSlotsText: numberArrayFromRecord(record, "spellSlots").join(", "),
     type: stringFromRecord(record, "type"),
     updatedBy:
-      stringFromRecord(record, "updatedBy") || DEFAULT_MONSTER_ADMIN_FORM.updatedBy,
+      stringFromRecord(record, "updatedBy") ||
+      DEFAULT_MONSTER_ADMIN_FORM.updatedBy,
   };
 };
