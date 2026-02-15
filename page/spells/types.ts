@@ -55,6 +55,7 @@ export type SpellFilterGroupKey =
   | "concentration"
   | "damageType"
   | "duration"
+  | "higherLevel"
   | "level"
   | "range"
   | "ritual"
@@ -73,6 +74,7 @@ export type SpellFilters = {
   duration: string;
   groupMatchMode: SpellMatchMode;
   groupMatchModeByKey: Record<SpellMultiSelectableGroupKey, SpellMatchMode>;
+  higherLevel: SpellBooleanFilter;
   level: SpellLevelFilter;
   query: string;
   range: string;

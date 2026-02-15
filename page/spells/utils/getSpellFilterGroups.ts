@@ -168,6 +168,11 @@ export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
       label: "Concentration",
       options: SPELL_BOOLEAN_FILTER_OPTIONS,
     },
+    {
+      key: "higherLevel",
+      label: "At Higher Levels",
+      options: SPELL_BOOLEAN_FILTER_OPTIONS,
+    },
 
     {
       key: "ritual",

@@ -97,6 +97,8 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
     searchParams.get("classData") ?? DEFAULT_SPELL_FILTERS.classData;
   const duration =
     searchParams.get("duration") ?? DEFAULT_SPELL_FILTERS.duration;
+  const higherLevelCandidate =
+    searchParams.get("higherLevel") ?? DEFAULT_SPELL_FILTERS.higherLevel;
   const groupMatchModeCandidate =
     searchParams.get(SPELL_GROUP_MATCH_QUERY_PARAM) ??
     DEFAULT_SPELL_FILTERS.groupMatchMode;
@@ -303,6 +305,9 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
         ? saveAbilityMatchModeCandidate
         : DEFAULT_SPELL_FILTERS.groupMatchModeByKey.saveAbility,
     },
+    higherLevel: isSpellBooleanFilter(higherLevelCandidate)
+      ? higherLevelCandidate
+      : DEFAULT_SPELL_FILTERS.higherLevel,
     level: isSpellLevelFilter(levelCandidate)
       ? levelCandidate
       : DEFAULT_SPELL_FILTERS.level,

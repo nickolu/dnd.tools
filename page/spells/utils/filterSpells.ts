@@ -20,6 +20,7 @@ function hasActiveSpellFilters(filters: SpellFilters): boolean {
     filters.component.length > 0 ||
     filters.concentration !== ALL_FILTER_VALUE ||
     filters.damageType.length > 0 ||
+    filters.higherLevel !== ALL_FILTER_VALUE ||
     filters.ritual !== ALL_FILTER_VALUE ||
     filters.saveAbility.length > 0 ||
     filters.classes.length > 0 ||
@@ -138,6 +139,18 @@ export function filterSpells(spells: Spell[], filters: SpellFilters): Spell[] {
           ? selected.every((value) => spellDamageTypes.includes(value))
           : selected.some((value) => spellDamageTypes.includes(value));
       checks.push(matcher);
+    }
+
+    if (filters.higherLevel === "yes") {
+      checks.push(
+        Array.isArray(spell.higherLevel) && spell.higherLevel.length > 0
+      );
+    }
+
+    if (filters.higherLevel === "no") {
+      checks.push(
+        !Array.isArray(spell.higherLevel) || spell.higherLevel.length === 0
+      );
     }
 
     if (filters.level !== ALL_FILTER_VALUE) {

@@ -36,6 +36,7 @@ const spell = (
     components,
     damageType,
     duration,
+    higherLevel,
     name,
     range,
     saveAbility,
@@ -49,6 +50,7 @@ const spell = (
     components: Spell["components"];
     damageType?: string;
     duration?: string;
+    higherLevel?: string[];
     name: string;
     range?: string;
     saveAbility?: NonNullable<Spell["save"]>["ability"];
@@ -64,6 +66,7 @@ const spell = (
   components,
   damage: damageType ? { type: damageType } : undefined,
   duration: duration ?? baseSpell.duration,
+  ...(higherLevel ? { higherLevel } : {}),
   id,
   name,
   nameNormalized: name.toLowerCase(),
@@ -328,6 +331,40 @@ describe("filterSpells", () => {
     expect(filtered.map((item) => item.id)).toEqual(["missing-classes"]);
   });
 
+  it("filters by at higher levels text", () => {
+    const higherLevelSpells: Spell[] = [
+      spell("higher-a", {
+        classes: ["wizard"],
+        concentration: false,
+        components: { material: false, somatic: true, verbal: true },
+        higherLevel: ["The damage increases by 1d8."],
+        name: "Scaling Bolt",
+      }),
+      spell("higher-b", {
+        classes: ["wizard"],
+        concentration: false,
+        components: { material: false, somatic: true, verbal: true },
+        name: "Flat Bolt",
+      }),
+    ];
+
+    const hasHigherLevel = filterSpells(
+      higherLevelSpells,
+      withFilters({
+        higherLevel: "yes",
+      })
+    );
+    const noHigherLevel = filterSpells(
+      higherLevelSpells,
+      withFilters({
+        higherLevel: "no",
+      })
+    );
+
+    expect(hasHigherLevel.map((item) => item.id)).toEqual(["higher-a"]);
+    expect(noHigherLevel.map((item) => item.id)).toEqual(["higher-b"]);
+  });
+
   it("filters by save ability with OR mode", () => {
     const filtered = filterSpells(
       spells,
@@ -497,6 +534,9 @@ describe("filterSpells", () => {
     ]);
 
     const damageTypeGroup = groups.find((group) => group.key === "damageType");
+    const higherLevelGroup = groups.find(
+      (group) => group.key === "higherLevel"
+    );
     const schoolGroup = groups.find((group) => group.key === "school");
     const attackTypeGroup = groups.find((group) => group.key === "attackType");
     expect(damageTypeGroup?.options.map((option) => option.value)).toEqual([
@@ -519,6 +559,11 @@ describe("filterSpells", () => {
       "all",
       "melee",
       "ranged",
+    ]);
+    expect(higherLevelGroup?.options.map((option) => option.value)).toEqual([
+      "all",
+      "yes",
+      "no",
     ]);
   });
 });
