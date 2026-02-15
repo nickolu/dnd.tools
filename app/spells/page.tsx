@@ -1,9 +1,10 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import { FilterGroup } from "@/components/filter-group";
+import { FilterLogicPopover } from "@/components/filter-logic-popover";
 import { useSpells } from "@/lib/query/hooks/useSpells";
 import { SpellCard, SpellResultsSummary } from "@/page/spells/components";
 import {
@@ -39,8 +40,6 @@ export default function SpellsPage() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const searchRef = useRef<HTMLInputElement>(null);
-  const popoverRef = useRef<HTMLDivElement>(null);
-  const [isLogicPopoverOpen, setIsLogicPopoverOpen] = useState(false);
   const { data: spells = [], isLoading } = useSpells();
   const { filteredSpells, filters } = useSpellFilters(spells, searchParams);
   const filterGroups = useMemo<SpellFilterGroupType[]>(
@@ -57,39 +56,6 @@ export default function SpellsPage() {
     searchRef.current?.select();
   }, [searchParams]);
 
-  useEffect(() => {
-    if (!isLogicPopoverOpen) {
-      return;
-    }
-
-    const onPointerDown = (event: MouseEvent) => {
-      if (!(event.target instanceof Node)) {
-        return;
-      }
-
-      if (
-        popoverRef.current &&
-        !popoverRef.current.contains(event.target)
-      ) {
-        setIsLogicPopoverOpen(false);
-      }
-    };
-
-    const onEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setIsLogicPopoverOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", onPointerDown);
-    document.addEventListener("keydown", onEscape);
-
-    return () => {
-      document.removeEventListener("mousedown", onPointerDown);
-      document.removeEventListener("keydown", onEscape);
-    };
-  }, [isLogicPopoverOpen]);
-
   const updateSearchParam = (queryParam: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -100,7 +66,9 @@ export default function SpellsPage() {
     }
 
     params.delete("intent");
-    router.push(`${pathname}${params.toString() ? `?${params.toString()}` : ""}`);
+    router.push(
+      `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+    );
   };
 
   const updateMultiSearchParam = (queryParam: string, values: string[]) => {
@@ -112,7 +80,9 @@ export default function SpellsPage() {
       .forEach((value) => params.append(queryParam, value));
 
     params.delete("intent");
-    router.push(`${pathname}${params.toString() ? `?${params.toString()}` : ""}`);
+    router.push(
+      `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+    );
   };
 
   const updateGlobalMatchMode = (mode: SpellMatchMode) => {
@@ -124,7 +94,9 @@ export default function SpellsPage() {
     }
 
     params.delete("intent");
-    router.push(`${pathname}${params.toString() ? `?${params.toString()}` : ""}`);
+    router.push(
+      `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+    );
   };
 
   const updateSelectionMode = (
@@ -149,7 +121,9 @@ export default function SpellsPage() {
     }
 
     params.delete("intent");
-    router.push(`${pathname}${params.toString() ? `?${params.toString()}` : ""}`);
+    router.push(
+      `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+    );
   };
 
   const updateGroupMatchModeByKey = (
@@ -165,7 +139,9 @@ export default function SpellsPage() {
     }
 
     params.delete("intent");
-    router.push(`${pathname}${params.toString() ? `?${params.toString()}` : ""}`);
+    router.push(
+      `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+    );
   };
 
   const getActiveValues = (key: SpellFilterGroupKey): string[] => {
@@ -182,7 +158,10 @@ export default function SpellsPage() {
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
       <section className="surface-card p-6">
         <h1 className="typography-h1">Spells</h1>
-        <SpellResultsSummary total={spells.length} visible={filteredSpells.length} />
+        <SpellResultsSummary
+          total={spells.length}
+          visible={filteredSpells.length}
+        />
 
         <div className="mt-4 space-y-3">
           <div className="relative">
@@ -196,121 +175,22 @@ export default function SpellsPage() {
                 ref={searchRef}
                 value={filters.query}
               />
-              <div className="filter-logic-popover" ref={popoverRef}>
-                <button
-                  aria-label="Open filter logic options"
-                  aria-expanded={isLogicPopoverOpen}
-                  aria-haspopup="dialog"
-                  className="filter-logic-trigger"
-                  data-open={isLogicPopoverOpen}
-                  onClick={() => {
-                    setIsLogicPopoverOpen((current) => !current);
-                  }}
-                  type="button"
-                >
-                  <svg
-                    aria-hidden="true"
-                    className="h-4 w-4"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M4 7h16M7 12h10M10 17h4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.8"
-                    />
-                  </svg>
-                  <span className="sr-only">Filter Logic</span>
-                </button>
-                {isLogicPopoverOpen ? (
-                  <div className="filter-logic-popover-panel surface-card" role="dialog">
-                    <div className="mt-2 space-y-2 p-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="typography-body-sm text-secondary">
-                          Across groups
-                        </span>
-                        <button
-                          className="filter-chip cursor-pointer"
-                          data-active={filters.groupMatchMode === "and"}
-                          onClick={() => {
-                            updateGlobalMatchMode("and");
-                          }}
-                          type="button"
-                        >
-                          AND
-                        </button>
-                        <button
-                          className="filter-chip cursor-pointer"
-                          data-active={filters.groupMatchMode === "or"}
-                          onClick={() => {
-                            updateGlobalMatchMode("or");
-                          }}
-                          type="button"
-                        >
-                          OR
-                        </button>
-                      </div>
-
-                      {MULTI_SELECTABLE_GROUPS.map((key) => (
-                        <div className="flex flex-wrap items-center gap-2" key={key}>
-                          <span className="typography-body-sm text-secondary capitalize">
-                            {key}
-                          </span>
-                          <button
-                            className="filter-chip cursor-pointer"
-                            data-active={filters.selectionModeByKey[key] === "single"}
-                            onClick={() => {
-                              updateSelectionMode(key, "single");
-                            }}
-                            type="button"
-                          >
-                            Single
-                          </button>
-                          <button
-                            className="filter-chip cursor-pointer"
-                            data-active={filters.selectionModeByKey[key] === "multi"}
-                            onClick={() => {
-                              updateSelectionMode(key, "multi");
-                            }}
-                            type="button"
-                          >
-                            Multi
-                          </button>
-                          {filters.selectionModeByKey[key] === "multi" ? (
-                            <>
-                              <span className="typography-body-sm text-secondary">
-                                within
-                              </span>
-                              <button
-                                className="filter-chip cursor-pointer"
-                                data-active={filters.groupMatchModeByKey[key] === "or"}
-                                onClick={() => {
-                                  updateGroupMatchModeByKey(key, "or");
-                                }}
-                                type="button"
-                              >
-                                OR
-                              </button>
-                              <button
-                                className="filter-chip cursor-pointer"
-                                data-active={filters.groupMatchModeByKey[key] === "and"}
-                                onClick={() => {
-                                  updateGroupMatchModeByKey(key, "and");
-                                }}
-                                type="button"
-                              >
-                                AND
-                              </button>
-                            </>
-                          ) : null}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
-              </div>
+              <FilterLogicPopover
+                globalMatchMode={filters.groupMatchMode}
+                groups={MULTI_SELECTABLE_GROUPS.map((key) => ({
+                  key,
+                  label: key,
+                  matchMode: filters.groupMatchModeByKey[key],
+                  onMatchModeChange: (mode) => {
+                    updateGroupMatchModeByKey(key, mode);
+                  },
+                  onSelectionModeChange: (mode) => {
+                    updateSelectionMode(key, mode);
+                  },
+                  selectionMode: filters.selectionModeByKey[key],
+                }))}
+                onGlobalMatchModeChange={updateGlobalMatchMode}
+              />
             </div>
           </div>
 
@@ -346,7 +226,11 @@ export default function SpellsPage() {
           </div>
         </div>
 
-        {isLoading ? <p className="typography-body-sm text-muted mt-4">Loading spells...</p> : null}
+        {isLoading ? (
+          <p className="typography-body-sm text-muted mt-4">
+            Loading spells...
+          </p>
+        ) : null}
         {!isLoading && !filteredSpells.length ? (
           <p className="typography-body-sm text-muted mt-4">
             No spells match your filters.

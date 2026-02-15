@@ -37,6 +37,7 @@ const commonMonsterFieldsSchema = z.object({
   crNumeric: z.number().nonnegative(),
   damageImmunities: z.array(z.string()).optional(),
   damageResistances: z.array(z.string()).optional(),
+  damageVulnerabilities: z.array(z.string()).optional(),
   hitPoints: z.string().min(1),
   languages: z.array(z.string()).optional(),
   legendaryActions: z.array(namedTextSchema).optional(),
