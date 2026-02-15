@@ -25,14 +25,34 @@ import type {
 import { getSpellFilterGroups } from "@/page/spells/utils/getSpellFilterGroups";
 
 const MULTI_SELECTABLE_GROUPS: SpellMultiSelectableGroupKey[] = [
+  "school",
+  "attackType",
   "classes",
   "component",
+  "saveAbility",
+  "damageType",
 ];
+
+const SPELL_FILTER_GROUP_LABEL_BY_KEY: Record<SpellMultiSelectableGroupKey, string> = {
+  attackType: "Attack Type",
+  classes: "Classes",
+  component: "Components",
+  damageType: "Damage Type",
+  school: "School",
+  saveAbility: "Save Ability",
+};
 
 function isMultiSelectableGroupKey(
   key: SpellFilterGroupKey
 ): key is SpellMultiSelectableGroupKey {
-  return key === "classes" || key === "component";
+  return (
+    key === "school" ||
+    key === "attackType" ||
+    key === "classes" ||
+    key === "component" ||
+    key === "saveAbility" ||
+    key === "damageType"
+  );
 }
 
 function getHomeIntentFilterGroupKey(searchParams: {
@@ -49,11 +69,16 @@ function getHomeIntentFilterGroupKey(searchParams: {
 
   const [key] = raw.split(":");
   if (
+    key === "school" ||
+    key === "attackType" ||
     key === "classes" ||
+    key === "classData" ||
     key === "component" ||
     key === "concentration" ||
+    key === "damageType" ||
     key === "level" ||
-    key === "ritual"
+    key === "ritual" ||
+    key === "saveAbility"
   ) {
     return key;
   }
@@ -178,7 +203,7 @@ export default function SpellsPage() {
   };
 
   const getActiveValues = (key: SpellFilterGroupKey): string[] => {
-    if (key === "classes" || key === "component") {
+    if (isMultiSelectableGroupKey(key)) {
       const selected = filters[key];
       return selected.length ? selected : [ALL_FILTER_VALUE];
     }
@@ -192,6 +217,7 @@ export default function SpellsPage() {
       <section className="surface-card p-6">
         <h1 className="typography-h1">Spells</h1>
         <SpellResultsSummary
+          isLoading={isLoading}
           total={spells.length}
           visible={filteredSpells.length}
         />
@@ -212,7 +238,7 @@ export default function SpellsPage() {
                 globalMatchMode={filters.groupMatchMode}
                 groups={MULTI_SELECTABLE_GROUPS.map((key) => ({
                   key,
-                  label: key,
+                  label: SPELL_FILTER_GROUP_LABEL_BY_KEY[key],
                   matchMode: filters.groupMatchModeByKey[key],
                   onMatchModeChange: (mode) => {
                     updateGroupMatchModeByKey(key, mode);
