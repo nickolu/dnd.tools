@@ -1,32 +1,21 @@
 ---
-title: "dnd.tools: compendium foundation in place"
+title: "dnd.tools: building the compendium and the experience around it"
 date: "2026-02-15"
-description: "A progress update on the D&D compendium foundation, API layer, and data model."
+description: "A narrative walk-through of how the app grew from compendium plumbing to rich, animated spell filtering."
 ---
 
-We have been laying the groundwork for a fast, reliable D&D compendium that can scale from a simple browse UI to a fully managed content system. Over the last stretch, we focused on getting the core architecture, data model, and API pathways locked in so that future feature work is stable and testable.
+I started `dnd.tools` with a simple goal: make a compendium that feels native to the browser, where every filter is shareable and every route behaves exactly as you expect when you hit Back. That meant the early work was less about polish and more about laying a foundation I would not regret later.
 
-**What we shipped recently**
-- A Next.js App Router foundation with a bootstrap compendium screen for monsters and spells.
-- A canonical domain model for monsters and spells, with schema validation and tests.
-- A server-side API layer built as Next.js route handlers for reads and writes.
-- A Firebase + Firestore integration for production-ready persistence.
-- Client-side data plumbing using TanStack React Query and a persisted Zustand store.
-- A Firestore flow-check script to validate server credentials and read/write health.
-- Initial tooling and configuration updates (tests, linting, formatting, and env setup).
+The first big problem was data. I needed spells and monsters to be typed, queryable, and consistent across the UI, so I built the domain schemas, API routes, and query hooks, then wired up a global store with sanity tests to keep it honest. Once that spine was in place, I built a Firestore seed flow to load real compendium data so I could see how the system behaved under actual content, not mocks.
 
-**Why this matters**
-The compendium is now built around a clear contract: validated data, consistent storage, and a single API access path. That means future changes (new fields, filters, editor tools, or import workflows) can be layered on top without churn in the core.
+With data flowing, I shifted to the UI shell. I defined semantic design tokens in global styles, wrapped the app in shared navigation, and established route-based pages for spells and monsters. That let me focus on the core UX principle: route-first, shareable state. I also added the transition scaffolding so the home widgets could hand off into their pages without breaking browser history or losing intent.
 
-**Highlights**
-- API endpoints for monsters, spells, and versioned metadata are defined and ready for expansion.
-- Query caching rules and version checks ensure the UI stays fast without stale data.
-- Tests already cover schema validation and store behavior, which protects the data model as it grows.
+The first pass of spells and monsters pages was functional, but it quickly exposed the next problem: the UI could filter, but the results were too shallow for real browsing. I tackled that by rendering full detail cards for both spells and monsters, including structured text sections and formatting helpers, so the list itself became the primary browsing surface.
 
-**What we are tackling next**
-- Build out full monster and spell listings with pagination, filtering, and detail views.
-- Add admin/editor workflows for data creation and updates.
-- Expand import tooling for official and homebrew sources.
-- Harden auth and role-based permissions for write operations.
+From there, spells became the proving ground for filters. I replaced the single-dimension school filter with data-driven button groups for casting time, range, duration, components, concentration, ritual, class, level, and source. I hardened URL parsing and validation so shareable links stayed predictable, and I built a compact, horizontal-scroll layout for dense filter groups without letting the page grow unwieldy.
 
-If you want to follow along, the current codebase includes the architecture spec and a clean foundation for the compendium UI, API, and storage layers.
+The newest iteration was about making those filters feel like a deliberate system instead of a patchwork. I generalized the filter group component, enforced semantic typography classes across it, and made group collapse state persist and animate so long filter sections felt manageable rather than noisy. That work set up a consistent pattern that spells already use and monsters will inherit without rework.
+
+The result is a working vertical slice that matches the architecture goals in `AGENTS.md`: route-driven UX, URL-canonical filter state, and modular page-local logic that can become shared only when it earns it. More importantly, the app now feels like a cohesive product, not just a set of screens.
+
+Next up, I am finishing the home page widget experience so the spells and monsters cards are the primary entry point, polishing focus and filter-intent handoff during transitions, expanding monster-side filtering depth to match spells, and adding tests around routing handoff and filter helpers.
