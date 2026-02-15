@@ -2,6 +2,7 @@ import { type NextRequest } from "next/server";
 import { z } from "zod";
 
 import {
+  extractFieldFromRawText,
   requestDraftFromOpenAi,
   toNameNormalized,
   toSlug,
@@ -37,6 +38,7 @@ Extract one D&D 5e monster as JSON with these keys:
 - challengeRating (string, like "1/2")
 - crNumeric (number, like 0.5)
 - proficiencyBonus (integer, optional if unknown)
+- source (string)
 - abilityScores (object with integer keys str,dex,con,int,wis,cha)
 Optional keys:
 - savingThrows (object string->integer)
@@ -97,6 +99,9 @@ export async function POST(request: NextRequest) {
 
     const name = String(llmDraft.name ?? "").trim();
     const id = String(llmDraft.id ?? "").trim() || toSlug(name);
+    const sourceFromRawText =
+      extractFieldFromRawText(parsedBody.data.rawText, "source") ??
+      extractFieldFromRawText(parsedBody.data.rawText, "book");
     const normalizedDraft = {
       ...llmDraft,
       createdBy: parsedBody.data.actor,
@@ -106,7 +111,9 @@ export async function POST(request: NextRequest) {
       nameNormalized: toNameNormalized(name),
       schemaVersion: parsedBody.data.schemaVersion,
       source:
-        String(llmDraft.source ?? "").trim() || parsedBody.data.source,
+        String(llmDraft.source ?? "").trim() ||
+        sourceFromRawText ||
+        parsedBody.data.source,
       updatedBy: parsedBody.data.actor,
     };
 

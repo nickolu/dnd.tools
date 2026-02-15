@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { toNameNormalized, toSlug } from "@/lib/admin/ingest";
+import {
+  extractFieldFromRawText,
+  toNameNormalized,
+  toSlug,
+} from "@/lib/admin/ingest";
 import { DEFAULT_MONSTER_ADMIN_FORM } from "@/page/admin-monsters-create/constants";
 import { toMonsterPayload } from "@/page/admin-monsters-create/utils/form-state";
 import { DEFAULT_SPELL_ADMIN_FORM } from "@/page/admin-spells-create/constants";
@@ -10,6 +14,12 @@ describe("admin ingest helpers", () => {
   it("slugifies names", () => {
     expect(toSlug("Mordenkainen's Sword")).toBe("mordenkainens-sword");
     expect(toNameNormalized("  Fire   Ball ")).toBe("fire ball");
+  });
+
+  it("extracts labeled fields from raw text", () => {
+    const raw = "Name: Test Spell\nSource: Homebrew\nLevel: 3";
+    expect(extractFieldFromRawText(raw, "source")).toBe("Homebrew");
+    expect(extractFieldFromRawText(raw, "book")).toBeNull();
   });
 
   it("builds spell payload from structured state", () => {

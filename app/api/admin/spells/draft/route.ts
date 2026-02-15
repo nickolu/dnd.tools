@@ -2,6 +2,7 @@ import { type NextRequest } from "next/server";
 import { z } from "zod";
 
 import {
+  extractFieldFromRawText,
   requestDraftFromOpenAi,
   toNameNormalized,
   toSlug,
@@ -38,6 +39,7 @@ Extract one D&D 5e spell as JSON with these keys:
 - classes (string array)
 - components (object with boolean verbal, somatic, material, optional materialText)
 - description (string array, each entry one paragraph)
+- source (string)
 Optional keys:
 - higherLevel (string array)
 - attackType (melee|ranged)
@@ -88,6 +90,9 @@ export async function POST(request: NextRequest) {
 
     const name = String(llmDraft.name ?? "").trim();
     const id = String(llmDraft.id ?? "").trim() || toSlug(name);
+    const sourceFromRawText =
+      extractFieldFromRawText(parsedBody.data.rawText, "source") ??
+      extractFieldFromRawText(parsedBody.data.rawText, "book");
     const normalizedDraft = {
       ...llmDraft,
       createdBy: parsedBody.data.actor,
@@ -97,7 +102,9 @@ export async function POST(request: NextRequest) {
       nameNormalized: toNameNormalized(name),
       schemaVersion: parsedBody.data.schemaVersion,
       source:
-        String(llmDraft.source ?? "").trim() || parsedBody.data.source,
+        String(llmDraft.source ?? "").trim() ||
+        sourceFromRawText ||
+        parsedBody.data.source,
       updatedBy: parsedBody.data.actor,
     };
 
@@ -119,4 +126,3 @@ export async function POST(request: NextRequest) {
     return jsonError(API_ERROR_CODES.INTERNAL_ERROR, message, 500);
   }
 }
-

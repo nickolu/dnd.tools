@@ -39,6 +39,17 @@ export const toSlug = (value: string): string =>
 export const toNameNormalized = (value: string): string =>
   normalizeWhitespace(value).toLowerCase();
 
+export const extractFieldFromRawText = (
+  rawText: string,
+  fieldName: string
+): string | null => {
+  const escapedField = fieldName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pattern = new RegExp(`(?:^|\\n)\\s*${escapedField}\\s*:\\s*(.+)$`, "im");
+  const match = rawText.match(pattern);
+  const value = match?.[1]?.trim();
+  return value ? value : null;
+};
+
 const parseOpenAiError = async (response: Response): Promise<string> => {
   try {
     const body = await response.json();
