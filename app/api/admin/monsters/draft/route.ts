@@ -8,11 +8,7 @@ import {
   toSlug,
 } from "@/lib/admin/ingest";
 import { canWrite } from "@/lib/api/auth";
-import {
-  API_ERROR_CODES,
-  jsonError,
-  jsonSuccess,
-} from "@/lib/api/envelope";
+import { API_ERROR_CODES, jsonError, jsonSuccess } from "@/lib/api/envelope";
 import { monsterWriteSchema } from "@/lib/domain/monster.schema";
 
 const requestSchema = z.object({
@@ -122,9 +118,7 @@ export async function POST(request: NextRequest) {
     return jsonSuccess({
       draft: normalizedDraft,
       isValid: validated.success,
-      validationErrors: validated.success
-        ? null
-        : validated.error.flatten(),
+      validationErrors: validated.success ? null : validated.error.flatten(),
     });
   } catch (error) {
     console.error(error);

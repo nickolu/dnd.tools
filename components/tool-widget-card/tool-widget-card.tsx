@@ -88,7 +88,10 @@ export function ToolWidgetCard({
             event.stopPropagation();
           }}
           onFocus={(event) => {
-            const nextIntent = { target: "search", value: event.target.value } as const;
+            const nextIntent = {
+              target: "search",
+              value: event.target.value,
+            } as const;
             setIntent(nextIntent);
             navigateWithIntent(nextIntent);
           }}
@@ -99,7 +102,10 @@ export function ToolWidgetCard({
 
             event.preventDefault();
             event.stopPropagation();
-            navigateWithIntent({ target: "search", value: event.currentTarget.value });
+            navigateWithIntent({
+              target: "search",
+              value: event.currentTarget.value,
+            });
           }}
           placeholder={`Search ${title.toLowerCase()}`}
           value={value}
@@ -113,7 +119,10 @@ export function ToolWidgetCard({
             key={option.id}
             label={option.label}
             onClick={() => {
-              const nextIntent = { target: "filter", filterId: option.id } as const;
+              const nextIntent = {
+                target: "filter",
+                filterId: option.id,
+              } as const;
               setIntent(nextIntent);
               onFilterSelect?.(option.id);
               navigateWithIntent(nextIntent);

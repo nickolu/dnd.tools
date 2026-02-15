@@ -6,7 +6,10 @@ import type { SpellFilters } from "@/page/spells/types";
 import { filterSpells } from "@/page/spells/utils/filterSpells";
 import { getSpellFilterGroups } from "@/page/spells/utils/getSpellFilterGroups";
 
-const baseSpell: Omit<Spell, "id" | "name" | "nameNormalized" | "classes" | "concentration" | "components"> = {
+const baseSpell: Omit<
+  Spell,
+  "id" | "name" | "nameNormalized" | "classes" | "concentration" | "components"
+> = {
   castingTime: "1 action",
   createdAt: "2026-01-01T00:00:00.000Z",
   createdBy: "test",

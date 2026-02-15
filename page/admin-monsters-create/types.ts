@@ -1,6 +1,12 @@
 export type AdminEntryMode = "manual" | "parse";
 
-export type MonsterSize = "Tiny" | "Small" | "Medium" | "Large" | "Huge" | "Gargantuan";
+export type MonsterSize =
+  | "Tiny"
+  | "Small"
+  | "Medium"
+  | "Large"
+  | "Huge"
+  | "Gargantuan";
 
 export type MonsterAdminFormState = {
   abilityCha: string;

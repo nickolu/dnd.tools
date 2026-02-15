@@ -2,15 +2,8 @@ import { FieldValue } from "firebase-admin/firestore";
 import { type NextRequest } from "next/server";
 
 import { canWrite } from "@/lib/api/auth";
-import {
-  API_ERROR_CODES,
-  jsonError,
-  jsonSuccess,
-} from "@/lib/api/envelope";
-import {
-  serializeSpell,
-  toSpellFirestoreDoc,
-} from "@/lib/api/firestore";
+import { API_ERROR_CODES, jsonError, jsonSuccess } from "@/lib/api/envelope";
+import { serializeSpell, toSpellFirestoreDoc } from "@/lib/api/firestore";
 import { spellSchema, spellWriteSchema } from "@/lib/domain/spell.schema";
 import {
   getAdminDb,
@@ -92,15 +85,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await docRef.set(toSpellFirestoreDoc(parsed.data, FieldValue.serverTimestamp()));
-
-    await db.collection(META_COLLECTION).doc(META_DOC).set(
-      {
-        spellsVersion: FieldValue.increment(1),
-        updatedAt: FieldValue.serverTimestamp(),
-      },
-      { merge: true }
+    await docRef.set(
+      toSpellFirestoreDoc(parsed.data, FieldValue.serverTimestamp())
     );
+
+    await db
+      .collection(META_COLLECTION)
+      .doc(META_DOC)
+      .set(
+        {
+          spellsVersion: FieldValue.increment(1),
+          updatedAt: FieldValue.serverTimestamp(),
+        },
+        { merge: true }
+      );
 
     const created = await docRef.get();
     const serialized = serializeSpell(created.id, created.data());

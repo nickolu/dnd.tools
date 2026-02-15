@@ -10,9 +10,9 @@ import {
   isSpellBooleanFilter,
   isSpellClassDataFilter,
   isSpellComponentFilter,
-  isSpellSchoolFilter,
   isSpellLevelFilter,
   isSpellMatchMode,
+  isSpellSchoolFilter,
   isSpellSelectionMode,
   SPELL_GROUP_MATCH_QUERY_PARAM,
   SPELL_GROUP_MATCH_QUERY_PARAM_BY_KEY,
@@ -41,7 +41,9 @@ type LegacySpellFilter =
   | { key: "level"; value: string }
   | { key: "ritual"; value: "yes" | "no" };
 
-function isSpellSaveAbilityFilter(value: string): value is SpellSaveAbilityFilter {
+function isSpellSaveAbilityFilter(
+  value: string
+): value is SpellSaveAbilityFilter {
   return (
     value === "str" ||
     value === "dex" ||
@@ -227,7 +229,9 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
     ...new Set(
       schoolCandidate
         .map((value) => value.trim().toLowerCase())
-        .filter((value): value is SpellSchoolFilter => isSpellSchoolFilter(value))
+        .filter((value): value is SpellSchoolFilter =>
+          isSpellSchoolFilter(value)
+        )
     ),
   ];
 
@@ -291,8 +295,7 @@ function parseSpellFilters(searchParams: SearchParamsInput): SpellFilters {
     ritual: isSpellBooleanFilter(ritualCandidate)
       ? ritualCandidate
       : DEFAULT_SPELL_FILTERS.ritual,
-    school:
-      schoolSelectionMode === "single" ? school.slice(0, 1) : school,
+    school: schoolSelectionMode === "single" ? school.slice(0, 1) : school,
     saveAbility:
       saveAbilitySelectionMode === "single"
         ? saveAbility.slice(0, 1)

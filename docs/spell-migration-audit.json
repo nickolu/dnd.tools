@@ -1,0 +1,1403 @@
+{
+  "generatedAt": "2026-02-15T17:36:55.231Z",
+  "summary": {
+    "dedupedCount": 934,
+    "rawCount": 5849,
+    "skippedCount": 1,
+    "with2024Count": 391,
+    "wotcCount": 1740
+  },
+  "skipByReason": {
+    "invalid_level_or_school": 1
+  },
+  "topCollisions": [
+    {
+      "id": "bless",
+      "kept": {
+        "index": 516,
+        "name": "Bless",
+        "score": 618,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 515,
+          "name": "Bless",
+          "score": 568,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 518,
+          "name": "Bless",
+          "score": 563,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 517,
+          "name": "Bless",
+          "score": 514,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "command",
+      "kept": {
+        "index": 1019,
+        "name": "Command",
+        "score": 1461,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 1018,
+          "name": "Command",
+          "score": 1416,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 1020,
+          "name": "Command",
+          "score": 1411,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 1021,
+          "name": "Command",
+          "score": 1408,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "comprehend-languages",
+      "kept": {
+        "index": 1049,
+        "name": "Comprehend Languages",
+        "score": 624,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 1048,
+          "name": "Comprehend Languages",
+          "score": 602,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 1047,
+          "name": "Comprehend Languages",
+          "score": 571,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 1050,
+          "name": "Comprehend Languages",
+          "score": 571,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "cure-wounds",
+      "kept": {
+        "index": 1315,
+        "name": "Cure Wounds",
+        "score": 549,
+        "source": "Free Basic Rules (2014)"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 1317,
+          "name": "Cure Wounds",
+          "score": 479,
+          "source": "Player's Handbook"
+        },
+        {
+          "index": 1318,
+          "name": "Cure Wounds",
+          "score": 456,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 1316,
+          "name": "Cure Wounds",
+          "score": 429,
+          "source": "Essentials Kit"
+        }
+      ]
+    },
+    {
+      "id": "detect-magic",
+      "kept": {
+        "index": 1526,
+        "name": "Detect Magic",
+        "score": 739,
+        "source": "Free Basic Rules (2014)"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 1524,
+          "name": "Detect Magic",
+          "score": 637,
+          "source": "Player's Handbook"
+        },
+        {
+          "index": 1525,
+          "name": "Detect Magic",
+          "score": 587,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 1527,
+          "name": "Detect Magic",
+          "score": 583,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "flaming-sphere",
+      "kept": {
+        "index": 2218,
+        "name": "Flaming Sphere",
+        "score": 1269,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 2217,
+          "name": "Flaming Sphere",
+          "score": 1219,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 2219,
+          "name": "Flaming Sphere",
+          "score": 1217,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 2216,
+          "name": "Flaming Sphere",
+          "score": 1095,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "guiding-bolt",
+      "kept": {
+        "index": 2648,
+        "name": "Guiding Bolt",
+        "score": 686,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 2647,
+          "name": "Guiding Bolt",
+          "score": 636,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 2650,
+          "name": "Guiding Bolt",
+          "score": 633,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 2649,
+          "name": "Guiding Bolt",
+          "score": 629,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "healing-word",
+      "kept": {
+        "index": 2739,
+        "name": "Healing Word",
+        "score": 507,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 2740,
+          "name": "Healing Word",
+          "score": 484,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 2738,
+          "name": "Healing Word",
+          "score": 482,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 2737,
+          "name": "Healing Word",
+          "score": 457,
+          "source": "Essentials Kit"
+        }
+      ]
+    },
+    {
+      "id": "hold-person",
+      "kept": {
+        "index": 2842,
+        "name": "Hold Person",
+        "score": 749,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 2841,
+          "name": "Hold Person",
+          "score": 736,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 2843,
+          "name": "Hold Person",
+          "score": 699,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 2844,
+          "name": "Hold Person",
+          "score": 696,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "invisibility",
+      "kept": {
+        "index": 3079,
+        "name": "Invisibility",
+        "score": 605,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 3078,
+          "name": "Invisibility",
+          "score": 593,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 3080,
+          "name": "Invisibility",
+          "score": 555,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 3081,
+          "name": "Invisibility",
+          "score": 551,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "lesser-restoration",
+      "kept": {
+        "index": 3245,
+        "name": "Lesser Restoration",
+        "score": 417,
+        "source": "Free Basic Rules (2014)"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 3247,
+          "name": "Lesser Restoration",
+          "score": 348,
+          "source": "Player's Handbook"
+        },
+        {
+          "index": 3246,
+          "name": "Lesser Restoration",
+          "score": 298,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 3248,
+          "name": "Lesser Restoration",
+          "score": 295,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "light",
+      "kept": {
+        "index": 3287,
+        "name": "Light",
+        "score": 730,
+        "source": "Free Basic Rules (2014)"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 3286,
+          "name": "Light",
+          "score": 716,
+          "source": "Player's Handbook"
+        },
+        {
+          "index": 3288,
+          "name": "Light",
+          "score": 666,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 3289,
+          "name": "Light",
+          "score": 663,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "mage-armor",
+      "kept": {
+        "index": 3381,
+        "name": "Mage Armor",
+        "score": 484,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 3382,
+          "name": "Mage Armor",
+          "score": 434,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 3383,
+          "name": "Mage Armor",
+          "score": 431,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 3380,
+          "name": "Mage Armor",
+          "score": 409,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "mage-hand",
+      "kept": {
+        "index": 3388,
+        "name": "Mage Hand",
+        "score": 821,
+        "source": "Free Basic Rules (2014)"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 3387,
+          "name": "Mage Hand",
+          "score": 778,
+          "source": "Player's Handbook"
+        },
+        {
+          "index": 3389,
+          "name": "Mage Hand",
+          "score": 729,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 3390,
+          "name": "Mage Hand",
+          "score": 725,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "magic-missile",
+      "kept": {
+        "index": 3407,
+        "name": "Magic Missile",
+        "score": 625,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 3408,
+          "name": "Magic Missile",
+          "score": 575,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 3409,
+          "name": "Magic Missile",
+          "score": 572,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 3406,
+          "name": "Magic Missile",
+          "score": 566,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "misty-step",
+      "kept": {
+        "index": 3651,
+        "name": "Misty Step",
+        "score": 308,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 3649,
+          "name": "Misty Step",
+          "score": 283,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 3650,
+          "name": "Misty Step",
+          "score": 258,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 3652,
+          "name": "Misty Step",
+          "score": 254,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "prestidigitation",
+      "kept": {
+        "index": 4064,
+        "name": "Prestidigitation",
+        "score": 1127,
+        "source": "Free Basic Rules (2014)"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 4063,
+          "name": "Prestidigitation",
+          "score": 1092,
+          "source": "Player's Handbook"
+        },
+        {
+          "index": 4062,
+          "name": "Prestidigitation",
+          "score": 1042,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 4065,
+          "name": "Prestidigitation",
+          "score": 1037,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "ray-of-frost",
+      "kept": {
+        "index": 4253,
+        "name": "Ray of Frost",
+        "score": 565,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 4252,
+          "name": "Ray of Frost",
+          "score": 515,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 4255,
+          "name": "Ray of Frost",
+          "score": 512,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 4254,
+          "name": "Ray of Frost",
+          "score": 457,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "sacred-flame",
+      "kept": {
+        "index": 4429,
+        "name": "Sacred Flame",
+        "score": 579,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 4431,
+          "name": "Sacred Flame",
+          "score": 529,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 4432,
+          "name": "Sacred Flame",
+          "score": 525,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 4430,
+          "name": "Sacred Flame",
+          "score": 390,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "sanctuary",
+      "kept": {
+        "index": 4444,
+        "name": "Sanctuary",
+        "score": 741,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 4446,
+          "name": "Sanctuary",
+          "score": 691,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 4447,
+          "name": "Sanctuary",
+          "score": 685,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 4445,
+          "name": "Sanctuary",
+          "score": 631,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "shape-water",
+      "kept": {
+        "index": 4645,
+        "name": "Shape Water",
+        "score": 984,
+        "source": "Princes of the Apocalypse"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 4646,
+          "name": "Shape Water",
+          "score": 984,
+          "source": "Explorer's Guide to Wildemount"
+        },
+        {
+          "index": 4644,
+          "name": "Shape Water",
+          "score": 971,
+          "source": "Xanathar's Guide to Everything"
+        },
+        {
+          "index": 4643,
+          "name": "Shape Water",
+          "score": 935,
+          "source": "Explorer's Guide to Wildemount (deprecated)"
+        }
+      ]
+    },
+    {
+      "id": "shatter",
+      "kept": {
+        "index": 4662,
+        "name": "Shatter",
+        "score": 915,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 4660,
+          "name": "Shatter",
+          "score": 902,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 4661,
+          "name": "Shatter",
+          "score": 865,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 4663,
+          "name": "Shatter",
+          "score": 861,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "shield",
+      "kept": {
+        "index": 4671,
+        "name": "Shield",
+        "score": 491,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 4669,
+          "name": "Shield",
+          "score": 441,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 4672,
+          "name": "Shield",
+          "score": 437,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 4670,
+          "name": "Shield",
+          "score": 359,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "shield-of-faith",
+      "kept": {
+        "index": 4677,
+        "name": "Shield of Faith",
+        "score": 415,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 4678,
+          "name": "Shield of Faith",
+          "score": 365,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 4679,
+          "name": "Shield of Faith",
+          "score": 362,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 4676,
+          "name": "Shield of Faith",
+          "score": 277,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "shocking-grasp",
+      "kept": {
+        "index": 4703,
+        "name": "Shocking Grasp",
+        "score": 661,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 4702,
+          "name": "Shocking Grasp",
+          "score": 611,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 4705,
+          "name": "Shocking Grasp",
+          "score": 607,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 4704,
+          "name": "Shocking Grasp",
+          "score": 554,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "sleep",
+      "kept": {
+        "index": 4777,
+        "name": "Sleep",
+        "score": 1223,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 4776,
+          "name": "Sleep",
+          "score": 1173,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 4778,
+          "name": "Sleep",
+          "score": 1147,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 4779,
+          "name": "Sleep",
+          "score": 1136,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        }
+      ]
+    },
+    {
+      "id": "spiritual-weapon",
+      "kept": {
+        "index": 4929,
+        "name": "Spiritual Weapon",
+        "score": 1034,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 4930,
+          "name": "Spiritual Weapon",
+          "score": 984,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 4931,
+          "name": "Spiritual Weapon",
+          "score": 981,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 4928,
+          "name": "Spiritual Weapon",
+          "score": 971,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "thaumaturgy",
+      "kept": {
+        "index": 5254,
+        "name": "Thaumaturgy",
+        "score": 981,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 5252,
+          "name": "Thaumaturgy",
+          "score": 931,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 5255,
+          "name": "Thaumaturgy",
+          "score": 927,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 5253,
+          "name": "Thaumaturgy",
+          "score": 898,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "thunderwave",
+      "kept": {
+        "index": 5317,
+        "name": "Thunderwave",
+        "score": 915,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 5316,
+          "name": "Thunderwave",
+          "score": 910,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 5319,
+          "name": "Thunderwave",
+          "score": 874,
+          "source": "D&D Starter Set - Dragons of Stormwreck Isle Compendium"
+        },
+        {
+          "index": 5318,
+          "name": "Thunderwave",
+          "score": 864,
+          "source": "Essentials Kit"
+        }
+      ]
+    },
+    {
+      "id": "wall-of-water",
+      "kept": {
+        "index": 5659,
+        "name": "Wall of Water",
+        "score": 1041,
+        "source": "Volo's Guide to Monsters"
+      },
+      "loserCount": 3,
+      "losers": [
+        {
+          "index": 5660,
+          "name": "Wall of Water",
+          "score": 1037,
+          "source": "Princes of the Apocalypse"
+        },
+        {
+          "index": 5662,
+          "name": "Wall of Water",
+          "score": 1037,
+          "source": "Xanathar's Guide to Everything"
+        },
+        {
+          "index": 5661,
+          "name": "Wall of Water",
+          "score": 1033,
+          "source": "Mythic Odysseys of Theros"
+        }
+      ]
+    },
+    {
+      "id": "acid-splash",
+      "kept": {
+        "index": 39,
+        "name": "Acid Splash",
+        "score": 572,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 37,
+          "name": "Acid Splash",
+          "score": 540,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 38,
+          "name": "Acid Splash",
+          "score": 445,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "aid",
+      "kept": {
+        "index": 73,
+        "name": "Aid",
+        "score": 568,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 74,
+          "name": "Aid",
+          "score": 518,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 72,
+          "name": "Aid",
+          "score": 517,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "arcane-lock",
+      "kept": {
+        "index": 227,
+        "name": "Arcane Lock",
+        "score": 869,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 225,
+          "name": "Arcane Lock",
+          "score": 819,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 226,
+          "name": "Arcane Lock",
+          "score": 754,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "augury",
+      "kept": {
+        "index": 300,
+        "name": "Augury",
+        "score": 1132,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 299,
+          "name": "Augury",
+          "score": 964,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 298,
+          "name": "Augury",
+          "score": 898,
+          "source": "Essentials Kit"
+        }
+      ]
+    },
+    {
+      "id": "beacon-of-hope",
+      "kept": {
+        "index": 392,
+        "name": "Beacon of Hope",
+        "score": 466,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 391,
+          "name": "Beacon of Hope",
+          "score": 416,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 390,
+          "name": "Beacon of Hope",
+          "score": 367,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "blade-of-disaster",
+      "kept": {
+        "index": 486,
+        "name": "Blade of Disaster",
+        "score": 976,
+        "source": "Tasha's Cauldron of Everything"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 487,
+          "name": "Blade of Disaster",
+          "score": 926,
+          "source": "(Deprecated) Rime of the Frostmaiden"
+        },
+        {
+          "index": 488,
+          "name": "Blade of Disaster",
+          "score": 850,
+          "source": "Icewind Dale - Rime of the Frostmaiden"
+        }
+      ]
+    },
+    {
+      "id": "blur",
+      "kept": {
+        "index": 649,
+        "name": "Blur",
+        "score": 495,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 650,
+          "name": "Blur",
+          "score": 464,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 648,
+          "name": "Blur",
+          "score": 445,
+          "source": "Essentials Kit"
+        }
+      ]
+    },
+    {
+      "id": "burning-hands",
+      "kept": {
+        "index": 755,
+        "name": "Burning Hands",
+        "score": 778,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 756,
+          "name": "Burning Hands",
+          "score": 728,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 754,
+          "name": "Burning Hands",
+          "score": 689,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "charm-person",
+      "kept": {
+        "index": 901,
+        "name": "Charm Person",
+        "score": 868,
+        "source": "Free Basic Rules (2014)"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 902,
+          "name": "Charm Person",
+          "score": 827,
+          "source": "Player's Handbook"
+        },
+        {
+          "index": 903,
+          "name": "Charm Person",
+          "score": 777,
+          "source": "Essentials Kit"
+        }
+      ]
+    },
+    {
+      "id": "dancing-lights",
+      "kept": {
+        "index": 1368,
+        "name": "Dancing Lights",
+        "score": 811,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 1369,
+          "name": "Dancing Lights",
+          "score": 761,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 1367,
+          "name": "Dancing Lights",
+          "score": 752,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "darkness",
+      "kept": {
+        "index": 1401,
+        "name": "Darkness",
+        "score": 936,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 1400,
+          "name": "Darkness",
+          "score": 886,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 1402,
+          "name": "Darkness",
+          "score": 849,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "disguise-self",
+      "kept": {
+        "index": 1581,
+        "name": "Disguise Self",
+        "score": 1207,
+        "source": "Free Basic Rules (2014)"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 1583,
+          "name": "Disguise Self",
+          "score": 1188,
+          "source": "Player's Handbook"
+        },
+        {
+          "index": 1582,
+          "name": "Disguise Self",
+          "score": 1138,
+          "source": "Essentials Kit"
+        }
+      ]
+    },
+    {
+      "id": "dispel-magic",
+      "kept": {
+        "index": 1598,
+        "name": "Dispel Magic",
+        "score": 837,
+        "source": "Free Basic Rules (2014)"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 1599,
+          "name": "Dispel Magic",
+          "score": 711,
+          "source": "Player's Handbook"
+        },
+        {
+          "index": 1600,
+          "name": "Dispel Magic",
+          "score": 661,
+          "source": "Essentials Kit"
+        }
+      ]
+    },
+    {
+      "id": "divine-favor",
+      "kept": {
+        "index": 1640,
+        "name": "Divine Favor",
+        "score": 352,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 1638,
+          "name": "Divine Favor",
+          "score": 302,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 1639,
+          "name": "Divine Favor",
+          "score": 251,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "faerie-fire",
+      "kept": {
+        "index": 2049,
+        "name": "Faerie Fire",
+        "score": 682,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 2047,
+          "name": "Faerie Fire",
+          "score": 647,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 2048,
+          "name": "Faerie Fire",
+          "score": 632,
+          "source": "Essentials Kit"
+        }
+      ]
+    },
+    {
+      "id": "fear",
+      "kept": {
+        "index": 2076,
+        "name": "Fear",
+        "score": 838,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 2075,
+          "name": "Fear",
+          "score": 790,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 2077,
+          "name": "Fear",
+          "score": 776,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "feather-fall",
+      "kept": {
+        "index": 2082,
+        "name": "Feather Fall",
+        "score": 578,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 2084,
+          "name": "Feather Fall",
+          "score": 528,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 2083,
+          "name": "Feather Fall",
+          "score": 481,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "fire-bolt",
+      "kept": {
+        "index": 2153,
+        "name": "Fire Bolt",
+        "score": 577,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 2154,
+          "name": "Fire Bolt",
+          "score": 576,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 2155,
+          "name": "Fire Bolt",
+          "score": 527,
+          "source": "Essentials Kit"
+        }
+      ]
+    },
+    {
+      "id": "fireball",
+      "kept": {
+        "index": 2177,
+        "name": "Fireball",
+        "score": 873,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 2179,
+          "name": "Fireball",
+          "score": 823,
+          "source": "Essentials Kit"
+        },
+        {
+          "index": 2178,
+          "name": "Fireball",
+          "score": 779,
+          "source": "Free Basic Rules (2014)"
+        }
+      ]
+    },
+    {
+      "id": "fly",
+      "kept": {
+        "index": 2259,
+        "name": "Fly",
+        "score": 572,
+        "source": "Player's Handbook"
+      },
+      "loserCount": 2,
+      "losers": [
+        {
+          "index": 2257,
+          "name": "Fly",
+          "score": 526,
+          "source": "Free Basic Rules (2014)"
+        },
+        {
+          "index": 2258,
+          "name": "Fly",
+          "score": 522,
+          "source": "Essentials Kit"
+        }
+      ]
+    }
+  ],
+  "skipped": [
+    {
+      "index": 4774,
+      "name": "Skywrite",
+      "reason": "invalid_level_or_school",
+      "source": "Princes of the Apocalypse"
+    }
+  ]
+}

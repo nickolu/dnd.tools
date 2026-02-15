@@ -64,6 +64,7 @@ Implement a modular, extensible UI foundation for `dnd.tools` with:
 3. Validate no direct primitive token usage in React components.
 
 Deliverable:
+
 - Working tokenized baseline styles in `app/globals.css` (or equivalent) and usage conventions documented.
 
 ### Phase 2: UI Component Baseline
@@ -74,6 +75,7 @@ Deliverable:
 3. Add shared `GlobalNav` component.
 
 Deliverable:
+
 - Reusable local UI primitives and global nav rendered in app shell.
 
 ### Phase 3: Home Widgets (Spells + Monsters)
@@ -90,6 +92,7 @@ Deliverable:
 3. Integrate Framer Motion for expansion animation from widget to route destination.
 
 Deliverable:
+
 - Home page with two interactive widgets, each transitioning to its page while preserving intent.
 
 ### Phase 4: Tool Pages + Filtering Behavior
@@ -109,6 +112,7 @@ Deliverable:
    - filter selection (when requested)
 
 Deliverable:
+
 - Fully functional spells/monsters pages with deterministic filtering and restored interaction context.
 
 ### Phase 5: Hardening and QA
@@ -125,6 +129,7 @@ Deliverable:
    - URL remains source of truth for filters
 
 Deliverable:
+
 - Stable, accessible UI slice ready for extension.
 
 ## Implementation Notes

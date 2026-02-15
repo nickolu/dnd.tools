@@ -1,3 +1,3 @@
 export function cn(...classes: string[]) {
-    return classes.join(" ");
+  return classes.join(" ");
 }

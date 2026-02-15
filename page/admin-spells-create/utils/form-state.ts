@@ -74,7 +74,10 @@ const booleanFromRecord = (
   key: string
 ): boolean => record[key] === true;
 
-const arrayFromRecord = (record: Record<string, unknown>, key: string): string[] => {
+const arrayFromRecord = (
+  record: Record<string, unknown>,
+  key: string
+): string[] => {
   const value = record[key];
   if (!Array.isArray(value)) {
     return [];
@@ -136,7 +139,12 @@ export const toSpellPayload = (
   const level = Number(state.level);
   const schemaVersion = Number(state.schemaVersion);
 
-  if (!name || !id || !Number.isInteger(level) || !Number.isInteger(schemaVersion)) {
+  if (
+    !name ||
+    !id ||
+    !Number.isInteger(level) ||
+    !Number.isInteger(schemaVersion)
+  ) {
     return null;
   }
 
@@ -241,12 +249,12 @@ export const toSpellFormState = (draft: unknown): SpellAdminFormState => {
 
   return {
     ...DEFAULT_SPELL_ADMIN_FORM,
-    actor: valueFromRecord(record, "createdBy") || DEFAULT_SPELL_ADMIN_FORM.actor,
-    attackType:
-      (() => {
-        const attackType = valueFromRecord(record, "attackType");
-        return isAttackType(attackType) ? attackType : "";
-      })(),
+    actor:
+      valueFromRecord(record, "createdBy") || DEFAULT_SPELL_ADMIN_FORM.actor,
+    attackType: (() => {
+      const attackType = valueFromRecord(record, "attackType");
+      return isAttackType(attackType) ? attackType : "";
+    })(),
     cantripScalingText: mapToLines(
       stringMapFromUnknown(damage?.cantripScaling)
     ),
@@ -266,13 +274,11 @@ export const toSpellFormState = (draft: unknown): SpellAdminFormState => {
         : false,
     concentration: booleanFromRecord(record, "concentration"),
     createdBy:
-      valueFromRecord(record, "createdBy") || DEFAULT_SPELL_ADMIN_FORM.createdBy,
-    damageType:
-      damage && typeof damage.type === "string" ? damage.type : "",
+      valueFromRecord(record, "createdBy") ||
+      DEFAULT_SPELL_ADMIN_FORM.createdBy,
+    damageType: damage && typeof damage.type === "string" ? damage.type : "",
     descriptionText: arrayFromRecord(record, "description").join("\n"),
-    diceBySlotText: mapToLines(
-      stringMapFromUnknown(damage?.diceBySlot)
-    ),
+    diceBySlotText: mapToLines(stringMapFromUnknown(damage?.diceBySlot)),
     duration: valueFromRecord(record, "duration"),
     gpCost:
       typeof record.gpCost === "number" && Number.isFinite(record.gpCost)
@@ -293,9 +299,9 @@ export const toSpellFormState = (draft: unknown): SpellAdminFormState => {
     publisher: valueFromRecord(record, "publisher"),
     range: valueFromRecord(record, "range"),
     ritual: booleanFromRecord(record, "ritual"),
-    saveAbility:
-      isSaveAbility(save?.ability) ? save.ability : "",
-    saveOnSuccess: save && typeof save.onSuccess === "string" ? save.onSuccess : "",
+    saveAbility: isSaveAbility(save?.ability) ? save.ability : "",
+    saveOnSuccess:
+      save && typeof save.onSuccess === "string" ? save.onSuccess : "",
     schemaVersion:
       typeof record.schemaVersion === "number" &&
       Number.isFinite(record.schemaVersion)
@@ -303,9 +309,11 @@ export const toSpellFormState = (draft: unknown): SpellAdminFormState => {
         : DEFAULT_SPELL_ADMIN_FORM.schemaVersion,
     school,
     searchTokensText: arrayFromRecord(record, "searchTokens").join(", "),
-    source: valueFromRecord(record, "source") || DEFAULT_SPELL_ADMIN_FORM.source,
+    source:
+      valueFromRecord(record, "source") || DEFAULT_SPELL_ADMIN_FORM.source,
     tagsText: arrayFromRecord(record, "tags").join(", "),
     updatedBy:
-      valueFromRecord(record, "updatedBy") || DEFAULT_SPELL_ADMIN_FORM.updatedBy,
+      valueFromRecord(record, "updatedBy") ||
+      DEFAULT_SPELL_ADMIN_FORM.updatedBy,
   };
 };

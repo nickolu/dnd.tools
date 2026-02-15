@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 
 import { FilterGroup } from "@/components/filter-group";
 import { FilterLogicPopover } from "@/components/filter-logic-popover";
@@ -88,7 +88,7 @@ function getHomeIntentFilterGroupKey(searchParams: {
   return null;
 }
 
-export default function MonstersPage() {
+function MonstersPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -121,8 +121,18 @@ export default function MonstersPage() {
   }, [searchParams]);
 
   useEffect(() => {
-    setSearchInput(filters.query);
-  }, [filters.query]);
+    if (searchInput === filters.query) {
+      return;
+    }
+
+    const syncId = window.setTimeout(() => {
+      setSearchInput(filters.query);
+    }, 0);
+
+    return () => {
+      window.clearTimeout(syncId);
+    };
+  }, [filters.query, searchInput]);
 
   useEffect(() => {
     return () => {
@@ -190,14 +200,14 @@ export default function MonstersPage() {
       bound === "min"
         ? value
         : parseParamNumber(
-          params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].min)
-        );
+            params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].min)
+          );
     const currentMax =
       bound === "max"
         ? value
         : parseParamNumber(
-          params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].max)
-        );
+            params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].max)
+          );
 
     if (currentMin !== null && currentMax !== null && currentMin > currentMax) {
       params.set(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].min, String(currentMax));
@@ -283,6 +293,7 @@ export default function MonstersPage() {
       <section className="surface-card p-6">
         <h1 className="typography-h1">Monsters</h1>
         <MonsterResultsSummary
+          isLoading={isLoading}
           total={monsters.length}
           visible={filteredMonsters.length}
         />
@@ -416,5 +427,13 @@ export default function MonstersPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function MonstersPage() {
+  return (
+    <Suspense fallback={null}>
+      <MonstersPageContent />
+    </Suspense>
   );
 }

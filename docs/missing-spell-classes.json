@@ -1,0 +1,772 @@
+{
+  "generatedAt": "2026-02-15T18:36:05.709Z",
+  "summary": {
+    "missingCount": 127,
+    "total": 934,
+    "withClasses": 807
+  },
+  "spells": [
+    {
+      "id": "booming-blade",
+      "level": 0,
+      "name": "Booming Blade",
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "id": "elementalism-2024",
+      "level": 0,
+      "name": "Elementalism (2024)",
+      "source": "Player's Handbook (2024)"
+    },
+    {
+      "id": "encode-thoughts",
+      "level": 0,
+      "name": "Encode Thoughts",
+      "source": "Guildmasters' Guide to Ravnica"
+    },
+    {
+      "id": "green-flame-blade",
+      "level": 0,
+      "name": "Green-Flame Blade",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "gust-eberron",
+      "level": 0,
+      "name": "Gust (Eberron)",
+      "source": "Eberron - Rising from the Last War"
+    },
+    {
+      "id": "infestation",
+      "level": 0,
+      "name": "Infestation",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "lightning-lure",
+      "level": 0,
+      "name": "Lightning Lure",
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "id": "mind-sliver",
+      "level": 0,
+      "name": "Mind Sliver",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "mind-sliver-2024",
+      "level": 0,
+      "name": "Mind Sliver (2024)",
+      "source": "Player's Handbook (2024)"
+    },
+    {
+      "id": "primal-savagery",
+      "level": 0,
+      "name": "Primal Savagery",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "sapping-sting",
+      "level": 0,
+      "name": "Sapping Sting",
+      "source": "Explorer's Guide to Wildemount"
+    },
+    {
+      "id": "sword-burst",
+      "level": 0,
+      "name": "Sword Burst",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "toll-the-dead",
+      "level": 0,
+      "name": "Toll the Dead",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "toll-the-dead-2024",
+      "level": 0,
+      "name": "Toll the Dead (2024)",
+      "source": "Player's Handbook (2024)"
+    },
+    {
+      "id": "word-of-radiance",
+      "level": 0,
+      "name": "Word of Radiance",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "word-of-radiance-2024",
+      "level": 0,
+      "name": "Word of Radiance (2024)",
+      "source": "Player's Handbook (2024)"
+    },
+    {
+      "id": "cause-fear",
+      "level": 1,
+      "name": "Cause Fear",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "ceremony",
+      "level": 1,
+      "name": "Ceremony",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "chaos-bolt",
+      "level": 1,
+      "name": "Chaos Bolt",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "chaos-bolt-ravnica",
+      "level": 1,
+      "name": "Chaos Bolt (Ravnica)",
+      "source": "Guildmasters' Guide to Ravnica"
+    },
+    {
+      "id": "distort-value",
+      "level": 1,
+      "name": "Distort Value",
+      "source": "Acquisitions Incorporated"
+    },
+    {
+      "id": "gift-of-alacrity",
+      "level": 1,
+      "name": "Gift of Alacrity",
+      "source": "Explorer's Guide to Wildemount"
+    },
+    {
+      "id": "jims-magic-missile",
+      "level": 1,
+      "name": "Jim's Magic Missile",
+      "source": "Acquisitions Incorporated"
+    },
+    {
+      "id": "magnify-gravity",
+      "level": 1,
+      "name": "Magnify Gravity",
+      "source": "Explorer's Guide to Wildemount (deprecated)"
+    },
+    {
+      "id": "searing-smite",
+      "level": 1,
+      "name": "Searing Smite",
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "silvery-barbs",
+      "level": 1,
+      "name": "Silvery Barbs",
+      "source": "Strixhaven A Curriculum of Chaos"
+    },
+    {
+      "id": "tashas-caustic-brew",
+      "level": 1,
+      "name": "Tasha's Caustic Brew",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "zephyr-strike",
+      "level": 1,
+      "name": "Zephyr Strike",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "air-bubble",
+      "level": 2,
+      "name": "Air Bubble",
+      "source": "Spelljammer - Adventures in Space"
+    },
+    {
+      "id": "blindness-deafness",
+      "level": 2,
+      "name": "Blindness Deafness",
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "borrowed-knowledge",
+      "level": 2,
+      "name": "Borrowed Knowledge",
+      "source": "Strixhaven A Curriculum of Chaos"
+    },
+    {
+      "id": "dragons-breath",
+      "level": 2,
+      "name": "Dragon's Breath",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "fortunes-favor",
+      "level": 2,
+      "name": "Fortune's Favor",
+      "source": "Explorer's Guide to Wildemount"
+    },
+    {
+      "id": "fortune-s-favor",
+      "level": 2,
+      "name": "Fortune’s Favor",
+      "source": "Explorer's Guide to Wildemount (deprecated)"
+    },
+    {
+      "id": "gift-of-gab",
+      "level": 2,
+      "name": "Gift of Gab",
+      "source": "Acquisitions Incorporated"
+    },
+    {
+      "id": "healing-spirit",
+      "level": 2,
+      "name": "Healing Spirit",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "immovable-object",
+      "level": 2,
+      "name": "Immovable Object",
+      "source": "Explorer's Guide to Wildemount (deprecated)"
+    },
+    {
+      "id": "jims-glowing-coin",
+      "level": 2,
+      "name": "Jim's Glowing Coin",
+      "source": "Acquisitions Incorporated"
+    },
+    {
+      "id": "kinetic-jaunt",
+      "level": 2,
+      "name": "Kinetic Jaunt",
+      "source": "Strixhaven A Curriculum of Chaos"
+    },
+    {
+      "id": "maximillians-earthen-grasp",
+      "level": 2,
+      "name": "Maximillian's Earthen Grasp",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "mind-spike",
+      "level": 2,
+      "name": "Mind Spike",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "nathairs-mischief",
+      "level": 2,
+      "name": "Nathair's Mischief",
+      "source": "Fizban's Treasury of Dragons"
+    },
+    {
+      "id": "rimes-binding-ice",
+      "level": 2,
+      "name": "Rime's Binding Ice",
+      "source": "Fizban's Treasury of Dragons"
+    },
+    {
+      "id": "shadow-blade",
+      "level": 2,
+      "name": "Shadow Blade",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "spray-of-cards",
+      "level": 2,
+      "name": "Spray of Cards",
+      "source": "The Book of Many Things"
+    },
+    {
+      "id": "summon-beast",
+      "level": 2,
+      "name": "Summon Beast",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "tashas-mind-whip",
+      "level": 2,
+      "name": "Tasha's Mind Whip",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "vortex-warp",
+      "level": 2,
+      "name": "Vortex Warp",
+      "source": "Strixhaven A Curriculum of Chaos"
+    },
+    {
+      "id": "warp-sense",
+      "level": 2,
+      "name": "Warp Sense",
+      "source": "Planescape - Adventures in the Multiverse"
+    },
+    {
+      "id": "wither-and-bloom",
+      "level": 2,
+      "name": "Wither and Bloom",
+      "source": "Strixhaven A Curriculum of Chaos"
+    },
+    {
+      "id": "wristpocket",
+      "level": 2,
+      "name": "Wristpocket",
+      "source": "Explorer's Guide to Wildemount"
+    },
+    {
+      "id": "antagonize",
+      "level": 3,
+      "name": "Antagonize",
+      "source": "The Book of Many Things"
+    },
+    {
+      "id": "ashardalons-stride",
+      "level": 3,
+      "name": "Ashardalon's Stride",
+      "source": "Fizban's Treasury of Dragons"
+    },
+    {
+      "id": "catnap",
+      "level": 3,
+      "name": "Catnap",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "enemies-abound",
+      "level": 3,
+      "name": "Enemies Abound",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "fast-friends",
+      "level": 3,
+      "name": "Fast Friends",
+      "source": "Acquisitions Incorporated"
+    },
+    {
+      "id": "incite-greed",
+      "level": 3,
+      "name": "Incite Greed",
+      "source": "Acquisitions Incorporated"
+    },
+    {
+      "id": "intellect-fortress",
+      "level": 3,
+      "name": "Intellect Fortress",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "life-transference",
+      "level": 3,
+      "name": "Life Transference",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "mass-healing-word",
+      "level": 3,
+      "name": "Mass Healing Word",
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "motivational-speech",
+      "level": 3,
+      "name": "Motivational Speech",
+      "source": "Acquisitions Incorporated"
+    },
+    {
+      "id": "pulse-wave",
+      "level": 3,
+      "name": "Pulse Wave",
+      "source": "Explorer's Guide to Wildemount"
+    },
+    {
+      "id": "spirit-shroud",
+      "level": 3,
+      "name": "Spirit Shroud",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "summon-fey",
+      "level": 3,
+      "name": "Summon Fey",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "summon-lesser-demons",
+      "level": 3,
+      "name": "Summon Lesser Demons",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "summon-shadowspawn",
+      "level": 3,
+      "name": "Summon Shadowspawn",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "summon-undead",
+      "level": 3,
+      "name": "Summon Undead",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "thunder-step",
+      "level": 3,
+      "name": "Thunder Step",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "tiny-servant",
+      "level": 3,
+      "name": "Tiny Servant",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "charm-monster",
+      "level": 4,
+      "name": "Charm Monster",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "find-greater-steed",
+      "level": 4,
+      "name": "Find Greater Steed",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "gate-seal",
+      "level": 4,
+      "name": "Gate Seal",
+      "source": "Planescape - Adventures in the Multiverse"
+    },
+    {
+      "id": "grasping-vine",
+      "level": 4,
+      "name": "Grasping Vine",
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "gravity-sinkhole",
+      "level": 4,
+      "name": "Gravity Sinkhole",
+      "source": "Explorer's Guide to Wildemount"
+    },
+    {
+      "id": "guardian-of-nature",
+      "level": 4,
+      "name": "Guardian of Nature",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "raulothims-psychic-lance",
+      "level": 4,
+      "name": "Raulothim's Psychic Lance",
+      "source": "Fizban's Treasury of Dragons"
+    },
+    {
+      "id": "shadow-of-moil",
+      "level": 4,
+      "name": "Shadow of Moil",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "sickening-radiance",
+      "level": 4,
+      "name": "Sickening Radiance",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "spirit-of-death",
+      "level": 4,
+      "name": "Spirit of Death",
+      "source": "The Book of Many Things"
+    },
+    {
+      "id": "summon-aberration",
+      "level": 4,
+      "name": "Summon Aberration",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "summon-construct",
+      "level": 4,
+      "name": "Summon Construct",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "summon-elemental",
+      "level": 4,
+      "name": "Summon Elemental",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "summon-greater-demon",
+      "level": 4,
+      "name": "Summon Greater Demon",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "create-spelljamming-helm",
+      "level": 5,
+      "name": "Create Spelljamming Helm",
+      "source": "Spelljammer - Adventures in Space"
+    },
+    {
+      "id": "danse-macabre",
+      "level": 5,
+      "name": "Danse Macabre",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "dawn",
+      "level": 5,
+      "name": "Dawn",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "destructive-wave",
+      "level": 5,
+      "name": "Destructive Wave",
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "far-step",
+      "level": 5,
+      "name": "Far Step",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "holy-weapon",
+      "level": 5,
+      "name": "Holy Weapon",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "infernal-calling",
+      "level": 5,
+      "name": "Infernal Calling",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "negative-energy-flood",
+      "level": 5,
+      "name": "Negative Energy Flood",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "skill-empowerment",
+      "level": 5,
+      "name": "Skill Empowerment",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "steel-wind-strike",
+      "level": 5,
+      "name": "Steel Wind Strike",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "summon-celestial",
+      "level": 5,
+      "name": "Summon Celestial",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "summon-draconic-spirit",
+      "level": 5,
+      "name": "Summon Draconic Spirit",
+      "source": "Fizban's Treasury of Dragons"
+    },
+    {
+      "id": "synaptic-static",
+      "level": 5,
+      "name": "Synaptic Static",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "temporal-shunt",
+      "level": 5,
+      "name": "Temporal Shunt",
+      "source": "Explorer's Guide to Wildemount (deprecated)"
+    },
+    {
+      "id": "wall-of-light",
+      "level": 5,
+      "name": "Wall of Light",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "wrath-of-nature",
+      "level": 5,
+      "name": "Wrath of Nature",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "create-homunculus",
+      "level": 6,
+      "name": "Create Homunculus",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "druid-grove",
+      "level": 6,
+      "name": "Druid Grove",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "fizbans-platinum-shield",
+      "level": 6,
+      "name": "Fizban's Platinum Shield",
+      "source": "Fizban's Treasury of Dragons"
+    },
+    {
+      "id": "gravity-fissure",
+      "level": 6,
+      "name": "Gravity Fissure",
+      "source": "Explorer's Guide to Wildemount"
+    },
+    {
+      "id": "mental-prison",
+      "level": 6,
+      "name": "Mental Prison",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "scatter",
+      "level": 6,
+      "name": "Scatter",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "soul-cage",
+      "level": 6,
+      "name": "Soul Cage",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "summon-fiend",
+      "level": 6,
+      "name": "Summon Fiend",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "tashas-otherworldly-guise",
+      "level": 6,
+      "name": "Tasha's Otherworldly Guise",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "tensers-transformation",
+      "level": 6,
+      "name": "Tenser's Transformation",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "create-magen",
+      "level": 7,
+      "name": "Create Magen",
+      "source": "Icewind Dale - Rime of the Frostmaiden"
+    },
+    {
+      "id": "crown-of-stars",
+      "level": 7,
+      "name": "Crown of Stars",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "draconic-transformation",
+      "level": 7,
+      "name": "Draconic Transformation",
+      "source": "Fizban's Treasury of Dragons"
+    },
+    {
+      "id": "dream-of-the-blue-veil",
+      "level": 7,
+      "name": "Dream of the Blue Veil",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "power-word-pain",
+      "level": 7,
+      "name": "Power Word Pain",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "temple-of-the-gods",
+      "level": 7,
+      "name": "Temple of the Gods",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "tether-essence",
+      "level": 7,
+      "name": "Tether Essence",
+      "source": "Explorer's Guide to Wildemount"
+    },
+    {
+      "id": "abi-dalzim-s-horrid-wilting",
+      "level": 8,
+      "name": "Abi-Dalzim’s Horrid Wilting",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "dark-star",
+      "level": 8,
+      "name": "Dark Star",
+      "source": "Explorer's Guide to Wildemount (deprecated)"
+    },
+    {
+      "id": "illusory-dragon",
+      "level": 8,
+      "name": "Illusory Dragon",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "maddening-darkness",
+      "level": 8,
+      "name": "Maddening Darkness",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "mighty-fortress",
+      "level": 8,
+      "name": "Mighty Fortress",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "reality-break",
+      "level": 8,
+      "name": "Reality Break",
+      "source": "Explorer's Guide to Wildemount"
+    },
+    {
+      "id": "blade-of-disaster",
+      "level": 9,
+      "name": "Blade of Disaster",
+      "source": "Tasha's Cauldron of Everything"
+    },
+    {
+      "id": "invulnerability",
+      "level": 9,
+      "name": "Invulnerability",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "mass-polymorph",
+      "level": 9,
+      "name": "Mass Polymorph",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "psychic-scream",
+      "level": 9,
+      "name": "Psychic Scream",
+      "source": "Xanathar's Guide to Everything"
+    },
+    {
+      "id": "ravenous-void",
+      "level": 9,
+      "name": "Ravenous Void",
+      "source": "Explorer's Guide to Wildemount"
+    }
+  ]
+}

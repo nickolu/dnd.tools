@@ -1,4 +1,7 @@
-import type { MonsterAdminFormState, MonsterSize } from "@/page/admin-monsters-create/types";
+import type {
+  MonsterAdminFormState,
+  MonsterSize,
+} from "@/page/admin-monsters-create/types";
 
 export const MONSTER_SIZES: MonsterSize[] = [
   "Tiny",

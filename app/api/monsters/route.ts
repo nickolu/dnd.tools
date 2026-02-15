@@ -2,15 +2,8 @@ import { FieldValue } from "firebase-admin/firestore";
 import { type NextRequest } from "next/server";
 
 import { canWrite } from "@/lib/api/auth";
-import {
-  API_ERROR_CODES,
-  jsonError,
-  jsonSuccess,
-} from "@/lib/api/envelope";
-import {
-  serializeMonster,
-  toMonsterFirestoreDoc,
-} from "@/lib/api/firestore";
+import { API_ERROR_CODES, jsonError, jsonSuccess } from "@/lib/api/envelope";
+import { serializeMonster, toMonsterFirestoreDoc } from "@/lib/api/firestore";
 import { monsterSchema, monsterWriteSchema } from "@/lib/domain/monster.schema";
 import {
   getAdminDb,
@@ -92,15 +85,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await docRef.set(toMonsterFirestoreDoc(parsed.data, FieldValue.serverTimestamp()));
-
-    await db.collection(META_COLLECTION).doc(META_DOC).set(
-      {
-        monstersVersion: FieldValue.increment(1),
-        updatedAt: FieldValue.serverTimestamp(),
-      },
-      { merge: true }
+    await docRef.set(
+      toMonsterFirestoreDoc(parsed.data, FieldValue.serverTimestamp())
     );
+
+    await db
+      .collection(META_COLLECTION)
+      .doc(META_DOC)
+      .set(
+        {
+          monstersVersion: FieldValue.increment(1),
+          updatedAt: FieldValue.serverTimestamp(),
+        },
+        { merge: true }
+      );
 
     const created = await docRef.get();
     const serialized = serializeMonster(created.id, created.data());

@@ -18,7 +18,9 @@ export function RouteTransitionProvider({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const [snapshot, setSnapshot] = useState<RouteTransitionSnapshot | null>(null);
+  const [snapshot, setSnapshot] = useState<RouteTransitionSnapshot | null>(
+    null
+  );
 
   useEffect(() => {
     if (!snapshot) {

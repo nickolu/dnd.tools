@@ -65,7 +65,10 @@ export function NamedTextSection({
                   <span className="typography-h3">{entry.name}.</span>{" "}
                   {spellNames.length
                     ? renderTextWithSpellLinks(normalizedText, spellNames)
-                    : renderTextWithLineBreaks(normalizedText, `plain:${index}`)}
+                    : renderTextWithLineBreaks(
+                        normalizedText,
+                        `plain:${index}`
+                      )}
                 </>
               );
             })()}

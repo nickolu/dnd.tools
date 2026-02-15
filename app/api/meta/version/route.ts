@@ -1,10 +1,6 @@
 import { Timestamp } from "firebase-admin/firestore";
 
-import {
-  API_ERROR_CODES,
-  jsonError,
-  jsonSuccess,
-} from "@/lib/api/envelope";
+import { API_ERROR_CODES, jsonError, jsonSuccess } from "@/lib/api/envelope";
 import { collectionVersionSchema } from "@/lib/domain/meta.schema";
 import {
   getAdminDb,
@@ -32,7 +28,8 @@ export async function GET() {
     const payload = {
       monstersVersion:
         typeof data?.monstersVersion === "number" ? data.monstersVersion : 0,
-      spellsVersion: typeof data?.spellsVersion === "number" ? data.spellsVersion : 0,
+      spellsVersion:
+        typeof data?.spellsVersion === "number" ? data.spellsVersion : 0,
       updatedAt:
         data?.updatedAt instanceof Timestamp
           ? data.updatedAt.toDate().toISOString()

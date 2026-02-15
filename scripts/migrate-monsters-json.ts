@@ -120,7 +120,11 @@ const parseChallengeRatingNumeric = (value: unknown): number => {
     const [left = "", right = ""] = raw.split("/", 2);
     const numerator = Number.parseFloat(left);
     const denominator = Number.parseFloat(right);
-    if (Number.isFinite(numerator) && Number.isFinite(denominator) && denominator) {
+    if (
+      Number.isFinite(numerator) &&
+      Number.isFinite(denominator) &&
+      denominator
+    ) {
       return numerator / denominator;
     }
     return 0;
@@ -166,14 +170,19 @@ const parseSpellSlots = (value: unknown): number[] | undefined => {
   return slots.length ? slots : undefined;
 };
 
-const normalizeSize = (rawSize: unknown, rawType: unknown): MonsterWriteInput["size"] => {
+const normalizeSize = (
+  rawSize: unknown,
+  rawType: unknown
+): MonsterWriteInput["size"] => {
   const size = toTrimmedString(rawSize);
   const aliased = SIZE_ALIASES[size.toLowerCase()];
   if (aliased) {
     return aliased;
   }
 
-  const typeFirstWord = toTrimmedString(rawType).split(/\s+/, 1)[0]?.toLowerCase();
+  const typeFirstWord = toTrimmedString(rawType)
+    .split(/\s+/, 1)[0]
+    ?.toLowerCase();
   if (typeFirstWord && SIZE_ALIASES[typeFirstWord]) {
     return SIZE_ALIASES[typeFirstWord];
   }
@@ -181,7 +190,9 @@ const normalizeSize = (rawSize: unknown, rawType: unknown): MonsterWriteInput["s
   return "Medium";
 };
 
-const parseSkills = (monster: RawMonster): Record<string, number> | undefined => {
+const parseSkills = (
+  monster: RawMonster
+): Record<string, number> | undefined => {
   const skills: Record<string, number> = {};
 
   const rawSkillText = toTrimmedString(monster.skill);
@@ -207,7 +218,9 @@ const parseSkills = (monster: RawMonster): Record<string, number> | undefined =>
   return Object.keys(skills).length ? skills : undefined;
 };
 
-const parseSavingThrows = (monster: RawMonster): Record<string, number> | undefined => {
+const parseSavingThrows = (
+  monster: RawMonster
+): Record<string, number> | undefined => {
   const saves: Record<string, number> = {};
 
   const saveText = toTrimmedString(monster.save);
@@ -293,7 +306,8 @@ const toMonsterWriteInput = (
   index: number,
   idCounts: Map<string, number>
 ): MonsterWriteInput => {
-  const name = toTrimmedString(rawMonster.name) || `Unnamed Monster ${index + 1}`;
+  const name =
+    toTrimmedString(rawMonster.name) || `Unnamed Monster ${index + 1}`;
   const source = toTrimmedString(rawMonster.source) || "unknown";
   const crText = toTrimmedString(rawMonster.cr) || "0";
   const id = createId(name, source, index, idCounts);
@@ -313,13 +327,19 @@ const toMonsterWriteInput = (
   const damageResistances = parseDelimitedList(rawMonster.resist);
   const damageVulnerabilities = parseDelimitedList(rawMonster.vulnerable);
   const languages = parseDelimitedList(rawMonster.languages);
-  const legendaryActions = parseNamedTextEntries(rawMonster.legendary_actions, false);
+  const legendaryActions = parseNamedTextEntries(
+    rawMonster.legendary_actions,
+    false
+  );
   const passivePerception = toInt(rawMonster.passive);
   const reactions = parseNamedTextEntries(rawMonster.reactions, false);
   const savingThrows = parseSavingThrows(rawMonster);
   const senses = toTrimmedString(rawMonster.senses);
   const skills = parseSkills(rawMonster);
-  const specialAbilities = parseNamedTextEntries(rawMonster.special_abilities, false);
+  const specialAbilities = parseNamedTextEntries(
+    rawMonster.special_abilities,
+    false
+  );
   const spellList = parseDelimitedList(rawMonster.spells);
   const spellSlots = parseSpellSlots(rawMonster.slots);
 
@@ -366,11 +386,12 @@ type UpsertSummary = {
   updated: number;
 };
 
-async function upsertMonsters(entries: MonsterWriteInput[]): Promise<UpsertSummary> {
+async function upsertMonsters(
+  entries: MonsterWriteInput[]
+): Promise<UpsertSummary> {
   const { getAdminDb } = await import("../lib/firebase-admin");
-  const { toMonsterFirestoreDoc, toMonsterUpdateDoc } = await import(
-    "../lib/api/firestore"
-  );
+  const { toMonsterFirestoreDoc, toMonsterUpdateDoc } =
+    await import("../lib/api/firestore");
 
   const db = getAdminDb();
   let created = 0;
@@ -394,13 +415,20 @@ async function upsertMonsters(entries: MonsterWriteInput[]): Promise<UpsertSumma
           snapshot.get("createdAt") ?? FieldValue.serverTimestamp();
         batch.set(
           ref,
-          toMonsterUpdateDoc(entry, FieldValue.serverTimestamp(), existingCreatedAt)
+          toMonsterUpdateDoc(
+            entry,
+            FieldValue.serverTimestamp(),
+            existingCreatedAt
+          )
         );
         updated += 1;
         continue;
       }
 
-      batch.set(ref, toMonsterFirestoreDoc(entry, FieldValue.serverTimestamp()));
+      batch.set(
+        ref,
+        toMonsterFirestoreDoc(entry, FieldValue.serverTimestamp())
+      );
       created += 1;
     }
 
@@ -416,20 +444,21 @@ async function upsertMonsters(entries: MonsterWriteInput[]): Promise<UpsertSumma
 async function main() {
   loadEnvConfig(process.cwd());
 
-  const { getAdminDb, hasRequiredServerFirebaseConfig } = await import(
-    "../lib/firebase-admin"
-  );
+  const { getAdminDb, hasRequiredServerFirebaseConfig } =
+    await import("../lib/firebase-admin");
 
   if (!hasRequiredServerFirebaseConfig) {
     throw new Error(
-      "Missing Firestore server env. Set NEXT_PUBLIC_FIREBASE_PROJECT_ID and service credentials if required."
+      "Missing Firestore server env. Set FIREBASE_PROJECT_ID and service credentials if required."
     );
   }
 
   const rawFile = await readFile(SOURCE_FILE, "utf8");
   const parsedData = JSON.parse(rawFile);
   if (!Array.isArray(parsedData)) {
-    throw new Error("Expected data/All Monsters.json to contain a top-level array.");
+    throw new Error(
+      "Expected data/All Monsters.json to contain a top-level array."
+    );
   }
 
   const idCounts = new Map<string, number>();
@@ -447,7 +476,10 @@ async function main() {
     } catch (error) {
       skipped += 1;
       const name = toTrimmedString(value.name) || `index:${index}`;
-      console.warn(`Skipping '${name}' due to validation/transform error.`, error);
+      console.warn(
+        `Skipping '${name}' due to validation/transform error.`,
+        error
+      );
     }
   }
 
@@ -459,7 +491,9 @@ async function main() {
     .doc("collections")
     .set(
       {
-        monstersVersion: FieldValue.increment(summary.created + summary.updated),
+        monstersVersion: FieldValue.increment(
+          summary.created + summary.updated
+        ),
         updatedAt: FieldValue.serverTimestamp(),
       },
       { merge: true }

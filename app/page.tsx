@@ -39,8 +39,8 @@ const MONSTER_WIDGET_FILTERS: WidgetFilterOption[] = [
 ];
 
 export default function Home() {
-  const { data: monsters = [] } = useMonsters();
-  const { data: spells = [] } = useSpells();
+  const { data: monsters = [], isLoading: isMonstersLoading } = useMonsters();
+  const { data: spells = [], isLoading: isSpellsLoading } = useSpells();
 
   const [monsterSearch, setMonsterSearch] = useState("");
   const [spellSearch, setSpellSearch] = useState("");
@@ -82,7 +82,11 @@ export default function Home() {
 
       <section className="flex flex-col gap-6">
         <ToolWidgetCard
-          description={`${visibleSpells.length} visible of ${spells.length} spells`}
+          description={
+            isSpellsLoading
+              ? "Loading spells..."
+              : `${visibleSpells.length} visible of ${spells.length} spells`
+          }
           filterOptions={SPELL_WIDGET_FILTERS}
           onFilterSelect={setSpellFilter}
           onSearchChange={setSpellSearch}
@@ -93,7 +97,11 @@ export default function Home() {
         />
 
         <ToolWidgetCard
-          description={`${visibleMonsters.length} visible of ${monsters.length} monsters`}
+          description={
+            isMonstersLoading
+              ? "Loading monsters..."
+              : `${visibleMonsters.length} visible of ${monsters.length} monsters`
+          }
           filterOptions={MONSTER_WIDGET_FILTERS}
           onFilterSelect={setMonsterFilter}
           onSearchChange={setMonsterSearch}

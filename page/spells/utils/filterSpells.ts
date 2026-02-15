@@ -63,7 +63,8 @@ export function filterSpells(spells: Spell[], filters: SpellFilters): Spell[] {
 
     if (filters.castingTime !== ALL_FILTER_VALUE) {
       checks.push(
-        normalizeSpellCastingTimeForFilter(spell.castingTime) === filters.castingTime
+        normalizeSpellCastingTimeForFilter(spell.castingTime) ===
+          filters.castingTime
       );
     }
 

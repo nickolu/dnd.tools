@@ -5,13 +5,12 @@ import { Timestamp } from "firebase-admin/firestore";
 
 async function main() {
   loadEnvConfig(process.cwd());
-  const { getAdminDb, hasRequiredServerFirebaseConfig } = await import(
-    "../lib/firebase-admin"
-  );
+  const { getAdminDb, hasRequiredServerFirebaseConfig } =
+    await import("../lib/firebase-admin");
 
   if (!hasRequiredServerFirebaseConfig) {
     throw new Error(
-      "Missing Firestore server env. Set NEXT_PUBLIC_FIREBASE_PROJECT_ID and service credentials if required."
+      "Missing Firestore server env. Set FIREBASE_PROJECT_ID and service credentials if required."
     );
   }
 

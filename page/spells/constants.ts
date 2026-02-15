@@ -10,8 +10,8 @@ import type {
   SpellLevelFilter,
   SpellMatchMode,
   SpellMultiSelectableGroupKey,
-  SpellSelectionMode,
   SpellSchoolFilter,
+  SpellSelectionMode,
 } from "@/page/spells/types";
 
 export const ALL_FILTER_VALUE = "all";
@@ -119,7 +119,10 @@ export const SPELL_ATTACK_TYPE_VALUES: SpellAttackTypeFilter[] = [
   "ranged",
 ];
 
-export const SPELL_FILTER_QUERY_PARAM_BY_KEY: Record<SpellFilterGroupKey, string> = {
+export const SPELL_FILTER_QUERY_PARAM_BY_KEY: Record<
+  SpellFilterGroupKey,
+  string
+> = {
   attackType: "attackType",
   castingTime: "castingTime",
   classData: "classData",
@@ -162,7 +165,9 @@ export const SPELL_SELECTION_MODE_QUERY_PARAM_BY_KEY: Record<
   saveAbility: "saveAbilitySelect",
 };
 
-export function isSpellBooleanFilter(value: string): value is SpellBooleanFilter {
+export function isSpellBooleanFilter(
+  value: string
+): value is SpellBooleanFilter {
   return value === ALL_FILTER_VALUE || value === "yes" || value === "no";
 }
 
@@ -175,7 +180,9 @@ export function isSpellComponentFilter(
 export function isSpellClassDataFilter(
   value: string
 ): value is SpellClassDataFilter {
-  return value === ALL_FILTER_VALUE || value === "present" || value === "missing";
+  return (
+    value === ALL_FILTER_VALUE || value === "present" || value === "missing"
+  );
 }
 
 export function isSpellLevelFilter(value: string): value is SpellLevelFilter {
@@ -191,7 +198,9 @@ export function isSpellMatchMode(value: string): value is SpellMatchMode {
   return value === "and" || value === "or";
 }
 
-export function isSpellSelectionMode(value: string): value is SpellSelectionMode {
+export function isSpellSelectionMode(
+  value: string
+): value is SpellSelectionMode {
   return value === "single" || value === "multi";
 }
 

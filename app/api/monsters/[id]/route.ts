@@ -2,15 +2,8 @@ import { FieldValue } from "firebase-admin/firestore";
 import { type NextRequest } from "next/server";
 
 import { canWrite } from "@/lib/api/auth";
-import {
-  API_ERROR_CODES,
-  jsonError,
-  jsonSuccess,
-} from "@/lib/api/envelope";
-import {
-  serializeMonster,
-  toMonsterUpdateDoc,
-} from "@/lib/api/firestore";
+import { API_ERROR_CODES, jsonError, jsonSuccess } from "@/lib/api/envelope";
+import { serializeMonster, toMonsterUpdateDoc } from "@/lib/api/firestore";
 import { monsterSchema, monsterWriteSchema } from "@/lib/domain/monster.schema";
 import {
   getAdminDb,
@@ -40,7 +33,11 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     const snapshot = await db.collection(MONSTERS_COLLECTION).doc(id).get();
 
     if (!snapshot.exists) {
-      return jsonError(API_ERROR_CODES.NOT_FOUND, `Monster '${id}' not found.`, 404);
+      return jsonError(
+        API_ERROR_CODES.NOT_FOUND,
+        `Monster '${id}' not found.`,
+        404
+      );
     }
 
     const serialized = serializeMonster(snapshot.id, snapshot.data());
@@ -99,7 +96,11 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     const existingDoc = await docRef.get();
 
     if (!existingDoc.exists) {
-      return jsonError(API_ERROR_CODES.NOT_FOUND, `Monster '${id}' not found.`, 404);
+      return jsonError(
+        API_ERROR_CODES.NOT_FOUND,
+        `Monster '${id}' not found.`,
+        404
+      );
     }
 
     await docRef.set(
@@ -110,13 +111,16 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       )
     );
 
-    await db.collection(META_COLLECTION).doc(META_DOC).set(
-      {
-        monstersVersion: FieldValue.increment(1),
-        updatedAt: FieldValue.serverTimestamp(),
-      },
-      { merge: true }
-    );
+    await db
+      .collection(META_COLLECTION)
+      .doc(META_DOC)
+      .set(
+        {
+          monstersVersion: FieldValue.increment(1),
+          updatedAt: FieldValue.serverTimestamp(),
+        },
+        { merge: true }
+      );
 
     const updated = await docRef.get();
     const serialized = serializeMonster(updated.id, updated.data());

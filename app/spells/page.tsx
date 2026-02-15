@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 
 import { FilterGroup } from "@/components/filter-group";
 import { FilterLogicPopover } from "@/components/filter-logic-popover";
@@ -33,7 +33,10 @@ const MULTI_SELECTABLE_GROUPS: SpellMultiSelectableGroupKey[] = [
   "damageType",
 ];
 
-const SPELL_FILTER_GROUP_LABEL_BY_KEY: Record<SpellMultiSelectableGroupKey, string> = {
+const SPELL_FILTER_GROUP_LABEL_BY_KEY: Record<
+  SpellMultiSelectableGroupKey,
+  string
+> = {
   attackType: "Attack Type",
   classes: "Classes",
   component: "Components",
@@ -86,7 +89,7 @@ function getHomeIntentFilterGroupKey(searchParams: {
   return null;
 }
 
-export default function SpellsPage() {
+function SpellsPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -303,5 +306,13 @@ export default function SpellsPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function SpellsPage() {
+  return (
+    <Suspense fallback={null}>
+      <SpellsPageContent />
+    </Suspense>
   );
 }

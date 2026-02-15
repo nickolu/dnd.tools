@@ -2,7 +2,10 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { toNameNormalized, toSlug } from "@/lib/admin/ingest";
-import { spellWriteSchema, type SpellWriteInput } from "@/lib/domain/spell.schema";
+import {
+  type SpellWriteInput,
+  spellWriteSchema,
+} from "@/lib/domain/spell.schema";
 
 type RawSpell = Record<string, unknown>;
 
@@ -29,7 +32,11 @@ type CollisionGroup = {
 };
 
 const SOURCE_FILE = path.join(process.cwd(), "data", "spells.json");
-const REPORT_FILE = path.join(process.cwd(), "docs", "spell-migration-audit.json");
+const REPORT_FILE = path.join(
+  process.cwd(),
+  "docs",
+  "spell-migration-audit.json"
+);
 const WOTC_PUBLISHER = "wizards of the coast";
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -152,13 +159,13 @@ const splitParagraphs = (value: string): string[] =>
 
 const extractFromLabeledText = (value: string, label: string): string => {
   const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const match = normalizeText(value).match(new RegExp(`${escaped}\\s*:\\s*([^\\n]+)`, "i"));
+  const match = normalizeText(value).match(
+    new RegExp(`${escaped}\\s*:\\s*([^\\n]+)`, "i")
+  );
   return match?.[1]?.trim() ?? "";
 };
 
-const parseComponentText = (
-  value: string
-): SpellWriteInput["components"] => {
+const parseComponentText = (value: string): SpellWriteInput["components"] => {
   const normalized = value.toUpperCase();
   const materialTextMatch = value.match(/\(([^)]+)\)/);
   const materialText = materialTextMatch?.[1]?.trim();
@@ -285,10 +292,13 @@ const toCandidate = (
     return { candidate: null, skipReason: "non_wotc_publisher" };
   }
 
-  const nameRaw = toTrimmedString(rawSpell.name) || `Unnamed Spell ${index + 1}`;
+  const nameRaw =
+    toTrimmedString(rawSpell.name) || `Unnamed Spell ${index + 1}`;
   const source = toTrimmedString(rawSpell.book) || "Unknown Source";
   const sourceIs2024 = is2024Source(source);
-  const name = sourceIs2024 ? with2024Suffix(nameRaw) : strip2024Suffix(nameRaw);
+  const name = sourceIs2024
+    ? with2024Suffix(nameRaw)
+    : strip2024Suffix(nameRaw);
   const id = toSpellId(name, source);
 
   if (!id) {
@@ -370,7 +380,9 @@ const toCandidate = (
         material: componentsFromPayload.material === true,
         somatic: componentsFromPayload.somatic === true,
         verbal: componentsFromPayload.verbal === true,
-        ...(componentsMaterialText ? { materialText: componentsMaterialText } : {}),
+        ...(componentsMaterialText
+          ? { materialText: componentsMaterialText }
+          : {}),
       }
     : parseComponentText(componentsText);
 
@@ -393,13 +405,14 @@ const toCandidate = (
   const saveAbility = parseAbility(properties.Save);
   const save = saveAbility ? { ability: saveAbility } : undefined;
 
-  const attackTypeRaw = toTrimmedString(properties["Spell Attack"]).toLowerCase();
-  const attackType =
-    attackTypeRaw.includes("melee")
-      ? "melee"
-      : attackTypeRaw.includes("ranged")
-        ? "ranged"
-        : undefined;
+  const attackTypeRaw = toTrimmedString(
+    properties["Spell Attack"]
+  ).toLowerCase();
+  const attackType = attackTypeRaw.includes("melee")
+    ? "melee"
+    : attackTypeRaw.includes("ranged")
+      ? "ranged"
+      : undefined;
 
   const damageType = toTrimmedString(properties["Damage Type"]).toLowerCase();
   const damage = damageType ? { type: damageType } : undefined;
@@ -410,7 +423,9 @@ const toCandidate = (
     components,
     concentration,
     createdBy: "spell-json-migration",
-    description: description.length ? description : ["Spell description unavailable."],
+    description: description.length
+      ? description
+      : ["Spell description unavailable."],
     duration,
     id,
     isPublished: true,
@@ -522,7 +537,8 @@ async function main() {
       dedupedCount: winners.length,
       rawCount: parsedData.length,
       skippedCount: skipped.length,
-      with2024Count: winners.filter((spell) => spell.id.endsWith("-2024")).length,
+      with2024Count: winners.filter((spell) => spell.id.endsWith("-2024"))
+        .length,
       wotcCount,
     },
     skipByReason,

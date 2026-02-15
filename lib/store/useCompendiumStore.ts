@@ -2,7 +2,11 @@
 
 import { del, get, set } from "idb-keyval";
 import { create } from "zustand";
-import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
+import {
+  createJSONStorage,
+  persist,
+  type StateStorage,
+} from "zustand/middleware";
 
 type SortDirection = "asc" | "desc";
 

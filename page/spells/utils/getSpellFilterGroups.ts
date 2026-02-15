@@ -83,7 +83,9 @@ function getSaveAbilityOptions(spells: Spell[]): FilterGroupOption[] {
 
   return toOptions(abilities).map((option) => ({
     label:
-      option.value === ALL_FILTER_VALUE ? option.label : option.label.toUpperCase(),
+      option.value === ALL_FILTER_VALUE
+        ? option.label
+        : option.label.toUpperCase(),
     value: option.value,
   }));
 }
@@ -95,7 +97,9 @@ function getDamageTypeOptions(spells: Spell[]): FilterGroupOption[] {
 
   return toOptions(damageTypes).map((option) => ({
     label:
-      option.value === ALL_FILTER_VALUE ? option.label : toTitleCase(option.label),
+      option.value === ALL_FILTER_VALUE
+        ? option.label
+        : toTitleCase(option.label),
     value: option.value,
   }));
 }
@@ -154,7 +158,9 @@ export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
       key: "castingTime",
       label: "Casting Time",
       options: toOptions(
-        spells.map((spell) => normalizeSpellCastingTimeForFilter(spell.castingTime))
+        spells.map((spell) =>
+          normalizeSpellCastingTimeForFilter(spell.castingTime)
+        )
       ),
     },
     {
@@ -168,7 +174,6 @@ export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
       label: "Ritual",
       options: SPELL_BOOLEAN_FILTER_OPTIONS,
     },
-
 
     {
       key: "source",

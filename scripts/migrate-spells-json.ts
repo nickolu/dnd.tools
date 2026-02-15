@@ -109,11 +109,12 @@ const toOptionalInt = (value: unknown): number | null => {
 };
 
 const parseSchool = (value: unknown): SpellWriteInput["school"] | null => {
-  const normalized = toTrimmedString(value)
-    .toLowerCase()
-    .replace(/\([^)]*\)/g, "")
-    .trim()
-    .split(/\s+/, 1)[0] ?? "";
+  const normalized =
+    toTrimmedString(value)
+      .toLowerCase()
+      .replace(/\([^)]*\)/g, "")
+      .trim()
+      .split(/\s+/, 1)[0] ?? "";
 
   switch (normalized) {
     case "abjuration":
@@ -189,7 +190,9 @@ const splitParagraphs = (value: string): string[] =>
 const extractFromLabeledText = (value: string, label: string): string => {
   const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const normalized = normalizeHeaderTypos(normalizeText(value));
-  const match = normalized.match(new RegExp(`${escaped}\\s*:\\s*([^\\n]+)`, "i"));
+  const match = normalized.match(
+    new RegExp(`${escaped}\\s*:\\s*([^\\n]+)`, "i")
+  );
   return match?.[1]?.trim() ?? "";
 };
 
@@ -218,11 +221,15 @@ const normalizeSpellRange = (value: string): string => {
     return "Unlimited";
   }
 
-  const distanceMatch = normalized.match(/^([\d,\s]+)\s*(ft|feet|foot|mile|miles)$/i);
+  const distanceMatch = normalized.match(
+    /^([\d,\s]+)\s*(ft|feet|foot|mile|miles)$/i
+  );
   if (distanceMatch) {
     const count = distanceMatch[1] ?? "";
     const unit = distanceMatch[2] ?? "";
-    const canonicalUnit = unit.toLowerCase().startsWith("mile") ? "mile" : "foot";
+    const canonicalUnit = unit.toLowerCase().startsWith("mile")
+      ? "mile"
+      : "foot";
     return formatCountWithUnit(count, canonicalUnit);
   }
 
@@ -255,9 +262,14 @@ const normalizeSpellCastingTime = (value: string): string => {
       return "1 reaction";
     }
 
-    const durationMatch = next.match(/^(\d+)\s*(hour|hours|minute|minutes|minure)$/i);
+    const durationMatch = next.match(
+      /^(\d+)\s*(hour|hours|minute|minutes|minure)$/i
+    );
     if (durationMatch) {
-      return formatCountWithUnit(durationMatch[1] ?? "", durationMatch[2] ?? "");
+      return formatCountWithUnit(
+        durationMatch[1] ?? "",
+        durationMatch[2] ?? ""
+      );
     }
 
     return next;
@@ -267,14 +279,18 @@ const normalizeSpellCastingTime = (value: string): string => {
     .split(/\s+or\s+/i)
     .map((part) => part.trim())
     .filter(Boolean)
-    .map((part) => (part.toLowerCase() === "ritual" ? "ritual" : toCanonicalActionToken(part)));
+    .map((part) =>
+      part.toLowerCase() === "ritual" ? "ritual" : toCanonicalActionToken(part)
+    );
 
   return parts.join(" or ");
 };
 
 const normalizeSpellDuration = (value: string): string => {
   const normalized = compactDigitSpacing(
-    normalizeHeaderTypos(value).replace(/\bminure\b/gi, "minute").trim()
+    normalizeHeaderTypos(value)
+      .replace(/\bminure\b/gi, "minute")
+      .trim()
   );
   if (!normalized) {
     return "";
@@ -314,9 +330,12 @@ const HEADER_LABELS: Array<{ key: HeaderFieldKey; pattern: RegExp }> = [
   { key: "duration", pattern: /\bDuration\b\s*:/gi },
 ];
 
-const extractHeaderFields = (value: string): Partial<Record<HeaderFieldKey, string>> => {
+const extractHeaderFields = (
+  value: string
+): Partial<Record<HeaderFieldKey, string>> => {
   const normalized = normalizeHeaderTypos(normalizeText(value));
-  const markers: Array<{ end: number; index: number; key: HeaderFieldKey }> = [];
+  const markers: Array<{ end: number; index: number; key: HeaderFieldKey }> =
+    [];
 
   for (const { key, pattern } of HEADER_LABELS) {
     const match = pattern.exec(normalized);
@@ -390,7 +409,8 @@ const stripInlineStatBlockPrefix = (value: string): string => {
 
   const fields = extractHeaderFields(paragraph);
   const durationField = fields.duration ?? "";
-  const extracted = splitDurationAndDescriptionLead(durationField).descriptionLead;
+  const extracted =
+    splitDurationAndDescriptionLead(durationField).descriptionLead;
   return extracted || value.trim();
 };
 
@@ -428,9 +448,7 @@ const parseClassesFromTextHeader = (value: string): string[] => {
     .filter((entry) => KNOWN_CLASSES.has(entry));
 };
 
-const parseComponentText = (
-  value: string
-): SpellWriteInput["components"] => {
+const parseComponentText = (value: string): SpellWriteInput["components"] => {
   const normalized = value.toUpperCase();
   const materialTextMatch = value.match(/\(([^)]+)\)/);
   const materialText = materialTextMatch?.[1]?.trim();
@@ -505,12 +523,19 @@ const toSpellId = (name: string, source: string): string => {
 const cleanClasses = (value: string[] | string): string[] => {
   const entries = Array.isArray(value) ? value : splitCsv(value);
 
-  return [...new Set(
-    entries
-      .map((entry) => entry.trim().toLowerCase().replace(/^and\s+/i, ""))
-      .map((entry) => entry.replace(/\.$/, ""))
-      .filter(Boolean)
-  )];
+  return [
+    ...new Set(
+      entries
+        .map((entry) =>
+          entry
+            .trim()
+            .toLowerCase()
+            .replace(/^and\s+/i, "")
+        )
+        .map((entry) => entry.replace(/\.$/, ""))
+        .filter(Boolean)
+    ),
+  ];
 };
 
 const sourceRank = (source: string): number => {
@@ -549,16 +574,22 @@ const scoreSpell = (spell: SpellWriteInput): number => {
   );
 };
 
-const toSpellWriteInput = (rawSpell: RawSpell, index: number): SpellWriteInput | null => {
+const toSpellWriteInput = (
+  rawSpell: RawSpell,
+  index: number
+): SpellWriteInput | null => {
   const publisher = toTrimmedString(rawSpell.publisher);
   if (publisher.toLowerCase() !== WOTC_PUBLISHER) {
     return null;
   }
 
-  const nameRaw = toTrimmedString(rawSpell.name) || `Unnamed Spell ${index + 1}`;
+  const nameRaw =
+    toTrimmedString(rawSpell.name) || `Unnamed Spell ${index + 1}`;
   const source = toTrimmedString(rawSpell.book) || "Unknown Source";
   const sourceIs2024 = is2024Source(source);
-  const name = sourceIs2024 ? with2024Suffix(nameRaw) : strip2024Suffix(nameRaw);
+  const name = sourceIs2024
+    ? with2024Suffix(nameRaw)
+    : strip2024Suffix(nameRaw);
   const id = toSpellId(name, source);
 
   if (!id) {
@@ -616,7 +647,8 @@ const toSpellWriteInput = (rawSpell: RawSpell, index: number): SpellWriteInput |
     "Instantaneous";
   const { descriptionLead, duration: splitDuration } =
     splitDurationAndDescriptionLead(durationRaw);
-  const duration = normalizeSpellDuration(splitDuration || durationRaw) || "Instantaneous";
+  const duration =
+    normalizeSpellDuration(splitDuration || durationRaw) || "Instantaneous";
 
   const school =
     parseSchool(payload?.school) ??
@@ -651,7 +683,9 @@ const toSpellWriteInput = (rawSpell: RawSpell, index: number): SpellWriteInput |
         material: componentsFromPayload.material === true,
         somatic: componentsFromPayload.somatic === true,
         verbal: componentsFromPayload.verbal === true,
-        ...(componentsMaterialText ? { materialText: componentsMaterialText } : {}),
+        ...(componentsMaterialText
+          ? { materialText: componentsMaterialText }
+          : {}),
       }
     : parseComponentText(cleanComponentsText);
 
@@ -679,13 +713,14 @@ const toSpellWriteInput = (rawSpell: RawSpell, index: number): SpellWriteInput |
   const saveAbility = parseAbility(properties.Save);
   const save = saveAbility ? { ability: saveAbility } : undefined;
 
-  const attackTypeRaw = toTrimmedString(properties["Spell Attack"]).toLowerCase();
-  const attackType =
-    attackTypeRaw.includes("melee")
-      ? "melee"
-      : attackTypeRaw.includes("ranged")
-        ? "ranged"
-        : undefined;
+  const attackTypeRaw = toTrimmedString(
+    properties["Spell Attack"]
+  ).toLowerCase();
+  const attackType = attackTypeRaw.includes("melee")
+    ? "melee"
+    : attackTypeRaw.includes("ranged")
+      ? "ranged"
+      : undefined;
 
   const damageType = toTrimmedString(properties["Damage Type"]).toLowerCase();
   const damage = damageType ? { type: damageType } : undefined;
@@ -733,11 +768,12 @@ type UpsertSummary = {
   updated: number;
 };
 
-async function upsertSpells(entries: SpellWriteInput[]): Promise<UpsertSummary> {
+async function upsertSpells(
+  entries: SpellWriteInput[]
+): Promise<UpsertSummary> {
   const { getAdminDb } = await import("../lib/firebase-admin");
-  const { toSpellFirestoreDoc, toSpellUpdateDoc } = await import(
-    "../lib/api/firestore"
-  );
+  const { toSpellFirestoreDoc, toSpellUpdateDoc } =
+    await import("../lib/api/firestore");
 
   const db = getAdminDb();
   let created = 0;
@@ -761,7 +797,11 @@ async function upsertSpells(entries: SpellWriteInput[]): Promise<UpsertSummary> 
           snapshot.get("createdAt") ?? FieldValue.serverTimestamp();
         batch.set(
           ref,
-          toSpellUpdateDoc(entry, FieldValue.serverTimestamp(), existingCreatedAt)
+          toSpellUpdateDoc(
+            entry,
+            FieldValue.serverTimestamp(),
+            existingCreatedAt
+          )
         );
         updated += 1;
         continue;
@@ -827,7 +867,9 @@ async function main() {
     .slice()
     .sort((left, right) => left.id.localeCompare(right.id));
   const selectedSpells = limit ? orderedSpells.slice(0, limit) : orderedSpells;
-  const with2024 = dedupedSpells.filter((spell) => spell.id.endsWith("-2024")).length;
+  const with2024 = dedupedSpells.filter((spell) =>
+    spell.id.endsWith("-2024")
+  ).length;
 
   if (dryRun) {
     console.log("Spell migration dry run complete.");
@@ -843,13 +885,12 @@ async function main() {
     return;
   }
 
-  const { getAdminDb, hasRequiredServerFirebaseConfig } = await import(
-    "../lib/firebase-admin"
-  );
+  const { getAdminDb, hasRequiredServerFirebaseConfig } =
+    await import("../lib/firebase-admin");
 
   if (!hasRequiredServerFirebaseConfig) {
     throw new Error(
-      "Missing Firestore server env. Set NEXT_PUBLIC_FIREBASE_PROJECT_ID and service credentials if required."
+      "Missing Firestore server env. Set FIREBASE_PROJECT_ID and service credentials if required."
     );
   }
 

@@ -22,7 +22,13 @@ export type SpellDamageTypeFilter =
 export type SpellLevelFilter = "all" | `${number}`;
 export type SpellMatchMode = "and" | "or";
 export type SpellSelectionMode = "single" | "multi";
-export type SpellSaveAbilityFilter = "str" | "dex" | "con" | "int" | "wis" | "cha";
+export type SpellSaveAbilityFilter =
+  | "str"
+  | "dex"
+  | "con"
+  | "int"
+  | "wis"
+  | "cha";
 export type SpellSchoolFilter =
   | "abjuration"
   | "conjuration"

@@ -29,8 +29,14 @@ export function FilterGroup({
     : "min-w-0 space-y-1";
 
   useEffect(() => {
-    setHasMounted(true);
-    setIsExpanded(window.localStorage.getItem(persistedKey) !== "collapsed");
+    const syncId = window.setTimeout(() => {
+      setHasMounted(true);
+      setIsExpanded(window.localStorage.getItem(persistedKey) !== "collapsed");
+    }, 0);
+
+    return () => {
+      window.clearTimeout(syncId);
+    };
   }, [persistedKey]);
 
   useEffect(() => {
@@ -45,9 +51,15 @@ export function FilterGroup({
   }, [hasMounted, isEffectivelyExpanded, persistedKey]);
 
   return (
-    <section className={cn(rootClassName, 'cursor-pointer border-1 border-[#eee] rounded-md p-2')} onClick={() => {
-      setIsExpanded((current) => !current);
-    }}>
+    <section
+      className={cn(
+        rootClassName,
+        "cursor-pointer border-1 border-[#eee] rounded-md p-2"
+      )}
+      onClick={() => {
+        setIsExpanded((current) => !current);
+      }}
+    >
       <button
         aria-controls={contentId}
         aria-expanded={isEffectivelyExpanded}

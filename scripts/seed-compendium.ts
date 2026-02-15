@@ -1,8 +1,14 @@
 import { loadEnvConfig } from "@next/env";
 import { FieldValue } from "firebase-admin/firestore";
 
-import { type MonsterWriteInput,monsterWriteSchema } from "@/lib/domain/monster.schema";
-import { type SpellWriteInput,spellWriteSchema } from "@/lib/domain/spell.schema";
+import {
+  type MonsterWriteInput,
+  monsterWriteSchema,
+} from "@/lib/domain/monster.schema";
+import {
+  type SpellWriteInput,
+  spellWriteSchema,
+} from "@/lib/domain/spell.schema";
 
 const CREATED_BY = "seed-script";
 const SCHEMA_VERSION = 1;
@@ -15,7 +21,9 @@ const spells: SpellWriteInput[] = [
     components: { material: false, somatic: true, verbal: true },
     concentration: false,
     createdBy: CREATED_BY,
-    description: ["Three glowing darts of magical force strike creatures you can see."],
+    description: [
+      "Three glowing darts of magical force strike creatures you can see.",
+    ],
     duration: "Instantaneous",
     id: "magic-missile",
     isPublished: true,
@@ -41,7 +49,9 @@ const spells: SpellWriteInput[] = [
     concentration: false,
     createdBy: CREATED_BY,
     damage: { type: "fire", diceBySlot: { "3": "8d6" } },
-    description: ["A bright streak explodes in a 20-foot-radius sphere of fire."],
+    description: [
+      "A bright streak explodes in a 20-foot-radius sphere of fire.",
+    ],
     duration: "Instantaneous",
     id: "fireball",
     isPublished: true,
@@ -102,7 +112,9 @@ const spells: SpellWriteInput[] = [
     components: { material: false, somatic: true, verbal: true },
     concentration: true,
     createdBy: CREATED_BY,
-    description: ["For the duration, you sense the presence of magic within 30 feet."],
+    description: [
+      "For the duration, you sense the presence of magic within 30 feet.",
+    ],
     duration: "Concentration, up to 10 minutes",
     id: "detect-magic",
     isPublished: true,
@@ -122,7 +134,9 @@ const spells: SpellWriteInput[] = [
     components: { material: false, somatic: true, verbal: true },
     concentration: false,
     createdBy: CREATED_BY,
-    description: ["A spectral hand appears at a point you choose within range."],
+    description: [
+      "A spectral hand appears at a point you choose within range.",
+    ],
     duration: "1 minute",
     id: "mage-hand",
     isPublished: true,
@@ -147,7 +161,9 @@ const spells: SpellWriteInput[] = [
     },
     concentration: true,
     createdBy: CREATED_BY,
-    description: ["Up to three creatures add 1d4 to attack rolls and saving throws."],
+    description: [
+      "Up to three creatures add 1d4 to attack rolls and saving throws.",
+    ],
     duration: "Concentration, up to 1 minute",
     id: "bless",
     isPublished: true,
@@ -172,7 +188,9 @@ const spells: SpellWriteInput[] = [
     },
     concentration: true,
     createdBy: CREATED_BY,
-    description: ["A creature you touch becomes invisible until the spell ends."],
+    description: [
+      "A creature you touch becomes invisible until the spell ends.",
+    ],
     duration: "Concentration, up to 1 hour",
     id: "invisibility",
     isPublished: true,
@@ -192,7 +210,9 @@ const spells: SpellWriteInput[] = [
     components: { material: false, somatic: true, verbal: true },
     concentration: false,
     createdBy: CREATED_BY,
-    description: ["You teleport up to 30 feet to an unoccupied space you can see."],
+    description: [
+      "You teleport up to 30 feet to an unoccupied space you can see.",
+    ],
     duration: "Instantaneous",
     id: "misty-step",
     isPublished: true,
@@ -212,7 +232,9 @@ const spells: SpellWriteInput[] = [
     components: { material: false, somatic: true, verbal: true },
     concentration: false,
     createdBy: CREATED_BY,
-    description: ["You attempt to interrupt a creature in the process of casting a spell."],
+    description: [
+      "You attempt to interrupt a creature in the process of casting a spell.",
+    ],
     duration: "Instantaneous",
     id: "counterspell",
     isPublished: true,
@@ -368,7 +390,13 @@ const monsters: MonsterWriteInput[] = [
     challengeRating: "2",
     createdBy: CREATED_BY,
     crNumeric: 2,
-    conditionImmunities: ["blinded", "charmed", "deafened", "exhaustion", "prone"],
+    conditionImmunities: [
+      "blinded",
+      "charmed",
+      "deafened",
+      "exhaustion",
+      "prone",
+    ],
     hitPoints: "84 (8d10 + 40)",
     id: "gelatinous-cube",
     isPublished: true,
@@ -463,7 +491,9 @@ async function seedCollection<T extends { id: string }>(
   const { getAdminDb } = await import("../lib/firebase-admin");
 
   const db = getAdminDb();
-  const refs = entries.map((entry) => db.collection(collectionName).doc(entry.id));
+  const refs = entries.map((entry) =>
+    db.collection(collectionName).doc(entry.id)
+  );
   const snapshots = await db.getAll(...refs);
   const batch = db.batch();
   let created = 0;
@@ -477,7 +507,8 @@ async function seedCollection<T extends { id: string }>(
     }
 
     if (snapshot.exists) {
-      const existingCreatedAt = snapshot.get("createdAt") ?? FieldValue.serverTimestamp();
+      const existingCreatedAt =
+        snapshot.get("createdAt") ?? FieldValue.serverTimestamp();
       batch.set(ref, {
         ...entry,
         createdAt: existingCreatedAt,
@@ -501,16 +532,19 @@ async function seedCollection<T extends { id: string }>(
 
 async function main() {
   loadEnvConfig(process.cwd());
-  const { getAdminDb, hasRequiredServerFirebaseConfig } = await import("../lib/firebase-admin");
+  const { getAdminDb, hasRequiredServerFirebaseConfig } =
+    await import("../lib/firebase-admin");
 
   if (!hasRequiredServerFirebaseConfig) {
     throw new Error(
-      "Missing Firestore server env. Set NEXT_PUBLIC_FIREBASE_PROJECT_ID and service credentials if required."
+      "Missing Firestore server env. Set FIREBASE_PROJECT_ID and service credentials if required."
     );
   }
 
   const validatedSpells = spells.map((spell) => spellWriteSchema.parse(spell));
-  const validatedMonsters = monsters.map((monster) => monsterWriteSchema.parse(monster));
+  const validatedMonsters = monsters.map((monster) =>
+    monsterWriteSchema.parse(monster)
+  );
 
   const spellSummary = await seedCollection("spells", validatedSpells);
   const monsterSummary = await seedCollection("monsters", validatedMonsters);
@@ -521,8 +555,12 @@ async function main() {
     .doc("collections")
     .set(
       {
-        monstersVersion: FieldValue.increment(monsterSummary.created + monsterSummary.updated),
-        spellsVersion: FieldValue.increment(spellSummary.created + spellSummary.updated),
+        monstersVersion: FieldValue.increment(
+          monsterSummary.created + monsterSummary.updated
+        ),
+        spellsVersion: FieldValue.increment(
+          spellSummary.created + spellSummary.updated
+        ),
         updatedAt: FieldValue.serverTimestamp(),
       },
       { merge: true }

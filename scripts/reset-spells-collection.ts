@@ -30,29 +30,25 @@ async function deleteSpellsCollection(): Promise<number> {
 async function main() {
   loadEnvConfig(process.cwd());
 
-  const { getAdminDb, hasRequiredServerFirebaseConfig } = await import(
-    "../lib/firebase-admin"
-  );
+  const { getAdminDb, hasRequiredServerFirebaseConfig } =
+    await import("../lib/firebase-admin");
 
   if (!hasRequiredServerFirebaseConfig) {
     throw new Error(
-      "Missing Firestore server env. Set NEXT_PUBLIC_FIREBASE_PROJECT_ID and service credentials if required."
+      "Missing Firestore server env. Set FIREBASE_PROJECT_ID and service credentials if required."
     );
   }
 
   const deleted = await deleteSpellsCollection();
   const db = getAdminDb();
 
-  await db
-    .collection("meta")
-    .doc("collections")
-    .set(
-      {
-        spellsVersion: 0,
-        updatedAt: FieldValue.serverTimestamp(),
-      },
-      { merge: true }
-    );
+  await db.collection("meta").doc("collections").set(
+    {
+      spellsVersion: 0,
+      updatedAt: FieldValue.serverTimestamp(),
+    },
+    { merge: true }
+  );
 
   console.log("Spells collection reset complete.");
   console.log({ deleted, spellsVersion: 0 });

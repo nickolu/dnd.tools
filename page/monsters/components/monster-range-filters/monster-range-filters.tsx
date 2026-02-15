@@ -23,8 +23,14 @@ export function MonsterRangeFilters({
   const hasHydratedPersistedState = useRef(false);
 
   useEffect(() => {
-    setIsExpanded(window.localStorage.getItem(persistedKey) !== "collapsed");
-    hasHydratedPersistedState.current = true;
+    const syncId = window.setTimeout(() => {
+      setIsExpanded(window.localStorage.getItem(persistedKey) !== "collapsed");
+      hasHydratedPersistedState.current = true;
+    }, 0);
+
+    return () => {
+      window.clearTimeout(syncId);
+    };
   }, [persistedKey]);
 
   useEffect(() => {

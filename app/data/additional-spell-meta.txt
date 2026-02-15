@@ -1,0 +1,4866 @@
+Name	Level & School	Classes	Sources
+Acid Splash	Conjuration Cantrip	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.83 ↗
+Player's Handbook p.211
+Allergy Field	Transmutation Cantrip	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Alter Instrument	Transmutation Cantrip	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Bigby's Bookworm Bane	Evocation Cantrip	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Blacksteel	Transmutation Cantrip	
+Bard
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Blade Ward	Abjuration Cantrip	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.218
+Princes of the Apocalypse Online Supplement p.40 ↗
+Bloodbridge	Necromancy Cantrip	
+Cleric
+Druid
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Call Upon Faith	Evocation Cantrip	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Candletrick	Transmutation Cantrip	
+Bard
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Chill Touch	Necromancy Cantrip	
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.221
+Princes of the Apocalypse Online Supplement p.41 ↗
+Control Flames	Transmutation Cantrip	
+Druid
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.16 ↗
+Copy	Transmutation Cantrip	
+Bard
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Create Bonfire	Conjuration Cantrip	
+Druid
+Sorcerer
+Warlock
+Wizard
+Elemental Evil Player's Companion p.16 ↗
+Dancing Lights	Evocation Cantrip	
+Bard
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.86 ↗
+Player's Handbook p.230
+Darsson's Cooling Breeze	Evocation Cantrip	
+Bard
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Death Prayer	Abjuration Cantrip	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Deepen Shadows	Illusion Cantrip	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Disarm	Evocation Cantrip	
+Bard
+Druid
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Distraction	Enchantment Cantrip	
+Bard
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Druidcraft	Transmutation Cantrip	
+Druid
+Hoard of the Dragon Queen Online Supplement p.25 ↗
+Player's Handbook p.236
+Princes of the Apocalypse Online Supplement p.45 ↗
+Eldritch Blast	Evocation Cantrip	
+Warlock
+Player's Handbook p.237
+Princes of the Apocalypse Online Supplement p.45 ↗
+Empathy	Divination Cantrip	
+Bard
+Cleric
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Erik's Quills	Conjuration Cantrip	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Fiery Eyes	Evocation Cantrip	
+Bard
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Fire Bolt	Evocation Cantrip	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.90 ↗
+Player's Handbook p.242
+Flashpuff	Evocation Cantrip	
+Bard
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Friends	Enchantment Cantrip	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.244
+Princes of the Apocalypse Online Supplement p.47 ↗
+Frostbite	Evocation Cantrip	
+Druid
+Sorcerer
+Warlock
+Wizard
+Elemental Evil Player's Companion p.18 ↗
+Guidance	Divination Cantrip	
+Cleric
+Druid
+Player's D&D Basic Rules p.92 ↗
+Player's Handbook p.248
+Gust	Transmutation Cantrip	
+Druid
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.19 ↗
+Hailstone	Evocation Cantrip	
+Druid
+Sorcerer
+The (Not Really) Complete Tome of Spells ↗
+Handcandle	Evocation Cantrip	
+Bard
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Handfang	Transmutation Cantrip	
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Haunting	Illusion Cantrip	
+Bard
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Hold Portal	Abjuration Cantrip	
+Bard
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Leaf into Dagger	Transmutation Cantrip	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Legerdemain	Conjuration Cantrip	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Light	Evocation Cantrip	
+Bard
+Cleric
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.95 ↗
+Player's Handbook p.255
+Liquid Orb	Conjuration Cantrip	
+Bard
+Cleric
+Druid
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mage Hand	Conjuration Cantrip	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.256
+Magic Stone	Transmutation Cantrip	
+Druid
+Warlock
+Elemental Evil Player's Companion p.20 ↗
+Mending	Transmutation Cantrip	
+Bard
+Cleric
+Druid
+Sorcerer
+Wizard
+Player's Handbook p.259
+Princes of the Apocalypse Online Supplement p.50 ↗
+Message	Transmutation Cantrip	
+Bard
+Sorcerer
+Wizard
+Player's Handbook p.259
+Princes of the Apocalypse Online Supplement p.50 ↗
+Minor Illusion	Illusion Cantrip	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.97 ↗
+Player's Handbook p.260
+Mold Earth	Transmutation Cantrip	
+Druid
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.21 ↗
+Nature Call	Conjuration Cantrip	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Nature's Ward	Abjuration Cantrip	
+Druid
+En5ider (Strands of Life) p.4 ↗
+Odeen's Magic Cloud	Evocation Cantrip	
+Bard
+Sorcerer
+The (Not Really) Complete Tome of Spells ↗
+Odeen's Magic Tailor
+Ritual
+Transmutation Cantrip	
+Bard
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+On/Off
+technomagic
+Transmutation Cantrip	
+Sorcerer
+Warlock
+Wizard
+Urban Arcana (Modern Magic) p.7 ↗
+Orison	Transmutation Cantrip	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Pain	Necromancy Cantrip	
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Phantom Plow	Evocation Cantrip	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Poison Spray	Conjuration Cantrip	
+Druid
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.98 ↗
+Player's Handbook p.266
+Prestidigitation	Transmutation Cantrip	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.99 ↗
+Player's Handbook p.267
+Produce Flame	Conjuration Cantrip	
+Druid
+Player's Handbook p.269
+Princes of the Apocalypse Online Supplement p.52 ↗
+Rainshield	Abjuration Cantrip	
+Bard
+Cleric
+Druid
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Ray of Frost	Evocation Cantrip	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.99 ↗
+Player's Handbook p.271
+Resistance	Abjuration Cantrip	
+Cleric
+Druid
+Player's D&D Basic Rules p.99 ↗
+Player's Handbook p.272
+Ritual Strength
+Ritual
+Abjuration Cantrip	
+Cleric
+Druid
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Sacred Flame	Evocation Cantrip	
+Cleric
+Player's D&D Basic Rules p.100 ↗
+Player's Handbook p.272
+Scatterspray	Evocation Cantrip	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Secret Signs	Divination Cantrip	
+Bard
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Shape Water	Transmutation Cantrip	
+Druid
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.21 ↗
+Shillelagh	Transmutation Cantrip	
+Druid
+Player's Handbook p.275
+Princes of the Apocalypse Online Supplement p.53 ↗
+Shocking Grasp	Evocation Cantrip	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.101 ↗
+Player's Handbook p.275
+Smoke Shape	Transmutation Cantrip	
+Bard
+Druid
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Spare the Dying	Necromancy Cantrip	
+Cleric
+Player's D&D Basic Rules p.101 ↗
+Player's Handbook p.277
+Squeaking Floor	Abjuration Cantrip	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Sustain Fire	Transmutation Cantrip	
+Bard
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Talon's Waterproof	Abjuration Cantrip	
+Bard
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Thaumaturgy	Transmutation Cantrip	
+Cleric
+Player's D&D Basic Rules p.103 ↗
+Player's Handbook p.282
+Thorn Whip	Transmutation Cantrip	
+Druid
+Player's Handbook p.282
+Princes of the Apocalypse Online Supplement p.54 ↗
+Thump	Evocation Cantrip	
+Bard
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Thunderclap	Evocation Cantrip	
+Bard
+Druid
+Sorcerer
+Warlock
+Wizard
+Elemental Evil Player's Companion p.22 ↗
+True Strike	Divination Cantrip	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.284
+Vicious Mockery	Enchantment Cantrip	
+Bard
+Player's Handbook p.285
+Princes of the Apocalypse Online Supplement p.55 ↗
+Virtue	Abjuration Cantrip	
+Bard
+En5ider (Strands of Life) p.5 ↗
+Warning Shout	Evocation Cantrip	
+Bard
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Absorb Elements	1st-level Abjuration	
+Druid
+Druid (Circle of Elements (All Elements))
+Ranger
+Wizard
+Elemental Evil Player's Companion p.15 ↗
+Adhesion
+Ritual
+1st-level Transmutation	
+Druid
+Ranger
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Alarm
+Ritual
+1st-level Abjuration	
+Ranger
+Wizard
+Player's Handbook p.211
+Princes of the Apocalypse Online Supplement p.39 ↗
+Alert Vigil	1st-level Enchantment	
+Bard
+Cleric
+Druid
+Paladin
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Animal Animosity	1st-level Enchantment	
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Animal Friendship	1st-level Enchantment	
+Bard
+Cleric (Nature)
+Druid
+Ranger
+Hoard of the Dragon Queen Online Supplement p.23 ↗
+Player's Handbook p.212
+Princes of the Apocalypse Online Supplement p.39 ↗
+Armor of Agathys	1st-level Abjuration	
+Warlock
+Player's Handbook p.215
+Princes of the Apocalypse Online Supplement p.40 ↗
+Arms of Hadar	1st-level Conjuration	
+Paladin (Elder Sign)
+Warlock
+Player's Handbook p.215
+Arrowflight	1st-level Transmutation	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Assess Value
+Ritual
+1st-level Divination	
+Bard
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Augment Artistry	1st-level Transmutation	
+Bard
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Bane	1st-level Enchantment	
+Bard
+Cleric
+Paladin (Vengeance)
+Player's Handbook p.216
+Princes of the Apocalypse Online Supplement p.40 ↗
+Banish Dazzle	1st-level Abjuration	
+Bard
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Beast Bond	1st-level Divination	
+Druid
+Ranger
+Elemental Evil Player's Companion p.15 ↗
+Beneficence	1st-level Evocation	
+Cleric
+Druid
+Paladin
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Bless	1st-level Enchantment	
+Cleric
+Cleric (Life)
+Cleric (Luck)
+Paladin
+Player's D&D Basic Rules p.85 ↗
+Player's Handbook p.219
+Blood Bond
+Ritual
+1st-level Necromancy	
+Druid
+Paladin
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Burning Hands	1st-level Evocation	
+Cleric (Light)
+Paladin (Oath of the Purge)
+Sorcerer
+Warlock (The Fiend)
+Wizard
+Player's D&D Basic Rules p.85 ↗
+Player's Handbook p.220
+Calder's Starry Sky
+Ritual
+1st-level Illusion	
+Bard
+Cleric
+Druid
+Ranger
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Catapult	1st-level Transmutation	
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.15 ↗
+Charm Person	1st-level Enchantment	
+Bard
+Cleric (Trickery)
+Druid
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.85 ↗
+Player's Handbook p.221
+Chromatic Orb	1st-level Evocation	
+Sorcerer
+Wizard
+Hoard of the Dragon Queen Online Supplement p.23 ↗
+Player's Handbook p.221
+Princes of the Apocalypse Online Supplement p.41 ↗
+The Rise of Tiamat Online Supplement p.31 ↗
+Color
+Ritual
+1st-level Illusion	
+Bard
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Color Spray	1st-level Illusion	
+Sorcerer
+Wizard
+Hoard of the Dragon Queen Online Supplement p.24 ↗
+Player's Handbook p.222
+Princes of the Apocalypse Online Supplement p.41 ↗
+The Rise of Tiamat Online Supplement p.31 ↗
+Command	1st-level Enchantment	
+Cleric
+Cleric (Knowledge)
+Paladin
+Paladin (Heresy)
+Paladin (Oath of the Supremacy)
+Warlock (The Fiend)
+Player's D&D Basic Rules p.85 ↗
+Player's Handbook p.223
+Compass
+Ritual
+1st-level Divination	
+Bard
+Druid
+Paladin
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Compelled Duel	1st-level Enchantment	
+Paladin
+Player's Handbook p.224
+Comprehend Languages
+Ritual
+1st-level Divination	
+Bard
+Cleric (City)
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.86 ↗
+Player's Handbook p.224
+Create or Destroy Water	1st-level Transmutation	
+Cleric
+Druid
+Player's Handbook p.229
+Creeping Darkness
+Ritual
+1st-level Illusion	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Cure Wounds	1st-level Evocation	
+Bard
+Cleric
+Cleric (Life)
+Druid
+Paladin
+Ranger
+Player's D&D Basic Rules p.86 ↗
+Player's Handbook p.230
+Dancing Fire	1st-level Evocation	
+Bard
+Cleric
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Death Candle
+Ritual
+1st-level Divination	
+Cleric
+Druid
+Paladin
+The (Not Really) Complete Tome of Spells ↗
+Detect Evil and Good	1st-level Divination	
+Cleric
+Paladin
+Paladin (Inquisitor)
+Hoard of the Dragon Queen Online Supplement p.24 ↗
+Player's Handbook p.231
+Princes of the Apocalypse Online Supplement p.44 ↗
+Detect Harmony
+Ritual
+1st-level Divination	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Detect Magic
+Ritual
+1st-level Divination	
+Bard
+Cleric
+Druid
+Paladin
+Ranger
+Sorcerer
+Warlock (The Machine)
+Wizard
+Player's D&D Basic Rules p.87 ↗
+Player's Handbook p.231
+Detect Metals and Minerals
+Ritual
+1st-level Divination	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Detect Poison and Disease
+Ritual
+1st-level Divination	
+Cleric
+Druid
+Paladin
+Ranger
+Player's Handbook p.231
+Detect Secret Passages and Portals	1st-level Divination	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Diction
+Ritual
+1st-level Evocation	
+Bard
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Disguise Self	1st-level Illusion	
+Bard
+Cleric (Trickery)
+Paladin (Inquisitor)
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.87 ↗
+Player's Handbook p.233
+Dissonant Whispers	1st-level Enchantment	
+Bard
+Warlock (The Great Old One)
+Player's Handbook p.234
+Princes of the Apocalypse Online Supplement p.44 ↗
+Divine Favor	1st-level Evocation	
+Cleric (Luck)
+Cleric (War)
+Paladin
+Player's Handbook p.234
+Drawmij's Breath of Life	1st-level Transmutation	
+Druid
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Drawmij's Light Step	1st-level Transmutation	
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Earth Tremor	1st-level Evocation	
+Bard
+Druid
+Druid (Circle of Elements (Earth))
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.17 ↗
+Ease Labor
+Ritual
+1st-level Transmutation	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Elonia's Glamer	1st-level Illusion	
+Bard
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Ensnaring Strike	1st-level Conjuration	
+Paladin (Ancients)
+Ranger
+Player's Handbook p.237
+Entangle	1st-level Conjuration	
+Druid
+Hoard of the Dragon Queen Online Supplement p.25 ↗
+Player's Handbook p.238
+Princes of the Apocalypse Online Supplement p.45 ↗
+Erase	1st-level Transmutation	
+Bard
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Expeditious Retreat	1st-level Transmutation	
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.238
+Princes of the Apocalypse Online Supplement p.46 ↗
+Exterminate	1st-level Necromancy	
+Bard
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Faerie Fire	1st-level Evocation	
+Bard
+Cleric (Light)
+Druid
+Warlock (The Archfey)
+Player's D&D Basic Rules p.90 ↗
+Player's Handbook p.239
+False Life	1st-level Necromancy	
+Cleric (Death)
+Sorcerer
+Warlock (The Skin)
+Wizard
+Player's Handbook p.239
+False Tracks	1st-level Illusion	
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Favor of the Earth	1st-level Transmutation	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Feather Fall	1st-level Transmutation	
+Bard
+Cleric (Travel)
+Sorcerer
+Wizard
+Hoard of the Dragon Queen Online Supplement p.25 ↗
+Player's Handbook p.239
+Princes of the Apocalypse Online Supplement p.46 ↗
+The Rise of Tiamat Online Supplement p.33 ↗
+Fertility	1st-level Transmutation	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Filth's Bane
+Ritual
+1st-level Transmutation	
+Bard
+Cleric
+Paladin
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Find Familiar
+Ritual
+1st-level Conjuration	
+Wizard
+Player's Handbook p.240
+Fire Truth
+Ritual
+1st-level Divination	
+Bard
+Cleric
+Paladin
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+First Strike	1st-level Transmutation	
+Cleric
+Paladin
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Fist of Stone	1st-level Transmutation	
+Druid
+Paladin
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Fog Cloud	1st-level Conjuration	
+Cleric (Tempest)
+Druid
+Druid (Circle of Elements (Water))
+Ranger
+Sorcerer
+Wizard
+Hoard of the Dragon Queen Online Supplement p.25 ↗
+Player's Handbook p.243
+Princes of the Apocalypse Online Supplement p.47 ↗
+Frost Fingers	1st-level Evocation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Gift of Speech	1st-level Transmutation	
+Druid
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Goodberry	1st-level Transmutation	
+Druid
+Ranger
+Player's Handbook p.246
+Grease	1st-level Conjuration	
+Wizard
+Player's Handbook p.246
+Guiding Bolt	1st-level Evocation	
+Cleric
+Player's D&D Basic Rules p.92 ↗
+Player's Handbook p.248
+Hail of Stone	1st-level Conjuration	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Hail of Thorns	1st-level Conjuration	
+Ranger
+Player's Handbook p.249
+Hair
+Ritual
+1st-level Transmutation	
+Bard
+Cleric
+Paladin
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Healing Word	1st-level Evocation	
+Bard
+Cleric
+Druid
+Druid (Circle of Life)
+Player's D&D Basic Rules p.93 ↗
+Player's Handbook p.250
+Hellish Rebuke	1st-level Evocation	
+Paladin (Oathbreaker)
+Warlock
+Player's Handbook p.250
+Princes of the Apocalypse Online Supplement p.48 ↗
+Heroism	1st-level Enchantment	
+Bard
+Paladin
+Paladin (Oath of the Supremacy)
+Player's Handbook p.250
+Hex	1st-level Enchantment	
+Paladin (Heresy)
+Warlock
+Player's Handbook p.251
+Princes of the Apocalypse Online Supplement p.49 ↗
+Hunter's Mark	1st-level Divination	
+Paladin (Vengeance)
+Ranger
+Player's Handbook p.251
+Ice Knife	1st-level Conjuration	
+Druid
+Druid (Circle of Elements (Water))
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.19 ↗
+Idea	1st-level Divination	
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Identify
+Ritual
+1st-level Divination	
+Bard
+Cleric (Knowledge)
+Wizard
+Player's D&D Basic Rules p.94 ↗
+Player's Handbook p.252
+Illusory Script
+Ritual
+1st-level Illusion	
+Bard
+Warlock
+Wizard
+Player's Handbook p.252
+Infallible Relay
+technomagic
+1st-level Divination	
+Sorcerer
+Warlock
+Warlock (The Ghost in the Machine)
+Wizard
+Urban Arcana (Modern Magic) p.7 ↗
+Inflict Wounds	1st-level Necromancy	
+Cleric
+Paladin (Oathbreaker)
+Warlock (The Skin)
+Player's D&D Basic Rules p.94 ↗
+Player's Handbook p.253
+Jump	1st-level Transmutation	
+Druid
+Ranger
+Sorcerer
+Wizard
+Player's Handbook p.254
+Princes of the Apocalypse Online Supplement p.49 ↗
+Ladder	1st-level Evocation	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Laeral's Cutting Hand	1st-level Transmutation	
+Paladin
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Longstrider	1st-level Transmutation	
+Bard
+Cleric (Travel)
+Druid
+Ranger
+Wizard
+Hoard of the Dragon Queen Online Supplement p.26 ↗
+Player's Handbook p.256
+Mage Armor	1st-level Abjuration	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.96 ↗
+Player's Handbook p.256
+Magic Missile	1st-level Evocation	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.96 ↗
+Player's Handbook p.257
+Magical Tether
+Ritual
+1st-level Evocation	
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Otto's Chime of Release	1st-level Transmutation	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Protection from Evil and Good	1st-level Abjuration	
+Cleric
+Paladin
+Paladin (Devotion)
+Paladin (Elder Sign)
+Warlock
+Wizard
+Player's Handbook p.270
+Protective Amulet
+Ritual
+1st-level Abjuration	
+Cleric
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Purify Food and Drink
+Ritual
+1st-level Transmutation	
+Cleric
+Druid
+Paladin
+Player's Handbook p.270
+Ray of Fatigue	1st-level Necromancy	
+Bard
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Ray of Sickness	1st-level Necromancy	
+Cleric (Death)
+Sorcerer
+Wizard
+Player's Handbook p.271
+Reed Staff	1st-level Transmutation	
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Regrowth	1st-level Transmutation	
+Druid
+Ranger
+En5ider (Strands of Life) p.4 ↗
+Remote Access
+technomagic
+1st-level Transmutation	
+Cleric (City)
+Sorcerer
+Warlock
+Warlock (The Ghost in the Machine)
+Wizard
+Urban Arcana (Modern Magic) p.8 ↗
+Sacred Guardian
+Ritual
+1st-level Abjuration	
+Cleric
+Druid
+Paladin
+The (Not Really) Complete Tome of Spells ↗
+Sanctuary	1st-level Abjuration	
+Cleric
+Paladin (Devotion)
+Paladin (Oath of the Purge)
+Player's D&D Basic Rules p.100 ↗
+Player's Handbook p.272
+Sea Sight	1st-level Divination	
+Druid
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Searing Flame	1st-level Evocation	
+Paladin
+Player's Handbook p.274
+Secret Page
+Ritual
+1st-level Transmutation	
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Segojan's Armor
+Ritual
+1st-level Abjuration	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Sharptooth	1st-level Transmutation	
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Shield	1st-level Abjuration	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.100 ↗
+Player's Handbook p.275
+Shield of Faith	1st-level Abjuration	
+Cleric
+Cleric (War)
+Paladin
+Player's D&D Basic Rules p.100 ↗
+Player's Handbook p.275
+Silent Image	1st-level Illusion	
+Bard
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.101 ↗
+Player's Handbook p.276
+Sleep	1st-level Enchantment	
+Bard
+Sorcerer
+Warlock (The Archfey)
+Wizard
+Player's D&D Basic Rules p.101 ↗
+Player's Handbook p.276
+Speak with Animals
+Ritual
+1st-level Divination	
+Bard
+Cleric (Nature)
+Druid
+Paladin (Ancients)
+Ranger
+Player's Handbook p.277
+Princes of the Apocalypse Online Supplement p.53 ↗
+The Rise of Tiamat Online Supplement p.37 ↗
+Special Effects
+Ritual
+1st-level Transmutation	
+Bard
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Spirit Mask	1st-level Abjuration	
+Cleric
+Druid
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Suppress Pain	1st-level Abjuration	
+Bard
+Paladin
+En5ider (Strands of Life) p.5 ↗
+Swim	1st-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Tasha's Hideous Laughter	1st-level Enchantment	
+Bard
+Warlock (The Great Old One)
+Wizard
+Player's Handbook p.280
+Tenser's Floating Disk
+Ritual
+1st-level Conjuration	
+Wizard
+Player's Handbook p.282
+Thunderous Smite	1st-level Evocation	
+Paladin
+Player's Handbook p.282
+Thunderwave	1st-level Evocation	
+Bard
+Cleric (Tempest)
+Druid
+Sorcerer
+Warlock (The Machine)
+Wizard
+Player's D&D Basic Rules p.103 ↗
+Player's Handbook p.282
+Unseen Servant
+Ritual
+1st-level Conjuration	
+Bard
+Warlock
+Wizard
+Player's Handbook p.284
+Weapon of the Earth	1st-level Transmutation	
+Druid
+Paladin
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Witch Bolt	1st-level Evocation	
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.289
+Princes of the Apocalypse Online Supplement p.55 ↗
+Wrathful Smite	1st-level Evocation	
+Paladin
+Player's Handbook p.289
+Aganazzar's Scorcher	2nd-level Evocation	
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.15 ↗
+Agra's Ambush	2nd-level Abjuration	
+Bard
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Aid	2nd-level Abjuration	
+Cleric
+Cleric (Luck)
+Paladin
+Player's D&D Basic Rules p.83 ↗
+Player's Handbook p.211
+Alter Self	2nd-level Transmutation	
+Sorcerer
+Wizard
+Player's Handbook p.211
+Princes of the Apocalypse Online Supplement p.39 ↗
+Ancestral Blessing
+Ritual
+2nd-level Necromancy	
+Cleric
+Druid
+Ranger
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Animal Messenger
+Ritual
+2nd-level Enchantment	
+Bard
+Druid
+Ranger
+Player's Handbook p.212
+Princes of the Apocalypse Online Supplement p.39 ↗
+The Rise of Tiamat Online Supplement p.30 ↗
+Arcane Hacking
+technomagic
+2nd-level Transmutation	
+Sorcerer
+Warlock
+Warlock (The Ghost in the Machine)
+Wizard
+Urban Arcana (Modern Magic) p.5 ↗
+Arcane Lock	2nd-level Abjuration	
+Wizard
+Player's D&D Basic Rules p.83 ↗
+Player's Handbook p.215
+Augury
+Ritual
+2nd-level Divination	
+Cleric
+Cleric (Knowledge)
+Player's D&D Basic Rules p.84 ↗
+Player's Handbook p.215
+Banish Blight
+Ritual
+2nd-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Barkskin	2nd-level Transmutation	
+Cleric (Nature)
+Druid
+Druid (Circle of the Land (Forest))
+Ranger
+Warlock (The Skin)
+Hoard of the Dragon Queen Online Supplement p.23 ↗
+Player's Handbook p.217
+Princes of the Apocalypse Online Supplement p.40 ↗
+Beast Sense
+Ritual
+2nd-level Divination	
+Druid
+Ranger
+Hoard of the Dragon Queen Online Supplement p.23 ↗
+Player's Handbook p.217
+Beastmask	2nd-level Illusion	
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Bigby's Dexterous Digits	2nd-level Evocation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Blindness/Deafness	2nd-level Necromancy	
+Bard
+Cleric
+Cleric (Death)
+Sorcerer
+Warlock (The Fiend)
+Wizard
+Hoard of the Dragon Queen Online Supplement p.23 ↗
+Player's Handbook p.219
+Princes of the Apocalypse Online Supplement p.41 ↗
+Bliss	2nd-level Enchantment	
+Bard
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Blur	2nd-level Illusion	
+Druid (Circle of the Land (Desert))
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.85 ↗
+Player's Handbook p.219
+Body Blades	2nd-level Transmutation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Branding Smite	2nd-level Evocation	
+Paladin
+Player's Handbook p.219
+Call Society	2nd-level Illusion	
+Bard
+Cleric
+Druid
+Paladin
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Calm Emotions	2nd-level Enchantment	
+Bard
+Cleric
+Warlock (The Archfey)
+Hoard of the Dragon Queen Online Supplement p.23 ↗
+Player's Handbook p.221
+Circle of Privacy
+Ritual
+2nd-level Illusion	
+Bard
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Cloud of Daggers	2nd-level Conjuration	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.222
+The Rise of Tiamat Online Supplement p.31 ↗
+Continual Flame	2nd-level Evocation	
+Cleric
+Wizard
+Player's Handbook p.227
+Princes of the Apocalypse Online Supplement p.42 ↗
+The Rise of Tiamat Online Supplement p.32 ↗
+Cook
+Ritual
+2nd-level Transmutation	
+Bard
+Druid
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Cordon of Arrows	2nd-level Transmutation	
+Ranger
+Player's Handbook p.228
+Create Campsite
+Ritual
+2nd-level Conjuration	
+Bard
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Crown of Madness	2nd-level Enchantment	
+Bard
+Paladin (Oathbreaker)
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.229
+Darkness	2nd-level Evocation	
+Druid (Circle of the Land (Swamp))
+Paladin (Oathbreaker)
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.86 ↗
+Player's Handbook p.230
+Darkvision	2nd-level Transmutation	
+Druid
+Ranger
+Sorcerer
+Warlock (The Machine)
+Wizard
+Player's Handbook p.230
+Death Recall
+Ritual
+2nd-level Divination	
+Cleric
+Paladin
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Decastave	2nd-level Evocation	
+Cleric
+Druid
+Ranger
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Deeppockets
+Ritual
+2nd-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Detect Charm	2nd-level Divination	
+Bard
+Cleric
+Druid
+Paladin
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Detect Thoughts	2nd-level Divination	
+Bard
+Paladin (Elder Sign)
+Paladin (Inquisitor)
+Sorcerer
+Warlock (The Great Old One)
+Wizard
+Player's Handbook p.231
+Princes of the Apocalypse Online Supplement p.44 ↗
+Digital Phantom
+technomagic
+2nd-level Abjuration	
+Sorcerer
+Warlock
+Warlock (The Ghost in the Machine)
+Wizard
+Urban Arcana (Modern Magic) p.6 ↗
+Drawmij's Scent Mask	2nd-level Illusion	
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Drawmij's Swift Mount	2nd-level Transmutation	
+Druid
+Paladin
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Drenal's Stone Flame	2nd-level Transmutation	
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Dust Devil	2nd-level Conjuration	
+Druid
+Druid (Circle of Elements (Air))
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.17 ↗
+Earthbind	2nd-level Transmutation	
+Druid
+Druid (Circle of Elements (Earth))
+Sorcerer
+Warlock
+Wizard
+Elemental Evil Player's Companion p.17 ↗
+Echoes	2nd-level Illusion	
+Bard
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Elude Blow	2nd-level Abjuration	
+Cleric
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Enhance Ability	2nd-level Transmutation	
+Bard
+Cleric
+Cleric (Luck)
+Druid
+Paladin (Oath of the Supremacy)
+Sorcerer
+Player's Handbook p.237
+Enlarge/Reduce	2nd-level Transmutation	
+Sorcerer
+Warlock (The Skin)
+Wizard
+Player's Handbook p.237
+Princes of the Apocalypse Online Supplement p.45 ↗
+The Rise of Tiamat Online Supplement p.33 ↗
+Enthrall	2nd-level Enchantment	
+Bard
+Paladin (Heresy)
+Warlock
+Player's Handbook p.238
+Exorcism
+Ritual
+2nd-level Abjuration	
+Bard
+Cleric
+Druid
+Paladin
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Fang Fist	2nd-level Transmutation	
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Favor of Good Luck	2nd-level Abjuration	
+Cleric
+Paladin
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Favor of Ill Luck	2nd-level Transmutation	
+Cleric
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Favor of Serendipity	2nd-level Transmutation	
+Cleric
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Fiery Fists	2nd-level Evocation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Find Steed	2nd-level Conjuration	
+Paladin
+Player's Handbook p.240
+Find Traps	2nd-level Divination	
+Cleric
+Druid
+Ranger
+Player's Handbook p.241
+Find Vehicle	2nd-level Conjuration	
+Cleric (City)
+Paladin
+Sorcerer
+Warlock
+Wizard
+Urban Arcana (Modern Magic) p.6 ↗
+Fire Arrows	2nd-level Evocation	
+Bard
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Fireproof
+Ritual
+2nd-level Abjuration	
+Cleric
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Firestaff	2nd-level Evocation	
+Cleric
+Ranger
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Flame Blade	2nd-level Evocation	
+Druid
+Player's Handbook p.242
+Princes of the Apocalypse Online Supplement p.46 ↗
+Flaming Sphere	2nd-level Conjuration	
+Cleric (Light)
+Druid
+Druid (Circle of Elements (Fire))
+Wizard
+Player's D&D Basic Rules p.91 ↗
+Player's Handbook p.242
+Frostfire	2nd-level Transmutation	
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Gentle Repose
+Ritual
+2nd-level Necromancy	
+Cleric
+Wizard
+Player's Handbook p.245
+Grassdart	2nd-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Ground Trace	2nd-level Divination	
+Druid
+Ranger
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Gust of Wind	2nd-level Evocation	
+Cleric (Tempest)
+Druid
+Druid (Circle of Elements (Air))
+Sorcerer
+Wizard
+Hoard of the Dragon Queen Online Supplement p.26 ↗
+Player's Handbook p.248
+Princes of the Apocalypse Online Supplement p.48 ↗
+Halo of Rejuvenation	2nd-level Evocation	
+Cleric
+Druid
+En5ider (Strands of Life) p.4 ↗
+Heat Metal	2nd-level Transmutation	
+Bard
+Cleric (City)
+Druid
+Warlock (The Machine)
+Player's Handbook p.250
+Princes of the Apocalypse Online Supplement p.48 ↗
+Hold Person	2nd-level Enchantment	
+Bard
+Cleric
+Cleric (Travel)
+Druid
+Druid (Circle of the Land (Arctic))
+Paladin (Heresy)
+Paladin (Oath of the Supremacy)
+Paladin (Vengeance)
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.93 ↗
+Player's Handbook p.251
+Hurl Rock	2nd-level Evocation	
+Druid
+Ranger
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Immurk's Distraction
+Ritual
+2nd-level Enchantment	
+Bard
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Intensify Sensation	2nd-level Enchantment	
+Bard
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Invisibility	2nd-level Illusion	
+Bard
+Druid (Circle of the Land (Grassland))
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.95 ↗
+Player's Handbook p.254
+Knock	2nd-level Transmutation	
+Bard
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.95 ↗
+Player's Handbook p.254
+Leomund's Trap
+Ritual
+2nd-level Illusion	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Lesser Restoration	2nd-level Abjuration	
+Bard
+Cleric
+Cleric (Life)
+Druid
+Druid (Circle of Life)
+Paladin
+Paladin (Devotion)
+Ranger
+Player's D&D Basic Rules p.95 ↗
+Player's Handbook p.255
+Levitate	2nd-level Transmutation	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.95 ↗
+Player's Handbook p.255
+Locate Animals or Plants
+Ritual
+2nd-level Divination	
+Bard
+Druid
+Ranger
+Player's Handbook p.256
+Locate Object	2nd-level Divination	
+Bard
+Cleric
+Druid
+Paladin
+Ranger
+Wizard
+Player's Handbook p.256
+Magic Mouth
+Ritual
+2nd-level Illusion	
+Bard
+Wizard
+Player's Handbook p.257
+The Rise of Tiamat Online Supplement p.35 ↗
+Magic Weapon	2nd-level Transmutation	
+Cleric (War)
+Paladin
+Wizard
+Player's D&D Basic Rules p.96 ↗
+Player's Handbook p.257
+Maximilian's Earthen Grasp	2nd-level Transmutation	
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.20 ↗
+Melf's Acid Arrow	2nd-level Evocation	
+Druid (Circle of the Land (Swamp))
+Wizard
+Player's Handbook p.259
+Princes of the Apocalypse Online Supplement p.50 ↗
+Mirror Image	2nd-level Illusion	
+Cleric (Trickery)
+Druid (Circle of the Land (Coast))
+Sorcerer
+Warlock
+Wizard
+Hoard of the Dragon Queen Online Supplement p.26 ↗
+Player's Handbook p.260
+Princes of the Apocalypse Online Supplement p.50 ↗
+The Rise of Tiamat Online Supplement p.35 ↗
+Mistaken Missive	2nd-level Transmutation	
+Bard
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Misty Step	2nd-level Conjuration	
+Cleric (Travel)
+Druid (Circle of the Land (Coast))
+Paladin (Ancients)
+Paladin (Vengeance)
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.98 ↗
+Player's Handbook p.260
+Moon Rune	2nd-level Illusion	
+Bard
+Cleric
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Moonbeam	2nd-level Evocation	
+Druid
+Paladin (Ancients)
+Player's Handbook p.261
+Nap	2nd-level Enchantment	
+Cleric
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Nystul's Magic Aura	2nd-level Illusion	
+Wizard
+Player's Handbook p.263
+Otto's Soothing Vibrations	2nd-level Enchantment	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Pass without Trace	2nd-level Abjuration	
+Cleric (Trickery)
+Druid
+Druid (Circle of the Land (Grassland))
+Ranger
+Player's Handbook p.264
+Phantasmal Force	2nd-level Illusion	
+Bard
+Sorcerer
+Warlock (The Archfey)
+Warlock (The Great Old One)
+Wizard
+Hoard of the Dragon Queen Online Supplement p.27 ↗
+Player's Handbook p.264
+Princes of the Apocalypse Online Supplement p.51 ↗
+The Rise of Tiamat Online Supplement p.36 ↗
+Prayer of Healing	2nd-level Evocation	
+Cleric
+Player's D&D Basic Rules p.98 ↗
+Player's Handbook p.267
+Preservation
+Ritual
+2nd-level Abjuration	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Prismal's Handy Mirror	2nd-level Conjuration	
+Bard
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Protection from Poison	2nd-level Abjuration	
+Cleric
+Druid
+Paladin
+Ranger
+Player's Handbook p.270
+Pyrotechnics	2nd-level Transmutation	
+Bard
+Druid (Circle of Elements (Fire))
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.21 ↗
+Ray of Enfeeblement	2nd-level Necromancy	
+Cleric (Death)
+Warlock
+Wizard
+Player's Handbook p.271
+Resist Magic	2nd-level Abjuration	
+Cleric
+Paladin
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Revenance	2nd-level Abjuration	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Rope Trick	2nd-level Transmutation	
+Wizard
+Player's Handbook p.272
+Sap	2nd-level Conjuration	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Scent of Vengeance
+Ritual
+2nd-level Transmutation	
+Druid
+Paladin
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Scorching Ray	2nd-level Evocation	
+Cleric (Light)
+Paladin (Oath of the Purge)
+Sorcerer
+Warlock (The Fiend)
+Wizard
+Hoard of the Dragon Queen Online Supplement p.27 ↗
+Player's Handbook p.273
+Princes of the Apocalypse Online Supplement p.52 ↗
+Seal Mouth	2nd-level Enchantment	
+Bard
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+See Invisibility	2nd-level Divination	
+Bard
+Sorcerer
+Wizard
+Player's Handbook p.274
+The Rise of Tiamat Online Supplement p.36 ↗
+See Through Other Eyes	2nd-level Divination	
+Druid
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Shark Bolt	2nd-level Evocation	
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Shatter	2nd-level Evocation	
+Bard
+Cleric (Tempest)
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.100 ↗
+Player's Handbook p.275
+Shield of Honor	2nd-level Abjuration	
+Bard
+Paladin
+En5ider (Strands of Life) p.5 ↗
+Silence
+Ritual
+2nd-level Illusion	
+Bard
+Cleric
+Druid (Circle of the Land (Desert))
+Ranger
+Player's D&D Basic Rules p.101 ↗
+Player's Handbook p.275
+Sinister Surroundings	2nd-level Illusion	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Skull Watch	2nd-level Necromancy	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Skyhook	2nd-level Evocation	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Skywrite
+Ritual
+2nd-level Transmutation	
+Bard
+Druid
+Druid (Circle of Elements (All Elements))
+Wizard
+Elemental Evil Player's Companion p.22 ↗
+Snilloc's Snowball Swarm	2nd-level Evocation	
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.22 ↗
+Spider Climb	2nd-level Transmutation	
+Druid (Circle of the Land (Forest))
+Druid (Circle of the Land (Mountain))
+Druid (Circle of the Land (Underdark))
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.102 ↗
+Player's Handbook p.277
+Spike Growth	2nd-level Transmutation	
+Cleric (Nature)
+Druid
+Druid (Circle of the Land (Arctic))
+Druid (Circle of the Land (Mountain))
+Ranger
+Hoard of the Dragon Queen Online Supplement p.28 ↗
+Player's Handbook p.277
+Princes of the Apocalypse Online Supplement p.54 ↗
+Spiritual Weapon	2nd-level Evocation	
+Cleric
+Cleric (Life)
+Cleric (War)
+Player's D&D Basic Rules p.102 ↗
+Player's Handbook p.278
+Splinter Wood	2nd-level Transmutation	
+Druid
+Ranger
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Suggestion	2nd-level Enchantment	
+Bard
+Cleric (Knowledge)
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.102 ↗
+Player's Handbook p.279
+Tenser's Hunting Hawk	2nd-level Transmutation	
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Thunderball	2nd-level Evocation	
+Cleric
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Venomous Blade	2nd-level Transmutation	
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Warding Bond	2nd-level Abjuration	
+Cleric
+Player's D&D Basic Rules p.105 ↗
+Player's Handbook p.287
+Warding Wind	2nd-level Evocation	
+Bard
+Druid
+Druid (Circle of Elements (Air))
+Sorcerer
+Elemental Evil Player's Companion p.23 ↗
+Weapon Shift	2nd-level Transmutation	
+Paladin
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Web	2nd-level Conjuration	
+Druid (Circle of the Land (Underdark))
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.105 ↗
+Player's Handbook p.287
+Whispers
+Ritual
+2nd-level Divination	
+Bard
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Wolfjaws	2nd-level Transmutation	
+Druid
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Wyvern Watch	2nd-level Evocation	
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Zone of Deception	2nd-level Enchantment	
+Bard
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Zone of Truth	2nd-level Enchantment	
+Bard
+Cleric
+Paladin
+Paladin (Devotion)
+Paladin (Elder Sign)
+Paladin (Inquisitor)
+Paladin (Oath of the Purge)
+Player's Handbook p.289
+The Rise of Tiamat Online Supplement p.38 ↗
+Acid Lash	3rd-level Evocation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Amanuensis
+Ritual
+3rd-level Transmutation	
+Bard
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Amulet
+Ritual
+3rd-level Abjuration	
+Cleric
+Druid
+Ranger
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Anesthesia
+Ritual
+3rd-level Enchantment	
+Cleric
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Animal Trick	3rd-level Enchantment	
+Bard
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Animate Dead	3rd-level Necromancy	
+Cleric
+Cleric (Death)
+Paladin (Oathbreaker)
+Wizard
+Player's Handbook p.212
+Princes of the Apocalypse Online Supplement p.39 ↗
+The Rise of Tiamat Online Supplement p.30 ↗
+Archer's Redoubt	3rd-level Evocation	
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Astral Awareness	3rd-level Divination	
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Aura of Vitality	3rd-level Evocation	
+Paladin
+Player's Handbook p.216
+Beacon of Hope	3rd-level Abjuration	
+Cleric
+Cleric (Life)
+Druid (Circle of Life)
+Paladin (Devotion)
+Player's D&D Basic Rules p.84 ↗
+Player's Handbook p.217
+Bearhug	3rd-level Transmutation	
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Bestow Curse	3rd-level Necromancy	
+Bard
+Cleric
+Cleric (Luck)
+Paladin (Oathbreaker)
+Wizard
+Player's Handbook p.218
+Blinding Smite	3rd-level Evocation	
+Paladin
+Player's Handbook p.219
+Blink	3rd-level Transmutation	
+Cleric (Trickery)
+Sorcerer
+Warlock (The Archfey)
+Wizard
+Player's Handbook p.219
+Blossom
+Ritual
+3rd-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Boon of Fortune	3rd-level Transmutation	
+Bard
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Call Lightning	3rd-level Conjuration	
+Cleric (Tempest)
+Druid
+Druid (Circle of the Land (Forest))
+Player's Handbook p.220
+The Rise of Tiamat Online Supplement p.31 ↗
+Castigate	3rd-level Evocation	
+Bard
+Cleric
+Paladin
+The (Not Really) Complete Tome of Spells ↗
+Clairvoyance	3rd-level Divination	
+Bard
+Cleric
+Sorcerer
+Warlock (The Great Old One)
+Wizard
+Player's Handbook p.222
+Comfort	3rd-level Abjuration	
+Bard
+Cleric
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Conceal Item	3rd-level Illusion	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Conjure Animals	3rd-level Conjuration	
+Druid
+Ranger
+Player's Handbook p.225
+Princes of the Apocalypse Online Supplement p.42 ↗
+Conjure Barrage	3rd-level Conjuration	
+Ranger
+Player's Handbook p.225
+Counterspell	3rd-level Abjuration	
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.86 ↗
+Player's Handbook p.228
+Create Food and Water	3rd-level Conjuration	
+Cleric
+Druid (Circle of the Land (Desert))
+Paladin
+Player's Handbook p.229
+Princes of the Apocalypse Online Supplement p.43 ↗
+Crusader's Mantle	3rd-level Evocation	
+Cleric (War)
+Paladin
+Player's Handbook p.230
+Curse Tablet
+Ritual
+3rd-level Necromancy	
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Darkbolt	3rd-level Evocation	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Daylight	3rd-level Evocation	
+Cleric
+Cleric (Light)
+Druid
+Druid (Circle of the Land (Grassland))
+Paladin
+Ranger
+Sorcerer
+Hoard of the Dragon Queen Online Supplement p.24 ↗
+Player's Handbook p.230
+Princes of the Apocalypse Online Supplement p.44 ↗
+Dig
+Ritual
+3rd-level Evocation	
+Druid
+Ranger
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Dire Charm	3rd-level Enchantment	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Dispel Magic	3rd-level Abjuration	
+Bard
+Cleric
+Cleric (Trickery)
+Druid
+Paladin
+Paladin (Devotion)
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.88 ↗
+Player's Handbook p.234
+Doomhound	3rd-level Illusion	
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Dragon Breath	3rd-level Evocation	
+Paladin
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Drought
+Ritual
+3rd-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Elemental Weapon	3rd-level Transmutation	
+Druid (Circle of Elements (All Elements))
+Paladin
+Player's Handbook p.237
+Encrypt	3rd-level Illusion	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Entomb	3rd-level Transmutation	
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Erupting Earth	3rd-level Transmutation	
+Druid
+Druid (Circle of Elements (Earth))
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.17 ↗
+Farspeaker	3rd-level Transmutation	
+Bard
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Favor of Amelioration	3rd-level Abjuration	
+Cleric
+Druid
+Paladin
+The (Not Really) Complete Tome of Spells ↗
+Fear	3rd-level Illusion	
+Bard
+Paladin (Heresy)
+Paladin (Oath of the Supremacy)
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.239
+Princes of the Apocalypse Online Supplement p.46 ↗
+Feign Death
+Ritual
+3rd-level Necromancy	
+Bard
+Cleric
+Druid
+Wizard
+Player's Handbook p.240
+Fire Aura	3rd-level Abjuration	
+Cleric
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Fireball	3rd-level Evocation	
+Cleric (Light)
+Druid (Circle of Elements (Fire))
+Paladin (Oath of the Purge)
+Sorcerer
+Warlock (The Fiend)
+Wizard
+Player's D&D Basic Rules p.90 ↗
+Player's Handbook p.241
+Flame Arrows	3rd-level Transmutation	
+Druid
+Druid (Circle of Elements (Fire))
+Ranger
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.18 ↗
+Fly	3rd-level Transmutation	
+Cleric (Travel)
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.91 ↗
+Player's Handbook p.243
+Fool's Speech
+Ritual
+3rd-level Illusion	
+Bard
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Frost Whip	3rd-level Evocation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Gaseous Form	3rd-level Transmutation	
+Druid (Circle of Elements (All Elements))
+Druid (Circle of the Land (Underdark))
+Sorcerer
+Warlock
+Wizard
+Hoard of the Dragon Queen Online Supplement p.25 ↗
+Player's Handbook p.244
+Princes of the Apocalypse Online Supplement p.47 ↗
+The Rise of Tiamat Online Supplement p.33 ↗
+Glyph of Warding	3rd-level Abjuration	
+Bard
+Cleric
+Wizard
+Player's Handbook p.245
+Princes of the Apocalypse Online Supplement p.47 ↗
+The Rise of Tiamat Online Supplement p.34 ↗
+Haste	3rd-level Transmutation	
+Cleric (Travel)
+Druid (Circle of the Land (Grassland))
+Paladin (Oath of the Supremacy)
+Paladin (Vengeance)
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.93 ↗
+Player's Handbook p.250
+Haywire
+technomagic
+3rd-level Enchantment	
+Sorcerer
+Warlock
+Warlock (The Ghost in the Machine)
+Wizard
+Urban Arcana (Modern Magic) p.7 ↗
+Helping Hand	3rd-level Evocation	
+Bard
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Hibernation	3rd-level Enchantment	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Holy Flail	3rd-level Transmutation	
+Cleric
+Paladin
+The (Not Really) Complete Tome of Spells ↗
+Hunger of Hadar	3rd-level Conjuration	
+Warlock
+Player's Handbook p.251
+Hypnotic Pattern	3rd-level Illusion	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.252
+Princes of the Apocalypse Online Supplement p.49 ↗
+Impenetrable Falsehood	3rd-level Abjuration	
+Bard
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Invisibility to Cameras
+technomagic
+3rd-level Illusion	
+Sorcerer
+Warlock
+Warlock (The Ghost in the Machine)
+Wizard
+Urban Arcana (Modern Magic) p.7 ↗
+Isolde's Answer
+Ritual
+3rd-level Divination	
+Bard
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Javelin	3rd-level Evocation	
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Know Customs
+Ritual
+3rd-level Divination	
+Bard
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Leomund's Tiny Hut
+Ritual
+3rd-level Evocation	
+Bard
+Wizard
+Player's Handbook p.255
+Life Seed	3rd-level Evocation	
+Druid
+En5ider (Strands of Life) p.4 ↗
+Lightning Arrow	3rd-level Evocation	
+Ranger
+Player's Handbook p.255
+Lightning Bolt	3rd-level Evocation	
+Cleric (City)
+Druid (Circle of the Land (Mountain))
+Sorcerer
+Warlock (The Machine)
+Wizard
+Player's D&D Basic Rules p.95 ↗
+Player's Handbook p.255
+Lightning Rod	3rd-level Transmutation	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Magic Circle	3rd-level Abjuration	
+Cleric
+Paladin
+Warlock
+Wizard
+Player's Handbook p.256
+Major Image	3rd-level Illusion	
+Bard
+Paladin (Elder Sign)
+Paladin (Inquisitor)
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.96 ↗
+Player's Handbook p.258
+Mass	3rd-level Transmutation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mass Healing Ward	3rd-level Evocation	
+Cleric
+Druid (Circle of Life)
+Player's D&D Basic Rules p.97 ↗
+Player's Handbook p.258
+Mass Jump	3rd-level Transmutation	
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Meld into Stone
+Ritual
+3rd-level Transmutation	
+Cleric
+Druid
+Druid (Circle of Elements (Earth))
+Druid (Circle of the Land (Mountain))
+Warlock (The Skin)
+Player's Handbook p.259
+Princes of the Apocalypse Online Supplement p.49 ↗
+Melf's Minute Meteors	3rd-level Evocation	
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.20 ↗
+Merchant's Glamer	3rd-level Illusion	
+Bard
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mordenkainen's Defense Against Beasts	3rd-level Abjuration	
+Druid
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mordenkainen's Defense Against Slime	3rd-level Abjuration	
+Druid
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mystic Rope	3rd-level Conjuration	
+Bard
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Nchaser's Glowing Globe	3rd-level Evocation	
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Nectar
+Ritual
+3rd-level Conjuration	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Nightscar	3rd-level Illusion	
+Cleric
+Paladin
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Nondetection	3rd-level Abjuration	
+Bard
+Cleric (Knowledge)
+Ranger
+Warlock (The Machine)
+Wizard
+Player's Handbook p.263
+Princes of the Apocalypse Online Supplement p.51 ↗
+Nystul's Radiant Baton	3rd-level Evocation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Otiluke's Orb of Containment	3rd-level Evocation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Phantom Arms and Armor	3rd-level Illusion	
+Paladin
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Phantom Steed
+Ritual
+3rd-level Illusion	
+Wizard
+Player's Handbook p.265
+Plant Growth	3rd-level Transmutation	
+Cleric (Nature)
+Druid
+Druid (Circle of the Land (Forest))
+Paladin (Ancients)
+Ranger
+Warlock (The Archfey)
+Hoard of the Dragon Queen Online Supplement p.27 ↗
+Player's Handbook p.266
+Princes of the Apocalypse Online Supplement p.51 ↗
+Protection from Ballistics	3rd-level Abjuration	
+Cleric (City)
+Sorcerer
+Warlock
+Wizard
+Urban Arcana (Modern Magic) p.8 ↗
+Protection from Energy	3rd-level Abjuration	
+Cleric
+Cleric (Luck)
+Druid
+Druid (Circle of the Land (Desert))
+Paladin (Ancients)
+Paladin (Oath of the Purge)
+Paladin (Vengeance)
+Ranger
+Sorcerer
+Warlock (The Skin)
+Wizard
+Player's D&D Basic Rules p.99 ↗
+Player's Handbook p.270
+Ray of Paralysis	3rd-level Necromancy	
+Paladin
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Read Object	3rd-level Divination	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Remove Curse	3rd-level Abjuration	
+Cleric
+Paladin
+Warlock
+Wizard
+Player's D&D Basic Rules p.99 ↗
+Player's Handbook p.271
+Resist Turning	3rd-level Abjuration	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Restore Earth	3rd-level Conjuration	
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Revivify	3rd-level Conjuration	
+Cleric
+Cleric (Life)
+Druid (Circle of Life)
+Paladin
+Player's D&D Basic Rules p.100 ↗
+Player's Handbook p.272
+Sand Sword	3rd-level Transmutation	
+Druid
+Paladin
+The (Not Really) Complete Tome of Spells ↗
+Scalding Spout	3rd-level Evocation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Seek Teleporter	3rd-level Divination	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Seeking	3rd-level Evocation	
+Druid
+Ranger
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Sending	3rd-level Evocation	
+Cleric
+Warlock (The Great Old One)
+Wizard
+Hoard of the Dragon Queen Online Supplement p.27 ↗
+Player's Handbook p.274
+Princes of the Apocalypse Online Supplement p.53 ↗
+The Rise of Tiamat Online Supplement p.37 ↗
+Shadow Dance	3rd-level Transmutation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Shape Wood	3rd-level Transmutation	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Shoondal's Seeking	3rd-level Divination	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Singing Stone	3rd-level Transmutation	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Sleet Storm	3rd-level Conjuration	
+Cleric (Tempest)
+Druid
+Druid (Circle of the Land (Arctic))
+Sorcerer
+Wizard
+Hoard of the Dragon Queen Online Supplement p.28 ↗
+Player's Handbook p.276
+Princes of the Apocalypse Online Supplement p.53 ↗
+Slow	3rd-level Transmutation	
+Druid (Circle of the Land (Arctic))
+Sorcerer
+Wizard
+Player's Handbook p.277
+Princes of the Apocalypse Online Supplement p.53 ↗
+The Rise of Tiamat Online Supplement p.37 ↗
+Snapdragon	3rd-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Snare	3rd-level Transmutation	
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Song of Compulsion	3rd-level Enchantment	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Speak with Dead	3rd-level Necromancy	
+Bard
+Cleric
+Cleric (Knowledge)
+Paladin (Elder Sign)
+Paladin (Inquisitor)
+Player's D&D Basic Rules p.101 ↗
+Player's Handbook p.277
+Speak with Plants	3rd-level Transmutation	
+Bard
+Druid
+Ranger
+Player's Handbook p.277
+The Rise of Tiamat Online Supplement p.37 ↗
+Spirit Guardians	3rd-level Conjuration	
+Cleric
+Cleric (War)
+Player's D&D Basic Rules p.102 ↗
+Player's Handbook p.278
+Spring	3rd-level Transmutation	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Stinking Cloud	3rd-level Conjuration	
+Bard
+Druid (Circle of the Land (Swamp))
+Druid (Circle of the Land (Underdark))
+Sorcerer
+Warlock (The Fiend)
+Wizard
+Player's Handbook p.278
+Princes of the Apocalypse Online Supplement p.54 ↗
+The Rise of Tiamat Online Supplement p.37 ↗
+Sunscorch	3rd-level Evocation	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Teleport Object	3rd-level Conjuration	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Thief's Lament	3rd-level Abjuration	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Tidal Wave	3rd-level Conjuration	
+Druid
+Druid (Circle of Elements (Water))
+Wizard
+Elemental Evil Player's Companion p.22 ↗
+Tongues	3rd-level Divination	
+Bard
+Cleric
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.283
+Princes of the Apocalypse Online Supplement p.55 ↗
+Vampiric Touch	3rd-level Necromancy	
+Cleric (Death)
+Paladin (Heresy)
+Warlock
+Wizard
+Player's Handbook p.285
+Princes of the Apocalypse Online Supplement p.55 ↗
+Venomdust	3rd-level Evocation	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Wall of Sand	3rd-level Evocation	
+Wizard
+Elemental Evil Player's Companion p.23 ↗
+Wall of Water	3rd-level Evocation	
+Druid
+Druid (Circle of Elements (Water))
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.23 ↗
+Warrior's Blessing
+Ritual
+3rd-level Abjuration	
+Bard
+Cleric
+Paladin
+Ranger
+En5ider (Strands of Life) p.5 ↗
+Water Breathing
+Ritual
+3rd-level Transmutation	
+Druid
+Druid (Circle of the Land (Coast))
+Ranger
+Sorcerer
+Wizard
+Player's Handbook p.287
+Princes of the Apocalypse Online Supplement p.55 ↗
+The Rise of Tiamat Online Supplement p.38 ↗
+Water Walk
+Ritual
+3rd-level Transmutation	
+Cleric
+Druid
+Druid (Circle of the Land (Coast))
+Druid (Circle of the Land (Swamp))
+Ranger
+Sorcerer
+Hoard of the Dragon Queen Online Supplement p.28 ↗
+Player's Handbook p.287
+Weapon Return	3rd-level Transmutation	
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Whip of Flame	3rd-level Evocation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Wind Wall	3rd-level Evocation	
+Cleric (Nature)
+Druid
+Druid (Circle of Elements (Air))
+Ranger
+Player's Handbook p.288
+Adamantine Mace	4th-level Transmutation	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Agitate Wounds	4th-level Necromancy	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Alter Path	4th-level Transmutation	
+Druid
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Animate Flame	4th-level Evocation	
+Bard
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Arcane Eye	4th-level Divination	
+Cleric (Knowledge)
+Wizard
+Player's D&D Basic Rules p.83 ↗
+Player's Handbook p.214
+Aura of Life	4th-level Abjuration	
+Paladin
+Player's Handbook p.216
+Aura of Purity	4th-level Abjuration	
+Paladin
+Paladin (Oath of the Purge)
+Player's Handbook p.216
+Bands of Sirellyn	4th-level Conjuration	
+Paladin
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Banishment	4th-level Abjuration	
+Cleric
+Paladin
+Paladin (Oath of the Supremacy)
+Paladin (Vengeance)
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.217
+Barrier Reaver	4th-level Transmutation	
+Cleric
+Paladin
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Bigby's Force Sculpture	4th-level Evocation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Blessed Forgetfulness
+Ritual
+4th-level Enchantment	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Blight	4th-level Necromancy	
+Cleric (Death)
+Druid
+Druid (Circle of the Land (Desert))
+Paladin (Oathbreaker)
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.219
+Princes of the Apocalypse Online Supplement p.40 ↗
+Bone Seize	4th-level Necromancy	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Burning Blood	4th-level Necromancy	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Chant	4th-level Abjuration	
+Cleric
+Paladin
+The (Not Really) Complete Tome of Spells ↗
+Chilling Scythe	4th-level Necromancy	
+Druid
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Compulsion	4th-level Enchantment	
+Bard
+Paladin (Heresy)
+Player's Handbook p.224
+Confusion	4th-level Enchantment	
+Bard
+Cleric (Knowledge)
+Druid
+Paladin (Oathbreaker)
+Sorcerer
+Wizard
+Hoard of the Dragon Queen Online Supplement p.24 ↗
+Player's Handbook p.224
+Princes of the Apocalypse Online Supplement p.41 ↗
+The Rise of Tiamat Online Supplement p.32 ↗
+Conjure Knowbot
+technomagic
+4th-level Conjuration	
+Sorcerer
+Warlock
+Warlock (The Ghost in the Machine)
+Wizard
+Urban Arcana (Modern Magic) p.5 ↗
+Conjure Minor Elementals	4th-level Conjuration	
+Druid
+Druid (Circle of Elements (All Elements))
+Warlock (The Skin)
+Wizard
+Player's Handbook p.226
+Conjure Woodland Beings	4th-level Conjuration	
+Druid
+Ranger
+Player's Handbook p.226
+Control Temperature	4th-level Evocation	
+Cleric
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Control Vapor	4th-level Transmutation	
+Druid
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Control Water	4th-level Transmutation	
+Cleric
+Cleric (Tempest)
+Druid
+Druid (Circle of Elements (Water))
+Druid (Circle of the Land (Coast))
+Wizard
+Player's Handbook p.227
+Princes of the Apocalypse Online Supplement p.42 ↗
+Create Darkenbeast	4th-level Transmutation	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Cursed Image
+Ritual
+4th-level Necromancy	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Darsson's Potion	4th-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Death Ward	4th-level Abjuration	
+Cleric
+Cleric (Death)
+Cleric (Life)
+Cleric (Luck)
+Druid (Circle of Life)
+Paladin
+Player's D&D Basic Rules p.87 ↗
+Player's Handbook p.230
+Depress Resistance	4th-level Transmutation	
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Despair	4th-level Enchantment	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Dimension Door	4th-level Conjuration	
+Bard
+Cleric (Travel)
+Cleric (Trickery)
+Paladin (Vengeance)
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.87 ↗
+Player's Handbook p.233
+Dimensional Anchor	4th-level Conjuration	
+Cleric
+Paladin
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Divination
+Ritual
+4th-level Divination	
+Cleric
+Druid (Circle of the Land (Forest))
+Druid (Circle of the Land (Grassland))
+Player's D&D Basic Rules p.88 ↗
+Player's Handbook p.234
+Dominate Beast	4th-level Enchantment	
+Cleric (Nature)
+Druid
+Paladin (Heresy)
+Sorcerer
+Warlock (The Archfey)
+Warlock (The Great Old One)
+Player's Handbook p.234
+Princes of the Apocalypse Online Supplement p.44 ↗
+Drawmij's Instant Exit	4th-level Conjuration	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Droplets of Invigoration	4th-level Evocation	
+Cleric
+En5ider (Strands of Life) p.3 ↗
+Elemental Bane	4th-level Transmutation	
+Druid
+Druid (Circle of Elements (All Elements))
+Warlock
+Wizard
+Elemental Evil Player's Companion p.17 ↗
+Enervation	4th-level Necromancy	
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Evard's Black Tentacles	4th-level Conjuration	
+Warlock (The Great Old One)
+Wizard
+Hoard of the Dragon Queen Online Supplement p.25 ↗
+Player's Handbook p.238
+Princes of the Apocalypse Online Supplement p.46 ↗
+The Rise of Tiamat Online Supplement p.33 ↗
+Everfull Quiver	4th-level Conjuration	
+Bard
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Fabricate	4th-level Transmutation	
+Warlock (The Machine)
+Wizard
+Player's Handbook p.239
+Favor of the Flying Horse	4th-level Transmutation	
+Cleric
+Druid
+Paladin
+The (Not Really) Complete Tome of Spells ↗
+Fire Charm	4th-level Enchantment	
+Bard
+Cleric
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Fire Shield	4th-level Evocation	
+Druid (Circle of Elements (Fire))
+Warlock (The Fiend)
+Wizard
+Player's Handbook p.242
+Princes of the Apocalypse Online Supplement p.46 ↗
+The Rise of Tiamat Online Supplement p.33 ↗
+Fool's Gold	4th-level Illusion	
+Bard
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Freedom of Movement	4th-level Abjuration	
+Bard
+Cleric
+Cleric (War)
+Druid
+Druid (Circle of Elements (Air))
+Druid (Circle of Elements (All Elements))
+Druid (Circle of the Land (Arctic))
+Druid (Circle of the Land (Coast))
+Druid (Circle of the Land (Forest))
+Druid (Circle of the Land (Grassland))
+Druid (Circle of the Land (Swamp))
+Paladin (Devotion)
+Ranger
+Player's D&D Basic Rules p.91 ↗
+Player's Handbook p.244
+Giant Insect	4th-level Transmutation	
+Druid
+Player's Handbook p.245
+Glassee
+Ritual
+4th-level Transmutation	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Grasping Vines	4th-level Conjuration	
+Cleric (Nature)
+Druid
+Ranger
+Player's Handbook p.246
+Greater Invisibility	4th-level Illusion	
+Bard
+Druid (Circle of the Land (Underdark))
+Paladin (Elder Sign)
+Paladin (Inquisitor)
+Sorcerer
+Warlock (The Archfey)
+Wizard
+Player's D&D Basic Rules p.92 ↗
+Player's Handbook p.246
+Guardian Seal
+Ritual
+4th-level Abjuration	
+Cleric
+Paladin
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Guardian Weapon
+Ritual
+4th-level Abjuration	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Guardians of Faith	4th-level Conjuration	
+Cleric
+Cleric (Life)
+Cleric (Light)
+Cleric (Luck)
+Paladin (Devotion)
+Player's D&D Basic Rules p.92 ↗
+Player's Handbook p.246
+Hallucinatory Terrain	4th-level Illusion	
+Bard
+Druid
+Druid (Circle of the Land (Desert))
+Warlock
+Wizard
+Player's Handbook p.249
+Hiding Place	4th-level Abjuration	
+Bard
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Hurl Thunderbolt	4th-level Evocation	
+Cleric
+Sorcerer
+The (Not Really) Complete Tome of Spells ↗
+Ice Blade	4th-level Evocation	
+Paladin
+Ranger
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Ice Storm	4th-level Evocation	
+Cleric (Tempest)
+Druid
+Druid (Circle of Elements (Water))
+Druid (Circle of the Land (Arctic))
+Paladin (Ancients)
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.94 ↗
+Player's Handbook p.252
+Ilyykur's Mantle	4th-level Abjuration	
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Instant Audience
+Ritual
+4th-level Illusion	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Invisibility Purge	4th-level Abjuration	
+Cleric
+Paladin
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Iron Maiden	4th-level Conjuration	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Kiss of Torment	4th-level Necromancy	
+Bard
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Leomund's Secret Chest	4th-level Conjuration	
+Wizard
+Player's Handbook p.254
+Lightning Shield	4th-level Evocation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Locate Creature	4th-level Divination	
+Bard
+Cleric
+Cleric (City)
+Druid
+Druid (Circle of the Land (Swamp))
+Paladin
+Paladin (Elder Sign)
+Paladin (Inquisitor)
+Ranger
+Warlock (The Machine)
+Wizard
+Player's D&D Basic Rules p.95 ↗
+Player's Handbook p.256
+Log to Lizard	4th-level Transmutation	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Mass Protection from Evil and Good	4th-level Abjuration	
+Cleric
+Paladin
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Memory Read	4th-level Divination	
+Bard
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mirage	4th-level Illusion	
+Bard
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Mirage of Despair	4th-level Illusion	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mordenkainen's Defense Against Lycanthropes	4th-level Abjuration	
+Druid
+Ranger
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mordenkainen's Faithful Hound	4th-level Conjuration	
+Wizard
+Player's Handbook p.261
+Mordenkainen's Private Sanctum	4th-level Abjuration	
+Cleric (Travel)
+Wizard
+Player's Handbook p.262
+Music of the Spheres	4th-level Enchantment	
+Bard
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Needlestorm	4th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Nystul's Blacklight Burst	4th-level Evocation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Otiluke's Resilient Sphere	4th-level Evocation	
+Wizard
+Player's Handbook p.264
+Otto's Drums	4th-level Enchantment	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Phantasmal Killer	4th-level Illusion	
+Wizard
+Player's Handbook p.265
+Princes of the Apocalypse Online Supplement p.51 ↗
+Pit
+Ritual
+4th-level Transmutation	
+Druid
+Ranger
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Polymorph	4th-level Transmutation	
+Bard
+Cleric (Trickery)
+Druid
+Sorcerer
+Wizard
+Player's Handbook p.266
+Princes of the Apocalypse Online Supplement p.52 ↗
+Projected Magnification	4th-level Divination	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Rastor's Mystical Spy	4th-level Divination	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Return to Earth	4th-level Necromancy	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Rusting Grasp	4th-level Transmutation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Sacred Strike	4th-level Necromancy	
+Cleric
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Sargasso	4th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Searing Song	4th-level Evocation	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Shadowstrike	4th-level Evocation	
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Shellskin	4th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Shout	4th-level Evocation	
+Bard
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Simulate Skill	4th-level Necromancy	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Siren Song	4th-level Enchantment	
+Bard
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Sleepwalking	4th-level Enchantment	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Speak with Water	4th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Staggering Smite	4th-level Evocation	
+Paladin
+Player's Handbook p.278
+Sticks to Snakes	4th-level Transmutation	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Stone Shape	4th-level Transmutation	
+Cleric
+Druid
+Druid (Circle of Elements (Earth))
+Druid (Circle of the Land (Mountain))
+Druid (Circle of the Land (Underdark))
+Wizard
+Player's Handbook p.278
+Princes of the Apocalypse Online Supplement p.54 ↗
+The Rise of Tiamat Online Supplement p.37 ↗
+Stoneskin	4th-level Abjuration	
+Cleric (War)
+Druid
+Druid (Circle of Elements (Earth))
+Druid (Circle of the Land (Mountain))
+Paladin (Ancients)
+Paladin (Oath of the Supremacy)
+Ranger
+Sorcerer
+Warlock (The Skin)
+Wizard
+Player's D&D Basic Rules p.102 ↗
+Player's Handbook p.278
+Storm Sphere	4th-level Evocation	
+Druid (Circle of Elements (Air))
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.22 ↗
+Sunbolt	4th-level Evocation	
+Cleric
+Druid
+Sorcerer
+The (Not Really) Complete Tome of Spells ↗
+Synchronicity	4th-level Enchantment	
+Cleric (City)
+Sorcerer
+Warlock
+Warlock (The Ghost in the Machine)
+Wizard
+Urban Arcana (Modern Magic) p.8 ↗
+Talon's Skitmaster	4th-level Illusion	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Talon's Soundmaster	4th-level Illusion	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Vision Stone	4th-level Divination	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Vitriolic Sphere	4th-level Evocation	
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.23 ↗
+Wall of Fire	4th-level Evocation	
+Cleric (Light)
+Druid
+Druid (Circle of Elements (Fire))
+Paladin (Oath of the Purge)
+Sorcerer
+Warlock (The Fiend)
+Wizard
+Player's D&D Basic Rules p.104 ↗
+Player's Handbook p.285
+Watching Shadow	4th-level Divination	
+Ranger
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Watery Sphere	4th-level Conjuration	
+Druid
+Druid (Circle of Elements (Water))
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.23 ↗
+Wing Gifting	4th-level Transmutation	
+Cleric
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Age Object	5th-level Transmutation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Animal Transfer	5th-level Necromancy	
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Animate Objects	5th-level Transmutation	
+Bard
+Sorcerer
+Warlock (The Machine)
+Wizard
+Player's Handbook p.213
+The Rise of Tiamat Online Supplement p.30 ↗
+Antilife Shell	5th-level Abjuration	
+Cleric (Death)
+Cleric (Luck)
+Druid
+Player's Handbook p.213
+Awaken	5th-level Transmutation	
+Bard
+Druid
+Player's Handbook p.216
+Ballant's Stonestrength	5th-level Abjuration	
+Cleric
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Banishing Smite	5th-level Abjuration	
+Paladin
+Player's Handbook p.216
+Battletide	5th-level Transmutation	
+Bard
+Paladin
+The (Not Really) Complete Tome of Spells ↗
+Bestow Enchantment	5th-level Evocation	
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Bigby's Hand	5th-level Evocation	
+Wizard
+Player's Handbook p.218
+Blessed Abundance	5th-level Conjuration	
+Cleric
+Druid
+Paladin
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Break Limb	5th-level Necromancy	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Chromatic Blade	5th-level Evocation	
+Bard
+Paladin
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Circle of Power	5th-level Abjuration	
+Paladin
+Paladin (Oath of the Supremacy)
+Player's Handbook p.221
+Cloud of Purification	5th-level Transmutation	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Cloud of Putrefaction	5th-level Transmutation	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Cloudkill	5th-level Conjuration	
+Cleric (Death)
+Druid (Circle of Elements (Air))
+Druid (Circle of the Land (Underdark))
+Sorcerer
+Wizard
+Player's Handbook p.222
+Princes of the Apocalypse Online Supplement p.41 ↗
+The Rise of Tiamat Online Supplement p.31 ↗
+Commune
+Ritual
+5th-level Divination	
+Cleric
+Paladin (Devotion)
+Player's D&D Basic Rules p.86 ↗
+Player's Handbook p.223
+Commune with City
+ritual
+5th-level Divination	
+Cleric (City)
+Sorcerer
+Warlock
+Wizard
+Urban Arcana (Modern Magic) p.5 ↗
+Commune with Nature
+Ritual
+5th-level Divination	
+Druid
+Druid (Circle of the Land (Arctic))
+Druid (Circle of the Land (Forest))
+Paladin (Ancients)
+Ranger
+Player's Handbook p.224
+Cone of Cold	5th-level Evocation	
+Druid (Circle of the Land (Arctic))
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.86 ↗
+Player's Handbook p.224
+Conjure Elemental	5th-level Conjuration	
+Druid
+Druid (Circle of Elements (All Elements))
+Druid (Circle of the Land (Coast))
+Warlock (The Skin)
+Wizard
+Player's Handbook p.225
+Princes of the Apocalypse Online Supplement p.42 ↗
+Conjure Volley	5th-level Conjuration	
+Ranger
+Player's Handbook p.226
+Contact Other Plane
+Ritual
+5th-level Divination	
+Warlock
+Wizard
+Player's Handbook p.226
+Contagion	5th-level Necromancy	
+Cleric
+Druid
+Paladin (Oathbreaker)
+Warlock (The Machine)
+Player's Handbook p.227
+Control Winds	5th-level Transmutation	
+Druid
+Druid (Circle of Elements (Air))
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.16 ↗
+Converse	5th-level Divination	
+Druid
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Creation	5th-level Illusion	
+Sorcerer
+Wizard
+Player's Handbook p.229
+Princes of the Apocalypse Online Supplement p.43 ↗
+Deathmaster's Vial
+Ritual
+5th-level Necromancy	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Destructive Smite	5th-level Evocation	
+Cleric (Tempest)
+Paladin
+Paladin (Oath of the Purge)
+Player's Handbook p.231
+Dispel Evil and Good	5th-level Abjuration	
+Cleric
+Paladin
+Player's Handbook p.233
+Dominate Person	5th-level Enchantment	
+Bard
+Cleric (Trickery)
+Paladin (Heresy)
+Paladin (Oath of the Supremacy)
+Paladin (Oathbreaker)
+Sorcerer
+Warlock (The Archfey)
+Warlock (The Great Old One)
+Wizard
+Player's D&D Basic Rules p.88 ↗
+Player's Handbook p.235
+Draw Upon Holy Might	5th-level Evocation	
+Cleric
+Paladin
+The (Not Really) Complete Tome of Spells ↗
+Dream	5th-level Illusion	
+Bard
+Druid (Circle of the Land (Grassland))
+Warlock
+Wizard
+Player's D&D Basic Rules p.89 ↗
+Player's Handbook p.236
+Electric Bow	5th-level Evocation	
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+False Vision	5th-level Illusion	
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Favor of the Ocean Winds	5th-level Abjuration	
+Cleric
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Fireward	5th-level Abjuration	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Flame Strike	5th-level Evocation	
+Cleric
+Cleric (Light)
+Cleric (War)
+Druid (Circle of Elements (Fire))
+Paladin (Devotion)
+Paladin (Oath of the Purge)
+Warlock (The Fiend)
+Player's D&D Basic Rules p.91 ↗
+Player's Handbook p.242
+Force Shapechange	5th-level Transmutation	
+Druid
+Paladin
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Geas	5th-level Enchantment	
+Bard
+Cleric
+Druid
+Paladin
+Wizard
+Player's Handbook p.244
+Glyph of Revealing
+Ritual
+5th-level Divination	
+Bard
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Greater Restoration	5th-level Abjuration	
+Bard
+Cleric
+Druid
+Player's D&D Basic Rules p.92 ↗
+Player's Handbook p.246
+Hallow	5th-level Evocation	
+Cleric
+Warlock (The Fiend)
+Warlock (The Skin)
+Player's Handbook p.249
+Princes of the Apocalypse Online Supplement p.48 ↗
+Hard Water
+Ritual
+5th-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Hold Monster	5th-level Enchantment	
+Bard
+Cleric (Travel)
+Cleric (War)
+Paladin (Heresy)
+Paladin (Vengeance)
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.251
+Princes of the Apocalypse Online Supplement p.49 ↗
+The Rise of Tiamat Online Supplement p.34 ↗
+Immolation	5th-level Evocation	
+Druid (Circle of Elements (Fire))
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.19 ↗
+Impeding Permission	5th-level Enchantment	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Insect Plague	5th-level Conjuration	
+Cleric
+Cleric (Nature)
+Cleric (Tempest)
+Druid
+Druid (Circle of the Land (Desert))
+Druid (Circle of the Land (Grassland))
+Druid (Circle of the Land (Swamp))
+Druid (Circle of the Land (Underdark))
+Sorcerer
+Hoard of the Dragon Queen Online Supplement p.26 ↗
+Player's Handbook p.254
+Legend Lore	5th-level Divination	
+Bard
+Cleric
+Cleric (Knowledge)
+Cleric (Luck)
+Wizard
+Player's Handbook p.254
+The Rise of Tiamat Online Supplement p.34 ↗
+Lizard Limbs	5th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Lorloveim's Creeping Shadow	5th-level Illusion	
+Bard
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Love Charm	5th-level Enchantment	
+Bard
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Maelstrom	5th-level Evocation	
+Druid
+Druid (Circle of Elements (Water))
+Elemental Evil Player's Companion p.20 ↗
+Magnetism	5th-level Transmutation	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mass Cure Wounds	5th-level Conjuration	
+Bard
+Cleric
+Cleric (Life)
+Druid
+Druid (Circle of Life)
+Player's D&D Basic Rules p.96 ↗
+Player's Handbook p.258
+Metal Shape	5th-level Transmutation	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mislead	5th-level Illusion	
+Bard
+Paladin (Elder Sign)
+Paladin (Inquisitor)
+Wizard
+Hoard of the Dragon Queen Online Supplement p.26 ↗
+Player's Handbook p.260
+The Rise of Tiamat Online Supplement p.35 ↗
+Modify Memory	5th-level Enchantment	
+Bard
+Cleric (Trickery)
+Wizard
+Player's Handbook p.261
+Moonbow	5th-level Conjuration	
+Bard
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Nature's Charm	5th-level Enchantment	
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Oathbinding
+Ritual
+5th-level Enchantment	
+Cleric
+Druid
+Paladin
+Ranger
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Passwall	5th-level Transmutation	
+Druid (Circle of Elements (Earth))
+Druid (Circle of the Land (Mountain))
+Wizard
+Player's D&D Basic Rules p.98 ↗
+Player's Handbook p.264
+Pillar of Borogar	5th-level Transmutation	
+Cleric
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Planar Binding	5th-level Abjuration	
+Bard
+Cleric
+Druid
+Wizard
+Player's Handbook p.265
+Possess
+Ritual
+5th-level Necromancy	
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Rain of Blood	5th-level Necromancy	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Raise Dead	5th-level Necromancy	
+Bard
+Cleric
+Cleric (Life)
+Druid (Circle of Life)
+Paladin
+Player's D&D Basic Rules p.99 ↗
+Player's Handbook p.270
+Rary's Replay
+Ritual
+5th-level Divination	
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Rary's Telepathic Bond
+Ritual
+5th-level Divination	
+Wizard
+Player's Handbook p.270
+Reincarnate	5th-level Transmutation	
+Druid
+Player's Handbook p.271
+Sand Shroud	5th-level Evocation	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Sarcophagus of Death	5th-level Evocation	
+Cleric
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Scapegoat	5th-level Enchantment	
+Bard
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Scrying	5th-level Divination	
+Bard
+Cleric
+Cleric (Knowledge)
+Cleric (Light)
+Druid
+Druid (Circle of the Land (Coast))
+Druid (Circle of the Land (Swamp))
+Paladin (Elder Sign)
+Paladin (Inquisitor)
+Paladin (Vengeance)
+Warlock
+Wizard
+Player's Handbook p.273
+Princes of the Apocalypse Online Supplement p.52 ↗
+Seeming	5th-level Illusion	
+Bard
+Sorcerer
+Warlock (The Archfey)
+Wizard
+Hoard of the Dragon Queen Online Supplement p.27 ↗
+Player's Handbook p.274
+Princes of the Apocalypse Online Supplement p.53 ↗
+The Rise of Tiamat Online Supplement p.36 ↗
+Shadow Blink	5th-level Conjuration	
+Bard
+Sorcerer
+The (Not Really) Complete Tome of Spells ↗
+Shadow Play
+Ritual
+5th-level Divination	
+Bard
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Shadowcat	5th-level Illusion	
+Bard
+Druid
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Shandaril's Tracer	5th-level Divination	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Shutdown
+technomagic
+5th-level Transmutation	
+Cleric (City)
+Warlock (The Ghost in the Machine)
+Urban Arcana (Modern Magic) p.8 ↗
+Stone Tell	5th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Strands of Life	5th-level Evocation	
+Cleric
+En5ider (Strands of Life) p.5 ↗
+Swift Quiver	5th-level Transmutation	
+Ranger
+Player's Handbook p.279
+System Backdoor
+technomagic
+5th-level Transmutation	
+Sorcerer
+Warlock
+Warlock (The Ghost in the Machine)
+Wizard
+Urban Arcana (Modern Magic) p.8 ↗
+Tame Animal	5th-level Enchantment	
+Druid
+Ranger
+The (Not Really) Complete Tome of Spells ↗
+Tasirin's Haunted Sleep	5th-level Enchantment	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Telekinesis	5th-level Transmutation	
+Sorcerer
+Warlock (The Great Old One)
+Wizard
+Player's Handbook p.280
+Princes of the Apocalypse Online Supplement p.54 ↗
+Telepathic Broadcast	5th-level Evocation	
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Teleportation Circle	5th-level Conjuration	
+Bard
+Cleric (Travel)
+Sorcerer
+Wizard
+Player's Handbook p.282
+Thornwrack	5th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Throbbing Bones	5th-level Necromancy	
+Cleric
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Transmute Rock	5th-level Transmutation	
+Druid
+Druid (Circle of Elements (Earth))
+Wizard
+Elemental Evil Player's Companion p.22 ↗
+Tree Stride	5th-level Transmutation	
+Cleric (Nature)
+Druid
+Druid (Circle of the Land (Forest))
+Paladin (Ancients)
+Ranger
+Player's Handbook p.283
+Trick	5th-level Illusion	
+Bard
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Wall of Force	5th-level Evocation	
+Wizard
+Player's Handbook p.285
+Wall of Stone	5th-level Evocation	
+Druid
+Druid (Circle of the Land (Desert))
+Druid (Circle of the Land (Mountain))
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.104 ↗
+Player's Handbook p.287
+Wingbind	5th-level Evocation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Age Animal
+Ritual
+6th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Animate Blood	6th-level Necromancy	
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Arcane Gate	6th-level Conjuration	
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.214
+Arrow of Bone	6th-level Necromancy	
+Druid
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Blade Barrier	6th-level Evocation	
+Cleric
+Player's D&D Basic Rules p.84 ↗
+Player's Handbook p.218
+Bones of the Earth	6th-level Transmutation	
+Druid
+Elemental Evil Player's Companion p.15 ↗
+Catching Chain	6th-level Evocation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Chain Lightning	6th-level Evocation	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.85 ↗
+Player's Handbook p.221
+Channel Flame	6th-level Evocation	
+Druid
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Circle of Death	6th-level Necromancy	
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.221
+Conjure Divine Minion	6th-level Conjuration	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Conjure Fey	6th-level Conjuration	
+Druid
+Warlock
+Player's Handbook p.226
+Contingency	6th-level Evocation	
+Wizard
+Player's Handbook p.227
+Create Undead	6th-level Necromancy	
+Cleric
+Warlock
+Wizard
+Player's Handbook p.229
+Curse of Lycanthropy	6th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Dead Man's Eyes	6th-level Necromancy	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Disintegrate	6th-level Transmutation	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.88 ↗
+Player's Handbook p.233
+Distort Life
+Ritual
+6th-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Drawmij's Instant Summons
+Ritual
+6th-level Conjuration	
+Wizard
+Player's Handbook p.235
+Dusts of Death	6th-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Earthmaw	6th-level Transmutation	
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Eyebite	6th-level Necromancy	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.238
+Find the Path	6th-level Divination	
+Bard
+Cleric
+Druid
+Player's D&D Basic Rules p.90 ↗
+Player's Handbook p.240
+Flesh to Stone	6th-level Transmutation	
+Warlock
+Wizard
+Player's Handbook p.243
+Forbiddance
+Ritual
+6th-level Abjuration	
+Cleric
+Player's Handbook p.243
+Globe of Invulnerability	6th-level Abjuration	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.92 ↗
+Player's Handbook p.245
+Graft
+Ritual
+6th-level Necromancy	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Guardian of the Living	6th-level Evocation	
+Bard
+Cleric
+Druid
+En5ider (Strands of Life) p.4 ↗
+Guards and Wards	6th-level Abjuration	
+Bard
+Wizard
+Player's Handbook p.248
+Harm	6th-level Necromancy	
+Cleric
+Player's D&D Basic Rules p.93 ↗
+Player's Handbook p.249
+Heal	6th-level Evocation	
+Cleric
+Druid
+Player's D&D Basic Rules p.93 ↗
+Player's Handbook p.250
+Heroes' Feast	6th-level Conjuration	
+Cleric
+Druid
+Player's D&D Basic Rules p.93 ↗
+Player's Handbook p.250
+Horn of Plenty	6th-level Conjuration	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Imbue with Purpose
+Ritual
+6th-level Transmutation	
+Cleric
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Investiture of Flame	6th-level Transmutation	
+Druid
+Sorcerer
+Warlock
+Wizard
+Elemental Evil Player's Companion p.19 ↗
+Investiture of Ice	6th-level Transmutation	
+Druid
+Sorcerer
+Warlock
+Wizard
+Elemental Evil Player's Companion p.19 ↗
+Investiture of Stone	6th-level Transmutation	
+Druid
+Sorcerer
+Warlock
+Wizard
+Elemental Evil Player's Companion p.19 ↗
+Investiture of Wind	6th-level Transmutation	
+Druid
+Sorcerer
+Warlock
+Wizard
+Elemental Evil Player's Companion p.20 ↗
+Ironwood	6th-level Transmutation	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Laughing Water	6th-level Transmutation	
+Bard
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Lightning Curtain	6th-level Evocation	
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Magic Jar	6th-level Necromancy	
+Wizard
+Player's Handbook p.257
+The Rise of Tiamat Online Supplement p.34 ↗
+Major Curse	6th-level Necromancy	
+Bard
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Mass Protection from Energy	6th-level Abjuration	
+Cleric
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mass Suggestion	6th-level Enchantment	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.97 ↗
+Player's Handbook p.258
+Move Earth	6th-level Transmutation	
+Druid
+Sorcerer
+Wizard
+Player's Handbook p.263
+Princes of the Apocalypse Online Supplement p.50 ↗
+The Rise of Tiamat Online Supplement p.36 ↗
+Nerve Dance	6th-level Necromancy	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Obedience
+Ritual
+6th-level Enchantment	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Obold's Brightness	6th-level Evocation	
+Cleric
+Sorcerer
+The (Not Really) Complete Tome of Spells ↗
+Otiluke's Freezing Sphere	6th-level Evocation	
+Wizard
+Player's Handbook p.263
+Otto's Irresistible Dance	6th-level Enchantment	
+Bard
+Wizard
+Player's D&D Basic Rules p.98 ↗
+Player's Handbook p.264
+Planar Ally	6th-level Conjuration	
+Cleric
+Player's Handbook p.265
+Poison	6th-level Necromancy	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Primordial Ward	6th-level Abjuration	
+Druid
+Elemental Evil Player's Companion p.21 ↗
+Programmed Illusion	6th-level Illusion	
+Bard
+Wizard
+Player's Handbook p.269
+Prophecy
+Ritual
+6th-level Divination	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Scalesnare	6th-level Transmutation	
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Skylight Blade	6th-level Evocation	
+Bard
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Spectral Beast	6th-level Illusion	
+Bard
+Druid
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Spirit of Flame	6th-level Conjuration	
+Cleric
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Starharp	6th-level Abjuration	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Sunbeam	6th-level Evocation	
+Druid
+Sorcerer
+Wizard
+Player's Handbook p.279
+Tattoo of Power
+Ritual
+6th-level Evocation	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Tentacle of Withering	6th-level Transmutation	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Tentacles	6th-level Transmutation	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Transmute Bone to Steel	6th-level Transmutation	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Transport via Plants	6th-level Conjuration	
+Druid
+Player's Handbook p.283
+True Name	6th-level Divination	
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+True Seeing	6th-level Divination	
+Bard
+Cleric
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.104 ↗
+Player's Handbook p.284
+Wail of the Banshee	6th-level Necromancy	
+Bard
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Wall of Ice	6th-level Evocation	
+Wizard
+Player's Handbook p.285
+Wall of Thorns	6th-level Conjuration	
+Druid
+Player's Handbook p.287
+Web of Shadows	6th-level Conjuration	
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Wind Walk	6th-level Transmutation	
+Druid
+Player's Handbook p.288
+Princes of the Apocalypse Online Supplement p.55 ↗
+Word of Recall	6th-level Conjuration	
+Cleric
+Player's Handbook p.289
+Acid Storm	7th-level Evocation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Amorphous Blob
+Ritual
+7th-level Transmutation	
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Ballant's Stonesplit	7th-level Evocation	
+Cleric
+Druid
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Biting Shadow	7th-level Evocation	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Bolt of Glory	7th-level Evocation	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Conjure Beast Spirits	7th-level Conjuration	
+Druid
+Sorcerer
+The (Not Really) Complete Tome of Spells ↗
+Conjure Celestial	7th-level Conjuration	
+Cleric
+Player's Handbook p.225
+Corpse Host
+Ritual
+7th-level Necromancy	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Cyclone Chariot	7th-level Conjuration	
+Cleric
+Sorcerer
+The (Not Really) Complete Tome of Spells ↗
+Delayed Blast Fireball	7th-level Evocation	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.87 ↗
+Player's Handbook p.230
+Divine Word	7th-level Evocation	
+Cleric
+Player's Handbook p.234
+The Rise of Tiamat Online Supplement p.32 ↗
+Duo-Dimension	7th-level Transmutation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Endless Dance	7th-level Enchantment	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Etherealness	7th-level Transmutation	
+Bard
+Cleric
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.89 ↗
+Player's Handbook p.238
+Finger of Death	7th-level Necromancy	
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.90 ↗
+Player's Handbook p.241
+Fire Storm	7th-level Evocation	
+Cleric
+Druid
+Sorcerer
+Player's D&D Basic Rules p.91 ↗
+Player's Handbook p.242
+Flame Harvest	7th-level Evocation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Forcecage	7th-level Evocation	
+Bard
+Warlock
+Wizard
+Player's Handbook p.243
+Glassteel	7th-level Transmutation	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Gullship
+Ritual
+7th-level Transmutation	
+Bard
+Sorcerer
+The (Not Really) Complete Tome of Spells ↗
+Hovering Road
+Ritual
+7th-level Conjuration	
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Intensify Nature	7th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Legal Thoughts
+Ritual
+7th-level Enchantment	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mass Dominate Person	7th-level Enchantment	
+Bard
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mindkiller	7th-level Enchantment	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mirage Arcane	7th-level Illusion	
+Bard
+Druid
+Wizard
+Player's Handbook p.260
+Mordenkainen's Magnificent Mansion	7th-level Conjuration	
+Bard
+Wizard
+Player's Handbook p.261
+Mordenkainen's Sword	7th-level Evocation	
+Bard
+Wizard
+Player's D&D Basic Rules p.98 ↗
+Player's Handbook p.262
+Nymph's Beauty	7th-level Enchantment	
+Bard
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Otiluke's Siege Sphere	7th-level Evocation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Plane Shift	7th-level Conjuration	
+Cleric
+Druid
+Sorcerer
+Warlock
+Wizard
+Player's Handbook p.266
+Princes of the Apocalypse Online Supplement p.51 ↗
+Pool of Deeds	7th-level Divination	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Power Word Sleep	7th-level Enchantment	
+Bard
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Prismal's Pictograph	7th-level Transmutation	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Prismatic Spray	7th-level Evocation	
+Sorcerer
+Wizard
+Player's Handbook p.267
+Project Image	7th-level Illusion	
+Bard
+Wizard
+Player's Handbook p.270
+Rain of Terror	7th-level Conjuration	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Regenerate	7th-level Transmutation	
+Bard
+Cleric
+Druid
+Player's D&D Basic Rules p.99 ↗
+Player's Handbook p.271
+Resurrection	7th-level Necromancy	
+Bard
+Cleric
+Player's D&D Basic Rules p.100 ↗
+Player's Handbook p.272
+Reverse Gravity	7th-level Transmutation	
+Druid
+Sorcerer
+Wizard
+Player's Handbook p.272
+Right of Might	7th-level Transmutation	
+Cleric
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Seal of Destiny
+Ritual
+7th-level Abjuration	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Sequester	7th-level Transmutation	
+Wizard
+Player's Handbook p.274
+Seven-Eyes	7th-level Abjuration	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Simulacrum	7th-level Illusion	
+Wizard
+Player's Handbook p.276
+Soul Anchor	7th-level Enchantment	
+Cleric
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Sphere of Adaptation	7th-level Abjuration	
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Suffocate	7th-level Necromancy	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Symbol	7th-level Abjuration	
+Bard
+Cleric
+Wizard
+Player's Handbook p.280
+Teleport	7th-level Conjuration	
+Bard
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.103 ↗
+Player's Handbook p.281
+Tenfold Ironguard	7th-level Abjuration	
+Cleric
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Timed Stasis
+Ritual
+7th-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Touch of the Styx	7th-level Enchantment	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Unburn	7th-level Transmutation	
+Druid
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Whirlwind	7th-level Evocation	
+Druid
+Wizard
+Elemental Evil Player's Companion p.24 ↗
+Abi-Dalzim's Horrid Wilting	8th-level Necromancy	
+Sorcerer
+Wizard
+Elemental Evil Player's Companion p.15 ↗
+Airboat
+Ritual
+8th-level Transmutation	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Alter Beast
+Ritual
+8th-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Animal Shapes	8th-level Transmutation	
+Druid
+Player's Handbook p.212
+Antimagic Field	8th-level Abjuration	
+Cleric
+Wizard
+Player's D&D Basic Rules p.83 ↗
+Player's Handbook p.213
+Antipathy/Sympathy	8th-level Enchantment	
+Druid
+Wizard
+Player's Handbook p.214
+Call of Despair	8th-level Enchantment	
+Bard
+Sorcerer
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Chariot of Sustarre
+Ritual
+8th-level Conjuration	
+Cleric
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Circle of Blindness	8th-level Transmutation	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Clone	8th-level Necromancy	
+Wizard
+Player's Handbook p.222
+Control Weather	8th-level Transmutation	
+Cleric
+Druid
+Wizard
+Player's Handbook p.228
+Princes of the Apocalypse Online Supplement p.43 ↗
+Crown of Angels	8th-level Evocation	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Demiplane	8th-level Conjuration	
+Warlock
+Wizard
+Player's Handbook p.231
+Disbelief	8th-level Enchantment	
+Bard
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Divine Truth	8th-level Divination	
+Cleric
+Druid
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Dominate Monster	8th-level Enchantment	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.88 ↗
+Player's Handbook p.235
+Earthquake	8th-level Evocation	
+Cleric
+Druid
+Sorcerer
+Player's D&D Basic Rules p.89 ↗
+Player's Handbook p.236
+Evolve
+Ritual
+8th-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Feeblemind	8th-level Enchantment	
+Bard
+Druid
+Warlock
+Wizard
+Player's Handbook p.239
+Glass Storm	8th-level Conjuration	
+Sorcerer
+The (Not Really) Complete Tome of Spells ↗
+Glibness	8th-level Transmutation	
+Bard
+Warlock
+Player's Handbook p.245
+Gunther's Kaleidoscopic Strike	8th-level Evocation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Heart of Stone
+Ritual
+8th-level Necromancy	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Heartseeker
+Ritual
+8th-level Evocation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Holy Aura	8th-level Abjuration	
+Cleric
+Player's D&D Basic Rules p.93 ↗
+Player's Handbook p.251
+Hornung's Random Dispatcher	8th-level Conjuration	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Incendiary Cloud	8th-level Conjuration	
+Sorcerer
+Wizard
+Player's Handbook p.253
+Khelben's Blackstaff	8th-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Laeral's Invisible Blade	8th-level Evocation	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Lifeblend
+Ritual
+8th-level Necromancy	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Lightning Storm	8th-level Evocation	
+Cleric
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Longevity	8th-level Necromancy	
+Cleric
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Magic Susceptibility	8th-level Transmutation	
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mass Contagion	8th-level Necromancy	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Maze	8th-level Conjuration	
+Wizard
+Player's D&D Basic Rules p.97 ↗
+Player's Handbook p.258
+Mind Blank	8th-level Abjuration	
+Bard
+Wizard
+Player's Handbook p.259
+Otiluke's Fire and Ice	8th-level Evocation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Power Word Blind	8th-level Transmutation	
+Bard
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Power Word Stun	8th-level Enchantment	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.98 ↗
+Player's Handbook p.267
+Quench the Spirit	8th-level Necromancy	
+Cleric
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Sand Gems
+Ritual
+8th-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Screen
+Ritual
+8th-level Illusion	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Simbul's Skeletal Deliquescence	8th-level Transmutation	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Smite	8th-level Evocation	
+Cleric
+The (Not Really) Complete Tome of Spells ↗
+Storm
+Ritual
+8th-level Evocation	
+Cleric
+Druid
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Succor
+Ritual
+8th-level Conjuration	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Sunburst	8th-level Evocation	
+Druid
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.102 ↗
+Player's Handbook p.279
+Telepathy	8th-level Evocation	
+Wizard
+Player's Handbook p.281
+Tsunami	8th-level Conjuration	
+Druid
+Player's Handbook p.284
+Vaporize	8th-level Transmutation	
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Year Stealing
+Ritual
+8th-level Necromancy	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Ancient Curse	9th-level Abjuration	
+Cleric
+Druid
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Astral Projection	9th-level Necromancy	
+Cleric
+Warlock
+Wizard
+Player's D&D Basic Rules p.84 ↗
+Player's Handbook p.215
+Bad Medicine	9th-level Enchantment	
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Black Blade of Disaster	9th-level Conjuration	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Body Link	9th-level Necromancy	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Breath of Death
+Ritual
+9th-level Necromancy	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Breath of Life
+Ritual
+9th-level Abjuration	
+Bard
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Call
+Ritual
+9th-level Conjuration	
+Cleric
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Chain Madness	9th-level Enchantment	
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Crystalbrittle	9th-level Transmutation	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Death Pact
+Ritual
+9th-level Evocation	
+Cleric
+Warlock
+The (Not Really) Complete Tome of Spells ↗
+Elminster's Effulgent Epuration	9th-level Abjuration	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Energy Drain	9th-level Necromancy	
+Sorcerer
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Estate Transference
+Ritual
+9th-level Conjuration	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Foresight	9th-level Divination	
+Bard
+Druid
+Warlock
+Wizard
+Player's D&D Basic Rules p.91 ↗
+Player's Handbook p.244
+Gate	9th-level Conjuration	
+Cleric
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.91 ↗
+Player's Handbook p.244
+Harp of War	9th-level Evocation	
+Bard
+The (Not Really) Complete Tome of Spells ↗
+Heart Call	9th-level Conjuration	
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Imprisonment	9th-level Abjuration	
+Warlock
+Wizard
+Player's D&D Basic Rules p.94 ↗
+Player's Handbook p.252
+Ivy Siege	9th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Mage Tunnel	9th-level Conjuration	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Mass Heal	9th-level Conjuration	
+Cleric
+Player's D&D Basic Rules p.97 ↗
+Player's Handbook p.258
+Meteor Swarm	9th-level Evocation	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.97 ↗
+Player's Handbook p.259
+Power Word Banish	9th-level Conjuration	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Power Word Heal	9th-level Evocation	
+Bard
+Player's Handbook p.266
+Power Word Kill	9th-level Enchantment	
+Bard
+Sorcerer
+Warlock
+Wizard
+Player's D&D Basic Rules p.98 ↗
+Player's Handbook p.266
+Prismatic Wall	9th-level Abjuration	
+Wizard
+Player's Handbook p.267
+Renew Deposit
+Ritual
+9th-level Transmutation	
+Druid
+The (Not Really) Complete Tome of Spells ↗
+Rising Colossus	9th-level Conjuration	
+Cleric
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Shapechange	9th-level Transmutation	
+Druid
+Wizard
+Player's Handbook p.274
+Skip Day	9th-level Evocation	
+Cleric
+Sorcerer
+Warlock
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Skycastle
+Ritual
+9th-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+Storm of Vengeance	9th-level Conjuration	
+Druid
+Player's Handbook p.279
+Time Stop	9th-level Transmutation	
+Sorcerer
+Wizard
+Player's D&D Basic Rules p.104 ↗
+Player's Handbook p.283
+Timelessness	9th-level Transmutation	
+Wizard
+The (Not Really) Complete Tome of Spells ↗
+True Polymorph	9th-level Transmutation	
+Bard
+Warlock
+Wizard
+Player's Handbook p.283
+True Resurrection	9th-level Necromancy	
+Cleric
+Druid
+Player's D&D Basic Rules p.104 ↗
+Player's Handbook p.284
+Weird	9th-level Illusion	
+Wizard
+Player's Handbook p.288
+Wish	9th-level Conjuration	
+Sorcerer
+Wizard
+Player's Handbook p.288
+The Rise of Tiamat Online Supplement p.38 ↗

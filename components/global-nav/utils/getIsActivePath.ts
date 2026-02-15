@@ -1,7 +1,4 @@
-export function getIsActivePath(
-  pathname: string,
-  href: string
-): boolean {
+export function getIsActivePath(pathname: string, href: string): boolean {
   if (href === "/") {
     return pathname === "/";
   }

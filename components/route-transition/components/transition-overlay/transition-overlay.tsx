@@ -3,9 +3,7 @@
 import { motion } from "framer-motion";
 
 import type { TransitionOverlayProps } from "@/components/route-transition/components/transition-overlay/types";
-import {
-  TRANSITION_DURATION_SECONDS,
-} from "@/components/route-transition/constants";
+import { TRANSITION_DURATION_SECONDS } from "@/components/route-transition/constants";
 import { getTargetRect } from "@/components/route-transition/utils/getTargetRect";
 
 export function TransitionOverlay({ fromRect, title }: TransitionOverlayProps) {

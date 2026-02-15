@@ -4,7 +4,8 @@ import { createContext, useContext } from "react";
 
 import type { RouteTransitionContextValue } from "@/components/route-transition/types";
 
-const RouteTransitionContext = createContext<RouteTransitionContextValue | null>(null);
+const RouteTransitionContext =
+  createContext<RouteTransitionContextValue | null>(null);
 
 export function RouteTransitionProviderContext({
   children,
@@ -24,7 +25,9 @@ export function useRouteTransition() {
   const context = useContext(RouteTransitionContext);
 
   if (!context) {
-    throw new Error("useRouteTransition must be used inside RouteTransitionProvider");
+    throw new Error(
+      "useRouteTransition must be used inside RouteTransitionProvider"
+    );
   }
 
   return context;

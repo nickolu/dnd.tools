@@ -44,7 +44,10 @@ export const extractFieldFromRawText = (
   fieldName: string
 ): string | null => {
   const escapedField = fieldName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const pattern = new RegExp(`(?:^|\\n)\\s*${escapedField}\\s*:\\s*(.+)$`, "im");
+  const pattern = new RegExp(
+    `(?:^|\\n)\\s*${escapedField}\\s*:\\s*(.+)$`,
+    "im"
+  );
   const match = rawText.match(pattern);
   const value = match?.[1]?.trim();
   return value ? value : null;

@@ -19,7 +19,9 @@
     "reset:spells": "tsx scripts/reset-spells-collection.ts",
     "migrate:monsters-json": "tsx scripts/migrate-monsters-json.ts",
     "migrate:spells-json": "tsx scripts/migrate-spells-json.ts",
-    "audit:spells-migration": "tsx scripts/audit-spells-migration.ts"
+    "audit:spells-migration": "tsx scripts/audit-spells-migration.ts",
+    "backfill:spell-classes": "tsx scripts/backfill-spell-classes-from-meta.ts",
+    "report:missing-spell-classes": "tsx scripts/report-missing-spell-classes.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.6",

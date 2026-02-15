@@ -2,11 +2,7 @@ import { FieldValue } from "firebase-admin/firestore";
 import { type NextRequest } from "next/server";
 
 import { canWrite } from "@/lib/api/auth";
-import {
-  API_ERROR_CODES,
-  jsonError,
-  jsonSuccess,
-} from "@/lib/api/envelope";
+import { API_ERROR_CODES, jsonError, jsonSuccess } from "@/lib/api/envelope";
 import { serializeSpell, toSpellUpdateDoc } from "@/lib/api/firestore";
 import { spellSchema, spellWriteSchema } from "@/lib/domain/spell.schema";
 import {
@@ -37,7 +33,11 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     const snapshot = await db.collection(SPELLS_COLLECTION).doc(id).get();
 
     if (!snapshot.exists) {
-      return jsonError(API_ERROR_CODES.NOT_FOUND, `Spell '${id}' not found.`, 404);
+      return jsonError(
+        API_ERROR_CODES.NOT_FOUND,
+        `Spell '${id}' not found.`,
+        404
+      );
     }
 
     const serialized = serializeSpell(snapshot.id, snapshot.data());
@@ -96,7 +96,11 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     const existingDoc = await docRef.get();
 
     if (!existingDoc.exists) {
-      return jsonError(API_ERROR_CODES.NOT_FOUND, `Spell '${id}' not found.`, 404);
+      return jsonError(
+        API_ERROR_CODES.NOT_FOUND,
+        `Spell '${id}' not found.`,
+        404
+      );
     }
 
     await docRef.set(
@@ -107,13 +111,16 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       )
     );
 
-    await db.collection(META_COLLECTION).doc(META_DOC).set(
-      {
-        spellsVersion: FieldValue.increment(1),
-        updatedAt: FieldValue.serverTimestamp(),
-      },
-      { merge: true }
-    );
+    await db
+      .collection(META_COLLECTION)
+      .doc(META_DOC)
+      .set(
+        {
+          spellsVersion: FieldValue.increment(1),
+          updatedAt: FieldValue.serverTimestamp(),
+        },
+        { merge: true }
+      );
 
     const updated = await docRef.get();
     const serialized = serializeSpell(updated.id, updated.data());
