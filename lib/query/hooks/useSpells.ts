@@ -11,7 +11,8 @@ export const useSpells = () =>
     queryFn: apiClient.getSpells,
     queryKey: queryKeys.spells,
     refetchOnWindowFocus: false,
-    staleTime: 24 * 60 * 60 * 1000,
+    retry: false,
+    staleTime: Number.POSITIVE_INFINITY,
   });
 
 export const useSpell = (id: string) =>
@@ -21,5 +22,6 @@ export const useSpell = (id: string) =>
     queryFn: () => apiClient.getSpell(id),
     queryKey: queryKeys.spell(id),
     refetchOnWindowFocus: false,
-    staleTime: 24 * 60 * 60 * 1000,
+    retry: false,
+    staleTime: Number.POSITIVE_INFINITY,
   });

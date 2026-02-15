@@ -7,6 +7,7 @@ import {
   ToolWidgetCard,
   type WidgetFilterOption,
 } from "@/components/tool-widget-card";
+import { getReadableFetchError } from "@/lib/api/client";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { useSpells } from "@/lib/query/hooks/useSpells";
 
@@ -39,8 +40,20 @@ const MONSTER_WIDGET_FILTERS: WidgetFilterOption[] = [
 ];
 
 export default function Home() {
-  const { data: monsters = [], isLoading: isMonstersLoading } = useMonsters();
-  const { data: spells = [], isLoading: isSpellsLoading } = useSpells();
+  const {
+    data: monsters = [],
+    error: monstersError,
+    isError: isMonstersError,
+    isLoading: isMonstersLoading,
+    refetch: refetchMonsters,
+  } = useMonsters();
+  const {
+    data: spells = [],
+    error: spellsError,
+    isError: isSpellsError,
+    isLoading: isSpellsLoading,
+    refetch: refetchSpells,
+  } = useSpells();
 
   const [monsterSearch, setMonsterSearch] = useState("");
   const [spellSearch, setSpellSearch] = useState("");
@@ -73,6 +86,18 @@ export default function Home() {
     );
   }, [spellSearch, spells]);
 
+  const spellsStatusMessage = isSpellsError
+    ? getReadableFetchError(spellsError, "spells")
+    : isSpellsLoading
+      ? "Loading spells..."
+      : `${visibleSpells.length} visible of ${spells.length} spells`;
+
+  const monstersStatusMessage = isMonstersError
+    ? getReadableFetchError(monstersError, "monsters")
+    : isMonstersLoading
+      ? "Loading monsters..."
+      : `${visibleMonsters.length} visible of ${monsters.length} monsters`;
+
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-6">
       <h1 className="typography-h1">Compendium Tools</h1>
@@ -81,12 +106,38 @@ export default function Home() {
       </p>
 
       <section className="flex flex-col gap-6">
+        {isSpellsError || isMonstersError ? (
+          <div className="surface-card flex flex-wrap items-center gap-2 p-3">
+            <p className="typography-body-sm text-secondary">
+              Some compendium data failed to load.
+            </p>
+            {isSpellsError ? (
+              <button
+                className="admin-button-secondary typography-body-sm px-3 py-1"
+                onClick={() => {
+                  void refetchSpells();
+                }}
+                type="button"
+              >
+                Retry spells
+              </button>
+            ) : null}
+            {isMonstersError ? (
+              <button
+                className="admin-button-secondary typography-body-sm px-3 py-1"
+                onClick={() => {
+                  void refetchMonsters();
+                }}
+                type="button"
+              >
+                Retry monsters
+              </button>
+            ) : null}
+          </div>
+        ) : null}
+
         <ToolWidgetCard
-          description={
-            isSpellsLoading
-              ? "Loading spells..."
-              : `${visibleSpells.length} visible of ${spells.length} spells`
-          }
+          description={spellsStatusMessage}
           filterOptions={SPELL_WIDGET_FILTERS}
           onFilterSelect={setSpellFilter}
           onSearchChange={setSpellSearch}
@@ -97,11 +148,7 @@ export default function Home() {
         />
 
         <ToolWidgetCard
-          description={
-            isMonstersLoading
-              ? "Loading monsters..."
-              : `${visibleMonsters.length} visible of ${monsters.length} monsters`
-          }
+          description={monstersStatusMessage}
           filterOptions={MONSTER_WIDGET_FILTERS}
           onFilterSelect={setMonsterFilter}
           onSearchChange={setMonsterSearch}

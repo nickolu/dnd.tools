@@ -11,7 +11,8 @@ export const useMonsters = () =>
     queryFn: apiClient.getMonsters,
     queryKey: queryKeys.monsters,
     refetchOnWindowFocus: false,
-    staleTime: 24 * 60 * 60 * 1000,
+    retry: false,
+    staleTime: Number.POSITIVE_INFINITY,
   });
 
 export const useMonster = (id: string) =>
@@ -21,5 +22,6 @@ export const useMonster = (id: string) =>
     queryFn: () => apiClient.getMonster(id),
     queryKey: queryKeys.monster(id),
     refetchOnWindowFocus: false,
-    staleTime: 24 * 60 * 60 * 1000,
+    retry: false,
+    staleTime: Number.POSITIVE_INFINITY,
   });

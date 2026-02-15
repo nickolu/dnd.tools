@@ -11,5 +11,6 @@ export const useMetaVersion = () =>
     queryFn: apiClient.getMetaVersion,
     queryKey: queryKeys.metaVersion,
     refetchOnWindowFocus: false,
-    staleTime: 24 * 60 * 60 * 1000,
+    retry: false,
+    staleTime: Number.POSITIVE_INFINITY,
   });

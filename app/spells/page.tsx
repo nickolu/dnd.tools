@@ -5,6 +5,7 @@ import { Suspense, useEffect, useMemo, useRef } from "react";
 
 import { FilterGroup } from "@/components/filter-group";
 import { FilterLogicPopover } from "@/components/filter-logic-popover";
+import { getReadableFetchError } from "@/lib/api/client";
 import { useSpells } from "@/lib/query/hooks/useSpells";
 import { SpellCard, SpellResultsSummary } from "@/page/spells/components";
 import {
@@ -94,7 +95,13 @@ function SpellsPageContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const searchRef = useRef<HTMLInputElement>(null);
-  const { data: spells = [], isLoading } = useSpells();
+  const {
+    data: spells = [],
+    error,
+    isError,
+    isLoading,
+    refetch,
+  } = useSpells();
   const { filteredSpells, filters } = useSpellFilters(spells, searchParams);
   const isAdminMode = searchParams.get("admin") === "true";
   const filterGroups = useMemo<SpellFilterGroupType[]>(
@@ -225,6 +232,23 @@ function SpellsPageContent() {
           visible={filteredSpells.length}
         />
 
+        {isError ? (
+          <div className="surface-card mt-3 flex items-center gap-3 p-3">
+            <p className="typography-body-sm text-secondary">
+              {getReadableFetchError(error, "spells")}
+            </p>
+            <button
+              className="admin-button-secondary typography-body-sm px-3 py-1"
+              onClick={() => {
+                void refetch();
+              }}
+              type="button"
+            >
+              Retry
+            </button>
+          </div>
+        ) : null}
+
         <div className="mt-4 space-y-3">
           <div className="relative">
             <div className="flex items-center gap-2">
@@ -293,7 +317,7 @@ function SpellsPageContent() {
             Loading spells...
           </p>
         ) : null}
-        {!isLoading && !filteredSpells.length ? (
+        {!isLoading && !isError && !filteredSpells.length ? (
           <p className="typography-body-sm text-muted mt-4">
             No spells match your filters.
           </p>

@@ -5,6 +5,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 
 import { FilterGroup } from "@/components/filter-group";
 import { FilterLogicPopover } from "@/components/filter-logic-popover";
+import { getReadableFetchError } from "@/lib/api/client";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import {
   MonsterCard,
@@ -94,7 +95,13 @@ function MonstersPageContent() {
   const searchParams = useSearchParams();
   const searchRef = useRef<HTMLInputElement>(null);
   const searchDebounceTimeoutRef = useRef<number | null>(null);
-  const { data: monsters = [], isLoading } = useMonsters();
+  const {
+    data: monsters = [],
+    error,
+    isError,
+    isLoading,
+    refetch,
+  } = useMonsters();
   const isAdminMode = searchParams.get("admin") === "true";
   const { filteredMonsters, filters } = useMonsterFilters(
     monsters,
@@ -298,6 +305,23 @@ function MonstersPageContent() {
           visible={filteredMonsters.length}
         />
 
+        {isError ? (
+          <div className="surface-card mt-3 flex items-center gap-3 p-3">
+            <p className="typography-body-sm text-secondary">
+              {getReadableFetchError(error, "monsters")}
+            </p>
+            <button
+              className="admin-button-secondary typography-body-sm px-3 py-1"
+              onClick={() => {
+                void refetch();
+              }}
+              type="button"
+            >
+              Retry
+            </button>
+          </div>
+        ) : null}
+
         <div className="mt-4 space-y-3">
           <div className="relative">
             <div className="flex items-center gap-2">
@@ -410,7 +434,7 @@ function MonstersPageContent() {
             Loading monsters...
           </p>
         ) : null}
-        {!isLoading && !filteredMonsters.length ? (
+        {!isLoading && !isError && !filteredMonsters.length ? (
           <p className="typography-body-sm text-muted mt-4">
             No monsters match your filters.
           </p>
