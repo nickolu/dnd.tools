@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 
 import { FilterChip } from "@/components/tool-widget-card/components/filter-chip";
 import { useSpells } from "@/lib/query/hooks/useSpells";
-import { SpellResultsSummary } from "@/page/spells/components";
+import { SpellCard, SpellResultsSummary } from "@/page/spells/components";
 import { SPELL_SCHOOL_FILTERS } from "@/page/spells/constants";
 import { useSpellFilters } from "@/page/spells/hooks/useSpellFilters";
 
@@ -69,17 +69,16 @@ export default function SpellsPage() {
           </div>
         </div>
 
-        <ul className="mt-4 grid gap-2 text-sm md:grid-cols-2">
-          {isLoading ? (
-            <li className="text-muted">Loading spells...</li>
-          ) : (
-            filteredSpells.map((spell) => (
-              <li className="border-b border-[color:var(--color-border-subtle)] pb-1" key={spell.id}>
-                {spell.name}
-              </li>
-            ))
-          )}
-        </ul>
+        {isLoading ? <p className="text-muted mt-4">Loading spells...</p> : null}
+        {!isLoading && !filteredSpells.length ? (
+          <p className="text-muted mt-4">No spells match your filters.</p>
+        ) : null}
+
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          {filteredSpells.map((spell) => (
+            <SpellCard key={spell.id} spell={spell} />
+          ))}
+        </div>
       </section>
     </main>
   );

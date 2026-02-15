@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 
 import { FilterChip } from "@/components/tool-widget-card/components/filter-chip";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
-import { MonsterResultsSummary } from "@/page/monsters/components";
+import { MonsterCard, MonsterResultsSummary } from "@/page/monsters/components";
 import { MONSTER_SIZE_FILTERS } from "@/page/monsters/constants";
 import { useMonsterFilters } from "@/page/monsters/hooks/useMonsterFilters";
 
@@ -72,20 +72,16 @@ export default function MonstersPage() {
           </div>
         </div>
 
-        <ul className="mt-4 grid gap-2 text-sm md:grid-cols-2">
-          {isLoading ? (
-            <li className="text-muted">Loading monsters...</li>
-          ) : (
-            filteredMonsters.map((monster) => (
-              <li
-                className="border-b border-[color:var(--color-border-subtle)] pb-1"
-                key={monster.id}
-              >
-                {monster.name}
-              </li>
-            ))
-          )}
-        </ul>
+        {isLoading ? <p className="text-muted mt-4">Loading monsters...</p> : null}
+        {!isLoading && !filteredMonsters.length ? (
+          <p className="text-muted mt-4">No monsters match your filters.</p>
+        ) : null}
+
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          {filteredMonsters.map((monster) => (
+            <MonsterCard key={monster.id} monster={monster} />
+          ))}
+        </div>
       </section>
     </main>
   );
