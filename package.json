@@ -14,7 +14,8 @@
     "build": "npm run check && next build",
     "start": "next start",
     "lint:fix": "eslint . --fix",
-    "check:firestore-flow": "tsx scripts/firestore-flow-check.ts"
+    "check:firestore-flow": "tsx scripts/firestore-flow-check.ts",
+    "seed:compendium": "tsx scripts/seed-compendium.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.6",
