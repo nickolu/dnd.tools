@@ -9,4 +9,5 @@ export type FilterGroupProps = {
   label: string;
   onChange: (value: string) => void;
   options: FilterGroupOption[];
+  storageKey?: string;
 };

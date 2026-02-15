@@ -66,9 +66,7 @@ export default function SpellsPage() {
             {filterGroups.map((group) => (
               <FilterGroup
                 activeValue={filters[group.key]}
-                className={
-                  "mr-2"
-                }
+                className="mr-2"
                 key={group.key}
                 label={group.label}
                 onChange={(value) => {
@@ -76,6 +74,7 @@ export default function SpellsPage() {
                   updateSearchParam(queryParam, value === "all" ? "" : value);
                 }}
                 options={group.options}
+                storageKey={`spells:${group.key}`}
               />
             ))}
           </div>
