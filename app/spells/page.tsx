@@ -1,13 +1,18 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
-import { FilterChip } from "@/components/tool-widget-card/components/filter-chip";
 import { useSpells } from "@/lib/query/hooks/useSpells";
-import { SpellCard, SpellResultsSummary } from "@/page/spells/components";
-import { SPELL_SCHOOL_FILTERS } from "@/page/spells/constants";
+import {
+  SpellCard,
+  SpellFilterGroup,
+  SpellResultsSummary,
+} from "@/page/spells/components";
+import { SPELL_FILTER_QUERY_PARAM_BY_KEY } from "@/page/spells/constants";
 import { useSpellFilters } from "@/page/spells/hooks/useSpellFilters";
+import type { SpellFilterGroup as SpellFilterGroupType } from "@/page/spells/types";
+import { getSpellFilterGroups } from "@/page/spells/utils/getSpellFilterGroups";
 
 export default function SpellsPage() {
   const router = useRouter();
@@ -16,6 +21,10 @@ export default function SpellsPage() {
   const searchRef = useRef<HTMLInputElement>(null);
   const { data: spells = [], isLoading } = useSpells();
   const { filteredSpells, filters } = useSpellFilters(spells, searchParams);
+  const filterGroups = useMemo<SpellFilterGroupType[]>(
+    () => getSpellFilterGroups(spells),
+    [spells]
+  );
 
   useEffect(() => {
     if (searchParams.get("intent") !== "search") {
@@ -26,13 +35,13 @@ export default function SpellsPage() {
     searchRef.current?.select();
   }, [searchParams]);
 
-  const updateSearchParam = (key: string, value: string) => {
+  const updateSearchParam = (queryParam: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
 
     if (value) {
-      params.set(key, value);
+      params.set(queryParam, value);
     } else {
-      params.delete(key);
+      params.delete(queryParam);
     }
 
     params.delete("intent");
@@ -49,21 +58,25 @@ export default function SpellsPage() {
           <input
             className="input-field w-full px-3 py-2"
             onChange={(event) => {
-              updateSearchParam("q", event.target.value.trim());
+              updateSearchParam("q", event.target.value);
             }}
             placeholder="Search spells"
             ref={searchRef}
             value={filters.query}
           />
-          <div className="flex flex-wrap gap-2">
-            {SPELL_SCHOOL_FILTERS.map((school) => (
-              <FilterChip
-                isActive={filters.school === school}
-                key={school}
-                label={school === "all" ? "All" : school}
-                onClick={() => {
-                  updateSearchParam("school", school === "all" ? "" : school);
+
+          <div className="flex flex-wrap gap-3">
+            {filterGroups.map((group) => (
+              <SpellFilterGroup
+                activeValue={filters[group.key]}
+                className="mr-4"
+                key={group.key}
+                label={group.label}
+                onChange={(value) => {
+                  const queryParam = SPELL_FILTER_QUERY_PARAM_BY_KEY[group.key];
+                  updateSearchParam(queryParam, value === "all" ? "" : value);
                 }}
+                options={group.options}
               />
             ))}
           </div>
