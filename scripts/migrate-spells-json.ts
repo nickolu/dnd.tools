@@ -222,7 +222,7 @@ const normalizeSpellRange = (value: string): string => {
   }
 
   const distanceMatch = normalized.match(
-    /^([\d,\s]+)\s*(ft|feet|foot|mile|miles)$/i
+    /^([\d,\s]+)\s*(ft|feet|foot|foots|mile|miles)$/i
   );
   if (distanceMatch) {
     const count = distanceMatch[1] ?? "";
@@ -234,6 +234,41 @@ const normalizeSpellRange = (value: string): string => {
   }
 
   return primary.trim().replace(/\s+/g, " ");
+};
+
+const normalizeForDuplicationCheck = (value: string): string =>
+  value
+    .toLowerCase()
+    .replace(/[^\w\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const collapseDuplicatedParagraph = (value: string): string => {
+  const trimmed = value.trim().replace(/\s+/g, " ");
+  if (!trimmed) {
+    return "";
+  }
+
+  const words = trimmed.split(" ");
+  if (words.length < 8) {
+    return trimmed;
+  }
+
+  const midpoint = Math.floor(words.length / 2);
+  if (midpoint * 2 !== words.length) {
+    return trimmed;
+  }
+
+  const leftWords = words.slice(0, midpoint);
+  const rightWords = words.slice(midpoint);
+  const leftNormalized = normalizeForDuplicationCheck(leftWords.join(" "));
+  const rightNormalized = normalizeForDuplicationCheck(rightWords.join(" "));
+
+  if (leftNormalized && leftNormalized === rightNormalized) {
+    return leftWords.join(" ");
+  }
+
+  return trimmed;
 };
 
 const normalizeSpellCastingTime = (value: string): string => {
@@ -419,15 +454,17 @@ const dedupeParagraphs = (paragraphs: string[]): string[] => {
   const result: string[] = [];
 
   for (const paragraph of paragraphs) {
-    const normalized = paragraph
+    const collapsed = collapseDuplicatedParagraph(paragraph);
+    const collapsedNormalized = collapsed
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, " ")
       .trim();
-    if (!normalized || seen.has(normalized)) {
+
+    if (!collapsedNormalized || seen.has(collapsedNormalized)) {
       continue;
     }
-    seen.add(normalized);
-    result.push(paragraph.trim());
+    seen.add(collapsedNormalized);
+    result.push(collapsed);
   }
 
   return result;

@@ -19,6 +19,7 @@
     "reset:spells": "tsx scripts/reset-spells-collection.ts",
     "migrate:monsters-json": "tsx scripts/migrate-monsters-json.ts",
     "migrate:spells-json": "tsx scripts/migrate-spells-json.ts",
+    "normalize:spell-quality": "tsx scripts/normalize-spell-quality.ts",
     "audit:spells-migration": "tsx scripts/audit-spells-migration.ts",
     "backfill:spell-classes": "tsx scripts/backfill-spell-classes-from-meta.ts",
     "report:missing-spell-classes": "tsx scripts/report-missing-spell-classes.ts"
