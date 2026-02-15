@@ -4,6 +4,7 @@ import { useEffect, useId, useMemo, useState } from "react";
 import { FILTER_GROUP_STORAGE_PREFIX } from "@/components/filter-group/constants";
 import type { FilterGroupProps } from "@/components/filter-group/types";
 import { FilterChip } from "@/components/tool-widget-card/components/filter-chip";
+import { cn } from "@/lib/util/cn";
 
 export function FilterGroup({
   activeValues,
@@ -20,34 +21,37 @@ export function FilterGroup({
     () => `${FILTER_GROUP_STORAGE_PREFIX}:${storageKey ?? label.toLowerCase()}`,
     [label, storageKey]
   );
-  const [isExpanded, setIsExpanded] = useState(() => {
-    if (typeof window === "undefined") {
-      return true;
-    }
-
-    return window.localStorage.getItem(persistedKey) !== "collapsed";
-  });
+  const [isExpanded, setIsExpanded] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false);
   const isEffectivelyExpanded = shouldExpand || isExpanded;
   const rootClassName = className
     ? `min-w-0 space-y-1 ${className}`
     : "min-w-0 space-y-1";
 
   useEffect(() => {
+    setHasMounted(true);
+    setIsExpanded(window.localStorage.getItem(persistedKey) !== "collapsed");
+  }, [persistedKey]);
+
+  useEffect(() => {
+    if (!hasMounted) {
+      return;
+    }
+
     window.localStorage.setItem(
       persistedKey,
       isEffectivelyExpanded ? "expanded" : "collapsed"
     );
-  }, [isEffectivelyExpanded, persistedKey]);
+  }, [hasMounted, isEffectivelyExpanded, persistedKey]);
 
   return (
-    <section className={rootClassName}>
+    <section className={cn(rootClassName, 'cursor-pointer border-1 border-[#eee] rounded-md p-2')} onClick={() => {
+      setIsExpanded((current) => !current);
+    }}>
       <button
         aria-controls={contentId}
         aria-expanded={isEffectivelyExpanded}
         className="typography-kicker text-muted flex w-full items-center justify-start text-left cursor-pointer"
-        onClick={() => {
-          setIsExpanded((current) => !current);
-        }}
         type="button"
       >
         <span>{label}</span>

@@ -176,14 +176,14 @@ export default function MonstersPage() {
       bound === "min"
         ? value
         : parseParamNumber(
-            params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].min)
-          );
+          params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].min)
+        );
     const currentMax =
       bound === "max"
         ? value
         : parseParamNumber(
-            params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].max)
-          );
+          params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].max)
+        );
 
     if (currentMin !== null && currentMax !== null && currentMin > currentMax) {
       params.set(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].min, String(currentMax));
@@ -304,11 +304,10 @@ export default function MonstersPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap">
             {filterGroups.map((group) => (
               <FilterGroup
                 activeValues={getActiveValues(group.key)}
-                className="mr-2"
                 key={group.key}
                 label={group.label}
                 onChange={(values) => {

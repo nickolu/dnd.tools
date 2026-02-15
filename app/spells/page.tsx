@@ -227,11 +227,10 @@ export default function SpellsPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-1">
             {filterGroups.map((group) => (
               <FilterGroup
                 activeValues={getActiveValues(group.key)}
-                className="mr-2"
                 key={group.key}
                 label={group.label}
                 onChange={(values) => {
