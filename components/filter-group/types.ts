@@ -12,5 +12,6 @@ export type FilterGroupProps = {
   onChange: (values: string[]) => void;
   options: FilterGroupOption[];
   selectionMode?: FilterGroupSelectionMode;
+  shouldExpand?: boolean;
   storageKey?: string;
 };

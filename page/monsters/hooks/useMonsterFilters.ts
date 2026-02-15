@@ -28,6 +28,10 @@ import {
 } from "@/page/monsters/utils/monster-filter-values";
 
 type SearchParamsInput = URLSearchParams | ReadonlyURLSearchParams;
+type LegacyMonsterFilter = {
+  key: MonsterFilterGroupKey;
+  value: string;
+};
 
 function parseValues(
   searchParams: SearchParamsInput,
@@ -123,7 +127,43 @@ function parseLegacyAlignmentValues(searchParams: SearchParamsInput): {
   return { law, moral };
 }
 
+function parseLegacyMonsterFilter(
+  searchParams: SearchParamsInput
+): LegacyMonsterFilter | null {
+  const raw = searchParams.get("filter")?.trim();
+  if (!raw) {
+    return null;
+  }
+
+  const [key, ...valueParts] = raw.split(":");
+  const value = valueParts.join(":").trim();
+  if (!key || !value) {
+    return null;
+  }
+
+  if (
+    key === "alignmentLaw" ||
+    key === "alignmentMoral" ||
+    key === "conditionImmunities" ||
+    key === "damageImmunities" ||
+    key === "damageResistances" ||
+    key === "damageVulnerabilities" ||
+    key === "senses" ||
+    key === "size" ||
+    key === "source" ||
+    key === "type"
+  ) {
+    return {
+      key,
+      value: key === "senses" || key === "type" ? value.toLowerCase() : value,
+    };
+  }
+
+  return null;
+}
+
 function parseMonsterFilters(searchParams: SearchParamsInput): MonsterFilters {
+  const legacyFilter = parseLegacyMonsterFilter(searchParams);
   const query = searchParams.get("q")?.trim() ?? DEFAULT_MONSTER_FILTERS.query;
   const groupMatchModeCandidate =
     searchParams.get(MONSTER_GROUP_MATCH_QUERY_PARAM) ??
@@ -148,27 +188,63 @@ function parseMonsterFilters(searchParams: SearchParamsInput): MonsterFilters {
 
   const legacySize = searchParams.get("filter");
   const sizeValues = [...sizeGroup.values];
-  if (legacySize && isMonsterSizeFilter(legacySize) && !sizeValues.length) {
+  if (
+    legacySize &&
+    isMonsterSizeFilter(legacySize) &&
+    !sizeValues.length &&
+    !legacyFilter
+  ) {
     sizeValues.push(legacySize);
+  }
+  if (
+    legacyFilter?.key === "size" &&
+    isMonsterSizeFilter(legacyFilter.value) &&
+    !sizeValues.length
+  ) {
+    sizeValues.push(legacyFilter.value);
   }
 
   const legacyAlignment = parseLegacyAlignmentValues(searchParams);
   const alignmentLawValues =
     alignmentLawGroup.values.length > 0
       ? alignmentLawGroup.values
-      : legacyAlignment.law;
+      : legacyFilter?.key === "alignmentLaw"
+        ? [legacyFilter.value]
+        : legacyAlignment.law;
   const alignmentMoralValues =
     alignmentMoralGroup.values.length > 0
       ? alignmentMoralGroup.values
-      : legacyAlignment.moral;
+      : legacyFilter?.key === "alignmentMoral"
+        ? [legacyFilter.value]
+        : legacyAlignment.moral;
 
   return {
     alignmentLaw: alignmentLawValues,
     alignmentMoral: alignmentMoralValues,
-    conditionImmunities: conditionImmunitiesGroup.values,
-    damageImmunities: damageImmunitiesGroup.values,
-    damageResistances: damageResistancesGroup.values,
-    damageVulnerabilities: damageVulnerabilitiesGroup.values,
+    conditionImmunities:
+      conditionImmunitiesGroup.values.length > 0
+        ? conditionImmunitiesGroup.values
+        : legacyFilter?.key === "conditionImmunities"
+          ? [legacyFilter.value]
+          : [],
+    damageImmunities:
+      damageImmunitiesGroup.values.length > 0
+        ? damageImmunitiesGroup.values
+        : legacyFilter?.key === "damageImmunities"
+          ? [legacyFilter.value]
+          : [],
+    damageResistances:
+      damageResistancesGroup.values.length > 0
+        ? damageResistancesGroup.values
+        : legacyFilter?.key === "damageResistances"
+          ? [legacyFilter.value]
+          : [],
+    damageVulnerabilities:
+      damageVulnerabilitiesGroup.values.length > 0
+        ? damageVulnerabilitiesGroup.values
+        : legacyFilter?.key === "damageVulnerabilities"
+          ? [legacyFilter.value]
+          : [],
     groupMatchMode: isMonsterMatchMode(groupMatchModeCandidate)
       ? groupMatchModeCandidate
       : DEFAULT_MONSTER_FILTERS.groupMatchMode,
@@ -208,12 +284,27 @@ function parseMonsterFilters(searchParams: SearchParamsInput): MonsterFilters {
       source: sourceGroup.selectionMode,
       type: typeGroup.selectionMode,
     },
-    senses: sensesGroup.values,
+    senses:
+      sensesGroup.values.length > 0
+        ? sensesGroup.values
+        : legacyFilter?.key === "senses"
+          ? [legacyFilter.value]
+          : [],
     size: sizeValues.filter((value): value is Monster["size"] =>
       isMonsterSizeFilter(value)
     ),
-    source: sourceGroup.values,
-    type: typeGroup.values,
+    source:
+      sourceGroup.values.length > 0
+        ? sourceGroup.values
+        : legacyFilter?.key === "source"
+          ? [legacyFilter.value]
+          : [],
+    type:
+      typeGroup.values.length > 0
+        ? typeGroup.values
+        : legacyFilter?.key === "type"
+          ? [legacyFilter.value]
+          : [],
   };
 }
 

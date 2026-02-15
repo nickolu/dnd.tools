@@ -35,6 +35,32 @@ function isMultiSelectableGroupKey(
   return key === "classes" || key === "component";
 }
 
+function getHomeIntentFilterGroupKey(searchParams: {
+  get: (key: string) => string | null;
+}): SpellFilterGroupKey | null {
+  if (searchParams.get("intent") !== "filter") {
+    return null;
+  }
+
+  const raw = searchParams.get("filter")?.trim();
+  if (!raw) {
+    return null;
+  }
+
+  const [key] = raw.split(":");
+  if (
+    key === "classes" ||
+    key === "component" ||
+    key === "concentration" ||
+    key === "level" ||
+    key === "ritual"
+  ) {
+    return key;
+  }
+
+  return null;
+}
+
 export default function SpellsPage() {
   const router = useRouter();
   const pathname = usePathname();
@@ -46,6 +72,7 @@ export default function SpellsPage() {
     () => getSpellFilterGroups(spells),
     [spells]
   );
+  const homeIntentFilterGroupKey = getHomeIntentFilterGroupKey(searchParams);
 
   useEffect(() => {
     if (searchParams.get("intent") !== "search") {
@@ -66,6 +93,7 @@ export default function SpellsPage() {
     }
 
     params.delete("intent");
+    params.delete("filter");
     router.push(
       `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
     );
@@ -80,6 +108,7 @@ export default function SpellsPage() {
       .forEach((value) => params.append(queryParam, value));
 
     params.delete("intent");
+    params.delete("filter");
     router.push(
       `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
     );
@@ -94,6 +123,7 @@ export default function SpellsPage() {
     }
 
     params.delete("intent");
+    params.delete("filter");
     router.push(
       `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
     );
@@ -121,6 +151,7 @@ export default function SpellsPage() {
     }
 
     params.delete("intent");
+    params.delete("filter");
     router.push(
       `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
     );
@@ -139,6 +170,7 @@ export default function SpellsPage() {
     }
 
     params.delete("intent");
+    params.delete("filter");
     router.push(
       `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
     );
@@ -220,6 +252,7 @@ export default function SpellsPage() {
                     ? filters.selectionModeByKey[group.key]
                     : "single"
                 }
+                shouldExpand={homeIntentFilterGroupKey === group.key}
                 storageKey={`spells:${group.key}`}
               />
             ))}

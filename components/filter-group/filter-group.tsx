@@ -12,6 +12,7 @@ export function FilterGroup({
   onChange,
   options,
   selectionMode = "single",
+  shouldExpand = false,
   storageKey,
 }: FilterGroupProps) {
   const contentId = useId();
@@ -26,6 +27,7 @@ export function FilterGroup({
 
     return window.localStorage.getItem(persistedKey) !== "collapsed";
   });
+  const isEffectivelyExpanded = shouldExpand || isExpanded;
   const rootClassName = className
     ? `min-w-0 space-y-1 ${className}`
     : "min-w-0 space-y-1";
@@ -33,15 +35,15 @@ export function FilterGroup({
   useEffect(() => {
     window.localStorage.setItem(
       persistedKey,
-      isExpanded ? "expanded" : "collapsed"
+      isEffectivelyExpanded ? "expanded" : "collapsed"
     );
-  }, [isExpanded, persistedKey]);
+  }, [isEffectivelyExpanded, persistedKey]);
 
   return (
     <section className={rootClassName}>
       <button
         aria-controls={contentId}
-        aria-expanded={isExpanded}
+        aria-expanded={isEffectivelyExpanded}
         className="typography-kicker text-muted flex w-full items-center justify-start text-left cursor-pointer"
         onClick={() => {
           setIsExpanded((current) => !current);
@@ -51,7 +53,7 @@ export function FilterGroup({
         <span>{label}</span>
         <svg
           aria-hidden="true"
-          className={`h-4 w-4 transition-transform ${isExpanded ? "rotate-0" : "-rotate-90"}`}
+          className={`h-4 w-4 transition-transform ${isEffectivelyExpanded ? "rotate-0" : "-rotate-90"}`}
           viewBox="0 0 20 20"
         >
           <path
@@ -65,7 +67,7 @@ export function FilterGroup({
         </svg>
       </button>
       <AnimatePresence initial={false}>
-        {isExpanded ? (
+        {isEffectivelyExpanded ? (
           <motion.div
             animate={{ height: "auto", opacity: 1 }}
             className="overflow-hidden"
@@ -91,7 +93,9 @@ export function FilterGroup({
                       return;
                     }
 
-                    const withoutAll = activeValues.filter((value) => value !== "all");
+                    const withoutAll = activeValues.filter(
+                      (value) => value !== "all"
+                    );
                     const nextValues = withoutAll.includes(option.value)
                       ? withoutAll.filter((value) => value !== option.value)
                       : [...withoutAll, option.value];

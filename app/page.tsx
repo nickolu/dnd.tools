@@ -11,15 +11,31 @@ import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { useSpells } from "@/lib/query/hooks/useSpells";
 
 const SPELL_WIDGET_FILTERS: WidgetFilterOption[] = [
-  { id: "evocation", label: "Evocation" },
-  { id: "abjuration", label: "Abjuration" },
-  { id: "necromancy", label: "Necromancy" },
+  { id: "classes:wizard", label: "Wizard" },
+  { id: "classes:sorcerer", label: "Sorcerer" },
+  { id: "classes:cleric", label: "Cleric" },
+  { id: "classes:druid", label: "Druid" },
+  { id: "level:0", label: "Cantrip" },
+  { id: "level:1", label: "Level 1" },
+  { id: "level:3", label: "Level 3" },
+  { id: "level:5", label: "Level 5" },
+  { id: "concentration:yes", label: "Concentration" },
+  { id: "ritual:yes", label: "Ritual" },
 ];
 
 const MONSTER_WIDGET_FILTERS: WidgetFilterOption[] = [
-  { id: "Tiny", label: "Tiny" },
-  { id: "Medium", label: "Medium" },
-  { id: "Large", label: "Large" },
+  { id: "size:Small", label: "Small" },
+  { id: "size:Medium", label: "Medium" },
+  { id: "size:Large", label: "Large" },
+  { id: "size:Huge", label: "Huge" },
+  { id: "type:humanoid", label: "Humanoid" },
+  { id: "type:dragon", label: "Dragon" },
+  { id: "type:undead", label: "Undead" },
+  { id: "type:fiend", label: "Fiend" },
+  { id: "alignmentMoral:good", label: "Good" },
+  { id: "alignmentMoral:evil", label: "Evil" },
+  { id: "senses:blindsight", label: "Blindsight" },
+  { id: "senses:darkvision", label: "Darkvision" },
 ];
 
 export default function Home() {
@@ -28,7 +44,9 @@ export default function Home() {
 
   const [monsterSearch, setMonsterSearch] = useState("");
   const [spellSearch, setSpellSearch] = useState("");
-  const [monsterFilter, setMonsterFilter] = useState<string | undefined>(undefined);
+  const [monsterFilter, setMonsterFilter] = useState<string | undefined>(
+    undefined
+  );
   const [spellFilter, setSpellFilter] = useState<string | undefined>(undefined);
 
   const visibleMonsters = useMemo(() => {
@@ -50,7 +68,9 @@ export default function Home() {
       return spells;
     }
 
-    return spells.filter((spell) => spell.nameNormalized.includes(normalizedFilter));
+    return spells.filter((spell) =>
+      spell.nameNormalized.includes(normalizedFilter)
+    );
   }, [spellSearch, spells]);
 
   return (
@@ -62,17 +82,6 @@ export default function Home() {
 
       <section className="flex flex-col gap-6">
         <ToolWidgetCard
-          description={`${visibleMonsters.length} visible of ${monsters.length} monsters`}
-          filterOptions={MONSTER_WIDGET_FILTERS}
-          onFilterSelect={setMonsterFilter}
-          onSearchChange={setMonsterSearch}
-          route="/monsters"
-          selectedFilterId={monsterFilter}
-          title="Monsters"
-          value={monsterSearch}
-        />
-
-        <ToolWidgetCard
           description={`${visibleSpells.length} visible of ${spells.length} spells`}
           filterOptions={SPELL_WIDGET_FILTERS}
           onFilterSelect={setSpellFilter}
@@ -81,6 +90,17 @@ export default function Home() {
           selectedFilterId={spellFilter}
           title="Spells"
           value={spellSearch}
+        />
+
+        <ToolWidgetCard
+          description={`${visibleMonsters.length} visible of ${monsters.length} monsters`}
+          filterOptions={MONSTER_WIDGET_FILTERS}
+          onFilterSelect={setMonsterFilter}
+          onSearchChange={setMonsterSearch}
+          route="/monsters"
+          selectedFilterId={monsterFilter}
+          title="Monsters"
+          value={monsterSearch}
         />
       </section>
     </main>

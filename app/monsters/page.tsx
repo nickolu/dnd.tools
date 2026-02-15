@@ -19,6 +19,7 @@ import {
   MONSTER_GROUP_MATCH_QUERY_PARAM_BY_KEY,
   MONSTER_RANGE_QUERY_PARAM_BY_KEY,
   MONSTER_SELECTION_MODE_QUERY_PARAM_BY_KEY,
+  MONSTER_SIZE_VALUES,
 } from "@/page/monsters/constants";
 import { useMonsterFilters } from "@/page/monsters/hooks/useMonsterFilters";
 import type {
@@ -52,6 +53,41 @@ function isMultiSelectableGroupKey(
   return MULTI_SELECTABLE_GROUPS.includes(key);
 }
 
+function getHomeIntentFilterGroupKey(searchParams: {
+  get: (key: string) => string | null;
+}): MonsterFilterGroupKey | null {
+  if (searchParams.get("intent") !== "filter") {
+    return null;
+  }
+
+  const raw = searchParams.get("filter")?.trim();
+  if (!raw) {
+    return null;
+  }
+
+  const [key] = raw.split(":");
+  if (
+    key === "size" ||
+    key === "type" ||
+    key === "alignmentLaw" ||
+    key === "alignmentMoral" ||
+    key === "source" ||
+    key === "senses" ||
+    key === "damageResistances" ||
+    key === "damageImmunities" ||
+    key === "damageVulnerabilities" ||
+    key === "conditionImmunities"
+  ) {
+    return key;
+  }
+
+  if (MONSTER_SIZE_VALUES.some((size) => size === raw)) {
+    return "size";
+  }
+
+  return null;
+}
+
 export default function MonstersPage() {
   const router = useRouter();
   const pathname = usePathname();
@@ -70,6 +106,7 @@ export default function MonstersPage() {
     () => getMonsterRangeFilterGroups(monsters),
     [monsters]
   );
+  const homeIntentFilterGroupKey = getHomeIntentFilterGroupKey(searchParams);
 
   useEffect(() => {
     if (searchParams.get("intent") !== "search") {
@@ -90,6 +127,7 @@ export default function MonstersPage() {
     }
 
     params.delete("intent");
+    params.delete("filter");
     router.push(
       `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
     );
@@ -137,14 +175,14 @@ export default function MonstersPage() {
       bound === "min"
         ? value
         : parseParamNumber(
-          params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].min)
-        );
+            params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].min)
+          );
     const currentMax =
       bound === "max"
         ? value
         : parseParamNumber(
-          params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].max)
-        );
+            params.get(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].max)
+          );
 
     if (currentMin !== null && currentMax !== null && currentMin > currentMax) {
       params.set(MONSTER_RANGE_QUERY_PARAM_BY_KEY[key].min, String(currentMax));
@@ -152,6 +190,7 @@ export default function MonstersPage() {
     }
 
     params.delete("intent");
+    params.delete("filter");
     router.push(
       `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
     );
@@ -166,6 +205,7 @@ export default function MonstersPage() {
     }
 
     params.delete("intent");
+    params.delete("filter");
     router.push(
       `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
     );
@@ -193,6 +233,7 @@ export default function MonstersPage() {
     }
 
     params.delete("intent");
+    params.delete("filter");
     router.push(
       `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
     );
@@ -211,6 +252,7 @@ export default function MonstersPage() {
     }
 
     params.delete("intent");
+    params.delete("filter");
     router.push(
       `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
     );
@@ -261,8 +303,6 @@ export default function MonstersPage() {
             </div>
           </div>
 
-
-
           <div className="flex flex-wrap gap-3">
             {filterGroups.map((group) => (
               <FilterGroup
@@ -290,6 +330,7 @@ export default function MonstersPage() {
                     ? filters.selectionModeByKey[group.key]
                     : "single"
                 }
+                shouldExpand={homeIntentFilterGroupKey === group.key}
                 storageKey={`monsters:${group.key}`}
               />
             ))}
