@@ -1,6 +1,33 @@
-import type { NamedTextSectionProps } from "@/page/monsters/components/monster-card/components/named-text-section/types";
+import Link from "next/link";
 
-export function NamedTextSection({ entries, title }: NamedTextSectionProps) {
+import type { NamedTextSectionProps } from "@/page/monsters/components/monster-card/components/named-text-section/types";
+import { buildSpellLinkParts } from "@/page/monsters/components/monster-card/components/named-text-section/utils/buildSpellLinkParts";
+
+function renderTextWithSpellLinks(text: string, spellNames: string[]) {
+  return buildSpellLinkParts(text, spellNames).map((part, index) => {
+    if (typeof part === "string") {
+      return <span key={`text:${index}`}>{part}</span>;
+    }
+
+    return (
+      <Link
+        className="font-medium underline decoration-dotted underline-offset-2 hover:text-primary"
+        href={`/spells?q=${encodeURIComponent(part.spellName)}&intent=search`}
+        key={`spell:${part.spellName}:${index}`}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        {part.text}
+      </Link>
+    );
+  });
+}
+
+export function NamedTextSection({
+  entries,
+  spellNames = [],
+  title,
+}: NamedTextSectionProps) {
   if (!entries.length) {
     return null;
   }
@@ -11,7 +38,10 @@ export function NamedTextSection({ entries, title }: NamedTextSectionProps) {
       <ul className="typography-body-sm space-y-2">
         {entries.map((entry) => (
           <li key={`${title}:${entry.name}`}>
-            <span className="typography-h3">{entry.name}.</span> {entry.text}
+            <span className="typography-h3">{entry.name}.</span>{" "}
+            {spellNames.length
+              ? renderTextWithSpellLinks(entry.text, spellNames)
+              : entry.text}
           </li>
         ))}
       </ul>

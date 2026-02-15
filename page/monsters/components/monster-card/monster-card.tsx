@@ -20,6 +20,7 @@ export function MonsterCard({
       : inferProficiencyBonus(monster.crNumeric);
   const isEstimatedProficiencyBonus =
     typeof monster.proficiencyBonus !== "number";
+  const spellNames = monster.spellList ?? [];
 
   return (
     <article className="surface-card p-5">
@@ -130,12 +131,22 @@ export function MonsterCard({
 
       <NamedTextSection
         entries={monster.specialAbilities ?? []}
+        spellNames={spellNames}
         title="Special Abilities"
       />
-      <NamedTextSection entries={monster.actions ?? []} title="Actions" />
-      <NamedTextSection entries={monster.reactions ?? []} title="Reactions" />
+      <NamedTextSection
+        entries={monster.actions ?? []}
+        spellNames={spellNames}
+        title="Actions"
+      />
+      <NamedTextSection
+        entries={monster.reactions ?? []}
+        spellNames={spellNames}
+        title="Reactions"
+      />
       <NamedTextSection
         entries={monster.legendaryActions ?? []}
+        spellNames={spellNames}
         title="Legendary Actions"
       />
 

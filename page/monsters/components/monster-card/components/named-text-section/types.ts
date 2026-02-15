@@ -5,5 +5,6 @@ type NamedTextEntry = {
 
 export type NamedTextSectionProps = {
   entries: NamedTextEntry[];
+  spellNames?: string[];
   title: string;
 };
