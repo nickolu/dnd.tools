@@ -17,6 +17,7 @@ describe("monsterSchema", () => {
       isPublished: true,
       name: "Example Monster",
       nameNormalized: "example monster",
+      proficiencyBonus: 2,
       schemaVersion: 1,
       size: "Medium",
       source: "homebrew",
@@ -27,6 +28,7 @@ describe("monsterSchema", () => {
     });
 
     expect(parsed.id).toBe("example-monster");
+    expect(parsed.proficiencyBonus).toBe(2);
   });
 
   it("rejects invalid size", () => {

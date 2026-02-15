@@ -44,6 +44,7 @@ const commonMonsterFieldsSchema = z.object({
   name: z.string().min(1),
   nameNormalized: z.string().min(1),
   passivePerception: z.number().int().optional(),
+  proficiencyBonus: z.number().int().nonnegative().optional(),
   reactions: z.array(namedTextSchema).optional(),
   savingThrows: z.record(z.string(), z.number().int()).optional(),
   schemaVersion: z.number().int().positive(),

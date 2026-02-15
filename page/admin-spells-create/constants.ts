@@ -1,0 +1,47 @@
+import type { SpellAdminFormState } from "@/page/admin-spells-create/types";
+
+export const SPELL_SCHOOLS: SpellAdminFormState["school"][] = [
+  "abjuration",
+  "conjuration",
+  "divination",
+  "enchantment",
+  "evocation",
+  "illusion",
+  "necromancy",
+  "transmutation",
+];
+
+export const DEFAULT_SPELL_ADMIN_FORM: SpellAdminFormState = {
+  actor: "admin-ui",
+  attackType: "",
+  cantripScalingText: "",
+  castingTime: "",
+  classesText: "",
+  componentMaterial: false,
+  componentSomatic: false,
+  componentVerbal: false,
+  concentration: false,
+  createdBy: "admin-ui",
+  damageType: "",
+  descriptionText: "",
+  diceBySlotText: "",
+  duration: "",
+  gpCost: "",
+  higherLevelText: "",
+  id: "",
+  isPublished: false,
+  level: "0",
+  materialText: "",
+  name: "",
+  range: "",
+  ritual: false,
+  saveAbility: "",
+  saveOnSuccess: "",
+  schemaVersion: "1",
+  school: "evocation",
+  searchTokensText: "",
+  source: "SRD 5.1",
+  tagsText: "",
+  updatedBy: "admin-ui",
+};
+

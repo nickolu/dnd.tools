@@ -33,6 +33,14 @@ export function MonsterCard({ monster }: MonsterCardProps) {
           <dt className="text-muted">Challenge</dt>
           <dd>{monster.challengeRating}</dd>
         </div>
+        <div>
+          <dt className="text-muted">Proficiency Bonus</dt>
+          <dd>
+            {typeof monster.proficiencyBonus === "number"
+              ? `+${monster.proficiencyBonus}`
+              : "N/A"}
+          </dd>
+        </div>
       </dl>
 
       <section className="mb-4">
