@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 import { FILTER_GROUP_STORAGE_PREFIX } from "@/components/filter-group/constants";
 import {
@@ -19,15 +19,19 @@ export function MonsterRangeFilters({
     () => `${FILTER_GROUP_STORAGE_PREFIX}:${MONSTER_RANGE_FILTERS_STORAGE_KEY}`,
     []
   );
-  const [isExpanded, setIsExpanded] = useState(() => {
-    if (typeof window === "undefined") {
-      return true;
-    }
-
-    return window.localStorage.getItem(persistedKey) !== "collapsed";
-  });
+  const [isExpanded, setIsExpanded] = useState(true);
+  const hasHydratedPersistedState = useRef(false);
 
   useEffect(() => {
+    setIsExpanded(window.localStorage.getItem(persistedKey) !== "collapsed");
+    hasHydratedPersistedState.current = true;
+  }, [persistedKey]);
+
+  useEffect(() => {
+    if (!hasHydratedPersistedState.current) {
+      return;
+    }
+
     window.localStorage.setItem(
       persistedKey,
       isExpanded ? "expanded" : "collapsed"

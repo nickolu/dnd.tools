@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { FilterGroup } from "@/components/filter-group";
 import { FilterLogicPopover } from "@/components/filter-logic-popover";
@@ -93,12 +93,14 @@ export default function MonstersPage() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const searchRef = useRef<HTMLInputElement>(null);
+  const searchDebounceTimeoutRef = useRef<number | null>(null);
   const { data: monsters = [], isLoading } = useMonsters();
   const isAdminMode = searchParams.get("admin") === "true";
   const { filteredMonsters, filters } = useMonsterFilters(
     monsters,
     searchParams
   );
+  const [searchInput, setSearchInput] = useState(filters.query);
   const filterGroups = useMemo<MonsterFilterGroupType[]>(
     () => getMonsterFilterGroups(monsters),
     [monsters]
@@ -117,6 +119,18 @@ export default function MonstersPage() {
     searchRef.current?.focus();
     searchRef.current?.select();
   }, [searchParams]);
+
+  useEffect(() => {
+    setSearchInput(filters.query);
+  }, [filters.query]);
+
+  useEffect(() => {
+    return () => {
+      if (searchDebounceTimeoutRef.current !== null) {
+        window.clearTimeout(searchDebounceTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const updateSearchParam = (queryParam: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -279,11 +293,36 @@ export default function MonstersPage() {
               <input
                 className="input-field w-full px-3 py-2"
                 onChange={(event) => {
-                  updateSearchParam("q", event.target.value);
+                  const next = event.target.value;
+                  setSearchInput(next);
+
+                  if (searchDebounceTimeoutRef.current !== null) {
+                    window.clearTimeout(searchDebounceTimeoutRef.current);
+                  }
+
+                  searchDebounceTimeoutRef.current = window.setTimeout(() => {
+                    const params = new URLSearchParams(window.location.search);
+                    const currentQuery = params.get("q") ?? "";
+                    if (currentQuery === next) {
+                      return;
+                    }
+
+                    if (next) {
+                      params.set("q", next);
+                    } else {
+                      params.delete("q");
+                    }
+
+                    params.delete("intent");
+                    params.delete("filter");
+                    router.push(
+                      `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+                    );
+                  }, 220);
                 }}
                 placeholder="Search monsters"
                 ref={searchRef}
-                value={filters.query}
+                value={searchInput}
               />
               <FilterLogicPopover
                 globalMatchMode={filters.groupMatchMode}

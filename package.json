@@ -15,7 +15,8 @@
     "start": "next start",
     "lint:fix": "eslint . --fix",
     "check:firestore-flow": "tsx scripts/firestore-flow-check.ts",
-    "seed:compendium": "tsx scripts/seed-compendium.ts"
+    "seed:compendium": "tsx scripts/seed-compendium.ts",
+    "migrate:monsters-json": "tsx scripts/migrate-monsters-json.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.6",
