@@ -11,7 +11,7 @@ export function GlobalNav() {
 
   return (
     <header className="surface-card mb-8 flex items-center justify-between px-5 py-4">
-      <Link className="site-title font-semibold" href="/">
+      <Link className="site-title" href="/">
         dnd.tools
       </Link>
       <nav aria-label="Primary">

@@ -5,7 +5,7 @@ export function SpellResultsSummary({
   visible,
 }: SpellResultsSummaryProps) {
   return (
-    <p className="text-muted text-sm">
+    <p className="typography-body-sm text-muted">
       Showing {visible} of {total} spells
     </p>
   );

@@ -19,9 +19,11 @@ Build and evolve `dnd.tools` with a modular, route-driven UI focused first on sp
    - Use semantic design tokens only in React components.
    - Do not reference primitive tokens directly in component files.
    - Keep semantic token definitions centralized and reusable.
+   - Use semantic typography classes in JSX (`typography-h1`, `typography-h2`, `typography-h3`, `typography-body`, `typography-body-sm`, `typography-kicker`) instead of raw size/weight utilities.
 2. Components:
    - Use `shadcn` to generate component scaffolding; do not import remote shadcn component packages.
    - Wrap or adapt generated components to consume project semantic tokens.
+   - Promote reusable interaction patterns to shared components once a second consumer is expected (example: shared `FilterGroup` for spells and monsters).
 3. Navigation and transitions:
    - Home page includes global navigation plus tool widgets (spells, monsters).
    - Each widget behaves as a full-width interactive card with title, search input, and filter controls.
@@ -78,3 +80,9 @@ Build and evolve `dnd.tools` with a modular, route-driven UI focused first on sp
    - Ensure lint/typecheck/tests pass.
    - Verify keyboard accessibility and back-button behavior.
    - Document assumptions and follow-up tasks in `docs/`.
+
+## UI Learnings (Current Implementation)
+
+1. Filter button groups with many options should prefer horizontal scrolling rows (`overflow-x-auto`) to avoid excessive vertical growth.
+2. High-density groups (for example `duration` and `classes` in spells) can intentionally take full row width while other groups share rows in wrapping flex layouts.
+3. URL query params remain the source of truth for filter state, while UI layout optimizations should not change filter semantics.

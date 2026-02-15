@@ -9,11 +9,13 @@ export function SpellCard({ spell }: SpellCardProps) {
   return (
     <article className="surface-card p-5">
       <header className="mb-4 border-b border-[color:var(--color-border-subtle)] pb-3">
-        <h2 className="text-xl font-semibold">{spell.name}</h2>
-        <p className="text-secondary text-sm">{formatSpellLevelAndSchool(spell)}</p>
+        <h2 className="typography-h2">{spell.name}</h2>
+        <p className="typography-body-sm text-secondary">
+          {formatSpellLevelAndSchool(spell)}
+        </p>
       </header>
 
-      <dl className="mb-4 grid gap-3 text-sm sm:grid-cols-2">
+      <dl className="typography-body-sm mb-4 grid gap-3 sm:grid-cols-2">
         <div>
           <dt className="text-muted">Casting Time</dt>
           <dd>{spell.castingTime}</dd>
@@ -43,7 +45,7 @@ export function SpellCard({ spell }: SpellCardProps) {
       <SpellTextBlock paragraphs={spell.description} title="Description" />
       <SpellTextBlock paragraphs={spell.higherLevel ?? []} title="At Higher Levels" />
 
-      <footer className="mt-4 border-t border-[color:var(--color-border-subtle)] pt-3 text-sm">
+      <footer className="typography-body-sm mt-4 border-t border-[color:var(--color-border-subtle)] pt-3">
         <p>
           <span className="text-muted">Classes:</span> {spell.classes.join(", ")}
         </p>

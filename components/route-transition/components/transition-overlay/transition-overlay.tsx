@@ -36,7 +36,7 @@ export function TransitionOverlay({ fromRect, title }: TransitionOverlayProps) {
       }}
     >
       <div className="flex h-full items-center justify-center p-8">
-        <h2 className="text-2xl font-semibold">{title}</h2>
+        <h2 className="typography-h1">{title}</h2>
       </div>
     </motion.div>
   );

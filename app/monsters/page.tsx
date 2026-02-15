@@ -42,7 +42,7 @@ export default function MonstersPage() {
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
       <section className="surface-card p-6">
-        <h1 className="mb-2 text-2xl font-semibold">Monsters</h1>
+        <h1 className="typography-h1">Monsters</h1>
         <MonsterResultsSummary
           total={monsters.length}
           visible={filteredMonsters.length}
@@ -72,9 +72,11 @@ export default function MonstersPage() {
           </div>
         </div>
 
-        {isLoading ? <p className="text-muted mt-4">Loading monsters...</p> : null}
+        {isLoading ? <p className="typography-body-sm text-muted mt-4">Loading monsters...</p> : null}
         {!isLoading && !filteredMonsters.length ? (
-          <p className="text-muted mt-4">No monsters match your filters.</p>
+          <p className="typography-body-sm text-muted mt-4">
+            No monsters match your filters.
+          </p>
         ) : null}
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">

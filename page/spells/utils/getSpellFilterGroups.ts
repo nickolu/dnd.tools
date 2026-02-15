@@ -1,3 +1,4 @@
+import type { FilterGroupOption } from "@/components/filter-group";
 import type { Spell } from "@/lib/domain/spell.schema";
 import {
   ALL_FILTER_VALUE,
@@ -5,7 +6,7 @@ import {
   SPELL_COMPONENT_FILTER_OPTIONS,
   SPELL_LEVEL_FILTER_OPTIONS,
 } from "@/page/spells/constants";
-import type { SpellFilterGroup, SpellFilterOption } from "@/page/spells/types";
+import type { SpellFilterGroup } from "@/page/spells/types";
 
 function toTitleCase(value: string): string {
   if (!value.length) {
@@ -19,7 +20,7 @@ function sortValues(values: Iterable<string>): string[] {
   return [...new Set(values)].sort((a, b) => a.localeCompare(b));
 }
 
-function toOptions(values: Iterable<string>): SpellFilterOption[] {
+function toOptions(values: Iterable<string>): FilterGroupOption[] {
   const sorted = sortValues(values);
 
   return [
@@ -31,7 +32,7 @@ function toOptions(values: Iterable<string>): SpellFilterOption[] {
   ];
 }
 
-function getClassOptions(spells: Spell[]): SpellFilterOption[] {
+function getClassOptions(spells: Spell[]): FilterGroupOption[] {
   const classes = spells.flatMap((spell) => spell.classes);
   return toOptions(classes).map((option) => ({
     label:
@@ -49,16 +50,6 @@ export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
       label: "Classes",
       options: getClassOptions(spells),
     },
-    {
-      key: "castingTime",
-      label: "Casting Time",
-      options: toOptions(spells.map((spell) => spell.castingTime)),
-    },
-    {
-      key: "range",
-      label: "Range",
-      options: toOptions(spells.map((spell) => spell.range)),
-    },
 
     {
       key: "component",
@@ -66,21 +57,30 @@ export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
       options: SPELL_COMPONENT_FILTER_OPTIONS,
     },
     {
-      key: "concentration",
-      label: "Concentration",
-      options: SPELL_BOOLEAN_FILTER_OPTIONS,
+      key: "level",
+      label: "Level",
+      options: SPELL_LEVEL_FILTER_OPTIONS,
     },
+    {
+      key: "range",
+      label: "Range",
+      options: toOptions(spells.map((spell) => spell.range)),
+    },
+    {
+      key: "castingTime",
+      label: "Casting Time",
+      options: toOptions(spells.map((spell) => spell.castingTime)),
+    },
+
+
+
     {
       key: "ritual",
       label: "Ritual",
       options: SPELL_BOOLEAN_FILTER_OPTIONS,
     },
 
-    {
-      key: "level",
-      label: "Level",
-      options: SPELL_LEVEL_FILTER_OPTIONS,
-    },
+
     {
       key: "source",
       label: "Source",

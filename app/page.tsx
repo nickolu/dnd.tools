@@ -55,8 +55,8 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-6">
-      <h1 className="text-2xl font-semibold">Compendium Tools</h1>
-      <p className="text-secondary">
+      <h1 className="typography-h1">Compendium Tools</h1>
+      <p className="typography-body text-secondary">
         Select a widget and it will expand directly into the full tool page.
       </p>
 

@@ -5,7 +5,7 @@ export function MonsterResultsSummary({
   visible,
 }: MonsterResultsSummaryProps) {
   return (
-    <p className="text-muted text-sm">
+    <p className="typography-body-sm text-muted">
       Showing {visible} of {total} monsters
     </p>
   );

@@ -10,13 +10,13 @@ export function MonsterCard({ monster }: MonsterCardProps) {
   return (
     <article className="surface-card p-5">
       <header className="mb-4 border-b border-[color:var(--color-border-subtle)] pb-3">
-        <h2 className="text-xl font-semibold">{monster.name}</h2>
-        <p className="text-secondary text-sm">
+        <h2 className="typography-h2">{monster.name}</h2>
+        <p className="typography-body-sm text-secondary">
           {monster.size} {monster.type}, {monster.alignment}
         </p>
       </header>
 
-      <dl className="mb-4 grid gap-3 text-sm sm:grid-cols-2">
+      <dl className="typography-body-sm mb-4 grid gap-3 sm:grid-cols-2">
         <div>
           <dt className="text-muted">Armor Class</dt>
           <dd>{monster.armorClass}</dd>
@@ -36,8 +36,8 @@ export function MonsterCard({ monster }: MonsterCardProps) {
       </dl>
 
       <section className="mb-4">
-        <h3 className="mb-2 text-base font-semibold">Ability Scores</h3>
-        <ul className="grid grid-cols-3 gap-2 text-center text-sm sm:grid-cols-6">
+        <h3 className="typography-h3 mb-2">Ability Scores</h3>
+        <ul className="typography-body-sm grid grid-cols-3 gap-2 text-center sm:grid-cols-6">
           {ABILITY_ORDER.map((ability) => {
             const score = monster.abilityScores[ability];
             const modifier = formatAbilityModifier(score);
@@ -48,7 +48,7 @@ export function MonsterCard({ monster }: MonsterCardProps) {
                 key={ability}
               >
                 <p className="text-muted uppercase">{ability}</p>
-                <p className="font-semibold">{score}</p>
+                <p className="typography-h3">{score}</p>
                 <p className="text-secondary">({modifier})</p>
               </li>
             );
@@ -56,7 +56,7 @@ export function MonsterCard({ monster }: MonsterCardProps) {
         </ul>
       </section>
 
-      <section className="mb-4 grid gap-2 text-sm">
+      <section className="typography-body-sm mb-4 grid gap-2">
         <p>
           <span className="text-muted">Senses:</span> {monster.senses ?? "None"}
         </p>
@@ -82,7 +82,7 @@ export function MonsterCard({ monster }: MonsterCardProps) {
       <NamedTextSection entries={monster.reactions ?? []} title="Reactions" />
       <NamedTextSection entries={monster.legendaryActions ?? []} title="Legendary Actions" />
 
-      <footer className="mt-4 border-t border-[color:var(--color-border-subtle)] pt-3 text-sm">
+      <footer className="typography-body-sm mt-4 border-t border-[color:var(--color-border-subtle)] pt-3">
         <p>
           <span className="text-muted">Source:</span> {monster.source}
         </p>

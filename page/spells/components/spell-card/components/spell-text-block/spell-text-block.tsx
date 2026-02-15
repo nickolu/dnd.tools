@@ -7,8 +7,8 @@ export function SpellTextBlock({ paragraphs, title }: SpellTextBlockProps) {
 
   return (
     <section className="space-y-2">
-      <h3 className="text-base font-semibold">{title}</h3>
-      <div className="space-y-2 text-sm leading-6">
+      <h3 className="typography-h3">{title}</h3>
+      <div className="typography-body-sm space-y-2">
         {paragraphs.map((paragraph, index) => (
           <p key={`${title}:${index}`}>{paragraph}</p>
         ))}

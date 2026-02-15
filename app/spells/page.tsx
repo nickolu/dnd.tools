@@ -3,12 +3,9 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 
+import { FilterGroup } from "@/components/filter-group";
 import { useSpells } from "@/lib/query/hooks/useSpells";
-import {
-  SpellCard,
-  SpellFilterGroup,
-  SpellResultsSummary,
-} from "@/page/spells/components";
+import { SpellCard, SpellResultsSummary } from "@/page/spells/components";
 import { SPELL_FILTER_QUERY_PARAM_BY_KEY } from "@/page/spells/constants";
 import { useSpellFilters } from "@/page/spells/hooks/useSpellFilters";
 import type { SpellFilterGroup as SpellFilterGroupType } from "@/page/spells/types";
@@ -51,7 +48,7 @@ export default function SpellsPage() {
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
       <section className="surface-card p-6">
-        <h1 className="mb-2 text-2xl font-semibold">Spells</h1>
+        <h1 className="typography-h1">Spells</h1>
         <SpellResultsSummary total={spells.length} visible={filteredSpells.length} />
 
         <div className="mt-4 space-y-3">
@@ -67,9 +64,11 @@ export default function SpellsPage() {
 
           <div className="flex flex-wrap gap-3">
             {filterGroups.map((group) => (
-              <SpellFilterGroup
+              <FilterGroup
                 activeValue={filters[group.key]}
-                className="mr-4"
+                className={
+                  "mr-2"
+                }
                 key={group.key}
                 label={group.label}
                 onChange={(value) => {
@@ -82,9 +81,11 @@ export default function SpellsPage() {
           </div>
         </div>
 
-        {isLoading ? <p className="text-muted mt-4">Loading spells...</p> : null}
+        {isLoading ? <p className="typography-body-sm text-muted mt-4">Loading spells...</p> : null}
         {!isLoading && !filteredSpells.length ? (
-          <p className="text-muted mt-4">No spells match your filters.</p>
+          <p className="typography-body-sm text-muted mt-4">
+            No spells match your filters.
+          </p>
         ) : null}
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">

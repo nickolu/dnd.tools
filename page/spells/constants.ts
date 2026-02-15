@@ -1,7 +1,7 @@
+import type { FilterGroupOption } from "@/components/filter-group";
 import type {
   SpellBooleanFilter,
   SpellComponentFilter,
-  SpellFilterOption,
   SpellFilters,
   SpellLevelFilter,
 } from "@/page/spells/types";
@@ -21,20 +21,20 @@ export const DEFAULT_SPELL_FILTERS: SpellFilters = {
   source: ALL_FILTER_VALUE,
 };
 
-export const SPELL_BOOLEAN_FILTER_OPTIONS: SpellFilterOption[] = [
+export const SPELL_BOOLEAN_FILTER_OPTIONS: FilterGroupOption[] = [
   { label: "All", value: ALL_FILTER_VALUE },
   { label: "Yes", value: "yes" },
   { label: "No", value: "no" },
 ];
 
-export const SPELL_COMPONENT_FILTER_OPTIONS: SpellFilterOption[] = [
+export const SPELL_COMPONENT_FILTER_OPTIONS: FilterGroupOption[] = [
   { label: "All", value: ALL_FILTER_VALUE },
   { label: "Verbal", value: "verbal" },
   { label: "Somatic", value: "somatic" },
   { label: "Material", value: "material" },
 ];
 
-export const SPELL_LEVEL_FILTER_OPTIONS: SpellFilterOption[] = [
+export const SPELL_LEVEL_FILTER_OPTIONS: FilterGroupOption[] = [
   { label: "All", value: ALL_FILTER_VALUE },
   { label: "Cantrip", value: "0" },
   { label: "1", value: "1" },

@@ -71,8 +71,10 @@ export function ToolWidgetCard({
       role="button"
       tabIndex={0}
     >
-      <h2 className="mb-1 text-2xl font-semibold">{title}</h2>
-      {description ? <p className="text-secondary mb-4 text-sm">{description}</p> : null}
+      <h2 className="typography-h1 mb-1">{title}</h2>
+      {description ? (
+        <p className="typography-body-sm text-secondary mb-4">{description}</p>
+      ) : null}
 
       <div className="mb-4">
         <input

@@ -7,11 +7,11 @@ export function NamedTextSection({ entries, title }: NamedTextSectionProps) {
 
   return (
     <section className="space-y-2 border-t border-[color:var(--color-border-subtle)] pt-3">
-      <h3 className="text-base font-semibold">{title}</h3>
-      <ul className="space-y-2 text-sm leading-6">
+      <h3 className="typography-h3">{title}</h3>
+      <ul className="typography-body-sm space-y-2">
         {entries.map((entry) => (
           <li key={`${title}:${entry.name}`}>
-            <span className="font-semibold">{entry.name}.</span> {entry.text}
+            <span className="typography-h3">{entry.name}.</span> {entry.text}
           </li>
         ))}
       </ul>
