@@ -1,0 +1,2 @@
+export const TRANSITION_INSET = 12;
+export const TRANSITION_DURATION_SECONDS = 0.38;
