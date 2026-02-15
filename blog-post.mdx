@@ -1,20 +1,24 @@
 ---
 title: "dnd.tools: building the compendium and the experience around it"
 date: "2026-02-15"
-description: "A narrative walk-through of how the app grew from compendium plumbing to rich, animated spell filtering."
+description: "A narrative walk-through from compendium plumbing to advanced, shareable filters and home widget handoffs."
 ---
 
 I started `dnd.tools` with a simple goal: make a compendium that feels native to the browser, where every filter is shareable and every route behaves exactly as you expect when you hit Back. That meant the early work was less about polish and more about laying a foundation I would not regret later.
 
 The first big problem was data. I needed spells and monsters to be typed, queryable, and consistent across the UI, so I built the domain schemas, API routes, and query hooks, then wired up a global store with sanity tests to keep it honest. Once that spine was in place, I built a Firestore seed flow to load real compendium data so I could see how the system behaved under actual content, not mocks.
 
-With data flowing, I shifted to the UI shell. I defined semantic design tokens in global styles, wrapped the app in shared navigation, and established route-based pages for spells and monsters. That let me focus on the core UX principle: route-first, shareable state. I also added the transition scaffolding so the home widgets could hand off into their pages without breaking browser history or losing intent.
+With data flowing, I shifted to the UI shell. I defined semantic design tokens in global styles, wrapped the app in shared navigation, and established route-based pages for spells and monsters. That let me focus on the core UX principle: route-first, shareable state. I added transition scaffolding so the home widgets could hand off into their pages without breaking browser history or losing user intent.
 
 The first pass of spells and monsters pages was functional, but it quickly exposed the next problem: the UI could filter, but the results were too shallow for real browsing. I tackled that by rendering full detail cards for both spells and monsters, including structured text sections and formatting helpers, so the list itself became the primary browsing surface.
 
-From there, spells became the proving ground for filters. I replaced the single-dimension school filter with data-driven button groups for casting time, range, duration, components, concentration, ritual, class, level, and source. I hardened URL parsing and validation so shareable links stayed predictable, and I built a compact, horizontal-scroll layout for dense filter groups without letting the page grow unwieldy.
+Once the browsing surface felt solid, filters became the proving ground. Spells moved from a single school filter to a matrix of filter groups for casting time, range, duration, components, concentration, ritual, class, level, and source. I hardened URL parsing and legacy query compatibility so old links kept working, and I built horizontal-scroll rows for dense groups so the page could stay compact without losing breadth.
 
-The newest iteration was about making those filters feel like a deliberate system instead of a patchwork. I generalized the filter group component, enforced semantic typography classes across it, and made group collapse state persist and animate so long filter sections felt manageable rather than noisy. That work set up a consistent pattern that spells already use and monsters will inherit without rework.
+That raised a more subtle problem: as filter coverage expanded, filter logic needed to be explicit. I introduced multi-select behavior for key groups, added per-group selection modes, and built a `FilterLogicPopover` so you can decide whether groups combine with AND or OR and how multi-select groups should match within themselves. That same logic is now shared across spells and monsters, which finally made the filter system feel deliberate rather than a pile of independent chips.
+
+Monsters then caught up with a deeper taxonomy. I expanded their filters across size, type, alignments, senses, sources, and damage or condition immunities, then added numeric range controls for challenge rating, armor class, hit points, and speed. Those range groups are collapsible and stateful, matching the rest of the filter UI so the page stays manageable even as it grows in power.
+
+After the filtering engine was in place, I tightened the home experience. The home widgets now expose quick filters and live search counts, and filter group expansion persists across sessions so the UI remembers what you care about. When a user jumps from a widget, the destination page can expand the right filter group and keep the interaction context intact, preserving the promise that navigation should feel seamless.
 
 The result is a working vertical slice that matches the architecture goals in `AGENTS.md`: route-driven UX, URL-canonical filter state, and modular page-local logic that can become shared only when it earns it. More importantly, the app now feels like a cohesive product, not just a set of screens.
 
