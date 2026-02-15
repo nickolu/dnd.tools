@@ -1,7 +1,7 @@
 ---
 title: "dnd.tools: building the compendium and the experience around it"
 date: "2026-02-15"
-description: "A narrative walk-through from compendium plumbing to advanced, shareable filters and home widget handoffs."
+description: "A narrative walk-through from compendium plumbing to shareable filters, admin ingestion, and home widget handoffs."
 ---
 
 I started `dnd.tools` with a simple goal: make a compendium that feels native to the browser, where every filter is shareable and every route behaves exactly as you expect when you hit Back. That meant the early work was less about polish and more about laying a foundation I would not regret later.
@@ -20,6 +20,8 @@ Monsters then caught up with a deeper taxonomy. I expanded their filters across 
 
 After the filtering engine was in place, I tightened the home experience. The home widgets now expose quick filters and live search counts, and filter group expansion persists across sessions so the UI remembers what you care about. When a user jumps from a widget, the destination page can expand the right filter group and keep the interaction context intact, preserving the promise that navigation should feel seamless.
 
-The result is a working vertical slice that matches the architecture goals in `AGENTS.md`: route-driven UX, URL-canonical filter state, and modular page-local logic that can become shared only when it earns it. More importantly, the app now feels like a cohesive product, not just a set of screens.
+That momentum surfaced a different problem: it was still too hard to add new content. So I built a hidden admin ingestion flow for spells and monsters, with a structured manual form and an optional parser that turns pasted stat blocks into JSON drafts. The draft step runs through OpenAI in a constrained JSON-only mode, then normalizes ids, name tokens, and schema versioning before validating against the same write schemas the public API uses. I backed that with helper tests and added proficiency bonus support end-to-end so new monsters display accurately in the card view.
 
-Next up, I am finishing the home page widget experience so the spells and monsters cards are the primary entry point, polishing focus and filter-intent handoff during transitions, expanding monster-side filtering depth to match spells, and adding tests around routing handoff and filter helpers.
+The result is a working vertical slice that matches the architecture goals in `AGENTS.md`: route-driven UX, URL-canonical filter state, admin ingestion that respects the same schema contracts, and modular page-local logic that can become shared only when it earns it. More importantly, the app now feels like a cohesive product, not just a set of screens.
+
+Next up, I am finishing the home page widget experience so the spells and monsters cards are the primary entry point, polishing focus and filter-intent handoff during transitions, expanding monster-side filtering depth to match spells, and hardening the admin ingestion path into a full editorial workflow.
