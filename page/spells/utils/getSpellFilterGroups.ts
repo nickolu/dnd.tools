@@ -106,14 +106,14 @@ function getDamageTypeOptions(spells: Spell[]): FilterGroupOption[] {
 export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
   return [
     {
+      key: "level",
+      label: "Level",
+      options: SPELL_LEVEL_FILTER_OPTIONS,
+    },
+    {
       key: "school",
       label: "School",
       options: getSchoolOptions(spells),
-    },
-    {
-      key: "attackType",
-      label: "Attack Type",
-      options: getAttackTypeOptions(spells),
     },
     {
       key: "classes",
@@ -121,31 +121,19 @@ export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
       options: getClassOptions(spells),
     },
     {
+      key: "concentration",
+      label: "Concentration",
+      options: SPELL_BOOLEAN_FILTER_OPTIONS,
+    },
+    {
+      key: "ritual",
+      label: "Ritual",
+      options: SPELL_BOOLEAN_FILTER_OPTIONS,
+    },
+    {
       key: "component",
       label: "Components",
       options: SPELL_COMPONENT_FILTER_OPTIONS,
-    },
-    {
-      key: "saveAbility",
-      label: "Save Ability",
-      options: getSaveAbilityOptions(spells),
-    },
-    {
-      key: "damageType",
-      label: "Damage Type",
-      options: getDamageTypeOptions(spells),
-    },
-    {
-      key: "level",
-      label: "Level",
-      options: SPELL_LEVEL_FILTER_OPTIONS,
-    },
-    {
-      key: "range",
-      label: "Range",
-      options: toOptions(
-        spells.map((spell) => normalizeSpellRangeForFilter(spell.range))
-      ),
     },
     {
       key: "castingTime",
@@ -157,26 +145,11 @@ export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
       ),
     },
     {
-      key: "concentration",
-      label: "Concentration",
-      options: SPELL_BOOLEAN_FILTER_OPTIONS,
-    },
-    {
-      key: "higherLevel",
-      label: "At Higher Levels",
-      options: SPELL_BOOLEAN_FILTER_OPTIONS,
-    },
-
-    {
-      key: "ritual",
-      label: "Ritual",
-      options: SPELL_BOOLEAN_FILTER_OPTIONS,
-    },
-
-    {
-      key: "source",
-      label: "Source",
-      options: toOptions(spells.map((spell) => spell.source)),
+      key: "range",
+      label: "Range",
+      options: toOptions(
+        spells.map((spell) => normalizeSpellRangeForFilter(spell.range))
+      ),
     },
     {
       key: "duration",
@@ -184,6 +157,31 @@ export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
       options: toOptions(
         spells.map((spell) => normalizeSpellDurationForFilter(spell.duration))
       ),
+    },
+    {
+      key: "damageType",
+      label: "Damage Type",
+      options: getDamageTypeOptions(spells),
+    },
+    {
+      key: "saveAbility",
+      label: "Save Ability",
+      options: getSaveAbilityOptions(spells),
+    },
+    {
+      key: "attackType",
+      label: "Attack Type",
+      options: getAttackTypeOptions(spells),
+    },
+    {
+      key: "higherLevel",
+      label: "At Higher Levels",
+      options: SPELL_BOOLEAN_FILTER_OPTIONS,
+    },
+    {
+      key: "source",
+      label: "Source",
+      options: toOptions(spells.map((spell) => spell.source)),
     },
   ];
 }
