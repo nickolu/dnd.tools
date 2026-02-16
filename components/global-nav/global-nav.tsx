@@ -10,7 +10,7 @@ export function GlobalNav() {
   const navItems = useGlobalNavItems(pathname);
 
   return (
-    <header className="surface-card mb-8 flex items-center justify-between px-5 py-4">
+    <header className="surface-card mb-8 flex items-center justify-between px-5 py-4 max-w-5xl mx-auto">
       <Link className="site-title" href="/">
         dnd.tools
       </Link>
