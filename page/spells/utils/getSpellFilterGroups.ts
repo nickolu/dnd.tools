@@ -3,7 +3,6 @@ import type { Spell } from "@/lib/domain/spell.schema";
 import {
   ALL_FILTER_VALUE,
   SPELL_BOOLEAN_FILTER_OPTIONS,
-  SPELL_CLASS_DATA_FILTER_OPTIONS,
   SPELL_COMPONENT_FILTER_OPTIONS,
   SPELL_LEVEL_FILTER_OPTIONS,
 } from "@/page/spells/constants";
@@ -121,12 +120,6 @@ export function getSpellFilterGroups(spells: Spell[]): SpellFilterGroup[] {
       label: "Classes",
       options: getClassOptions(spells),
     },
-    {
-      key: "classData",
-      label: "Class Data",
-      options: SPELL_CLASS_DATA_FILTER_OPTIONS,
-    },
-
     {
       key: "component",
       label: "Components",
