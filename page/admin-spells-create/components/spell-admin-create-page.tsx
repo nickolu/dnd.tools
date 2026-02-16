@@ -1,8 +1,13 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
+import { upsertCollectionCacheEntry } from "@/lib/api/client";
+import type { Spell } from "@/lib/domain/spell.schema";
+import { spellSchema } from "@/lib/domain/spell.schema";
+import { queryKeys } from "@/lib/query/keys";
 import {
   DEFAULT_SPELL_ADMIN_FORM,
   SPELL_SCHOOLS,
@@ -79,6 +84,7 @@ export function SpellAdminEditPage({ entryId }: { entryId: string }) {
 }
 
 function SpellAdminEntryPage({ entryId }: SpellAdminEntryPageProps) {
+  const queryClient = useQueryClient();
   const isEditing = Boolean(entryId);
   const [mode, setMode] = useState<AdminEntryMode>(
     isEditing ? "manual" : "parse"
@@ -220,6 +226,37 @@ function SpellAdminEntryPage({ entryId }: SpellAdminEntryPageProps) {
       return;
     }
 
+    const listQueryKey = queryKeys.spells;
+    const detailQueryKey = entryId ? queryKeys.spell(entryId) : null;
+    const previousSpellList = queryClient.getQueryData<Spell[]>(listQueryKey);
+    const previousSpellDetail = detailQueryKey
+      ? queryClient.getQueryData<Spell>(detailQueryKey)
+      : undefined;
+
+    if (entryId) {
+      const existingSpell =
+        previousSpellDetail ??
+        previousSpellList?.find((spell) => spell.id === entryId);
+      const optimisticTimestamp = new Date().toISOString();
+      const optimisticSpell: Spell = {
+        ...payload,
+        createdAt: existingSpell?.createdAt ?? optimisticTimestamp,
+        createdBy: existingSpell?.createdBy ?? payload.createdBy,
+        updatedAt: optimisticTimestamp,
+      };
+
+      if (detailQueryKey) {
+        queryClient.setQueryData(detailQueryKey, optimisticSpell);
+      }
+      queryClient.setQueryData<Spell[] | undefined>(listQueryKey, (current) =>
+        current
+          ? current.map((spell) =>
+              spell.id === entryId ? optimisticSpell : spell
+            )
+          : current
+      );
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -235,13 +272,64 @@ function SpellAdminEntryPage({ entryId }: SpellAdminEntryPageProps) {
         method: entryId ? "PUT" : "POST",
       });
 
-      await parseEnvelope(response);
+      const parsedResponse = await parseEnvelope(response);
+
+      const updatedSpell = spellSchema.parse(parsedResponse);
+
+      if (entryId) {
+        queryClient.setQueryData(queryKeys.spell(entryId), updatedSpell);
+        queryClient.setQueryData<Spell[] | undefined>(
+          queryKeys.spells,
+          (current) =>
+            current
+              ? current.map((spell) =>
+                  spell.id === entryId ? updatedSpell : spell
+                )
+              : current
+        );
+      } else {
+        queryClient.setQueryData(
+          queryKeys.spell(updatedSpell.id),
+          updatedSpell
+        );
+        queryClient.setQueryData<Spell[] | undefined>(
+          queryKeys.spells,
+          (current) => {
+            if (!current) {
+              return [updatedSpell];
+            }
+
+            const existingIndex = current.findIndex(
+              (spell) => spell.id === updatedSpell.id
+            );
+            if (existingIndex < 0) {
+              return [...current, updatedSpell];
+            }
+
+            return current.map((spell) =>
+              spell.id === updatedSpell.id ? updatedSpell : spell
+            );
+          }
+        );
+      }
+      await upsertCollectionCacheEntry("spells", updatedSpell);
+
       setSuccessMessage(
         entryId
           ? `Updated spell '${payload.id}'.`
           : `Saved spell '${payload.id}'.`
       );
     } catch (error) {
+      if (entryId) {
+        if (previousSpellDetail) {
+          queryClient.setQueryData(
+            queryKeys.spell(entryId),
+            previousSpellDetail
+          );
+        }
+        queryClient.setQueryData(queryKeys.spells, previousSpellList);
+      }
+
       setErrorMessage(
         error instanceof Error ? error.message : "Failed to save spell."
       );

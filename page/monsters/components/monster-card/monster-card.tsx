@@ -1,6 +1,10 @@
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
+import { upsertCollectionCacheEntry } from "@/lib/api/client";
+import { type Monster, monsterSchema } from "@/lib/domain/monster.schema";
+import { queryKeys } from "@/lib/query/keys";
 import { MONSTER_SIZES } from "@/page/admin-monsters-create/constants";
 import {
   toMonsterFormState,
@@ -54,6 +58,7 @@ export function MonsterCard({
   onMonsterUpdated,
   monster,
 }: MonsterCardProps) {
+  const queryClient = useQueryClient();
   const [isInlineEditing, setIsInlineEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -118,6 +123,30 @@ export function MonsterCard({
       return;
     }
 
+    const listQueryKey = queryKeys.monsters;
+    const detailQueryKey = queryKeys.monster(monster.id);
+    const previousMonsterList =
+      queryClient.getQueryData<Monster[]>(listQueryKey);
+    const previousMonsterDetail =
+      queryClient.getQueryData<Monster>(detailQueryKey);
+
+    const optimisticTimestamp = new Date().toISOString();
+    const optimisticMonster: Monster = {
+      ...payload,
+      createdAt: monster.createdAt,
+      createdBy: monster.createdBy,
+      updatedAt: optimisticTimestamp,
+    };
+
+    queryClient.setQueryData(detailQueryKey, optimisticMonster);
+    queryClient.setQueryData<Monster[] | undefined>(listQueryKey, (current) =>
+      current
+        ? current.map((candidate) =>
+            candidate.id === monster.id ? optimisticMonster : candidate
+          )
+        : current
+    );
+
     setIsSaving(true);
 
     try {
@@ -133,7 +162,21 @@ export function MonsterCard({
         }
       );
 
-      await parseEnvelope(response);
+      const parsedResponse = await parseEnvelope(response);
+      const updatedMonster = monsterSchema.parse(parsedResponse);
+
+      queryClient.setQueryData(detailQueryKey, updatedMonster);
+      queryClient.setQueryData<Monster[] | undefined>(
+        listQueryKey,
+        (current) =>
+          current
+            ? current.map((candidate) =>
+                candidate.id === monster.id ? updatedMonster : candidate
+              )
+            : current
+      );
+      await upsertCollectionCacheEntry("monsters", updatedMonster);
+
       if (onMonsterUpdated) {
         await onMonsterUpdated();
       }
@@ -141,6 +184,10 @@ export function MonsterCard({
       setSuccessMessage("Monster updated.");
       setIsInlineEditing(false);
     } catch (error) {
+      if (previousMonsterDetail) {
+        queryClient.setQueryData(detailQueryKey, previousMonsterDetail);
+      }
+      queryClient.setQueryData(listQueryKey, previousMonsterList);
       setErrorMessage(
         error instanceof Error ? error.message : "Failed to update monster."
       );

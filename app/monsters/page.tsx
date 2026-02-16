@@ -13,6 +13,13 @@ import {
 } from "@/lib/api/client";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import {
+  applyPersistedFilterQueryParams,
+  clearFilterQueryParams,
+  hasAnyFilterQueryParam,
+  persistFilterQueryParams,
+  readPersistedFilterQueryParams,
+} from "@/lib/util/filter-query-persistence";
+import {
   MonsterCard,
   MonsterRangeFilters,
   MonsterResultsSummary,
@@ -51,6 +58,20 @@ const MULTI_SELECTABLE_GROUPS: MonsterMultiSelectableGroupKey[] = [
   "damageImmunities",
   "damageVulnerabilities",
   "conditionImmunities",
+];
+
+const MONSTER_FILTER_STORAGE_KEY = "dnd.tools:monsters:filters";
+
+const MONSTER_PERSISTED_QUERY_KEYS = [
+  "q",
+  ...Object.values(MONSTER_FILTER_QUERY_PARAM_BY_KEY),
+  MONSTER_GROUP_MATCH_QUERY_PARAM,
+  ...Object.values(MONSTER_GROUP_MATCH_QUERY_PARAM_BY_KEY),
+  ...Object.values(MONSTER_SELECTION_MODE_QUERY_PARAM_BY_KEY),
+  ...Object.values(MONSTER_RANGE_QUERY_PARAM_BY_KEY).flatMap((params) => [
+    params.min,
+    params.max,
+  ]),
 ];
 
 function isMultiSelectableGroupKey(
@@ -98,6 +119,7 @@ function MonstersPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const hasHydratedPersistedFiltersRef = useRef(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const searchDebounceTimeoutRef = useRef<number | null>(null);
   const {
@@ -132,6 +154,50 @@ function MonstersPageContent() {
 
     searchRef.current?.focus();
     searchRef.current?.select();
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (hasHydratedPersistedFiltersRef.current) {
+      return;
+    }
+    hasHydratedPersistedFiltersRef.current = true;
+
+    const currentParams = new URLSearchParams(searchParams.toString());
+    if (
+      currentParams.has("intent") ||
+      currentParams.has("filter") ||
+      hasAnyFilterQueryParam(searchParams, MONSTER_PERSISTED_QUERY_KEYS)
+    ) {
+      return;
+    }
+
+    const persistedParams = readPersistedFilterQueryParams(
+      MONSTER_FILTER_STORAGE_KEY
+    );
+    if (!persistedParams) {
+      return;
+    }
+
+    const nextParams = applyPersistedFilterQueryParams(
+      currentParams,
+      persistedParams,
+      MONSTER_PERSISTED_QUERY_KEYS
+    );
+    if (nextParams.toString() === currentParams.toString()) {
+      return;
+    }
+
+    router.replace(
+      `${pathname}${nextParams.toString() ? `?${nextParams.toString()}` : ""}`
+    );
+  }, [pathname, router, searchParams]);
+
+  useEffect(() => {
+    persistFilterQueryParams(
+      MONSTER_FILTER_STORAGE_KEY,
+      searchParams,
+      MONSTER_PERSISTED_QUERY_KEYS
+    );
   }, [searchParams]);
 
   useEffect(() => {
@@ -322,6 +388,22 @@ function MonstersPageContent() {
     return selected.length ? selected : [ALL_FILTER_VALUE];
   };
 
+  const hasActiveFilters = hasAnyFilterQueryParam(
+    searchParams,
+    MONSTER_PERSISTED_QUERY_KEYS
+  );
+
+  const resetAllFilters = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    clearFilterQueryParams(params, MONSTER_PERSISTED_QUERY_KEYS);
+    params.delete("intent");
+    params.delete("filter");
+    window.localStorage.removeItem(MONSTER_FILTER_STORAGE_KEY);
+    router.push(
+      `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+    );
+  };
+
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
       <section className="surface-card p-6">
@@ -433,6 +515,14 @@ function MonstersPageContent() {
                 }))}
                 onGlobalMatchModeChange={updateGlobalMatchMode}
               />
+              <button
+                className="admin-button-secondary typography-body-sm whitespace-nowrap px-3 py-2"
+                disabled={!hasActiveFilters}
+                onClick={resetAllFilters}
+                type="button"
+              >
+                Reset filters
+              </button>
             </div>
           </div>
 
@@ -504,7 +594,6 @@ function MonstersPageContent() {
               isAdminMode={isAdminMode}
               key={monster.id}
               onMonsterUpdated={async () => {
-                await refetch();
                 const syncedAt = await getCollectionLastSyncedAt("monsters");
                 setLastSyncedAt(syncedAt);
               }}

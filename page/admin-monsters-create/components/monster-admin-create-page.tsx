@@ -1,8 +1,13 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
+import { upsertCollectionCacheEntry } from "@/lib/api/client";
+import type { Monster } from "@/lib/domain/monster.schema";
+import { monsterSchema } from "@/lib/domain/monster.schema";
+import { queryKeys } from "@/lib/query/keys";
 import {
   DEFAULT_MONSTER_ADMIN_FORM,
   MONSTER_SIZES,
@@ -63,6 +68,7 @@ export function MonsterAdminEditPage({ entryId }: { entryId: string }) {
 }
 
 function MonsterAdminEntryPage({ entryId }: MonsterAdminEntryPageProps) {
+  const queryClient = useQueryClient();
   const isEditing = Boolean(entryId);
   const [mode, setMode] = useState<AdminEntryMode>(
     isEditing ? "manual" : "parse"
@@ -207,6 +213,40 @@ function MonsterAdminEntryPage({ entryId }: MonsterAdminEntryPageProps) {
       return;
     }
 
+    const listQueryKey = queryKeys.monsters;
+    const detailQueryKey = entryId ? queryKeys.monster(entryId) : null;
+    const previousMonsterList =
+      queryClient.getQueryData<Monster[]>(listQueryKey);
+    const previousMonsterDetail = detailQueryKey
+      ? queryClient.getQueryData<Monster>(detailQueryKey)
+      : undefined;
+
+    if (entryId) {
+      const existingMonster =
+        previousMonsterDetail ??
+        previousMonsterList?.find((monster) => monster.id === entryId);
+      const optimisticTimestamp = new Date().toISOString();
+      const optimisticMonster: Monster = {
+        ...payload,
+        createdAt: existingMonster?.createdAt ?? optimisticTimestamp,
+        createdBy: existingMonster?.createdBy ?? payload.createdBy,
+        updatedAt: optimisticTimestamp,
+      };
+
+      if (detailQueryKey) {
+        queryClient.setQueryData(detailQueryKey, optimisticMonster);
+      }
+      queryClient.setQueryData<Monster[] | undefined>(
+        listQueryKey,
+        (current) =>
+          current
+            ? current.map((monster) =>
+                monster.id === entryId ? optimisticMonster : monster
+              )
+            : current
+      );
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -222,13 +262,64 @@ function MonsterAdminEntryPage({ entryId }: MonsterAdminEntryPageProps) {
         method: entryId ? "PUT" : "POST",
       });
 
-      await parseEnvelope(response);
+      const parsedResponse = await parseEnvelope(response);
+
+      const updatedMonster = monsterSchema.parse(parsedResponse);
+
+      if (entryId) {
+        queryClient.setQueryData(queryKeys.monster(entryId), updatedMonster);
+        queryClient.setQueryData<Monster[] | undefined>(
+          queryKeys.monsters,
+          (current) =>
+            current
+              ? current.map((monster) =>
+                  monster.id === entryId ? updatedMonster : monster
+                )
+              : current
+        );
+      } else {
+        queryClient.setQueryData(
+          queryKeys.monster(updatedMonster.id),
+          updatedMonster
+        );
+        queryClient.setQueryData<Monster[] | undefined>(
+          queryKeys.monsters,
+          (current) => {
+            if (!current) {
+              return [updatedMonster];
+            }
+
+            const existingIndex = current.findIndex(
+              (monster) => monster.id === updatedMonster.id
+            );
+            if (existingIndex < 0) {
+              return [...current, updatedMonster];
+            }
+
+            return current.map((monster) =>
+              monster.id === updatedMonster.id ? updatedMonster : monster
+            );
+          }
+        );
+      }
+      await upsertCollectionCacheEntry("monsters", updatedMonster);
+
       setSuccessMessage(
         entryId
           ? `Updated monster '${payload.id}'.`
           : `Saved monster '${payload.id}'.`
       );
     } catch (error) {
+      if (entryId) {
+        if (previousMonsterDetail) {
+          queryClient.setQueryData(
+            queryKeys.monster(entryId),
+            previousMonsterDetail
+          );
+        }
+        queryClient.setQueryData(queryKeys.monsters, previousMonsterList);
+      }
+
       setErrorMessage(
         error instanceof Error ? error.message : "Failed to save monster."
       );

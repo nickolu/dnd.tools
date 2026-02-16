@@ -16,6 +16,9 @@ type CollectionCacheResource = keyof Pick<
   typeof STORAGE_KEYS,
   "monsters" | "spells"
 >;
+type CollectionCacheEntry = {
+  id: string;
+};
 
 const META_REFRESH_INTERVAL_MS = 6 * 60 * 60 * 1000;
 
@@ -328,6 +331,44 @@ export const clearCollectionCache = async (
   }
 
   await del(getCollectionStorageKey(resource));
+};
+
+export const upsertCollectionCacheEntry = async (
+  resource: CollectionCacheResource,
+  entry: CollectionCacheEntry
+) => {
+  if (!canUseBrowserStorage()) {
+    return;
+  }
+
+  const storageKey = getCollectionStorageKey(resource);
+  const raw = await get<unknown>(storageKey);
+  if (!isRecord(raw)) {
+    return;
+  }
+
+  const version = Reflect.get(raw, "version");
+  const data = Reflect.get(raw, "data");
+  if (typeof version !== "number" || !Array.isArray(data)) {
+    return;
+  }
+
+  const nextData: unknown[] = [...data];
+  const existingIndex = nextData.findIndex((candidate) => {
+    if (!isRecord(candidate)) {
+      return false;
+    }
+
+    return Reflect.get(candidate, "id") === entry.id;
+  });
+
+  if (existingIndex >= 0) {
+    nextData[existingIndex] = entry;
+  } else {
+    nextData.push(entry);
+  }
+
+  await writeCachedCollection(storageKey, version, nextData);
 };
 
 export const apiClient = {

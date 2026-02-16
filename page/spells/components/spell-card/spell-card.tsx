@@ -1,6 +1,10 @@
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
+import { upsertCollectionCacheEntry } from "@/lib/api/client";
+import { type Spell, spellSchema } from "@/lib/domain/spell.schema";
+import { queryKeys } from "@/lib/query/keys";
 import { SPELL_SCHOOLS } from "@/page/admin-spells-create/constants";
 import {
   toSpellFormState,
@@ -57,6 +61,7 @@ export function SpellCard({
   onSpellUpdated,
   spell,
 }: SpellCardProps) {
+  const queryClient = useQueryClient();
   const [isInlineEditing, setIsInlineEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -105,6 +110,28 @@ export function SpellCard({
       return;
     }
 
+    const listQueryKey = queryKeys.spells;
+    const detailQueryKey = queryKeys.spell(spell.id);
+    const previousSpellList = queryClient.getQueryData<Spell[]>(listQueryKey);
+    const previousSpellDetail = queryClient.getQueryData<Spell>(detailQueryKey);
+
+    const optimisticTimestamp = new Date().toISOString();
+    const optimisticSpell: Spell = {
+      ...payload,
+      createdAt: spell.createdAt,
+      createdBy: spell.createdBy,
+      updatedAt: optimisticTimestamp,
+    };
+
+    queryClient.setQueryData(detailQueryKey, optimisticSpell);
+    queryClient.setQueryData<Spell[] | undefined>(listQueryKey, (current) =>
+      current
+        ? current.map((candidate) =>
+            candidate.id === spell.id ? optimisticSpell : candidate
+          )
+        : current
+    );
+
     setIsSaving(true);
 
     try {
@@ -120,7 +147,19 @@ export function SpellCard({
         }
       );
 
-      await parseEnvelope(response);
+      const parsedResponse = await parseEnvelope(response);
+      const updatedSpell = spellSchema.parse(parsedResponse);
+
+      queryClient.setQueryData(detailQueryKey, updatedSpell);
+      queryClient.setQueryData<Spell[] | undefined>(listQueryKey, (current) =>
+        current
+          ? current.map((candidate) =>
+              candidate.id === spell.id ? updatedSpell : candidate
+            )
+          : current
+      );
+      await upsertCollectionCacheEntry("spells", updatedSpell);
+
       if (onSpellUpdated) {
         await onSpellUpdated();
       }
@@ -128,6 +167,10 @@ export function SpellCard({
       setSuccessMessage("Spell updated.");
       setIsInlineEditing(false);
     } catch (error) {
+      if (previousSpellDetail) {
+        queryClient.setQueryData(detailQueryKey, previousSpellDetail);
+      }
+      queryClient.setQueryData(listQueryKey, previousSpellList);
       setErrorMessage(
         error instanceof Error ? error.message : "Failed to update spell."
       );

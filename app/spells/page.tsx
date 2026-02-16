@@ -12,6 +12,13 @@ import {
   getReadableFetchError,
 } from "@/lib/api/client";
 import { useSpells } from "@/lib/query/hooks/useSpells";
+import {
+  applyPersistedFilterQueryParams,
+  clearFilterQueryParams,
+  hasAnyFilterQueryParam,
+  persistFilterQueryParams,
+  readPersistedFilterQueryParams,
+} from "@/lib/util/filter-query-persistence";
 import { SpellCard, SpellResultsSummary } from "@/page/spells/components";
 import {
   ALL_FILTER_VALUE,
@@ -52,6 +59,16 @@ const SPELL_FILTER_GROUP_LABEL_BY_KEY: Record<
   saveAbility: "Save Ability",
   source: "Source",
 };
+
+const SPELL_FILTER_STORAGE_KEY = "dnd.tools:spells:filters";
+
+const SPELL_PERSISTED_QUERY_KEYS = [
+  "q",
+  ...Object.values(SPELL_FILTER_QUERY_PARAM_BY_KEY),
+  SPELL_GROUP_MATCH_QUERY_PARAM,
+  ...Object.values(SPELL_GROUP_MATCH_QUERY_PARAM_BY_KEY),
+  ...Object.values(SPELL_SELECTION_MODE_QUERY_PARAM_BY_KEY),
+];
 
 function isMultiSelectableGroupKey(
   key: SpellFilterGroupKey
@@ -104,6 +121,7 @@ function SpellsPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const hasHydratedPersistedFiltersRef = useRef(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const { data: spells = [], error, isError, isLoading, refetch } = useSpells();
   const { filteredSpells, filters } = useSpellFilters(spells, searchParams);
@@ -123,6 +141,50 @@ function SpellsPageContent() {
 
     searchRef.current?.focus();
     searchRef.current?.select();
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (hasHydratedPersistedFiltersRef.current) {
+      return;
+    }
+    hasHydratedPersistedFiltersRef.current = true;
+
+    const currentParams = new URLSearchParams(searchParams.toString());
+    if (
+      currentParams.has("intent") ||
+      currentParams.has("filter") ||
+      hasAnyFilterQueryParam(searchParams, SPELL_PERSISTED_QUERY_KEYS)
+    ) {
+      return;
+    }
+
+    const persistedParams = readPersistedFilterQueryParams(
+      SPELL_FILTER_STORAGE_KEY
+    );
+    if (!persistedParams) {
+      return;
+    }
+
+    const nextParams = applyPersistedFilterQueryParams(
+      currentParams,
+      persistedParams,
+      SPELL_PERSISTED_QUERY_KEYS
+    );
+    if (nextParams.toString() === currentParams.toString()) {
+      return;
+    }
+
+    router.replace(
+      `${pathname}${nextParams.toString() ? `?${nextParams.toString()}` : ""}`
+    );
+  }, [pathname, router, searchParams]);
+
+  useEffect(() => {
+    persistFilterQueryParams(
+      SPELL_FILTER_STORAGE_KEY,
+      searchParams,
+      SPELL_PERSISTED_QUERY_KEYS
+    );
   }, [searchParams]);
 
   useEffect(() => {
@@ -248,6 +310,22 @@ function SpellsPageContent() {
     return value === ALL_FILTER_VALUE ? [ALL_FILTER_VALUE] : [value];
   };
 
+  const hasActiveFilters = hasAnyFilterQueryParam(
+    searchParams,
+    SPELL_PERSISTED_QUERY_KEYS
+  );
+
+  const resetAllFilters = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    clearFilterQueryParams(params, SPELL_PERSISTED_QUERY_KEYS);
+    params.delete("intent");
+    params.delete("filter");
+    window.localStorage.removeItem(SPELL_FILTER_STORAGE_KEY);
+    router.push(
+      `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+    );
+  };
+
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
       <section className="surface-card p-6">
@@ -334,6 +412,14 @@ function SpellsPageContent() {
                 }))}
                 onGlobalMatchModeChange={updateGlobalMatchMode}
               />
+              <button
+                className="admin-button-secondary typography-body-sm whitespace-nowrap px-3 py-2"
+                disabled={!hasActiveFilters}
+                onClick={resetAllFilters}
+                type="button"
+              >
+                Reset filters
+              </button>
             </div>
           </div>
 
@@ -386,7 +472,6 @@ function SpellsPageContent() {
               isAdminMode={isAdminMode}
               key={spell.id}
               onSpellUpdated={async () => {
-                await refetch();
                 const syncedAt = await getCollectionLastSyncedAt("spells");
                 setLastSyncedAt(syncedAt);
               }}
