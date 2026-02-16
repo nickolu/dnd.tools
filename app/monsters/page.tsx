@@ -61,6 +61,7 @@ const MULTI_SELECTABLE_GROUPS: MonsterMultiSelectableGroupKey[] = [
 ];
 
 const MONSTER_FILTER_STORAGE_KEY = "dnd.tools:monsters:filters";
+const SEARCH_DEBOUNCE_MS = 400;
 
 const MONSTER_PERSISTED_QUERY_KEYS = [
   "q",
@@ -201,26 +202,48 @@ function MonstersPageContent() {
   }, [searchParams]);
 
   useEffect(() => {
+    if (searchDebounceTimeoutRef.current !== null) {
+      return;
+    }
+
+    setSearchInput(filters.query);
+  }, [filters.query]);
+
+  useEffect(() => {
     if (searchInput === filters.query) {
       return;
     }
 
-    const syncId = window.setTimeout(() => {
-      setSearchInput(filters.query);
-    }, 0);
+    const timeoutId = window.setTimeout(() => {
+      searchDebounceTimeoutRef.current = null;
 
-    return () => {
-      window.clearTimeout(syncId);
-    };
-  }, [filters.query, searchInput]);
+      const params = new URLSearchParams(searchParams.toString());
+      const currentQuery = params.get("q") ?? "";
+      if (currentQuery === searchInput) {
+        return;
+      }
 
-  useEffect(() => {
+      if (searchInput) {
+        params.set("q", searchInput);
+      } else {
+        params.delete("q");
+      }
+
+      params.delete("intent");
+      params.delete("filter");
+      router.replace(
+        `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+      );
+    }, SEARCH_DEBOUNCE_MS);
+    searchDebounceTimeoutRef.current = timeoutId;
+
     return () => {
       if (searchDebounceTimeoutRef.current !== null) {
         window.clearTimeout(searchDebounceTimeoutRef.current);
+        searchDebounceTimeoutRef.current = null;
       }
     };
-  }, []);
+  }, [filters.query, pathname, router, searchInput, searchParams]);
 
   useEffect(() => {
     let isActive = true;
@@ -468,32 +491,7 @@ function MonstersPageContent() {
               <input
                 className="input-field w-full px-3 py-2"
                 onChange={(event) => {
-                  const next = event.target.value;
-                  setSearchInput(next);
-
-                  if (searchDebounceTimeoutRef.current !== null) {
-                    window.clearTimeout(searchDebounceTimeoutRef.current);
-                  }
-
-                  searchDebounceTimeoutRef.current = window.setTimeout(() => {
-                    const params = new URLSearchParams(window.location.search);
-                    const currentQuery = params.get("q") ?? "";
-                    if (currentQuery === next) {
-                      return;
-                    }
-
-                    if (next) {
-                      params.set("q", next);
-                    } else {
-                      params.delete("q");
-                    }
-
-                    params.delete("intent");
-                    params.delete("filter");
-                    router.push(
-                      `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
-                    );
-                  }, 220);
+                  setSearchInput(event.target.value);
                 }}
                 placeholder="Search monsters"
                 ref={searchRef}
