@@ -30,7 +30,7 @@ function renderTextWithSpellLinks(text: string, spellNames: string[]) {
 
     return (
       <Link
-        className="font-medium underline decoration-dotted underline-offset-2 hover:text-primary"
+        className="font-medium underline decoration-dotted underline-offset-2 hover:text-text-primary"
         href={`/spells?q=${encodeURIComponent(part.spellName)}&intent=search`}
         key={`spell:${part.spellName}:${index}`}
         rel="noopener noreferrer"
