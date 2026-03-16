@@ -19,7 +19,7 @@ describe("useSavedSpellListStore", () => {
     const state = useSavedSpellListStore.getState();
     expect(state.lists).toHaveLength(1);
 
-    const list = state.lists[0];
+    const list = state.lists[0]!;
     expect(list.id).toBe(id);
     expect(list.name).toBe("My Spells");
     expect(list.spellIds).toEqual([]);
@@ -36,7 +36,7 @@ describe("useSavedSpellListStore", () => {
   it("createList trims whitespace from name", () => {
     useSavedSpellListStore.getState().createList("  Prepared Spells  ");
     const state = useSavedSpellListStore.getState();
-    expect(state.lists[0].name).toBe("Prepared Spells");
+    expect(state.lists[0]!.name).toBe("Prepared Spells");
   });
 
   it("deleteList removes the list by ID", () => {
@@ -53,10 +53,10 @@ describe("useSavedSpellListStore", () => {
 
   it("renameList updates name and updatedAt", () => {
     const id = useSavedSpellListStore.getState().createList("Old Name");
-    const before = useSavedSpellListStore.getState().lists[0].updatedAt;
+    const before = useSavedSpellListStore.getState().lists[0]!.updatedAt;
 
     useSavedSpellListStore.getState().renameList(id, "New Name");
-    const list = useSavedSpellListStore.getState().lists[0];
+    const list = useSavedSpellListStore.getState().lists[0]!;
 
     expect(list.name).toBe("New Name");
     expect(list.updatedAt).toBeGreaterThanOrEqual(before);
@@ -65,7 +65,7 @@ describe("useSavedSpellListStore", () => {
   it("renameList with blank name is a no-op", () => {
     const id = useSavedSpellListStore.getState().createList("Keep This Name");
     useSavedSpellListStore.getState().renameList(id, "  ");
-    expect(useSavedSpellListStore.getState().lists[0].name).toBe(
+    expect(useSavedSpellListStore.getState().lists[0]!.name).toBe(
       "Keep This Name"
     );
   });
@@ -75,15 +75,15 @@ describe("useSavedSpellListStore", () => {
     useSavedSpellListStore
       .getState()
       .renameList("nonexistent-id", "Should Not Apply");
-    expect(useSavedSpellListStore.getState().lists[0].name).toBe("Existing");
+    expect(useSavedSpellListStore.getState().lists[0]!.name).toBe("Existing");
   });
 
   it("addSpellToList adds spellId and updates updatedAt", () => {
     const id = useSavedSpellListStore.getState().createList("My List");
-    const before = useSavedSpellListStore.getState().lists[0].updatedAt;
+    const before = useSavedSpellListStore.getState().lists[0]!.updatedAt;
 
     useSavedSpellListStore.getState().addSpellToList(id, "spell-1");
-    const list = useSavedSpellListStore.getState().lists[0];
+    const list = useSavedSpellListStore.getState().lists[0]!;
 
     expect(list.spellIds).toContain("spell-1");
     expect(list.updatedAt).toBeGreaterThanOrEqual(before);
@@ -94,7 +94,7 @@ describe("useSavedSpellListStore", () => {
     useSavedSpellListStore.getState().addSpellToList(id, "spell-1");
     useSavedSpellListStore.getState().addSpellToList(id, "spell-1");
 
-    const list = useSavedSpellListStore.getState().lists[0];
+    const list = useSavedSpellListStore.getState().lists[0]!;
     expect(list.spellIds).toEqual(["spell-1"]);
   });
 
@@ -103,7 +103,7 @@ describe("useSavedSpellListStore", () => {
     useSavedSpellListStore.getState().addSpellToList(id, "spell-1");
     useSavedSpellListStore.getState().removeSpellFromList(id, "spell-1");
 
-    expect(useSavedSpellListStore.getState().lists[0].spellIds).not.toContain(
+    expect(useSavedSpellListStore.getState().lists[0]!.spellIds).not.toContain(
       "spell-1"
     );
   });
@@ -111,10 +111,10 @@ describe("useSavedSpellListStore", () => {
   it("removeSpellFromList with spell not in list is a no-op", () => {
     const id = useSavedSpellListStore.getState().createList("My List");
     useSavedSpellListStore.getState().addSpellToList(id, "spell-1");
-    const before = useSavedSpellListStore.getState().lists[0].updatedAt;
+    const before = useSavedSpellListStore.getState().lists[0]!.updatedAt;
 
     useSavedSpellListStore.getState().removeSpellFromList(id, "not-in-list");
-    const list = useSavedSpellListStore.getState().lists[0];
+    const list = useSavedSpellListStore.getState().lists[0]!;
 
     expect(list.spellIds).toEqual(["spell-1"]);
     expect(list.updatedAt).toBe(before);
@@ -125,13 +125,13 @@ describe("useSavedSpellListStore", () => {
 
     // Toggle adds
     useSavedSpellListStore.getState().toggleSpellInActiveList(id, "spell-1");
-    expect(useSavedSpellListStore.getState().lists[0].spellIds).toContain(
+    expect(useSavedSpellListStore.getState().lists[0]!.spellIds).toContain(
       "spell-1"
     );
 
     // Toggle removes
     useSavedSpellListStore.getState().toggleSpellInActiveList(id, "spell-1");
-    expect(useSavedSpellListStore.getState().lists[0].spellIds).not.toContain(
+    expect(useSavedSpellListStore.getState().lists[0]!.spellIds).not.toContain(
       "spell-1"
     );
   });
@@ -145,6 +145,8 @@ describe("useSavedSpellListStore", () => {
         .toggleSpellInActiveList("nonexistent-id", "spell-1");
     }).not.toThrow();
     // No lists modified
-    expect(useSavedSpellListStore.getState().lists[0].spellIds).toHaveLength(0);
+    expect(useSavedSpellListStore.getState().lists[0]!.spellIds).toHaveLength(
+      0
+    );
   });
 });
