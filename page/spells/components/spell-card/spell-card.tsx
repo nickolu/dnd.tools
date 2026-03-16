@@ -10,6 +10,7 @@ import {
   toSpellFormState,
   toSpellPayload,
 } from "@/page/admin-spells-create/utils/form-state";
+import { SpellListToggle } from "@/page/spells/components/spell-card/components/spell-list-toggle";
 import { SpellTextBlock } from "@/page/spells/components/spell-card/components/spell-text-block";
 import type { SpellCardProps } from "@/page/spells/components/spell-card/types";
 import {
@@ -520,35 +521,38 @@ export function SpellCard({
             {formatSpellLevelAndSchool(spell)}
           </p>
         </div>
-        {isAdminMode ? (
-          <button
-            aria-label={`Edit ${spell.name}`}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--color-border-subtle)] text-secondary transition-colors hover:text-text-primary"
-            onClick={() => {
-              setErrorMessage(null);
-              setSuccessMessage(null);
-              setFormState(toSpellFormState(spell));
-              setIsInlineEditing(true);
-            }}
-            title="Edit spell"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              fill="none"
-              height="16"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-              viewBox="0 0 24 24"
-              width="16"
+        <div className="flex items-center gap-1">
+          <SpellListToggle spellId={spell.id} spellName={spell.name} />
+          {isAdminMode ? (
+            <button
+              aria-label={`Edit ${spell.name}`}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--color-border-subtle)] text-secondary transition-colors hover:text-text-primary"
+              onClick={() => {
+                setErrorMessage(null);
+                setSuccessMessage(null);
+                setFormState(toSpellFormState(spell));
+                setIsInlineEditing(true);
+              }}
+              title="Edit spell"
+              type="button"
             >
-              <path d="M12 20h9" />
-              <path d="m16.5 3.5 4 4L8 20l-5 1 1-5 12.5-12.5Z" />
-            </svg>
-          </button>
-        ) : null}
+              <svg
+                aria-hidden="true"
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <path d="M12 20h9" />
+                <path d="m16.5 3.5 4 4L8 20l-5 1 1-5 12.5-12.5Z" />
+              </svg>
+            </button>
+          ) : null}
+        </div>
       </header>
 
       <dl className="typography-body-sm mb-4 grid gap-3 sm:grid-cols-2">
