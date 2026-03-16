@@ -699,7 +699,7 @@ export function MonsterCard({
         {isAdminMode ? (
           <button
             aria-label={`Edit ${monster.name}`}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--color-border-subtle)] text-secondary transition-colors hover:text-primary"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--color-border-subtle)] text-secondary transition-colors hover:text-text-primary"
             onClick={() => {
               setErrorMessage(null);
               setSuccessMessage(null);
