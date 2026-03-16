@@ -54,7 +54,7 @@ export function FilterGroup({
     <section
       className={cn(
         rootClassName,
-        "cursor-pointer border-1 border-[#eee] rounded-md p-2"
+        "cursor-pointer border border-[color:var(--color-border-subtle)] rounded-md p-2"
       )}
       onClick={() => {
         setIsExpanded((current) => !current);
