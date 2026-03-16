@@ -12,6 +12,7 @@ import {
   getReadableFetchError,
 } from "@/lib/api/client";
 import { useSpells } from "@/lib/query/hooks/useSpells";
+import { useSavedSpellListStore } from "@/lib/store/useSavedSpellListStore";
 import {
   applyPersistedFilterQueryParams,
   clearFilterQueryParams,
@@ -19,7 +20,11 @@ import {
   persistFilterQueryParams,
   readPersistedFilterQueryParams,
 } from "@/lib/util/filter-query-persistence";
-import { SpellCard, SpellResultsSummary } from "@/page/spells/components";
+import {
+  SpellCard,
+  SpellListSelector,
+  SpellResultsSummary,
+} from "@/page/spells/components";
 import {
   ALL_FILTER_VALUE,
   SPELL_FILTER_QUERY_PARAM_BY_KEY,
@@ -124,8 +129,28 @@ function SpellsPageContent() {
   const hasHydratedPersistedFiltersRef = useRef(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const { data: spells = [], error, isError, isLoading, refetch } = useSpells();
-  const { filteredSpells, filters } = useSpellFilters(spells, searchParams);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Saved spell list state
+  const lists = useSavedSpellListStore((s) => s.lists);
+  const listIdParam = searchParams.get("list");
+  const activeList = useMemo(
+    () =>
+      listIdParam ? (lists.find((l) => l.id === listIdParam) ?? null) : null,
+    [listIdParam, lists]
+  );
+
+  // Pre-filter spells to active list scope before applying other filters
+  const spellsInScope = useMemo(() => {
+    if (!activeList) return spells;
+    const idSet = new Set(activeList.spellIds);
+    return spells.filter((spell) => idSet.has(spell.id));
+  }, [spells, activeList]);
+
+  const { filteredSpells, filters } = useSpellFilters(
+    spellsInScope,
+    searchParams
+  );
   const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null);
   const isAdminMode = searchParams.get("admin") === "true";
   const filterGroups = useMemo<SpellFilterGroupType[]>(
@@ -133,6 +158,17 @@ function SpellsPageContent() {
     [spells]
   );
   const homeIntentFilterGroupKey = getHomeIntentFilterGroupKey(searchParams);
+
+  // Strip stale ?list=<id> if the list no longer exists
+  useEffect(() => {
+    if (listIdParam && !activeList) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("list");
+      router.replace(
+        `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+      );
+    }
+  }, [listIdParam, activeList, pathname, router, searchParams]);
 
   useEffect(() => {
     if (searchParams.get("intent") !== "search") {
@@ -142,6 +178,19 @@ function SpellsPageContent() {
     searchRef.current?.focus();
     searchRef.current?.select();
   }, [searchParams]);
+
+  // Handle intent=list from home page navigation: just clean up the intent param
+  useEffect(() => {
+    if (searchParams.get("intent") !== "list") {
+      return;
+    }
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("intent");
+    router.replace(
+      `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+    );
+  }, [searchParams, pathname, router]);
 
   useEffect(() => {
     if (hasHydratedPersistedFiltersRef.current) {
@@ -331,6 +380,8 @@ function SpellsPageContent() {
       <section className="surface-card p-6">
         <h1 className="typography-h1">Spells</h1>
         <SpellResultsSummary
+          activeListName={activeList?.name}
+          activeListTotal={spellsInScope.length}
           isLoading={isLoading}
           total={spells.length}
           visible={filteredSpells.length}
@@ -387,6 +438,22 @@ function SpellsPageContent() {
         <div className="mt-4 space-y-3">
           <div className="relative">
             <div className="flex items-center gap-2">
+              <SpellListSelector
+                activeListId={activeList?.id ?? null}
+                onListSelect={(listId) => {
+                  const params = new URLSearchParams(searchParams.toString());
+                  if (listId) {
+                    params.set("list", listId);
+                  } else {
+                    params.delete("list");
+                  }
+                  params.delete("intent");
+                  params.delete("filter");
+                  router.push(
+                    `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+                  );
+                }}
+              />
               <input
                 className="input-field w-full px-3 py-2"
                 onChange={(event) => {

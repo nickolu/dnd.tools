@@ -1,5 +1,7 @@
 export type SpellResultsSummaryProps = {
-  isLoading?: boolean;
+  activeListName?: string | undefined;
+  activeListTotal?: number | undefined;
+  isLoading?: boolean | undefined;
   total: number;
   visible: number;
 };

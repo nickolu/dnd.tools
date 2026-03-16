@@ -6,7 +6,8 @@ export type WidgetFilterOption = {
 export type WidgetIntent =
   | { target: "card" }
   | { target: "search"; value: string }
-  | { target: "filter"; filterId: string };
+  | { target: "filter"; filterId: string }
+  | { target: "list"; listId: string };
 
 export type ToolWidgetCardProps = {
   description?: string;

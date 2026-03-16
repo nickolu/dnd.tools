@@ -297,3 +297,39 @@ body {
   box-shadow: 0 0 0 3px var(--color-focus-ring-glow);
   outline: none;
 }
+
+.spell-list-toggle {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  height: 2rem;
+  justify-content: center;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  transition:
+    color var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
+  width: 2rem;
+}
+
+.spell-list-toggle:hover {
+  color: var(--color-accent);
+}
+
+.spell-list-toggle:active {
+  transform: scale(0.9);
+}
+
+.spell-list-toggle:focus-visible {
+  border-color: var(--color-focus-ring);
+  box-shadow: 0 0 0 3px var(--color-focus-ring-glow);
+  outline: none;
+}
+
+.spell-list-toggle[data-active="true"] {
+  color: var(--color-accent);
+}
