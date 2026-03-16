@@ -17,7 +17,15 @@ export function buildWidgetHref(route: string, intent: WidgetIntent): string {
 
   if (intent.target === "filter") {
     searchParams.set(WIDGET_INTENT_QUERY_PARAM, "filter");
-    searchParams.set(WIDGET_FILTER_PARAM, intent.filterId);
+    if (intent.filterId.startsWith("list:")) {
+      searchParams.set("list", intent.filterId.slice(5));
+    } else {
+      searchParams.set(WIDGET_FILTER_PARAM, intent.filterId);
+    }
+  }
+
+  if (intent.target === "list") {
+    searchParams.set("list", intent.listId);
   }
 
   const query = searchParams.toString();
