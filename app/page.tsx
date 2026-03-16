@@ -13,6 +13,7 @@ import {
 } from "@/lib/api/client";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { useSpells } from "@/lib/query/hooks/useSpells";
+import { useSavedSpellListStore } from "@/lib/store/useSavedSpellListStore";
 
 const SPELL_WIDGET_FILTERS: WidgetFilterOption[] = [
   { id: "classes:wizard", label: "Wizard" },
@@ -43,6 +44,18 @@ const MONSTER_WIDGET_FILTERS: WidgetFilterOption[] = [
 ];
 
 export default function Home() {
+  const savedSpellLists = useSavedSpellListStore((s) => s.lists);
+
+  const spellWidgetFilters = useMemo<WidgetFilterOption[]>(() => {
+    if (savedSpellLists.length === 0) return SPELL_WIDGET_FILTERS;
+
+    const listChips: WidgetFilterOption[] = savedSpellLists.map((list) => ({
+      id: `list:${list.id}`,
+      label: list.name,
+    }));
+    return [...listChips, ...SPELL_WIDGET_FILTERS];
+  }, [savedSpellLists]);
+
   const {
     data: monsters = [],
     error: monstersError,
@@ -206,7 +219,7 @@ export default function Home() {
 
         <ToolWidgetCard
           description={spellsStatusMessage}
-          filterOptions={SPELL_WIDGET_FILTERS}
+          filterOptions={spellWidgetFilters}
           onFilterSelect={setSpellFilter}
           onSearchChange={setSpellSearch}
           route="/spells"
