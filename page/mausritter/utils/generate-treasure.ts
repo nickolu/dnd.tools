@@ -1,7 +1,8 @@
-import { rollDie, pickRandom } from "./dice";
-import type { GeneratedTreasure, GeneratedMagicSword } from "../types";
-import treasureData from "@/lib/domain/mausritter/data/treasure/treasure-tables.json";
 import magicSwordsData from "@/lib/domain/mausritter/data/treasure/magic-swords.json";
+import treasureData from "@/lib/domain/mausritter/data/treasure/treasure-tables.json";
+
+import type { GeneratedMagicSword,GeneratedTreasure } from "../types";
+import { pickRandom,rollDie } from "./dice";
 import { matchesRoll } from "./dice";
 
 function findTable(id: string) {

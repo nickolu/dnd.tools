@@ -1,19 +1,19 @@
-import { rollDie, matchesRoll } from "./dice";
-import { rollOnRandomTable } from "./roll-on-table";
-import type { GeneratedHex } from "../types";
-import type { RandomTable } from "@/lib/domain/mausritter/schema";
 import hexTypeData from "@/lib/domain/mausritter/data/hex-contents/hex-type.json";
+import landmarkDetailsData from "@/lib/domain/mausritter/data/hex-contents/landmark-details.json";
 import countrysideData from "@/lib/domain/mausritter/data/hex-contents/landmarks-countryside.json";
 import forestData from "@/lib/domain/mausritter/data/hex-contents/landmarks-forest.json";
-import riverData from "@/lib/domain/mausritter/data/hex-contents/landmarks-river.json";
 import humanTownData from "@/lib/domain/mausritter/data/hex-contents/landmarks-human-town.json";
-import landmarkDetailsData from "@/lib/domain/mausritter/data/hex-contents/landmark-details.json";
+import riverData from "@/lib/domain/mausritter/data/hex-contents/landmarks-river.json";
 
-const landmarkTableByType: Record<string, RandomTable> = {
-  Countryside: countrysideData as RandomTable,
-  Forest: forestData as RandomTable,
-  River: riverData as RandomTable,
-  "Human town": humanTownData as RandomTable,
+import type { GeneratedHex } from "../types";
+import { matchesRoll,rollDie } from "./dice";
+import { rollOnRandomTable } from "./roll-on-table";
+
+const landmarkTableByType: Record<string, typeof countrysideData> = {
+  Countryside: countrysideData,
+  Forest: forestData,
+  River: riverData,
+  "Human town": humanTownData,
 };
 
 export function generateHex(index: number): GeneratedHex {
@@ -24,10 +24,10 @@ export function generateHex(index: number): GeneratedHex {
 
   // Roll landmark based on hex type
   const landmarkTable = landmarkTableByType[hexType] ?? countrysideData;
-  const landmark = rollOnRandomTable(landmarkTable as RandomTable);
+  const landmark = rollOnRandomTable(landmarkTable);
 
   // Roll landmark detail
-  const landmarkDetail = rollOnRandomTable(landmarkDetailsData as RandomTable);
+  const landmarkDetail = rollOnRandomTable(landmarkDetailsData);
 
   return {
     id: crypto.randomUUID(),

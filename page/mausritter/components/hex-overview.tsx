@@ -1,5 +1,5 @@
-import type { GeneratedHex } from "../types";
 import { HEX_TYPE_COLORS } from "../constants";
+import type { GeneratedHex } from "../types";
 
 type HexOverviewProps = {
   hexes: GeneratedHex[];

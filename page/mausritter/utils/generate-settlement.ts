@@ -1,14 +1,14 @@
-import { rollDie, matchesRoll } from "./dice";
-import { rollOnRandomTable } from "./roll-on-table";
+import eventsData from "@/lib/domain/mausritter/data/settlements/events.json";
+import governanceData from "@/lib/domain/mausritter/data/settlements/governance.json";
+import industryData from "@/lib/domain/mausritter/data/settlements/industry.json";
+import detailsData from "@/lib/domain/mausritter/data/settlements/settlement-details.json";
+import sizeData from "@/lib/domain/mausritter/data/settlements/settlement-size.json";
+
+import type { GeneratedSettlement } from "../types";
+import { matchesRoll,rollDie } from "./dice";
 import { generateSettlementName, generateTavernName } from "./generate-name";
 import { generateNpc } from "./generate-npc";
-import type { GeneratedSettlement } from "../types";
-import type { RandomTable } from "@/lib/domain/mausritter/schema";
-import sizeData from "@/lib/domain/mausritter/data/settlements/settlement-size.json";
-import governanceData from "@/lib/domain/mausritter/data/settlements/governance.json";
-import detailsData from "@/lib/domain/mausritter/data/settlements/settlement-details.json";
-import industryData from "@/lib/domain/mausritter/data/settlements/industry.json";
-import eventsData from "@/lib/domain/mausritter/data/settlements/events.json";
+import { rollOnRandomTable } from "./roll-on-table";
 
 // Size index determines governance modifier and industry count
 const SIZE_GOVERNANCE_MODIFIER = [0, 0, 1, 2, 3, 4]; // Farm, Crossroads, Hamlet, Village, Town, City
@@ -18,8 +18,8 @@ const TOWN_OR_LARGER_INDEX = 4; // index where 2 industries are assigned
 export function generateSettlement(npcsPerSettlement: number): GeneratedSettlement {
   // Settlement size
   const sizeRoll = rollDie(6);
-  const sizeEntry = (sizeData as RandomTable).entries.find((e) => matchesRoll(e.roll, sizeRoll));
-  const size = sizeEntry?.result ?? (sizeData as RandomTable).entries[0]!.result;
+  const sizeEntry = (sizeData).entries.find((e) => matchesRoll(e.roll, sizeRoll));
+  const size = sizeEntry?.result ?? (sizeData).entries[0]!.result;
   const sizeIndex = sizeRoll - 1;
 
   // Governance (d6 + size modifier)
@@ -30,17 +30,17 @@ export function generateSettlement(npcsPerSettlement: number): GeneratedSettleme
   const governance = govEntry?.result ?? governanceData.entries[0]!.result;
 
   // Settlement detail
-  const detail = rollOnRandomTable(detailsData as RandomTable);
+  const detail = rollOnRandomTable(detailsData);
 
   // Industries (1 normally, 2 for town/city)
   const industryCount = sizeIndex >= TOWN_OR_LARGER_INDEX ? 2 : 1;
   const industries: string[] = [];
   for (let i = 0; i < industryCount; i++) {
-    industries.push(rollOnRandomTable(industryData as RandomTable));
+    industries.push(rollOnRandomTable(industryData));
   }
 
   // Event
-  const event = rollOnRandomTable(eventsData as RandomTable);
+  const event = rollOnRandomTable(eventsData);
 
   // Tavern (hamlet or larger)
   const tavern = sizeIndex >= HAMLET_OR_LARGER_INDEX ? generateTavernName() : null;

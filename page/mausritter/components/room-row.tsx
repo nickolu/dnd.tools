@@ -1,5 +1,5 @@
-import type { GeneratedRoom } from "../types";
 import { ROOM_TYPE_COLORS } from "../constants";
+import type { GeneratedRoom } from "../types";
 import { ReRollButton } from "./re-roll-button";
 import { TreasureDisplay } from "./treasure-display";
 

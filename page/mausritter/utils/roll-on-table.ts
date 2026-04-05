@@ -1,11 +1,20 @@
-import type { RandomTable, MultiColumnTable } from "@/lib/domain/mausritter/schema";
-import { rollDie, parseDie, matchesRoll, pickRandom } from "./dice";
+import { matchesRoll, parseDie, pickRandom, rollDie } from "./dice";
+
+type TableLike = {
+  die: string;
+  entries: readonly { roll: number | string; result: string }[];
+};
+
+type MultiColumnTableLike = {
+  die: string;
+  entries: readonly { roll: number | string; values: Record<string, string> }[];
+};
 
 type NameGeneratorData = {
   parts: readonly { name: string; die: string; options: readonly string[] }[];
 };
 
-export function rollOnRandomTable(table: RandomTable): string {
+export function rollOnRandomTable(table: TableLike): string {
   const sides = parseDie(table.die);
   const roll = rollDie(sides);
   const entry = table.entries.find((e) => matchesRoll(e.roll, roll));
@@ -13,7 +22,7 @@ export function rollOnRandomTable(table: RandomTable): string {
 }
 
 export function rollOnMultiColumnTable(
-  table: MultiColumnTable
+  table: MultiColumnTableLike
 ): Record<string, string> {
   const sides = parseDie(table.die);
   const roll = rollDie(sides);
@@ -25,7 +34,7 @@ export function rollOnNameGenerator(generator: NameGeneratorData): string {
   return generator.parts.map((part) => pickRandom(part.options)).join("");
 }
 
-export function rollOnRandomTableEntry(table: RandomTable): {
+export function rollOnRandomTableEntry(table: TableLike): {
   roll: number;
   result: string;
 } {

@@ -1,9 +1,10 @@
+import factionsData from "@/lib/domain/mausritter/data/factions/factions.json";
+
+import type { GeneratedFaction,HexCrawlConfig, HexCrawlState } from "../types";
 import { shuffled } from "./dice";
+import { generateAdventureSite } from "./generate-adventure-site";
 import { generateHex } from "./generate-hex";
 import { generateSettlement } from "./generate-settlement";
-import { generateAdventureSite } from "./generate-adventure-site";
-import type { HexCrawlConfig, HexCrawlState, GeneratedFaction } from "../types";
-import factionsData from "@/lib/domain/mausritter/data/factions/factions.json";
 
 const SETTLEMENT_CHANCE_NON_TOWN = 0.15;
 
@@ -13,8 +14,11 @@ export function generateHexCrawl(config: HexCrawlConfig): HexCrawlState {
     generateHex(i + 1)
   );
 
+  // Hex 1 (center) is always a mouse settlement
+  hexes[0]!.settlement = generateSettlement(config.npcsPerSettlement);
+
   // Place settlements on Human town hexes, and randomly on some others
-  for (const hex of hexes) {
+  for (const hex of hexes.slice(1)) {
     if (hex.hexType === "Human town") {
       hex.settlement = generateSettlement(config.npcsPerSettlement);
     } else if (Math.random() < SETTLEMENT_CHANCE_NON_TOWN) {
@@ -23,8 +27,7 @@ export function generateHexCrawl(config: HexCrawlConfig): HexCrawlState {
   }
 
   // Pick random factions
-  const allFactions = factionsData.factions as GeneratedFaction[];
-  const selectedFactions = shuffled(allFactions).slice(0, config.factionCount);
+  const selectedFactions: GeneratedFaction[] = shuffled(factionsData.factions).slice(0, config.factionCount);
 
   // Distribute adventure sites across hexes without settlements
   const eligibleHexes = shuffled(

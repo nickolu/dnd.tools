@@ -1,6 +1,6 @@
 import type { GeneratedSettlement } from "../types";
-import { ReRollButton } from "./re-roll-button";
 import { NpcCard } from "./npc-card";
+import { ReRollButton } from "./re-roll-button";
 
 type SettlementCardProps = {
   settlement: GeneratedSettlement;

@@ -1,32 +1,33 @@
 import { create } from "zustand";
-import type {
-  HexCrawlConfig,
-  GeneratedHex,
-  GeneratedFaction,
-} from "../types";
-import { DEFAULT_CONFIG } from "../constants";
-import { generateHexCrawl } from "../utils/generate-hex-crawl";
-import { generateHex } from "../utils/generate-hex";
-import { generateSettlement } from "../utils/generate-settlement";
-import { generateAdventureSite } from "../utils/generate-adventure-site";
-import { generateNpc } from "../utils/generate-npc";
-import { generateRoom } from "../utils/generate-room";
-import { shuffled } from "../utils/dice";
-import { rollOnRandomTable } from "../utils/roll-on-table";
-import type { RandomTable } from "@/lib/domain/mausritter/schema";
+
 import factionsData from "@/lib/domain/mausritter/data/factions/factions.json";
+import landmarkDetailsData from "@/lib/domain/mausritter/data/hex-contents/landmark-details.json";
 import countrysideData from "@/lib/domain/mausritter/data/hex-contents/landmarks-countryside.json";
 import forestData from "@/lib/domain/mausritter/data/hex-contents/landmarks-forest.json";
-import riverData from "@/lib/domain/mausritter/data/hex-contents/landmarks-river.json";
 import humanTownData from "@/lib/domain/mausritter/data/hex-contents/landmarks-human-town.json";
-import landmarkDetailsData from "@/lib/domain/mausritter/data/hex-contents/landmark-details.json";
+import riverData from "@/lib/domain/mausritter/data/hex-contents/landmarks-river.json";
 import eventsData from "@/lib/domain/mausritter/data/settlements/events.json";
 
-const landmarkTableByType: Record<string, RandomTable> = {
-  Countryside: countrysideData as RandomTable,
-  Forest: forestData as RandomTable,
-  River: riverData as RandomTable,
-  "Human town": humanTownData as RandomTable,
+import { DEFAULT_CONFIG } from "../constants";
+import type {
+  GeneratedFaction,
+  GeneratedHex,
+  HexCrawlConfig,
+} from "../types";
+import { shuffled } from "../utils/dice";
+import { generateAdventureSite } from "../utils/generate-adventure-site";
+import { generateHex } from "../utils/generate-hex";
+import { generateHexCrawl } from "../utils/generate-hex-crawl";
+import { generateNpc } from "../utils/generate-npc";
+import { generateRoom } from "../utils/generate-room";
+import { generateSettlement } from "../utils/generate-settlement";
+import { rollOnRandomTable } from "../utils/roll-on-table";
+
+const landmarkTableByType: Record<string, typeof countrysideData> = {
+  Countryside: countrysideData,
+  Forest: forestData,
+  River: riverData,
+  "Human town": humanTownData,
 };
 
 function updateHex(
@@ -94,7 +95,7 @@ export const useHexCrawlStore = create<HexCrawlStore>((set, get) => ({
     set((state) => ({
       hexes: updateHex(state.hexes, hexId, (hex) => {
         const table = landmarkTableByType[hex.hexType] ?? countrysideData;
-        return { ...hex, landmark: rollOnRandomTable(table as RandomTable) };
+        return { ...hex, landmark: rollOnRandomTable(table) };
       }),
     })),
 
@@ -102,7 +103,7 @@ export const useHexCrawlStore = create<HexCrawlStore>((set, get) => ({
     set((state) => ({
       hexes: updateHex(state.hexes, hexId, (hex) => ({
         ...hex,
-        landmarkDetail: rollOnRandomTable(landmarkDetailsData as RandomTable),
+        landmarkDetail: rollOnRandomTable(landmarkDetailsData),
       })),
     })),
 
@@ -122,7 +123,7 @@ export const useHexCrawlStore = create<HexCrawlStore>((set, get) => ({
           ...hex,
           settlement: {
             ...hex.settlement,
-            event: rollOnRandomTable(eventsData as RandomTable),
+            event: rollOnRandomTable(eventsData),
           },
         };
       }),
@@ -146,8 +147,8 @@ export const useHexCrawlStore = create<HexCrawlStore>((set, get) => ({
 
   rerollFactions: () => {
     const { config } = get();
-    const allFactions = factionsData.factions as GeneratedFaction[];
-    set({ factions: shuffled(allFactions).slice(0, config.factionCount) });
+    const factions: GeneratedFaction[] = shuffled(factionsData.factions).slice(0, config.factionCount);
+    set({ factions });
   },
 
   rerollAdventureSite: (hexId) =>

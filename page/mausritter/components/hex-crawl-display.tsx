@@ -1,6 +1,7 @@
 import { useHexCrawlStore } from "../hooks/useHexCrawlStore";
 import { FactionCard } from "./faction-card";
 import { HexCard } from "./hex-card";
+import { HexMap } from "./hex-map";
 import { HexOverview } from "./hex-overview";
 import { ReRollButton } from "./re-roll-button";
 
@@ -37,6 +38,9 @@ export function HexCrawlDisplay() {
           </button>
         </div>
       </div>
+
+      {/* Map */}
+      <HexMap hexes={hexes} />
 
       {/* Overview */}
       <HexOverview hexes={hexes} />

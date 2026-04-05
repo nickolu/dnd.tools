@@ -1,7 +1,8 @@
-import { pickRandom } from "./dice";
+import mousyNamesData from "@/lib/domain/mausritter/data/reference/mousy-names.json";
 import settlementNamesData from "@/lib/domain/mausritter/data/settlements/settlement-names.json";
 import tavernNamesData from "@/lib/domain/mausritter/data/settlements/tavern-names.json";
-import mousyNamesData from "@/lib/domain/mausritter/data/reference/mousy-names.json";
+
+import { pickRandom } from "./dice";
 
 export function generateSettlementName(): string {
   const parts = settlementNamesData.parts;

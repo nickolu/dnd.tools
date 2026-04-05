@@ -1,21 +1,21 @@
-import { rollDie, matchesRoll } from "./dice";
-import { rollOnRandomTable } from "./roll-on-table";
-import { generateTreasure } from "./generate-treasure";
-import type { GeneratedRoom } from "../types";
-import type { RandomTable } from "@/lib/domain/mausritter/schema";
-import roomStockingData from "@/lib/domain/mausritter/data/adventure-sites/room-stocking.json";
 import emptyRoomFeaturesData from "@/lib/domain/mausritter/data/adventure-sites/empty-room-features.json";
-import obstacleData from "@/lib/domain/mausritter/data/adventure-sites/obstacle.json";
-import trapData from "@/lib/domain/mausritter/data/adventure-sites/trap.json";
-import puzzleData from "@/lib/domain/mausritter/data/adventure-sites/puzzle.json";
 import lairData from "@/lib/domain/mausritter/data/adventure-sites/lair.json";
+import obstacleData from "@/lib/domain/mausritter/data/adventure-sites/obstacle.json";
+import puzzleData from "@/lib/domain/mausritter/data/adventure-sites/puzzle.json";
+import roomStockingData from "@/lib/domain/mausritter/data/adventure-sites/room-stocking.json";
+import trapData from "@/lib/domain/mausritter/data/adventure-sites/trap.json";
 
-const featureTableByType: Record<string, RandomTable> = {
-  Empty: emptyRoomFeaturesData as RandomTable,
-  Obstacle: obstacleData as RandomTable,
-  Trap: trapData as RandomTable,
-  Puzzle: puzzleData as RandomTable,
-  Lair: lairData as RandomTable,
+import type { GeneratedRoom } from "../types";
+import { matchesRoll,rollDie } from "./dice";
+import { generateTreasure } from "./generate-treasure";
+import { rollOnRandomTable } from "./roll-on-table";
+
+const featureTableByType: Record<string, typeof emptyRoomFeaturesData> = {
+  Empty: emptyRoomFeaturesData,
+  Obstacle: obstacleData,
+  Trap: trapData,
+  Puzzle: puzzleData,
+  Lair: lairData,
 };
 
 export function generateRoom(roomNumber: number): GeneratedRoom {

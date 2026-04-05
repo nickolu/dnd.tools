@@ -1,11 +1,17 @@
-import { useHexCrawlStore } from "../hooks/useHexCrawlStore";
 import { CONFIG_LABELS, CONFIG_LIMITS } from "../constants";
+import { useHexCrawlStore } from "../hooks/useHexCrawlStore";
 import type { HexCrawlConfig } from "../types";
 
 export function ConfigPanel() {
   const { config, setConfig, generate } = useHexCrawlStore();
 
-  const configKeys = Object.keys(CONFIG_LABELS) as (keyof HexCrawlConfig)[];
+  const configKeys: (keyof HexCrawlConfig)[] = [
+    "hexCount",
+    "factionCount",
+    "adventureSiteCount",
+    "npcsPerSettlement",
+    "roomsPerSite",
+  ];
 
   return (
     <div className="surface-card mx-auto max-w-lg p-6">
