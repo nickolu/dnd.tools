@@ -3,13 +3,34 @@
   "name": "Obstacle",
   "die": "d8",
   "entries": [
-    { "roll": 1, "result": "Locked door. Key can be found in another room. Knocking the door down takes time and makes noise." },
-    { "roll": 2, "result": "Steep climb. Without special equipment, mice risk exhaustion or falling." },
-    { "roll": 3, "result": "Room with an exit in the centre of the roof, 6\" away from any wall." },
-    { "roll": 4, "result": "Device that creates a high-pitched scream. Each Turn spent here or in adjacent rooms gives Frightened Condition." },
-    { "roll": 5, "result": "Caved-in section of tunnel, leaving a gap too small to crawl through." },
+    {
+      "roll": 1,
+      "result": "Locked door. Key can be found in another room. Knocking the door down takes time and makes noise."
+    },
+    {
+      "roll": 2,
+      "result": "Steep climb. Without special equipment, mice risk exhaustion or falling."
+    },
+    {
+      "roll": 3,
+      "result": "Room with an exit in the centre of the roof, 6\" away from any wall."
+    },
+    {
+      "roll": 4,
+      "result": "Device that creates a high-pitched scream. Each Turn spent here or in adjacent rooms gives Frightened Condition."
+    },
+    {
+      "roll": 5,
+      "result": "Caved-in section of tunnel, leaving a gap too small to crawl through."
+    },
     { "roll": 6, "result": "Tunnel completely filled with water." },
-    { "roll": 7, "result": "Wide, deep puddle of mud blocking the way. Gives an Exhausted Condition per 6\" traveled." },
-    { "roll": 8, "result": "Long, smooth, upwards sloping metal or plastic tube." }
+    {
+      "roll": 7,
+      "result": "Wide, deep puddle of mud blocking the way. Gives an Exhausted Condition per 6\" traveled."
+    },
+    {
+      "roll": 8,
+      "result": "Long, smooth, upwards sloping metal or plastic tube."
+    }
   ]
 }

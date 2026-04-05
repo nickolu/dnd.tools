@@ -9,11 +9,7 @@ import riverData from "@/lib/domain/mausritter/data/hex-contents/landmarks-river
 import eventsData from "@/lib/domain/mausritter/data/settlements/events.json";
 
 import { DEFAULT_CONFIG } from "../constants";
-import type {
-  GeneratedFaction,
-  GeneratedHex,
-  HexCrawlConfig,
-} from "../types";
+import type { GeneratedFaction, GeneratedHex, HexCrawlConfig } from "../types";
 import { shuffled } from "../utils/dice";
 import { generateAdventureSite } from "../utils/generate-adventure-site";
 import { generateHex } from "../utils/generate-hex";
@@ -87,7 +83,11 @@ export const useHexCrawlStore = create<HexCrawlStore>((set, get) => ({
       hexes: updateHex(state.hexes, hexId, (hex) => {
         const newHex = generateHex(hex.index);
         // Preserve settlement and adventure site
-        return { ...newHex, settlement: hex.settlement, adventureSite: hex.adventureSite };
+        return {
+          ...newHex,
+          settlement: hex.settlement,
+          adventureSite: hex.adventureSite,
+        };
       }),
     })),
 
@@ -147,7 +147,10 @@ export const useHexCrawlStore = create<HexCrawlStore>((set, get) => ({
 
   rerollFactions: () => {
     const { config } = get();
-    const factions: GeneratedFaction[] = shuffled(factionsData.factions).slice(0, config.factionCount);
+    const factions: GeneratedFaction[] = shuffled(factionsData.factions).slice(
+      0,
+      config.factionCount
+    );
     set({ factions });
   },
 
@@ -168,9 +171,7 @@ export const useHexCrawlStore = create<HexCrawlStore>((set, get) => ({
           adventureSite: {
             ...hex.adventureSite,
             rooms: hex.adventureSite.rooms.map((room) =>
-              room.id === roomId
-                ? generateRoom(room.roomNumber)
-                : room
+              room.id === roomId ? generateRoom(room.roomNumber) : room
             ),
           },
         };

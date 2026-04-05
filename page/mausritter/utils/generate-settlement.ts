@@ -5,7 +5,7 @@ import detailsData from "@/lib/domain/mausritter/data/settlements/settlement-det
 import sizeData from "@/lib/domain/mausritter/data/settlements/settlement-size.json";
 
 import type { GeneratedSettlement } from "../types";
-import { matchesRoll,rollDie } from "./dice";
+import { matchesRoll, rollDie } from "./dice";
 import { generateSettlementName, generateTavernName } from "./generate-name";
 import { generateNpc } from "./generate-npc";
 import { rollOnRandomTable } from "./roll-on-table";
@@ -15,18 +15,22 @@ const SIZE_GOVERNANCE_MODIFIER = [0, 0, 1, 2, 3, 4]; // Farm, Crossroads, Hamlet
 const HAMLET_OR_LARGER_INDEX = 2; // index where taverns start appearing
 const TOWN_OR_LARGER_INDEX = 4; // index where 2 industries are assigned
 
-export function generateSettlement(npcsPerSettlement: number): GeneratedSettlement {
+export function generateSettlement(
+  npcsPerSettlement: number
+): GeneratedSettlement {
   // Settlement size
   const sizeRoll = rollDie(6);
-  const sizeEntry = (sizeData).entries.find((e) => matchesRoll(e.roll, sizeRoll));
-  const size = sizeEntry?.result ?? (sizeData).entries[0]!.result;
+  const sizeEntry = sizeData.entries.find((e) => matchesRoll(e.roll, sizeRoll));
+  const size = sizeEntry?.result ?? sizeData.entries[0]!.result;
   const sizeIndex = sizeRoll - 1;
 
   // Governance (d6 + size modifier)
   const govBaseRoll = rollDie(6);
   const govModifier = SIZE_GOVERNANCE_MODIFIER[sizeIndex] ?? 0;
   const govTotal = govBaseRoll + govModifier;
-  const govEntry = governanceData.entries.find((e) => matchesRoll(e.roll, govTotal));
+  const govEntry = governanceData.entries.find((e) =>
+    matchesRoll(e.roll, govTotal)
+  );
   const governance = govEntry?.result ?? governanceData.entries[0]!.result;
 
   // Settlement detail
@@ -43,7 +47,8 @@ export function generateSettlement(npcsPerSettlement: number): GeneratedSettleme
   const event = rollOnRandomTable(eventsData);
 
   // Tavern (hamlet or larger)
-  const tavern = sizeIndex >= HAMLET_OR_LARGER_INDEX ? generateTavernName() : null;
+  const tavern =
+    sizeIndex >= HAMLET_OR_LARGER_INDEX ? generateTavernName() : null;
 
   // NPCs
   const npcs = Array.from({ length: npcsPerSettlement }, () => generateNpc());

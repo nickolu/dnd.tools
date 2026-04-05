@@ -1,7 +1,8 @@
 "use client";
 
-import { HexCrawlGenerator } from "@/page/mausritter/components";
 import { Suspense } from "react";
+
+import { HexCrawlGenerator } from "@/page/mausritter/components";
 
 function MausritterPageContent() {
   return (

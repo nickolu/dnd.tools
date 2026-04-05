@@ -12,17 +12,23 @@ export function TreasureDisplay({ treasure }: TreasureDisplayProps) {
       <span className="font-medium text-amber-300">Treasure:</span>{" "}
       {treasure.magicSword ? (
         <span>
-          <span className="font-medium">{treasure.magicSword.name}</span>
-          {" "}({treasure.magicSword.weaponClass})
+          <span className="font-medium">{treasure.magicSword.name}</span> (
+          {treasure.magicSword.weaponClass})
           {treasure.magicSword.trigger && (
-            <span className="text-muted"> — {treasure.magicSword.trigger}:</span>
+            <span className="text-muted">
+              {" "}
+              — {treasure.magicSword.trigger}:
+            </span>
           )}{" "}
           {treasure.magicSword.effect}
           {treasure.magicSword.isCursed && (
             <span className="ml-2 text-red-400">
               Cursed: {treasure.magicSword.curse}
               {treasure.magicSword.curseLiftedBy && (
-                <span className="text-muted"> (Lifted by: {treasure.magicSword.curseLiftedBy})</span>
+                <span className="text-muted">
+                  {" "}
+                  (Lifted by: {treasure.magicSword.curseLiftedBy})
+                </span>
               )}
             </span>
           )}

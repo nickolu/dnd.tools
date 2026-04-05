@@ -6,7 +6,8 @@ import { HexOverview } from "./hex-overview";
 import { ReRollButton } from "./re-roll-button";
 
 export function HexCrawlDisplay() {
-  const { hexes, factions, generate, clear, rerollFactions } = useHexCrawlStore();
+  const { hexes, factions, generate, clear, rerollFactions } =
+    useHexCrawlStore();
 
   const settlementCount = hexes.filter((h) => h.settlement).length;
   const siteCount = hexes.filter((h) => h.adventureSite).length;

@@ -6,7 +6,17 @@
     { "roll": "1-2", "type": "Empty", "creature": [1, 2, 3], "treasure": [1] },
     { "roll": "3", "type": "Obstacle", "creature": [1, 2], "treasure": [1] },
     { "roll": "4", "type": "Trap", "creature": [1], "treasure": [1, 4] },
-    { "roll": "5", "type": "Puzzle", "creature": [1], "treasure": [1, 2, 3, 4, 5] },
-    { "roll": "6", "type": "Lair", "creature": [1, 2, 3, 4, 5], "treasure": [1, 2, 3, 4, 5] }
+    {
+      "roll": "5",
+      "type": "Puzzle",
+      "creature": [1],
+      "treasure": [1, 2, 3, 4, 5]
+    },
+    {
+      "roll": "6",
+      "type": "Lair",
+      "creature": [1, 2, 3, 4, 5],
+      "treasure": [1, 2, 3, 4, 5]
+    }
   ]
 }

@@ -1,8 +1,8 @@
 import magicSwordsData from "@/lib/domain/mausritter/data/treasure/magic-swords.json";
 import treasureData from "@/lib/domain/mausritter/data/treasure/treasure-tables.json";
 
-import type { GeneratedMagicSword,GeneratedTreasure } from "../types";
-import { pickRandom,rollDie } from "./dice";
+import type { GeneratedMagicSword, GeneratedTreasure } from "../types";
+import { pickRandom, rollDie } from "./dice";
 import { matchesRoll } from "./dice";
 
 function findTable(id: string) {
@@ -22,7 +22,8 @@ function generateMagicSword(): GeneratedMagicSword {
   const weaponClassEntry = magicSwordsData.weaponClass.entries.find((e) =>
     matchesRoll(e.roll, weaponClassRoll)
   );
-  const weaponClass = weaponClassEntry?.result ?? magicSwordsData.weaponClass.entries[0]!.result;
+  const weaponClass =
+    weaponClassEntry?.result ?? magicSwordsData.weaponClass.entries[0]!.result;
 
   const sword = pickRandom(magicSwordsData.swords);
 
@@ -55,7 +56,9 @@ export function generateTreasure(): GeneratedTreasure {
   }
 
   const typeRoll = rollDie(6);
-  const typeEntry = typeTable.entries.find((e) => matchesRoll(e.roll, typeRoll));
+  const typeEntry = typeTable.entries.find((e) =>
+    matchesRoll(e.roll, typeRoll)
+  );
   const typeResult = typeEntry?.result ?? "No treasure";
 
   if (typeResult === "No treasure") {

@@ -6,7 +6,10 @@
   "entries": [
     { "roll": 1, "result": "Farmers, tending to towering crops" },
     { "roll": 2, "result": "Woodcutters, with saws and harnesses" },
-    { "roll": 3, "result": "Rough and scarred fishermice, with nets and rafts" },
+    {
+      "roll": 3,
+      "result": "Rough and scarred fishermice, with nets and rafts"
+    },
     { "roll": 4, "result": "Dark and musty mushroom farm" },
     { "roll": 5, "result": "Grains drying on every flat surface" },
     { "roll": 6, "result": "Pungent cheese, cured for years" },
@@ -22,7 +25,10 @@
     { "roll": 16, "result": "Wool mill, draped in bright cloth" },
     { "roll": 17, "result": "Excellent school, rowdy pupils" },
     { "roll": 18, "result": "Bustling, well-stocked market" },
-    { "roll": 19, "result": "Smelly scavenged trash pile, carefully picked over" },
+    {
+      "roll": 19,
+      "result": "Smelly scavenged trash pile, carefully picked over"
+    },
     { "roll": 20, "result": "Beautiful furniture of carved and polished wood" }
   ]
 }

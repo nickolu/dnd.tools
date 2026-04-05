@@ -8,12 +8,45 @@
       "die": "d6",
       "columns": ["Social position", "Payment for service"],
       "entries": [
-        { "roll": 1, "values": { "Social position": "Poor", "Payment for service": "d6p" } },
-        { "roll": 2, "values": { "Social position": "Common", "Payment for service": "d6 x 10p" } },
-        { "roll": 3, "values": { "Social position": "Common", "Payment for service": "d6 x 10p" } },
-        { "roll": 4, "values": { "Social position": "Burghermouse", "Payment for service": "d6 x 50p" } },
-        { "roll": 5, "values": { "Social position": "Guildmouse", "Payment for service": "d4 x 100p" } },
-        { "roll": 6, "values": { "Social position": "Noblemouse", "Payment for service": "d4 x 1000p" } }
+        {
+          "roll": 1,
+          "values": { "Social position": "Poor", "Payment for service": "d6p" }
+        },
+        {
+          "roll": 2,
+          "values": {
+            "Social position": "Common",
+            "Payment for service": "d6 x 10p"
+          }
+        },
+        {
+          "roll": 3,
+          "values": {
+            "Social position": "Common",
+            "Payment for service": "d6 x 10p"
+          }
+        },
+        {
+          "roll": 4,
+          "values": {
+            "Social position": "Burghermouse",
+            "Payment for service": "d6 x 50p"
+          }
+        },
+        {
+          "roll": 5,
+          "values": {
+            "Social position": "Guildmouse",
+            "Payment for service": "d4 x 100p"
+          }
+        },
+        {
+          "roll": 6,
+          "values": {
+            "Social position": "Noblemouse",
+            "Payment for service": "d4 x 1000p"
+          }
+        }
       ]
     },
     {
@@ -22,12 +55,42 @@
       "die": "d6",
       "columns": ["Birthsign", "Disposition"],
       "entries": [
-        { "roll": 1, "values": { "Birthsign": "Star", "Disposition": "Brave / Reckless" } },
-        { "roll": 2, "values": { "Birthsign": "Wheel", "Disposition": "Industrious / Unimaginative" } },
-        { "roll": 3, "values": { "Birthsign": "Acorn", "Disposition": "Inquisitive / Stubborn" } },
-        { "roll": 4, "values": { "Birthsign": "Storm", "Disposition": "Generous / Wrathful" } },
-        { "roll": 5, "values": { "Birthsign": "Moon", "Disposition": "Wise / Mysterious" } },
-        { "roll": 6, "values": { "Birthsign": "Mother", "Disposition": "Nurturing / Worrying" } }
+        {
+          "roll": 1,
+          "values": { "Birthsign": "Star", "Disposition": "Brave / Reckless" }
+        },
+        {
+          "roll": 2,
+          "values": {
+            "Birthsign": "Wheel",
+            "Disposition": "Industrious / Unimaginative"
+          }
+        },
+        {
+          "roll": 3,
+          "values": {
+            "Birthsign": "Acorn",
+            "Disposition": "Inquisitive / Stubborn"
+          }
+        },
+        {
+          "roll": 4,
+          "values": {
+            "Birthsign": "Storm",
+            "Disposition": "Generous / Wrathful"
+          }
+        },
+        {
+          "roll": 5,
+          "values": { "Birthsign": "Moon", "Disposition": "Wise / Mysterious" }
+        },
+        {
+          "roll": 6,
+          "values": {
+            "Birthsign": "Mother",
+            "Disposition": "Nurturing / Worrying"
+          }
+        }
       ]
     },
     {
@@ -36,26 +99,186 @@
       "die": "d20",
       "columns": ["Appearance", "Quirk", "Wants", "Relationship"],
       "entries": [
-        { "roll": 1, "values": { "Appearance": "Soulful eyes", "Quirk": "Constantly grooming", "Wants": "Freedom", "Relationship": "Parent" } },
-        { "roll": 2, "values": { "Appearance": "Bright, patched clothes", "Quirk": "Obsessed with weather", "Wants": "Safety", "Relationship": "Sibling" } },
-        { "roll": 3, "values": { "Appearance": "Wreath of daisies", "Quirk": "Very high energy", "Wants": "Escape", "Relationship": "Cousin" } },
-        { "roll": 4, "values": { "Appearance": "Grubby clothes", "Quirk": "Traveled, knowledgeable", "Wants": "Excitement", "Relationship": "Second cousin" } },
-        { "roll": 5, "values": { "Appearance": "Large floppy hat", "Quirk": "Cursed by a wizard", "Wants": "Power", "Relationship": "Grandparent" } },
-        { "roll": 6, "values": { "Appearance": "Pockets full of seed", "Quirk": "Scares easily", "Wants": "Meaning", "Relationship": "Related, but don't know it" } },
-        { "roll": 7, "values": { "Appearance": "Bent twig walking stick", "Quirk": "Ashamed of past crimes", "Wants": "Health", "Relationship": "Married" } },
-        { "roll": 8, "values": { "Appearance": "Carries rusted pinsword", "Quirk": "Very competitive", "Wants": "Wealth", "Relationship": "Former lovers" } },
-        { "roll": 9, "values": { "Appearance": "Long, wild fur", "Quirk": "Flamboyant drunkard", "Wants": "Protection", "Relationship": "In love, unrequited" } },
-        { "roll": 10, "values": { "Appearance": "Very, very old", "Quirk": "Extremely polite", "Wants": "Love", "Relationship": "Drinking buddies" } },
-        { "roll": 11, "values": { "Appearance": "Bandaged tail", "Quirk": "Unreservedly honest", "Wants": "To protect", "Relationship": "Debt owed" } },
-        { "roll": 12, "values": { "Appearance": "Tail tied with a bow", "Quirk": "Slow, careful speech", "Wants": "Food", "Relationship": "Long and tumultuous" } },
-        { "roll": 13, "values": { "Appearance": "Missing an ear", "Quirk": "Quick, erratic speech", "Wants": "Friendship", "Relationship": "Sworn enemies" } },
-        { "roll": 14, "values": { "Appearance": "Long whiskers", "Quirk": "Secret servant of a cat", "Wants": "Rest", "Relationship": "Guild brothers" } },
-        { "roll": 15, "values": { "Appearance": "Twinkling eyes", "Quirk": "Raised by rats", "Wants": "Knowledge", "Relationship": "Childhood friends" } },
-        { "roll": 16, "values": { "Appearance": "Huge, heavy black cloak", "Quirk": "Outcast from home", "Wants": "Savagery", "Relationship": "One stole from the other" } },
-        { "roll": 17, "values": { "Appearance": "Old battle scars", "Quirk": "Many pet insects", "Wants": "Beauty", "Relationship": "Worked together" } },
-        { "roll": 18, "values": { "Appearance": "Very young", "Quirk": "Hates being outdoors", "Wants": "Revenge", "Relationship": "Grew up together" } },
-        { "roll": 19, "values": { "Appearance": "Shaved fur", "Quirk": "Local hero", "Wants": "To serve", "Relationship": "Serve the same lord" } },
-        { "roll": 20, "values": { "Appearance": "Braided fur", "Quirk": "Very twitchy whiskers", "Wants": "Fun", "Relationship": "Never met before" } }
+        {
+          "roll": 1,
+          "values": {
+            "Appearance": "Soulful eyes",
+            "Quirk": "Constantly grooming",
+            "Wants": "Freedom",
+            "Relationship": "Parent"
+          }
+        },
+        {
+          "roll": 2,
+          "values": {
+            "Appearance": "Bright, patched clothes",
+            "Quirk": "Obsessed with weather",
+            "Wants": "Safety",
+            "Relationship": "Sibling"
+          }
+        },
+        {
+          "roll": 3,
+          "values": {
+            "Appearance": "Wreath of daisies",
+            "Quirk": "Very high energy",
+            "Wants": "Escape",
+            "Relationship": "Cousin"
+          }
+        },
+        {
+          "roll": 4,
+          "values": {
+            "Appearance": "Grubby clothes",
+            "Quirk": "Traveled, knowledgeable",
+            "Wants": "Excitement",
+            "Relationship": "Second cousin"
+          }
+        },
+        {
+          "roll": 5,
+          "values": {
+            "Appearance": "Large floppy hat",
+            "Quirk": "Cursed by a wizard",
+            "Wants": "Power",
+            "Relationship": "Grandparent"
+          }
+        },
+        {
+          "roll": 6,
+          "values": {
+            "Appearance": "Pockets full of seed",
+            "Quirk": "Scares easily",
+            "Wants": "Meaning",
+            "Relationship": "Related, but don't know it"
+          }
+        },
+        {
+          "roll": 7,
+          "values": {
+            "Appearance": "Bent twig walking stick",
+            "Quirk": "Ashamed of past crimes",
+            "Wants": "Health",
+            "Relationship": "Married"
+          }
+        },
+        {
+          "roll": 8,
+          "values": {
+            "Appearance": "Carries rusted pinsword",
+            "Quirk": "Very competitive",
+            "Wants": "Wealth",
+            "Relationship": "Former lovers"
+          }
+        },
+        {
+          "roll": 9,
+          "values": {
+            "Appearance": "Long, wild fur",
+            "Quirk": "Flamboyant drunkard",
+            "Wants": "Protection",
+            "Relationship": "In love, unrequited"
+          }
+        },
+        {
+          "roll": 10,
+          "values": {
+            "Appearance": "Very, very old",
+            "Quirk": "Extremely polite",
+            "Wants": "Love",
+            "Relationship": "Drinking buddies"
+          }
+        },
+        {
+          "roll": 11,
+          "values": {
+            "Appearance": "Bandaged tail",
+            "Quirk": "Unreservedly honest",
+            "Wants": "To protect",
+            "Relationship": "Debt owed"
+          }
+        },
+        {
+          "roll": 12,
+          "values": {
+            "Appearance": "Tail tied with a bow",
+            "Quirk": "Slow, careful speech",
+            "Wants": "Food",
+            "Relationship": "Long and tumultuous"
+          }
+        },
+        {
+          "roll": 13,
+          "values": {
+            "Appearance": "Missing an ear",
+            "Quirk": "Quick, erratic speech",
+            "Wants": "Friendship",
+            "Relationship": "Sworn enemies"
+          }
+        },
+        {
+          "roll": 14,
+          "values": {
+            "Appearance": "Long whiskers",
+            "Quirk": "Secret servant of a cat",
+            "Wants": "Rest",
+            "Relationship": "Guild brothers"
+          }
+        },
+        {
+          "roll": 15,
+          "values": {
+            "Appearance": "Twinkling eyes",
+            "Quirk": "Raised by rats",
+            "Wants": "Knowledge",
+            "Relationship": "Childhood friends"
+          }
+        },
+        {
+          "roll": 16,
+          "values": {
+            "Appearance": "Huge, heavy black cloak",
+            "Quirk": "Outcast from home",
+            "Wants": "Savagery",
+            "Relationship": "One stole from the other"
+          }
+        },
+        {
+          "roll": 17,
+          "values": {
+            "Appearance": "Old battle scars",
+            "Quirk": "Many pet insects",
+            "Wants": "Beauty",
+            "Relationship": "Worked together"
+          }
+        },
+        {
+          "roll": 18,
+          "values": {
+            "Appearance": "Very young",
+            "Quirk": "Hates being outdoors",
+            "Wants": "Revenge",
+            "Relationship": "Grew up together"
+          }
+        },
+        {
+          "roll": 19,
+          "values": {
+            "Appearance": "Shaved fur",
+            "Quirk": "Local hero",
+            "Wants": "To serve",
+            "Relationship": "Serve the same lord"
+          }
+        },
+        {
+          "roll": 20,
+          "values": {
+            "Appearance": "Braided fur",
+            "Quirk": "Very twitchy whiskers",
+            "Wants": "Fun",
+            "Relationship": "Never met before"
+          }
+        }
       ]
     }
   ]

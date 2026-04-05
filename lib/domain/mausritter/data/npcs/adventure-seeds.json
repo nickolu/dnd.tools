@@ -5,41 +5,293 @@
   "die": "d66",
   "columns": ["Encounter", "Problem", "Complication"],
   "entries": [
-    { "roll": "11", "values": { "Encounter": "Coach driver", "Problem": "Looking for someone", "Complication": "Keeper's tithe is unpaid" } },
-    { "roll": "12", "values": { "Encounter": "Adventurer", "Problem": "Escaped a terrible danger", "Complication": "Antagonist is their own relative" } },
-    { "roll": "13", "values": { "Encounter": "Bandit", "Problem": "Is being followed", "Complication": "There's no time to lose" } },
-    { "roll": "14", "values": { "Encounter": "Forager", "Problem": "Excellent mushroom find", "Complication": "It is protected by a dangerous ward" } },
-    { "roll": "15", "values": { "Encounter": "Peddler", "Problem": "Expedition to a ruin", "Complication": "Prayer has brought no relief" } },
-    { "roll": "16", "values": { "Encounter": "Pilgrim", "Problem": "Must visit a distant friend", "Complication": "Most valuable possession was stolen" } },
-    { "roll": "21", "values": { "Encounter": "Merchant", "Problem": "Most prized possession lost", "Complication": "They are being impersonated" } },
-    { "roll": "22", "values": { "Encounter": "Messenger", "Problem": "Has lost their way", "Complication": "They have old information" } },
-    { "roll": "23", "values": { "Encounter": "Musician", "Problem": "Hired to find buried treasure", "Complication": "Antagonist is a family member" } },
-    { "roll": "24", "values": { "Encounter": "Tax collector", "Problem": "Has found a poisonous berry", "Complication": "Antagonist is a shapeshifter" } },
-    { "roll": "25", "values": { "Encounter": "Preacher", "Problem": "Hive about to collapse", "Complication": "A ghost blocks the location" } },
-    { "roll": "26", "values": { "Encounter": "Sage", "Problem": "Pack bottom of its stock", "Complication": "It needs to be done now" } },
-    { "roll": "31", "values": { "Encounter": "Hedge knight", "Problem": "Travelling to a new home", "Complication": "It is deep in a cave" } },
-    { "roll": "32", "values": { "Encounter": "Prospector", "Problem": "Feud with a rival", "Complication": "It's a long way to come" } },
-    { "roll": "33", "values": { "Encounter": "Guild officer", "Problem": "Has lost their mother", "Complication": "Not told the whole truth" } },
-    { "roll": "34", "values": { "Encounter": "Mouse-at-arms", "Problem": "Needs to find a rare plant", "Complication": "They can't leave their home" } },
-    { "roll": "35", "values": { "Encounter": "Owl servant", "Problem": "Want to build a new settlement", "Complication": "They don't have the heart" } },
-    { "roll": "36", "values": { "Encounter": "Cat's paw", "Problem": "Wants to hold a tournament", "Complication": "They've made it worse" } },
-    { "roll": "41", "values": { "Encounter": "Tinker", "Problem": "An old friend is in trouble", "Complication": "Not for ideal reasons" } },
-    { "roll": "42", "values": { "Encounter": "Travelling priest", "Problem": "Needs to deliver a message", "Complication": "Need to find it first" } },
-    { "roll": "43", "values": { "Encounter": "Grandmother", "Problem": "Has been given a task", "Complication": "Currently under guard" } },
-    { "roll": "44", "values": { "Encounter": "Baby lost", "Problem": "Need to build a bridge", "Complication": "Needs special tools" } },
-    { "roll": "45", "values": { "Encounter": "Bat rider", "Problem": "Dispute with a neighbour", "Complication": "Locked in a tower" } },
-    { "roll": "46", "values": { "Encounter": "Cartographer", "Problem": "Must rescue a prisoner", "Complication": "Hidden behind a waterfall" } },
-    { "roll": "51", "values": { "Encounter": "Librarian", "Problem": "Wants to explore a ruin", "Complication": "Has been sabotaged" } },
-    { "roll": "52", "values": { "Encounter": "Littlest ambassador", "Problem": "Needs help moving house", "Complication": "Only found at night" } },
-    { "roll": "53", "values": { "Encounter": "Grain farmer", "Problem": "A bully in town", "Complication": "On the other side of a river" } },
-    { "roll": "54", "values": { "Encounter": "Herbalist", "Problem": "A sickness spreading", "Complication": "Protected by magic" } },
-    { "roll": "55", "values": { "Encounter": "Fortune teller", "Problem": "Needs an escort", "Complication": "They are also lost" } },
-    { "roll": "56", "values": { "Encounter": "Smuggler", "Problem": "Hunted by a predator", "Complication": "Only a child knows the way" } },
-    { "roll": "61", "values": { "Encounter": "Soldier", "Problem": "Stole something valuable", "Complication": "Guarded by a beast" } },
-    { "roll": "62", "values": { "Encounter": "Guard captain", "Problem": "Accused of a crime", "Complication": "Weather has turned bad" } },
-    { "roll": "63", "values": { "Encounter": "Wandering knight", "Problem": "Lost an heirloom", "Complication": "An army blocks the way" } },
-    { "roll": "64", "values": { "Encounter": "Exile", "Problem": "Bridge has collapsed", "Complication": "There is a deadline" } },
-    { "roll": "65", "values": { "Encounter": "Old warrior", "Problem": "Haunted by a ghost", "Complication": "Key person is missing" } },
-    { "roll": "66", "values": { "Encounter": "Rat king", "Problem": "Wants to throw a feast", "Complication": "Cursed ground" } }
+    {
+      "roll": "11",
+      "values": {
+        "Encounter": "Coach driver",
+        "Problem": "Looking for someone",
+        "Complication": "Keeper's tithe is unpaid"
+      }
+    },
+    {
+      "roll": "12",
+      "values": {
+        "Encounter": "Adventurer",
+        "Problem": "Escaped a terrible danger",
+        "Complication": "Antagonist is their own relative"
+      }
+    },
+    {
+      "roll": "13",
+      "values": {
+        "Encounter": "Bandit",
+        "Problem": "Is being followed",
+        "Complication": "There's no time to lose"
+      }
+    },
+    {
+      "roll": "14",
+      "values": {
+        "Encounter": "Forager",
+        "Problem": "Excellent mushroom find",
+        "Complication": "It is protected by a dangerous ward"
+      }
+    },
+    {
+      "roll": "15",
+      "values": {
+        "Encounter": "Peddler",
+        "Problem": "Expedition to a ruin",
+        "Complication": "Prayer has brought no relief"
+      }
+    },
+    {
+      "roll": "16",
+      "values": {
+        "Encounter": "Pilgrim",
+        "Problem": "Must visit a distant friend",
+        "Complication": "Most valuable possession was stolen"
+      }
+    },
+    {
+      "roll": "21",
+      "values": {
+        "Encounter": "Merchant",
+        "Problem": "Most prized possession lost",
+        "Complication": "They are being impersonated"
+      }
+    },
+    {
+      "roll": "22",
+      "values": {
+        "Encounter": "Messenger",
+        "Problem": "Has lost their way",
+        "Complication": "They have old information"
+      }
+    },
+    {
+      "roll": "23",
+      "values": {
+        "Encounter": "Musician",
+        "Problem": "Hired to find buried treasure",
+        "Complication": "Antagonist is a family member"
+      }
+    },
+    {
+      "roll": "24",
+      "values": {
+        "Encounter": "Tax collector",
+        "Problem": "Has found a poisonous berry",
+        "Complication": "Antagonist is a shapeshifter"
+      }
+    },
+    {
+      "roll": "25",
+      "values": {
+        "Encounter": "Preacher",
+        "Problem": "Hive about to collapse",
+        "Complication": "A ghost blocks the location"
+      }
+    },
+    {
+      "roll": "26",
+      "values": {
+        "Encounter": "Sage",
+        "Problem": "Pack bottom of its stock",
+        "Complication": "It needs to be done now"
+      }
+    },
+    {
+      "roll": "31",
+      "values": {
+        "Encounter": "Hedge knight",
+        "Problem": "Travelling to a new home",
+        "Complication": "It is deep in a cave"
+      }
+    },
+    {
+      "roll": "32",
+      "values": {
+        "Encounter": "Prospector",
+        "Problem": "Feud with a rival",
+        "Complication": "It's a long way to come"
+      }
+    },
+    {
+      "roll": "33",
+      "values": {
+        "Encounter": "Guild officer",
+        "Problem": "Has lost their mother",
+        "Complication": "Not told the whole truth"
+      }
+    },
+    {
+      "roll": "34",
+      "values": {
+        "Encounter": "Mouse-at-arms",
+        "Problem": "Needs to find a rare plant",
+        "Complication": "They can't leave their home"
+      }
+    },
+    {
+      "roll": "35",
+      "values": {
+        "Encounter": "Owl servant",
+        "Problem": "Want to build a new settlement",
+        "Complication": "They don't have the heart"
+      }
+    },
+    {
+      "roll": "36",
+      "values": {
+        "Encounter": "Cat's paw",
+        "Problem": "Wants to hold a tournament",
+        "Complication": "They've made it worse"
+      }
+    },
+    {
+      "roll": "41",
+      "values": {
+        "Encounter": "Tinker",
+        "Problem": "An old friend is in trouble",
+        "Complication": "Not for ideal reasons"
+      }
+    },
+    {
+      "roll": "42",
+      "values": {
+        "Encounter": "Travelling priest",
+        "Problem": "Needs to deliver a message",
+        "Complication": "Need to find it first"
+      }
+    },
+    {
+      "roll": "43",
+      "values": {
+        "Encounter": "Grandmother",
+        "Problem": "Has been given a task",
+        "Complication": "Currently under guard"
+      }
+    },
+    {
+      "roll": "44",
+      "values": {
+        "Encounter": "Baby lost",
+        "Problem": "Need to build a bridge",
+        "Complication": "Needs special tools"
+      }
+    },
+    {
+      "roll": "45",
+      "values": {
+        "Encounter": "Bat rider",
+        "Problem": "Dispute with a neighbour",
+        "Complication": "Locked in a tower"
+      }
+    },
+    {
+      "roll": "46",
+      "values": {
+        "Encounter": "Cartographer",
+        "Problem": "Must rescue a prisoner",
+        "Complication": "Hidden behind a waterfall"
+      }
+    },
+    {
+      "roll": "51",
+      "values": {
+        "Encounter": "Librarian",
+        "Problem": "Wants to explore a ruin",
+        "Complication": "Has been sabotaged"
+      }
+    },
+    {
+      "roll": "52",
+      "values": {
+        "Encounter": "Littlest ambassador",
+        "Problem": "Needs help moving house",
+        "Complication": "Only found at night"
+      }
+    },
+    {
+      "roll": "53",
+      "values": {
+        "Encounter": "Grain farmer",
+        "Problem": "A bully in town",
+        "Complication": "On the other side of a river"
+      }
+    },
+    {
+      "roll": "54",
+      "values": {
+        "Encounter": "Herbalist",
+        "Problem": "A sickness spreading",
+        "Complication": "Protected by magic"
+      }
+    },
+    {
+      "roll": "55",
+      "values": {
+        "Encounter": "Fortune teller",
+        "Problem": "Needs an escort",
+        "Complication": "They are also lost"
+      }
+    },
+    {
+      "roll": "56",
+      "values": {
+        "Encounter": "Smuggler",
+        "Problem": "Hunted by a predator",
+        "Complication": "Only a child knows the way"
+      }
+    },
+    {
+      "roll": "61",
+      "values": {
+        "Encounter": "Soldier",
+        "Problem": "Stole something valuable",
+        "Complication": "Guarded by a beast"
+      }
+    },
+    {
+      "roll": "62",
+      "values": {
+        "Encounter": "Guard captain",
+        "Problem": "Accused of a crime",
+        "Complication": "Weather has turned bad"
+      }
+    },
+    {
+      "roll": "63",
+      "values": {
+        "Encounter": "Wandering knight",
+        "Problem": "Lost an heirloom",
+        "Complication": "An army blocks the way"
+      }
+    },
+    {
+      "roll": "64",
+      "values": {
+        "Encounter": "Exile",
+        "Problem": "Bridge has collapsed",
+        "Complication": "There is a deadline"
+      }
+    },
+    {
+      "roll": "65",
+      "values": {
+        "Encounter": "Old warrior",
+        "Problem": "Haunted by a ghost",
+        "Complication": "Key person is missing"
+      }
+    },
+    {
+      "roll": "66",
+      "values": {
+        "Encounter": "Rat king",
+        "Problem": "Wants to throw a feast",
+        "Complication": "Cursed ground"
+      }
+    }
   ]
 }

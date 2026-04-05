@@ -33,10 +33,7 @@
     {
       "id": "tunnellers-guild",
       "name": "Tunnellers Guild",
-      "resources": [
-        "Rough-pawed work gangs",
-        "Solidarity with working mice"
-      ],
+      "resources": ["Rough-pawed work gangs", "Solidarity with working mice"],
       "goals": [
         { "description": "Intimidate tax collector", "difficulty": 2 },
         { "description": "Destroy noblemouse's manor", "difficulty": 3 },
@@ -46,10 +43,7 @@
     {
       "id": "rat-bandits",
       "name": "Rat Bandits",
-      "resources": [
-        "Ruthless gang",
-        "Secret hideout"
-      ],
+      "resources": ["Ruthless gang", "Secret hideout"],
       "goals": [
         { "description": "Dominate a trade route", "difficulty": 2 },
         { "description": "Establish protection racket", "difficulty": 3 },
@@ -73,11 +67,7 @@
     {
       "id": "owl-sorcerer",
       "name": "Owl Sorcerer",
-      "resources": [
-        "Powerful magic",
-        "Speed and fury",
-        "Magical servants"
-      ],
+      "resources": ["Powerful magic", "Speed and fury", "Magical servants"],
       "goals": [
         { "description": "Take scrying tower from crows", "difficulty": 3 },
         { "description": "Locate leyline vortex", "difficulty": 4 },
@@ -100,10 +90,7 @@
     {
       "id": "cultists",
       "name": "Cultists",
-      "resources": [
-        "Poorly-understood eldritch power",
-        "Clandestine insiders"
-      ],
+      "resources": ["Poorly-understood eldritch power", "Clandestine insiders"],
       "goals": [
         { "description": "Recruit vulnerable mice", "difficulty": 3 },
         { "description": "Steal powerful artifact", "difficulty": 3 },
@@ -113,10 +100,7 @@
     {
       "id": "frog-prince",
       "name": "Frog Prince",
-      "resources": [
-        "Chivalric knights",
-        "Hidden fortress"
-      ],
+      "resources": ["Chivalric knights", "Hidden fortress"],
       "goals": [
         { "description": "Hold joust to choose a champion", "difficulty": 3 },
         { "description": "Kidnap mouse historian", "difficulty": 3 },

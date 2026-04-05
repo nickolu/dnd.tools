@@ -1,6 +1,6 @@
 import factionsData from "@/lib/domain/mausritter/data/factions/factions.json";
 
-import type { GeneratedFaction,HexCrawlConfig, HexCrawlState } from "../types";
+import type { GeneratedFaction, HexCrawlConfig, HexCrawlState } from "../types";
 import { shuffled } from "./dice";
 import { generateAdventureSite } from "./generate-adventure-site";
 import { generateHex } from "./generate-hex";
@@ -27,15 +27,20 @@ export function generateHexCrawl(config: HexCrawlConfig): HexCrawlState {
   }
 
   // Pick random factions
-  const selectedFactions: GeneratedFaction[] = shuffled(factionsData.factions).slice(0, config.factionCount);
+  const selectedFactions: GeneratedFaction[] = shuffled(
+    factionsData.factions
+  ).slice(0, config.factionCount);
 
   // Distribute adventure sites across hexes without settlements
-  const eligibleHexes = shuffled(
-    hexes.filter((h) => !h.settlement)
+  const eligibleHexes = shuffled(hexes.filter((h) => !h.settlement));
+  const sitesToPlace = Math.min(
+    config.adventureSiteCount,
+    eligibleHexes.length
   );
-  const sitesToPlace = Math.min(config.adventureSiteCount, eligibleHexes.length);
   for (let i = 0; i < sitesToPlace; i++) {
-    eligibleHexes[i]!.adventureSite = generateAdventureSite(config.roomsPerSite);
+    eligibleHexes[i]!.adventureSite = generateAdventureSite(
+      config.roomsPerSite
+    );
   }
 
   return {

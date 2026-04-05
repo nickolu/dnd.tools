@@ -6,7 +6,7 @@ import roomStockingData from "@/lib/domain/mausritter/data/adventure-sites/room-
 import trapData from "@/lib/domain/mausritter/data/adventure-sites/trap.json";
 
 import type { GeneratedRoom } from "../types";
-import { matchesRoll,rollDie } from "./dice";
+import { matchesRoll, rollDie } from "./dice";
 import { generateTreasure } from "./generate-treasure";
 import { rollOnRandomTable } from "./roll-on-table";
 

@@ -6,7 +6,10 @@
     { "roll": 1, "result": "Born here or a newcomer? Who else is a newcomer?" },
     { "roll": 2, "result": "What manufactured goods are hard to find?" },
     { "roll": 3, "result": "Is there a marketplace? What is it like?" },
-    { "roll": 4, "result": "What natural feature is the settlement built on or around?" },
+    {
+      "roll": 4,
+      "result": "What natural feature is the settlement built on or around?"
+    },
     { "roll": 5, "result": "Next to a river or lake? How do they use it?" },
     { "roll": 6, "result": "What creature has been causing trouble?" },
     { "roll": 7, "result": "Settlement built in/around what human object?" },
@@ -14,7 +17,10 @@
     { "roll": 9, "result": "Storehouses stocked with goods. What type?" },
     { "roll": 10, "result": "What is the main source of food?" },
     { "roll": 11, "result": "Next event on the settlement calendar?" },
-    { "roll": 12, "result": "Ancient statue stands in the town square. Of what?" },
+    {
+      "roll": 12,
+      "result": "Ancient statue stands in the town square. Of what?"
+    },
     { "roll": 13, "result": "What large beast lurks nearby?" },
     { "roll": 14, "result": "Most houses are built from what material?" },
     { "roll": 15, "result": "Mice here ride on what kind of beast?" },

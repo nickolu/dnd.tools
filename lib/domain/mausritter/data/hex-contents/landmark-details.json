@@ -18,10 +18,25 @@
     { "roll": 13, "result": "What treasure is buried here?" },
     { "roll": 14, "result": "What happened here in the past?" },
     { "roll": 15, "result": "What does it look like at the bottom?" },
-    { "roll": 16, "result": "Does anyone tend this place? (How is it tended?)" },
-    { "roll": 17, "result": "What clue or glimpse of a larger mystery is here?" },
-    { "roll": 18, "result": "How can this place be used by the mice? (How can it be repaired?)" },
-    { "roll": 19, "result": "Is it part of a past civilisation? (Who were they? What trophies remain?)" },
-    { "roll": 20, "result": "Incorporated into a ground-level construction. (How is it used?)" }
+    {
+      "roll": 16,
+      "result": "Does anyone tend this place? (How is it tended?)"
+    },
+    {
+      "roll": 17,
+      "result": "What clue or glimpse of a larger mystery is here?"
+    },
+    {
+      "roll": 18,
+      "result": "How can this place be used by the mice? (How can it be repaired?)"
+    },
+    {
+      "roll": 19,
+      "result": "Is it part of a past civilisation? (Who were they? What trophies remain?)"
+    },
+    {
+      "roll": 20,
+      "result": "Incorporated into a ground-level construction. (How is it used?)"
+    }
   ]
 }

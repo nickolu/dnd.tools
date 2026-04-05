@@ -3,13 +3,37 @@
   "name": "Trap",
   "die": "d8",
   "entries": [
-    { "roll": 1, "result": "Large stone door, chiseled loose from frame. Device behind the door tips it forward when handle is turned." },
-    { "roll": 2, "result": "Long hallway flooded with water, electrified by large battery in an alcove." },
-    { "roll": 3, "result": "Dark room filled with noxious, explosive gas. Distinct smell of rotten eggs. d20 damage if ignited." },
-    { "roll": 4, "result": "Thin thread stretched across deadly fall. Safe if traveling slowly, one at a time." },
-    { "roll": 5, "result": "Pit blocking the way. A snake is asleep at the bottom." },
-    { "roll": 6, "result": "Door with three handles in the shape of mushrooms, one safe, the others poison. Poison handles deal d12 magical damage." },
-    { "roll": 7, "result": "Circle of enchanted mushrooms, with a young mouse inside. Those within try desperately to get others to enter." },
-    { "roll": 8, "result": "Floor is covered in sticky glue. Requires a STR save to break a foot loose." }
+    {
+      "roll": 1,
+      "result": "Large stone door, chiseled loose from frame. Device behind the door tips it forward when handle is turned."
+    },
+    {
+      "roll": 2,
+      "result": "Long hallway flooded with water, electrified by large battery in an alcove."
+    },
+    {
+      "roll": 3,
+      "result": "Dark room filled with noxious, explosive gas. Distinct smell of rotten eggs. d20 damage if ignited."
+    },
+    {
+      "roll": 4,
+      "result": "Thin thread stretched across deadly fall. Safe if traveling slowly, one at a time."
+    },
+    {
+      "roll": 5,
+      "result": "Pit blocking the way. A snake is asleep at the bottom."
+    },
+    {
+      "roll": 6,
+      "result": "Door with three handles in the shape of mushrooms, one safe, the others poison. Poison handles deal d12 magical damage."
+    },
+    {
+      "roll": 7,
+      "result": "Circle of enchanted mushrooms, with a young mouse inside. Those within try desperately to get others to enter."
+    },
+    {
+      "roll": 8,
+      "result": "Floor is covered in sticky glue. Requires a STR save to break a foot loose."
+    }
   ]
 }

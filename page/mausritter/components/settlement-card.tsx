@@ -70,7 +70,9 @@ export function SettlementCard({
           <span className="text-muted">Tavern:</span>{" "}
           <span className="font-medium">{settlement.tavern.name}</span>
           <span className="text-muted"> — Specialty: </span>
-          <span className="text-secondary">{settlement.tavern.specialtyMeal}</span>
+          <span className="text-secondary">
+            {settlement.tavern.specialtyMeal}
+          </span>
         </div>
       )}
 

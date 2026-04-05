@@ -38,12 +38,12 @@ function pointyHexCorners(cx: number, cy: number, size: number): string {
 
 // Axial directions for pointy-top hexes, clockwise from E
 const DIRECTIONS: [number, number][] = [
-  [1, 0],   // E
-  [0, 1],   // SE
-  [-1, 1],  // SW
-  [-1, 0],  // W
-  [0, -1],  // NW
-  [1, -1],  // NE
+  [1, 0], // E
+  [0, 1], // SE
+  [-1, 1], // SW
+  [-1, 0], // W
+  [0, -1], // NW
+  [1, -1], // NE
 ];
 
 function computeSpiralLayout(count: number): { q: number; r: number }[] {
@@ -120,7 +120,8 @@ export function HexMap({ hexes }: HexMapProps) {
         >
           {layout.hexPositions.map(({ hex, cx, cy }) => {
             const fill = BIOME_FILL[hex.hexType] ?? BIOME_FILL.Countryside;
-            const stroke = BIOME_STROKE[hex.hexType] ?? BIOME_STROKE.Countryside;
+            const stroke =
+              BIOME_STROKE[hex.hexType] ?? BIOME_STROKE.Countryside;
             const hasSettlement = !!hex.settlement;
             const hasSite = !!hex.adventureSite;
 
