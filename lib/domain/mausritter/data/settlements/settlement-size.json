@@ -1,0 +1,14 @@
+{
+  "id": "settlement-size",
+  "name": "Settlement Size",
+  "description": "Most mouse settlements are no more than a handful of families in an old boot or an old farmhouse wall.",
+  "die": "d6",
+  "entries": [
+    { "roll": 1, "result": "Farm/Homestead (1-3 families)" },
+    { "roll": 2, "result": "Crossroads (1-5 families)" },
+    { "roll": 3, "result": "Hamlet (5-15 families)" },
+    { "roll": 4, "result": "Village (50-150 mice)" },
+    { "roll": 5, "result": "Town (150-300 mice)" },
+    { "roll": 6, "result": "City (1000-1800 mice)" }
+  ]
+}

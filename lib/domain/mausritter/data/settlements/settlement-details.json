@@ -1,0 +1,27 @@
+{
+  "id": "settlement-details",
+  "name": "Settlement Details",
+  "die": "d20",
+  "entries": [
+    { "roll": 1, "result": "Born here or a newcomer? Who else is a newcomer?" },
+    { "roll": 2, "result": "What manufactured goods are hard to find?" },
+    { "roll": 3, "result": "Is there a marketplace? What is it like?" },
+    { "roll": 4, "result": "What natural feature is the settlement built on or around?" },
+    { "roll": 5, "result": "Next to a river or lake? How do they use it?" },
+    { "roll": 6, "result": "What creature has been causing trouble?" },
+    { "roll": 7, "result": "Settlement built in/around what human object?" },
+    { "roll": 8, "result": "What strange custom do the mice here practice?" },
+    { "roll": 9, "result": "Storehouses stocked with goods. What type?" },
+    { "roll": 10, "result": "What is the main source of food?" },
+    { "roll": 11, "result": "Next event on the settlement calendar?" },
+    { "roll": 12, "result": "Ancient statue stands in the town square. Of what?" },
+    { "roll": 13, "result": "What large beast lurks nearby?" },
+    { "roll": 14, "result": "Most houses are built from what material?" },
+    { "roll": 15, "result": "Mice here ride on what kind of beast?" },
+    { "roll": 16, "result": "Wooden bridge connects to a nearby settlement" },
+    { "roll": 17, "result": "Flower garden, tended with loving care" },
+    { "roll": 18, "result": "Spiritual leader, beloved" },
+    { "roll": 19, "result": "What treasure is the settlement hiding?" },
+    { "roll": 20, "result": "Secret tunnels lead where?" }
+  ]
+}

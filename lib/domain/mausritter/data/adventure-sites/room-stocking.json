@@ -1,0 +1,12 @@
+{
+  "id": "room-stocking",
+  "name": "Room Stocking Matrix",
+  "description": "To randomly stock a room in an adventure site, roll d6 three times; the first result shows the room type, the second shows if a creature is present, and the third shows if treasure can be found here.",
+  "roomTypes": [
+    { "roll": "1-2", "type": "Empty", "creature": [1, 2, 3], "treasure": [1] },
+    { "roll": "3", "type": "Obstacle", "creature": [1, 2], "treasure": [1] },
+    { "roll": "4", "type": "Trap", "creature": [1], "treasure": [1, 4] },
+    { "roll": "5", "type": "Puzzle", "creature": [1], "treasure": [1, 2, 3, 4, 5] },
+    { "roll": "6", "type": "Lair", "creature": [1, 2, 3, 4, 5], "treasure": [1, 2, 3, 4, 5] }
+  ]
+}

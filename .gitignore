@@ -44,3 +44,6 @@ next-env.d.ts
 # agent context
 .Claude/
 .opencode/
+
+# resources
+resources/

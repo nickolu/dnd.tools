@@ -1,0 +1,27 @@
+{
+  "id": "empty-room-features",
+  "name": "Empty Room Feature",
+  "die": "d20",
+  "entries": [
+    { "roll": 1, "result": "Abandoned insect nest" },
+    { "roll": 2, "result": "Cluster of mushrooms" },
+    { "roll": 3, "result": "Collapsed wall or ceiling" },
+    { "roll": 4, "result": "Dried bug shells on the walls" },
+    { "roll": 5, "result": "Furniture made of repurposed trash" },
+    { "roll": 6, "result": "Huge drawing of bat face on wall" },
+    { "roll": 7, "result": "Mess of tables and chairs" },
+    { "roll": 8, "result": "Newspaper clipping wallpaper" },
+    { "roll": 9, "result": "Overgrown with moss" },
+    { "roll": 10, "result": "Painted mural, now faded" },
+    { "roll": 11, "result": "Platforms hanging over rapidly flowing water" },
+    { "roll": 12, "result": "Roots bursting out of walls/floor/ceiling" },
+    { "roll": 13, "result": "Rotting pile of acorns" },
+    { "roll": 14, "result": "Scattering of animal teeth" },
+    { "roll": 15, "result": "Shiny candy-wrapper banners" },
+    { "roll": 16, "result": "Snake skull doorway" },
+    { "roll": 17, "result": "Steady drip of water from ceiling" },
+    { "roll": 18, "result": "Stern statue of an ancient mouse" },
+    { "roll": 19, "result": "Uneven and deeply cracked floor" },
+    { "roll": 20, "result": "White quartz altar" }
+  ]
+}

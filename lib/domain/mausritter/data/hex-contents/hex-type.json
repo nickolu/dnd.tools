@@ -1,0 +1,11 @@
+{
+  "id": "hex-type",
+  "name": "Hex Type",
+  "die": "d6",
+  "entries": [
+    { "roll": "1-2", "result": "Countryside" },
+    { "roll": "3-4", "result": "Forest" },
+    { "roll": 5, "result": "River" },
+    { "roll": 6, "result": "Human town" }
+  ]
+}

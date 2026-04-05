@@ -1,0 +1,79 @@
+{
+  "id": "settlement-names",
+  "name": "Settlement Name Seeds",
+  "description": "Roll d12 twice. Choose a start and an end. Massage until it sounds nice.",
+  "parts": [
+    {
+      "name": "Start A",
+      "die": "d12",
+      "options": [
+        "Oaks",
+        "Berry",
+        "Willow",
+        "Stump",
+        "Pine",
+        "Moon",
+        "Green",
+        "Black",
+        "Stone",
+        "Hill",
+        "Fig",
+        "Apple"
+      ]
+    },
+    {
+      "name": "Start B",
+      "die": "d12",
+      "options": [
+        "Swamp",
+        "Owl",
+        "Fox",
+        "Acorn",
+        "Copper",
+        "Robber",
+        "Colby",
+        "Drain",
+        "Rose",
+        "Clover",
+        "Friend",
+        "Trunk"
+      ]
+    },
+    {
+      "name": "End A",
+      "die": "d12",
+      "options": [
+        "thorpe",
+        "ville",
+        "mill",
+        "dale",
+        "grove",
+        "town",
+        "vale",
+        "seed",
+        "ashe",
+        "bush",
+        "stitch",
+        "shine"
+      ]
+    },
+    {
+      "name": "End B",
+      "die": "d12",
+      "options": [
+        "stand",
+        "hill",
+        "tower",
+        "farm",
+        "bridge",
+        "gate",
+        "creek",
+        "pond",
+        "nest",
+        "ford",
+        "grave",
+        "burn"
+      ]
+    }
+  ]
+}

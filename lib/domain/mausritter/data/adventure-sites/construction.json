@@ -1,0 +1,27 @@
+{
+  "id": "construction",
+  "name": "Construction",
+  "die": "d20",
+  "entries": [
+    { "roll": 1, "result": "Ancient bat cult temple" },
+    { "roll": 2, "result": "Long-abandoned watchtower" },
+    { "roll": 3, "result": "Noblemouse's country manor" },
+    { "roll": 4, "result": "Hidden winter storehouse" },
+    { "roll": 5, "result": "Burial site of ancient mice" },
+    { "roll": 6, "result": "Warren dug by rabbits or foxes" },
+    { "roll": 7, "result": "Human house or other building" },
+    { "roll": 8, "result": "Sewer or drainage pipes" },
+    { "roll": 9, "result": "Claustrophobic ant-dug tunnels" },
+    { "roll": 10, "result": "Massive tree, carved out by mice" },
+    { "roll": 11, "result": "Wizard's tower" },
+    { "roll": 12, "result": "Settlement's grain mill" },
+    { "roll": 13, "result": "Rat King's nest" },
+    { "roll": 14, "result": "Skeleton of a great beast" },
+    { "roll": 15, "result": "Witch's academy" },
+    { "roll": 16, "result": "Gatehouse to faerie realm" },
+    { "roll": 17, "result": "Deep mine" },
+    { "roll": 18, "result": "Bandit's hideout" },
+    { "roll": 19, "result": "Natural cave" },
+    { "roll": 20, "result": "Mouse settlement" }
+  ]
+}

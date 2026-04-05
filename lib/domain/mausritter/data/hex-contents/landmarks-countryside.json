@@ -1,0 +1,27 @@
+{
+  "id": "landmarks-countryside",
+  "name": "Countryside Landmarks",
+  "die": "d20",
+  "entries": [
+    { "roll": 1, "result": "Anthill" },
+    { "roll": 2, "result": "Beech, lightning split" },
+    { "roll": 3, "result": "Bone-white tree" },
+    { "roll": 4, "result": "Cow skeleton" },
+    { "roll": 5, "result": "Field of flowers" },
+    { "roll": 6, "result": "Field of wheat" },
+    { "roll": 7, "result": "Hedge row" },
+    { "roll": 8, "result": "Hidden cave" },
+    { "roll": 9, "result": "Huge flat rock" },
+    { "roll": 10, "result": "Lily-lined pond" },
+    { "roll": 11, "result": "Massive fallen tree" },
+    { "roll": 12, "result": "Old craggy oak" },
+    { "roll": 13, "result": "Old farmhouse" },
+    { "roll": 14, "result": "Quiet dirt road" },
+    { "roll": 15, "result": "Rabbit warren" },
+    { "roll": 16, "result": "Sparrow nest" },
+    { "roll": 17, "result": "Stand of pine trees" },
+    { "roll": 18, "result": "Steep hill" },
+    { "roll": 19, "result": "Stone wall" },
+    { "roll": 20, "result": "Tangle of fig roots" }
+  ]
+}

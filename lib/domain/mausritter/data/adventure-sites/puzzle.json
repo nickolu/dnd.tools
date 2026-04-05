@@ -1,0 +1,13 @@
+{
+  "id": "puzzle",
+  "name": "Puzzle",
+  "die": "d6",
+  "entries": [
+    { "roll": 1, "result": "Room with a floor made of an electrified copper plate. A piece of valuable treasure sits in the centre." },
+    { "roll": 2, "result": "Three feeding bottles containing different-coloured liquids. Each is inert but powerful/dangerous when mixed." },
+    { "roll": 3, "result": "A crystal, a magic sword embedded inside. The crystal is very hard, but will dissolve in stomach acid." },
+    { "roll": 4, "result": "Treasure is at the bottom of deep well." },
+    { "roll": 5, "result": "Large smooth steel bowl, upside down. Treasure taped to the inside ceiling of the bowl." },
+    { "roll": 6, "result": "Baited mousetrap. The lever is wired to a stone in the wall and will collapse the corridor if triggered." }
+  ]
+}

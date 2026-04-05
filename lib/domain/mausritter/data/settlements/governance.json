@@ -1,0 +1,15 @@
+{
+  "id": "governance",
+  "name": "Governance",
+  "description": "Most settlements pay taxes to feed an authority that defends all local mice. Free settlements use the farm, 6 for the City.",
+  "die": "d6+",
+  "entries": [
+    { "roll": "1", "result": "No governance. Free settlement" },
+    { "roll": "2-3", "result": "Guided by village elders" },
+    { "roll": "4-5", "result": "Administered by a knight or landed gentry" },
+    { "roll": "6-7", "result": "Organized by a guild or trade council" },
+    { "roll": "8-9", "result": "Free settlement, governed by town council" },
+    { "roll": "10-11", "result": "House of an upper-class mouse family" },
+    { "roll": "12", "result": "Seat of a baronial power" }
+  ]
+}

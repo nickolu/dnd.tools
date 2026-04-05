@@ -1,0 +1,189 @@
+{
+  "id": "treasure-tables",
+  "name": "Treasure",
+  "description": "When rolling a treasure horde, roll for one result on an indicated table. Roll d6 on the Treasure tables to find if the treasure is guarded, and the nature of the treasure. Roll on further tables as indicated.",
+  "tables": [
+    {
+      "id": "treasure-type",
+      "name": "Treasure tables",
+      "die": "d6",
+      "entries": [
+        {
+          "roll": 1,
+          "result": "No treasure"
+        },
+        {
+          "roll": 2,
+          "result": "Magic sword"
+        },
+        {
+          "roll": 3,
+          "result": "Roll for trinket treasure"
+        },
+        {
+          "roll": 4,
+          "result": "Roll for useful treasure"
+        },
+        {
+          "roll": 5,
+          "result": "Roll for large treasure"
+        },
+        {
+          "roll": 6,
+          "result": "Roll for unusual treasure"
+        }
+      ]
+    },
+    {
+      "id": "trinkets",
+      "name": "Trinkets",
+      "die": "d6",
+      "entries": [
+        {
+          "roll": 1,
+          "result": "Smoking pipe (gives a contented feeling)"
+        },
+        {
+          "roll": 2,
+          "result": "Breathtaking glass lute (but rather fragile)"
+        },
+        {
+          "roll": 3,
+          "result": "Magic: bag that always contains one pistachio"
+        },
+        {
+          "roll": 4,
+          "result": "Magic: Bees (a loyal swarm that lives in a teacup, make up something)"
+        },
+        {
+          "roll": 5,
+          "result": "Thimble helmet (raised visor) (Armour, marked up something)"
+        },
+        {
+          "roll": 6,
+          "result": "Box containing 66.5 pips"
+        }
+      ]
+    },
+    {
+      "id": "threats",
+      "name": "Threats",
+      "die": "d6",
+      "entries": [
+        {
+          "roll": 1,
+          "result": "No threat"
+        },
+        {
+          "roll": 2,
+          "result": "Roll for trinket treasure"
+        },
+        {
+          "roll": 3,
+          "result": "Roll for useful treasure"
+        },
+        {
+          "roll": "4-5",
+          "result": "Box containing d6 x 50 pips"
+        },
+        {
+          "roll": 6,
+          "result": "Box containing d6 x 100 pips"
+        }
+      ]
+    },
+    {
+      "id": "large-treasure",
+      "name": "Large treasure",
+      "die": "d6",
+      "entries": [
+        {
+          "roll": 1,
+          "result": "Oversized silver spoon (2 slots, 300p)"
+        },
+        {
+          "roll": 2,
+          "result": "Ivory comb (4 slots, 400p)"
+        },
+        {
+          "roll": 3,
+          "result": "Huge bottle of fine brandy (4 slots, 500p)"
+        },
+        {
+          "roll": 4,
+          "result": "Ancient mouse statue (6 slots, 500p)"
+        },
+        {
+          "roll": 5,
+          "result": "Gilded mouse throne (4 slots, 1000p)"
+        },
+        {
+          "roll": 6,
+          "result": "Polished diamond (8000p, 1500p)"
+        }
+      ]
+    },
+    {
+      "id": "unusual-treasure",
+      "name": "Unusual treasure",
+      "die": "d6",
+      "entries": [
+        {
+          "roll": 1,
+          "result": "Bundle of puppet herbs (d100p to an apothecary)"
+        },
+        {
+          "roll": 2,
+          "result": "Odd-coloured dried mushrooms (d100p to a witch)"
+        },
+        {
+          "roll": 3,
+          "result": "Eerily glowing stored dust (d100p to a nobleman)"
+        },
+        {
+          "roll": 4,
+          "result": "Heirloom of sentimental value (d100p, will grant a favour to the holder)"
+        },
+        {
+          "roll": 5,
+          "result": "Legal documents granting land rights to a nearby settlement"
+        },
+        {
+          "roll": 6,
+          "result": "Treasure map"
+        }
+      ]
+    },
+    {
+      "id": "useable-treasure",
+      "name": "Useable treasure",
+      "die": "d6",
+      "entries": [
+        {
+          "roll": 1,
+          "result": "6 packs of rations, well preserved"
+        },
+        {
+          "roll": 2,
+          "result": "6 torches"
+        },
+        {
+          "roll": 3,
+          "result": "6 bundles of arrows"
+        },
+        {
+          "roll": 4,
+          "result": "Mundane weapon"
+        },
+        {
+          "roll": 5,
+          "result": "Mundane armour"
+        },
+        {
+          "roll": 6,
+          "result": "Mundane utility item"
+        }
+      ]
+    }
+  ]
+}

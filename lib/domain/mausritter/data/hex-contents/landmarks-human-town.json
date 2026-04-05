@@ -1,0 +1,27 @@
+{
+  "id": "landmarks-human-town",
+  "name": "Human Town Landmarks",
+  "die": "d20",
+  "entries": [
+    { "roll": 1, "result": "Abandoned car" },
+    { "roll": 2, "result": "Apartment balcony" },
+    { "roll": 3, "result": "Blackberry hedge" },
+    { "roll": 4, "result": "Busy road" },
+    { "roll": 5, "result": "Drainpipe outlet" },
+    { "roll": 6, "result": "Dumped furniture" },
+    { "roll": 7, "result": "Greenhouse" },
+    { "roll": 8, "result": "Mouse ruins" },
+    { "roll": 9, "result": "Newly built house" },
+    { "roll": 10, "result": "Overgrown garden bed" },
+    { "roll": 11, "result": "Pigeon nest" },
+    { "roll": 12, "result": "Pile of trash" },
+    { "roll": 13, "result": "Rocky riverbed" },
+    { "roll": 14, "result": "Shopping trolley" },
+    { "roll": 15, "result": "Stagnant pond" },
+    { "roll": 16, "result": "Steel bridge" },
+    { "roll": 17, "result": "Trash-filled skip" },
+    { "roll": 18, "result": "Tree-lined footpath" },
+    { "roll": 19, "result": "Underground car park" },
+    { "roll": 20, "result": "Woodshed" }
+  ]
+}

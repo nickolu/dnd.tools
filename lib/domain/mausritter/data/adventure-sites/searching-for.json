@@ -1,0 +1,15 @@
+{
+  "id": "searching-for",
+  "name": "...searching for/protecting",
+  "die": "d8",
+  "entries": [
+    { "roll": 1, "result": "A safe place to live or hide" },
+    { "roll": 2, "result": "Cache of fine food" },
+    { "roll": 3, "result": "Lost family or friend" },
+    { "roll": 4, "result": "Ancient, valuable artworks" },
+    { "roll": 5, "result": "The last scraps in a picked-over ruin" },
+    { "roll": 6, "result": "Rare alchemical mushrooms" },
+    { "roll": 7, "result": "Strange and powerful spell" },
+    { "roll": 8, "result": "Vast horde of pips" }
+  ]
+}

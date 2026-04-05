@@ -1,0 +1,17 @@
+{
+  "id": "inhabitants",
+  "name": "Inhabitants",
+  "die": "d10",
+  "entries": [
+    { "roll": 1, "result": "Mice, driven mad or desperate" },
+    { "roll": 2, "result": "Mice, magically altered" },
+    { "roll": 3, "result": "Rat bandits" },
+    { "roll": 4, "result": "Creatures from a distant land" },
+    { "roll": 5, "result": "Original residents, strangely twisted" },
+    { "roll": 6, "result": "Ghostly spirits" },
+    { "roll": 7, "result": "Faerie advance guard" },
+    { "roll": 8, "result": "Foul-tempered snake" },
+    { "roll": 9, "result": "Infestation of insects" },
+    { "roll": 10, "result": "Cat lord and their servants" }
+  ]
+}

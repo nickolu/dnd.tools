@@ -1,0 +1,13 @@
+{
+  "id": "lair",
+  "name": "Lair",
+  "die": "d6",
+  "entries": [
+    { "roll": 1, "result": "Temporary encampment" },
+    { "roll": 2, "result": "Recently taken from another creature" },
+    { "roll": 3, "result": "Built by mice to hold the creature" },
+    { "roll": 4, "result": "Protecting young" },
+    { "roll": 5, "result": "Permanent home, newly settled" },
+    { "roll": 6, "result": "Permanent home, comfortably appointed" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "ruination",
+  "name": "Ruination",
+  "die": "d12",
+  "entries": [
+    { "roll": 1, "result": "Flooding" },
+    { "roll": 2, "result": "Magical mishap" },
+    { "roll": 3, "result": "Age and rot" },
+    { "roll": 4, "result": "Human destruction" },
+    { "roll": 5, "result": "Overrun by mold" },
+    { "roll": 6, "result": "Shifted between realms" },
+    { "roll": 7, "result": "Attacked by great beast" },
+    { "roll": 8, "result": "Disastrous storm" },
+    { "roll": 9, "result": "Haunting spirits" },
+    { "roll": 10, "result": "Mysterious abandonment" },
+    { "roll": 11, "result": "Internal warfare" },
+    { "roll": 12, "result": "Disease" }
+  ]
+}

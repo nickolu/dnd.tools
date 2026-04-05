@@ -1,0 +1,141 @@
+{
+  "id": "factions",
+  "name": "Factions",
+  "factions": [
+    {
+      "id": "cat-lord",
+      "name": "Cat Lord",
+      "resources": [
+        "Terrifying presence",
+        "Hired mercenaries and bandits",
+        "Exorbitant wealth"
+      ],
+      "goals": [
+        { "description": "Raise bribes from settlement", "difficulty": 2 },
+        { "description": "Kidnap mouse servants", "difficulty": 3 },
+        { "description": "Subjugate a settlement", "difficulty": 5 }
+      ]
+    },
+    {
+      "id": "noblemouse",
+      "name": "Noblemouse",
+      "resources": [
+        "Ambitious knights",
+        "Tricky legal advocates",
+        "Stocked storehouses"
+      ],
+      "goals": [
+        { "description": "Raise tax revenue", "difficulty": 2 },
+        { "description": "Acquire new land rights", "difficulty": 3 },
+        { "description": "Establish new settlement", "difficulty": 5 }
+      ]
+    },
+    {
+      "id": "tunnellers-guild",
+      "name": "Tunnellers Guild",
+      "resources": [
+        "Rough-pawed work gangs",
+        "Solidarity with working mice"
+      ],
+      "goals": [
+        { "description": "Intimidate tax collector", "difficulty": 2 },
+        { "description": "Destroy noblemouse's manor", "difficulty": 3 },
+        { "description": "Establish free settlement", "difficulty": 5 }
+      ]
+    },
+    {
+      "id": "rat-bandits",
+      "name": "Rat Bandits",
+      "resources": [
+        "Ruthless gang",
+        "Secret hideout"
+      ],
+      "goals": [
+        { "description": "Dominate a trade route", "difficulty": 2 },
+        { "description": "Establish protection racket", "difficulty": 3 },
+        { "description": "Capture a fortress", "difficulty": 5 }
+      ]
+    },
+    {
+      "id": "faerie-queen",
+      "name": "Faerie Queen",
+      "resources": [
+        "Hidden roads and portals",
+        "Shapeshifting agents",
+        "Endless illusory silver"
+      ],
+      "goals": [
+        { "description": "Kidnap mice", "difficulty": 2 },
+        { "description": "Trick mice out of legal standing", "difficulty": 3 },
+        { "description": "Lead settlement into Fae lands", "difficulty": 5 }
+      ]
+    },
+    {
+      "id": "owl-sorcerer",
+      "name": "Owl Sorcerer",
+      "resources": [
+        "Powerful magic",
+        "Speed and fury",
+        "Magical servants"
+      ],
+      "goals": [
+        { "description": "Take scrying tower from crows", "difficulty": 3 },
+        { "description": "Locate leyline vortex", "difficulty": 4 },
+        { "description": "Harness the vortex's power", "difficulty": 5 }
+      ]
+    },
+    {
+      "id": "clutch-of-snakes",
+      "name": "Clutch of Snakes",
+      "resources": [
+        "Silent slithering serial killers",
+        "Chilling calling cards"
+      ],
+      "goals": [
+        { "description": "Assassinate a settlement elder", "difficulty": 3 },
+        { "description": "Assassinate a noblemouse", "difficulty": 4 },
+        { "description": "Assassinate the queen", "difficulty": 5 }
+      ]
+    },
+    {
+      "id": "cultists",
+      "name": "Cultists",
+      "resources": [
+        "Poorly-understood eldritch power",
+        "Clandestine insiders"
+      ],
+      "goals": [
+        { "description": "Recruit vulnerable mice", "difficulty": 3 },
+        { "description": "Steal powerful artifact", "difficulty": 3 },
+        { "description": "Summon ancient god", "difficulty": 5 }
+      ]
+    },
+    {
+      "id": "frog-prince",
+      "name": "Frog Prince",
+      "resources": [
+        "Chivalric knights",
+        "Hidden fortress"
+      ],
+      "goals": [
+        { "description": "Hold joust to choose a champion", "difficulty": 3 },
+        { "description": "Kidnap mouse historian", "difficulty": 3 },
+        { "description": "Find the Mug of Truth", "difficulty": 5 }
+      ]
+    },
+    {
+      "id": "coven-of-crows",
+      "name": "Coven of Crows",
+      "resources": [
+        "Cunning corvid crones",
+        "Cawing song magic",
+        "Soaring scrying tower"
+      ],
+      "goals": [
+        { "description": "Kidnap a mouse farmer", "difficulty": 2 },
+        { "description": "Capture a weather spirit", "difficulty": 3 },
+        { "description": "Create weather machine", "difficulty": 5 }
+      ]
+    }
+  ]
+}

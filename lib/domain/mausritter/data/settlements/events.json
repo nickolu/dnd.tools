@@ -1,0 +1,28 @@
+{
+  "id": "events",
+  "name": "Event",
+  "description": "What is happening as the player mice arrive?",
+  "die": "d20",
+  "entries": [
+    { "roll": 1, "result": "Disaster, everyone packing to leave" },
+    { "roll": 2, "result": "Wedding, streets decked in flowers" },
+    { "roll": 3, "result": "Preparing for grand seasonal feast" },
+    { "roll": 4, "result": "An illness has struck" },
+    { "roll": 5, "result": "Storehouse has been plundered by insects" },
+    { "roll": 6, "result": "Market day, farmers flock to the settlement" },
+    { "roll": 7, "result": "Mice are at each other's throats" },
+    { "roll": 8, "result": "Warband forming to defeat a beast" },
+    { "roll": 9, "result": "Several children have gone missing" },
+    { "roll": 10, "result": "Noblemouse makes a frivolous demand" },
+    { "roll": 11, "result": "Traveling theatre troupe arrives" },
+    { "roll": 12, "result": "Funeral, streets thick with smoke" },
+    { "roll": 13, "result": "Conman whips up an irrational scheme" },
+    { "roll": 14, "result": "Pet beetle gone mad, attacking mice" },
+    { "roll": 15, "result": "Faerie emissary with an impossible request" },
+    { "roll": 16, "result": "Strangely quick-growing plant nearby" },
+    { "roll": 17, "result": "Valuable heirloom has been stolen" },
+    { "roll": 18, "result": "Cat lord demands a heavy tithe" },
+    { "roll": 19, "result": "Coming of age ceremony for the young mice" },
+    { "roll": 20, "result": "Wizard tower arrives on tortoise-back" }
+  ]
+}

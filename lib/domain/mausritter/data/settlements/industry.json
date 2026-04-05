@@ -1,0 +1,28 @@
+{
+  "id": "industry",
+  "name": "Industry",
+  "description": "What trade do the mice work? Towns and cities have two.",
+  "die": "d20",
+  "entries": [
+    { "roll": 1, "result": "Farmers, tending to towering crops" },
+    { "roll": 2, "result": "Woodcutters, with saws and harnesses" },
+    { "roll": 3, "result": "Rough and scarred fishermice, with nets and rafts" },
+    { "roll": 4, "result": "Dark and musty mushroom farm" },
+    { "roll": 5, "result": "Grains drying on every flat surface" },
+    { "roll": 6, "result": "Pungent cheese, cured for years" },
+    { "roll": 7, "result": "Gardens of rare herbs. Drying racks are guarded" },
+    { "roll": 8, "result": "Hive of bees and their veiled keepers" },
+    { "roll": 9, "result": "Merchants and traders, often in need of guards" },
+    { "roll": 10, "result": "Stonemasons, working a nearby quarry" },
+    { "roll": 11, "result": "Flour mill, driven by a large water-wheel" },
+    { "roll": 12, "result": "Deep mine for iron, silver or tin" },
+    { "roll": 13, "result": "Keep silkworms and weave fine cloth" },
+    { "roll": 14, "result": "Expert explorers of caves and tunnels" },
+    { "roll": 15, "result": "Kiln-fired pottery, glazed in cheerful colours" },
+    { "roll": 16, "result": "Wool mill, draped in bright cloth" },
+    { "roll": 17, "result": "Excellent school, rowdy pupils" },
+    { "roll": 18, "result": "Bustling, well-stocked market" },
+    { "roll": 19, "result": "Smelly scavenged trash pile, carefully picked over" },
+    { "roll": 20, "result": "Beautiful furniture of carved and polished wood" }
+  ]
+}

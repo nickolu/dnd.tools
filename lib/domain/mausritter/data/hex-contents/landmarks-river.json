@@ -1,0 +1,27 @@
+{
+  "id": "landmarks-river",
+  "name": "River Landmarks",
+  "die": "d20",
+  "entries": [
+    { "roll": 1, "result": "Canal lock" },
+    { "roll": 2, "result": "Converging tributaries" },
+    { "roll": 3, "result": "Draping willow" },
+    { "roll": 4, "result": "Eroded riverbank" },
+    { "roll": 5, "result": "Fallen tree crossing" },
+    { "roll": 6, "result": "High waterfall" },
+    { "roll": 7, "result": "Huge boulder" },
+    { "roll": 8, "result": "Huge concrete dam" },
+    { "roll": 9, "result": "Isolated island" },
+    { "roll": 10, "result": "Muddy flats" },
+    { "roll": 11, "result": "Rocky rapids" },
+    { "roll": 12, "result": "Row of dead trees" },
+    { "roll": 13, "result": "Silty dam" },
+    { "roll": 14, "result": "Stepping-stones" },
+    { "roll": 15, "result": "Stone bridge" },
+    { "roll": 16, "result": "Stony shallows" },
+    { "roll": 17, "result": "Submerged trash" },
+    { "roll": 18, "result": "Sunken barge" },
+    { "roll": 19, "result": "Twisted roots" },
+    { "roll": 20, "result": "Wooden bridge" }
+  ]
+}

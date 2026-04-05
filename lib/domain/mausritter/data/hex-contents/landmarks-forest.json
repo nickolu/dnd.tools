@@ -1,0 +1,27 @@
+{
+  "id": "landmarks-forest",
+  "name": "Forest Landmarks",
+  "die": "d20",
+  "entries": [
+    { "roll": 1, "result": "Abandoned shack" },
+    { "roll": 2, "result": "Bright clearing" },
+    { "roll": 3, "result": "Cascading waterfalls" },
+    { "roll": 4, "result": "Cliff face" },
+    { "roll": 5, "result": "Cold, fresh spring" },
+    { "roll": 6, "result": "Dense underbrush" },
+    { "roll": 7, "result": "Face in ancient oak" },
+    { "roll": 8, "result": "Fox hole" },
+    { "roll": 9, "result": "Grove of ferns" },
+    { "roll": 10, "result": "Hollow tree stump" },
+    { "roll": 11, "result": "Huge pine tree" },
+    { "roll": 12, "result": "Human walking track" },
+    { "roll": 13, "result": "Human-made clearing" },
+    { "roll": 14, "result": "Meandering brook" },
+    { "roll": 15, "result": "Overgrown ruins" },
+    { "roll": 16, "result": "Ring of stones" },
+    { "roll": 17, "result": "Rocky outcropping" },
+    { "roll": 18, "result": "Sunken hollow" },
+    { "roll": 19, "result": "Tangle of roots" },
+    { "roll": 20, "result": "Termite-riddled tree" }
+  ]
+}

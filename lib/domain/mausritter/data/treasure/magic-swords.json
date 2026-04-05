@@ -1,0 +1,111 @@
+{
+  "id": "magic-swords",
+  "name": "Magic Swords",
+  "description": "Magic swords only mark usage when a 6 is rolled. They can be repaired by a highly skilled blacksmith, or by an unusually practically minded wizard, a service that will require payment greater than simply pips.",
+  "weaponClass": {
+    "die": "d6",
+    "entries": [
+      { "roll": "1-4", "result": "Medium (d6 one paw/d8 both paws)" },
+      { "roll": 5, "result": "Light (d6 one paw, can be dual-wielded)" },
+      { "roll": 6, "result": "Heavy (d10 both paws)" }
+    ]
+  },
+  "swords": [
+    {
+      "id": "wrought-iron",
+      "name": "Wrought Iron",
+      "trigger": "While wielded",
+      "effect": "You roll critical damage saves with Advantage"
+    },
+    {
+      "id": "intricate-fae-design",
+      "name": "Intricate Fae Design",
+      "trigger": "While wielded",
+      "effect": "You may disguise yourself as any mouse-sized creature"
+    },
+    {
+      "id": "rusty-nail",
+      "name": "Rusty Nail",
+      "trigger": "Critical damage",
+      "effect": "Give a Frightened Condition"
+    },
+    {
+      "id": "snake-fang",
+      "name": "Snake Fang",
+      "trigger": "Critical damage",
+      "effect": "Deal d6 additional damage to DEX"
+    },
+    {
+      "id": "toy-soldiers-sabre",
+      "name": "Toy Soldier's Sabre",
+      "trigger": "While wielded",
+      "effect": "If you lead a warband, they have +1 Armour"
+    },
+    {
+      "id": "water-worn-glass",
+      "name": "Water-worn Glass",
+      "trigger": "While wielded",
+      "effect": "You can hold breath underwater for 1 Turn"
+    },
+    {
+      "id": "wolf-tooth",
+      "name": "Wolf Tooth",
+      "trigger": "Critical damage",
+      "effect": "Your next attack is Enhanced"
+    },
+    {
+      "id": "silver-sewing-needle",
+      "name": "Silver Sewing Needle",
+      "trigger": "Critical damage",
+      "effect": "Clear all usage dots from a non-spell item in your inventory"
+    },
+    {
+      "id": "thorny-rose-stem",
+      "name": "Thorny Rose Stem",
+      "trigger": "Critical damage",
+      "effect": "Remove a Condition"
+    },
+    {
+      "id": "congealed-shadow",
+      "name": "Congealed Shadow",
+      "trigger": "While wielded",
+      "effect": "You are invisible when standing perfectly still"
+    }
+  ],
+  "curses": {
+    "description": "Magic swords have a 1-in-6 chance of being cursed. Cursed swords bind to the mouse who first holds them, and cannot be removed from the mouse's inventory. While the curse remains, the sword has no beneficial power. Once lifted, the sword regains its power.",
+    "die": "d6",
+    "entries": [
+      {
+        "roll": 1,
+        "curse": "Roll critical damage saves with Disadvantage",
+        "liftedBy": "Making a selfless sacrifice in a life or death situation"
+      },
+      {
+        "roll": 2,
+        "curse": "When you gain an Exhausted Condition, gain another",
+        "liftedBy": "Trading places with a poor farmer for a season"
+      },
+      {
+        "roll": 3,
+        "curse": "Make a WIL save to not attack when threatened",
+        "liftedBy": "Making lasting peace with a mortal enemy"
+      },
+      {
+        "roll": 4,
+        "curse": "Reaction rolls are made with -1 modifier",
+        "liftedBy": "Giving away everything you own, no cheating"
+      },
+      {
+        "roll": 5,
+        "curse": "If you see an ally take damage, take a Frightened Condition",
+        "liftedBy": "Fulfilling a mouse's dying wish"
+      },
+      {
+        "roll": 6,
+        "curse": "Spells cast in your presence always mark usage",
+        "liftedBy": "Destroying an owl sorcerer's source of power"
+      }
+    ]
+  }
+}

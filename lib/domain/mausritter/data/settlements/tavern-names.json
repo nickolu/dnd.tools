@@ -1,0 +1,61 @@
+{
+  "id": "tavern-names",
+  "name": "Taverns and Inns",
+  "description": "Hamlets and larger settlements will furnish a friendly tavern or inn for locals and traveling mice.",
+  "parts": [
+    {
+      "name": "Name A",
+      "die": "d12",
+      "options": [
+        "White",
+        "Green",
+        "Black",
+        "Red",
+        "Silver",
+        "Crooked",
+        "Friendly",
+        "Hidden",
+        "Wiley",
+        "Glass",
+        "Thorny",
+        "Broken"
+      ]
+    },
+    {
+      "name": "Name B",
+      "die": "d12",
+      "options": [
+        "Beetle",
+        "Fox",
+        "Wedge",
+        "Kernel",
+        "Rat",
+        "Cheese",
+        "Eagle",
+        "Worm",
+        "Bee",
+        "Lantern",
+        "Rose",
+        "Knight"
+      ]
+    },
+    {
+      "name": "Specialty meal",
+      "die": "d12",
+      "options": [
+        "Spiced baked carrot",
+        "Boiled worm broth",
+        "Blackberry pie",
+        "Pungent aged cheese",
+        "Barley porridge",
+        "Thick river-fish steak",
+        "Baked apple",
+        "Fried, crumbed insect legs",
+        "Fresh buttered bread",
+        "Scavenged candy",
+        "Honey-roasted seeds",
+        "Mushroom stew"
+      ]
+    }
+  ]
+}

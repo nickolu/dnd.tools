@@ -1,0 +1,27 @@
+{
+  "id": "landmark-details",
+  "name": "Landmark Details",
+  "die": "d20",
+  "entries": [
+    { "roll": 1, "result": "What is the nearest source of fresh water?" },
+    { "roll": 2, "result": "Is there a mouse-made structure here?" },
+    { "roll": 3, "result": "What is the biggest source of danger here?" },
+    { "roll": 4, "result": "What lives here in the open?" },
+    { "roll": 5, "result": "What lives here in secret?" },
+    { "roll": 6, "result": "What do they want from the mice in the hex?" },
+    { "roll": 7, "result": "What do they have that is useful to the mice?" },
+    { "roll": 8, "result": "What grows or is produced here?" },
+    { "roll": 9, "result": "What is the weather like here most of the time?" },
+    { "roll": 10, "result": "What is the most notable smell or sound?" },
+    { "roll": 11, "result": "What is the best hiding spot here?" },
+    { "roll": 12, "result": "How does it connect or cross over?" },
+    { "roll": 13, "result": "What treasure is buried here?" },
+    { "roll": 14, "result": "What happened here in the past?" },
+    { "roll": 15, "result": "What does it look like at the bottom?" },
+    { "roll": 16, "result": "Does anyone tend this place? (How is it tended?)" },
+    { "roll": 17, "result": "What clue or glimpse of a larger mystery is here?" },
+    { "roll": 18, "result": "How can this place be used by the mice? (How can it be repaired?)" },
+    { "roll": 19, "result": "Is it part of a past civilisation? (Who were they? What trophies remain?)" },
+    { "roll": 20, "result": "Incorporated into a ground-level construction. (How is it used?)" }
+  ]
+}
