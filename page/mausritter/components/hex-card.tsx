@@ -12,6 +12,8 @@ type HexCardProps = {
 export function HexCard({ hex }: HexCardProps) {
   const store = useHexCrawlStore();
   const typeColor = HEX_TYPE_COLORS[hex.hexType] ?? HEX_TYPE_COLORS.Countryside;
+  const isLoadingLore = Boolean(store.hexLoreLoadingIds[hex.id]);
+  const loreError = store.hexLoreErrors[hex.id];
 
   return (
     <div id={`hex-${hex.id}`} className="surface-card scroll-mt-4 p-4">
@@ -48,7 +50,35 @@ export function HexCard({ hex }: HexCardProps) {
             />
           </div>
         </div>
+
+        <button
+          className="shrink-0 rounded-lg bg-amber-700/60 px-3 py-1.5 text-xs font-medium text-amber-100 transition-colors hover:bg-amber-700 disabled:opacity-40"
+          disabled={isLoadingLore}
+          onClick={() => void store.generateHexLore(hex.id)}
+          title={hex.narrative ? "Regenerate location lore" : "Generate location lore"}
+          type="button"
+        >
+          {isLoadingLore ? "Generating..." : hex.narrative ? "Regen Lore" : "Generate Lore"}
+        </button>
       </div>
+
+      {isLoadingLore && !hex.narrative && (
+        <div className="mt-3 space-y-2">
+          <div className="h-3 w-full animate-pulse rounded bg-white/5" />
+          <div className="h-3 w-4/5 animate-pulse rounded bg-white/5" />
+          <div className="h-3 w-3/5 animate-pulse rounded bg-white/5" />
+        </div>
+      )}
+
+      {loreError && (
+        <p className="mt-2 text-xs text-red-400">{loreError}</p>
+      )}
+
+      {hex.narrative && (
+        <div className="mt-3 border-l-2 border-amber-800/30 pl-4 text-sm text-secondary leading-relaxed whitespace-pre-line italic">
+          {hex.narrative}
+        </div>
+      )}
 
       {hex.settlement && (
         <SettlementCard

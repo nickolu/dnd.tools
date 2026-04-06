@@ -14,6 +14,7 @@ export type GeneratedHex = {
   landmarkDetail: string;
   settlement: GeneratedSettlement | null;
   adventureSite: GeneratedAdventureSite | null;
+  narrative?: string | undefined;
 };
 
 export type GeneratedSettlement = {
@@ -89,9 +90,18 @@ export type GeneratedNpc = {
   relationship: string;
 };
 
+export type GeneratedLore = {
+  overview: string;
+  factionPolitics: string;
+  notableCharacters: string;
+  adventureHooks: string;
+  notableLocations: string;
+};
+
 export type HexCrawlState = {
   config: HexCrawlConfig;
   hexes: GeneratedHex[];
   factions: GeneratedFaction[];
   generatedAt: number | null;
+  lore: GeneratedLore | null;
 };

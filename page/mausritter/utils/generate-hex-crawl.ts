@@ -48,5 +48,6 @@ export function generateHexCrawl(config: HexCrawlConfig): HexCrawlState {
     hexes,
     factions: selectedFactions,
     generatedAt: Date.now(),
+    lore: null,
   };
 }

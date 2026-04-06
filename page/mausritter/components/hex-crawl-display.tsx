@@ -3,6 +3,7 @@ import { FactionCard } from "./faction-card";
 import { HexCard } from "./hex-card";
 import { HexMap } from "./hex-map";
 import { HexOverview } from "./hex-overview";
+import { LorePanel } from "./lore-panel";
 import { ReRollButton } from "./re-roll-button";
 
 export function HexCrawlDisplay() {
@@ -45,6 +46,9 @@ export function HexCrawlDisplay() {
 
       {/* Overview */}
       <HexOverview hexes={hexes} />
+
+      {/* Lore */}
+      <LorePanel />
 
       {/* Factions */}
       <section>
