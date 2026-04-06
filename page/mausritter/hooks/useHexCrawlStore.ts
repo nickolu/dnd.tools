@@ -237,9 +237,7 @@ export const useHexCrawlStore = create<HexCrawlStore>((set, get) => ({
       if (!json.ok) {
         set((state) => ({
           hexLoreLoadingIds: Object.fromEntries(
-            Object.entries(state.hexLoreLoadingIds).filter(
-              ([k]) => k !== hexId
-            )
+            Object.entries(state.hexLoreLoadingIds).filter(([k]) => k !== hexId)
           ),
           hexLoreErrors: {
             ...state.hexLoreErrors,
@@ -265,9 +263,10 @@ export const useHexCrawlStore = create<HexCrawlStore>((set, get) => ({
         ),
         hexLoreErrors: {
           ...state.hexLoreErrors,
-          [hexId]: err instanceof Error
-            ? err.message
-            : "Failed to generate location lore.",
+          [hexId]:
+            err instanceof Error
+              ? err.message
+              : "Failed to generate location lore.",
         },
       }));
     }
@@ -289,7 +288,11 @@ export const useHexCrawlStore = create<HexCrawlStore>((set, get) => ({
     set((state) => ({
       hexes: updateHex(state.hexes, hexId, (hex) => {
         const table = landmarkTableByType[hex.hexType] ?? countrysideData;
-        return { ...hex, landmark: rollOnRandomTable(table), narrative: undefined };
+        return {
+          ...hex,
+          landmark: rollOnRandomTable(table),
+          narrative: undefined,
+        };
       }),
     })),
 

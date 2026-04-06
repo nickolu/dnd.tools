@@ -3,31 +3,37 @@ export type HexSummary = {
   hexType: string;
   landmark: string;
   landmarkDetail: string;
-  settlement?: {
-    name: string;
-    size: string;
-    governance: string;
-    detail: string;
-    industries: string[];
-    event: string;
-    tavern?: { name: string; specialtyMeal: string } | null | undefined;
-    npcs: {
-      name: string;
-      socialPosition: string;
-      disposition: string;
-      appearance: string;
-      quirk: string;
-      wants: string;
-    }[];
-  } | null | undefined;
-  adventureSite?: {
-    construction: string;
-    inhabitants: string;
-    ruination: string;
-    searchingFor: string;
-    secret: string;
-    roomCount: number;
-  } | null | undefined;
+  settlement?:
+    | {
+        name: string;
+        size: string;
+        governance: string;
+        detail: string;
+        industries: string[];
+        event: string;
+        tavern?: { name: string; specialtyMeal: string } | null | undefined;
+        npcs: {
+          name: string;
+          socialPosition: string;
+          disposition: string;
+          appearance: string;
+          quirk: string;
+          wants: string;
+        }[];
+      }
+    | null
+    | undefined;
+  adventureSite?:
+    | {
+        construction: string;
+        inhabitants: string;
+        ruination: string;
+        searchingFor: string;
+        secret: string;
+        roomCount: number;
+      }
+    | null
+    | undefined;
 };
 
 export type FactionSummary = {
@@ -50,7 +56,10 @@ function serializeHex(hex: HexSummary): string {
   if (hex.settlement) {
     const s = hex.settlement;
     const npcList = s.npcs
-      .map((n) => `${n.name} (${n.socialPosition}, ${n.appearance}, ${n.quirk}, wants ${n.wants})`)
+      .map(
+        (n) =>
+          `${n.name} (${n.socialPosition}, ${n.appearance}, ${n.quirk}, wants ${n.wants})`
+      )
       .join("; ");
     parts.push(
       `  Settlement "${s.name}" — ${s.size}, ${s.governance}. Detail: ${s.detail}. Industries: ${s.industries.join(", ")}. Event: ${s.event}.${s.tavern ? ` Tavern: "${s.tavern.name}" (specialty: ${s.tavern.specialtyMeal}).` : ""} NPCs: ${npcList || "none"}`

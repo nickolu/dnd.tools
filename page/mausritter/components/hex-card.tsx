@@ -55,10 +55,18 @@ export function HexCard({ hex }: HexCardProps) {
           className="shrink-0 rounded-lg bg-amber-700/60 px-3 py-1.5 text-xs font-medium text-amber-100 transition-colors hover:bg-amber-700 disabled:opacity-40"
           disabled={isLoadingLore}
           onClick={() => void store.generateHexLore(hex.id)}
-          title={hex.narrative ? "Regenerate location lore" : "Generate location lore"}
+          title={
+            hex.narrative
+              ? "Regenerate location lore"
+              : "Generate location lore"
+          }
           type="button"
         >
-          {isLoadingLore ? "Generating..." : hex.narrative ? "Regen Lore" : "Generate Lore"}
+          {isLoadingLore
+            ? "Generating..."
+            : hex.narrative
+              ? "Regen Lore"
+              : "Generate Lore"}
         </button>
       </div>
 
@@ -70,9 +78,7 @@ export function HexCard({ hex }: HexCardProps) {
         </div>
       )}
 
-      {loreError && (
-        <p className="mt-2 text-xs text-red-400">{loreError}</p>
-      )}
+      {loreError && <p className="mt-2 text-xs text-red-400">{loreError}</p>}
 
       {hex.narrative && (
         <div className="mt-3 border-l-2 border-amber-800/30 pl-4 text-sm text-secondary leading-relaxed whitespace-pre-line italic">
