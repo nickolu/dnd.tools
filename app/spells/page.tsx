@@ -536,6 +536,7 @@ function SpellsPageContent() {
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {filteredSpells.map((spell) => (
             <SpellCard
+              detailHref={`/spells/${encodeURIComponent(spell.id)}`}
               isAdminMode={isAdminMode}
               key={spell.id}
               onSpellUpdated={async () => {
