@@ -11,6 +11,7 @@ import {
   toMonsterPayload,
 } from "@/page/admin-monsters-create/utils/form-state";
 import { LifeCounters } from "@/page/monsters/components/monster-card/components/life-counters";
+import { MonsterListToggle } from "@/page/monsters/components/monster-card/components/monster-list-toggle/monster-list-toggle";
 import { NamedTextSection } from "@/page/monsters/components/monster-card/components/named-text-section";
 import { ABILITY_ORDER } from "@/page/monsters/components/monster-card/constants";
 import type { MonsterCardProps } from "@/page/monsters/components/monster-card/types";
@@ -723,6 +724,12 @@ export function MonsterCard({
                 <line x1="10" x2="21" y1="14" y2="3" />
               </svg>
             </Link>
+          ) : null}
+          {!isAdminMode ? (
+            <MonsterListToggle
+              monsterId={monster.id}
+              monsterName={monster.name}
+            />
           ) : null}
           {isAdminMode ? (
             <button
