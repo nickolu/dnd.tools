@@ -54,6 +54,7 @@ const isMonsterSize = (
   MONSTER_SIZES.some((size) => size === value);
 
 export function MonsterCard({
+  detailHref,
   isAdminMode = false,
   onMonsterUpdated,
   monster,
@@ -696,35 +697,61 @@ export function MonsterCard({
             {monster.size} {monster.type}, {monster.alignment}
           </p>
         </div>
-        {isAdminMode ? (
-          <button
-            aria-label={`Edit ${monster.name}`}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--color-border-subtle)] text-secondary transition-colors hover:text-text-primary"
-            onClick={() => {
-              setErrorMessage(null);
-              setSuccessMessage(null);
-              setFormState(toMonsterFormState(monster));
-              setIsInlineEditing(true);
-            }}
-            title="Edit monster"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              fill="none"
-              height="16"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-              viewBox="0 0 24 24"
-              width="16"
+        <div className="flex items-center gap-1">
+          {detailHref ? (
+            <Link
+              aria-label={`Open ${monster.name} detail page`}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--color-border-subtle)] text-secondary transition-colors hover:text-text-primary"
+              href={detailHref}
+              title="Open detail page"
             >
-              <path d="M12 20h9" />
-              <path d="m16.5 3.5 4 4L8 20l-5 1 1-5 12.5-12.5Z" />
-            </svg>
-          </button>
-        ) : null}
+              <svg
+                aria-hidden="true"
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" x2="21" y1="14" y2="3" />
+              </svg>
+            </Link>
+          ) : null}
+          {isAdminMode ? (
+            <button
+              aria-label={`Edit ${monster.name}`}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--color-border-subtle)] text-secondary transition-colors hover:text-text-primary"
+              onClick={() => {
+                setErrorMessage(null);
+                setSuccessMessage(null);
+                setFormState(toMonsterFormState(monster));
+                setIsInlineEditing(true);
+              }}
+              title="Edit monster"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <path d="M12 20h9" />
+                <path d="m16.5 3.5 4 4L8 20l-5 1 1-5 12.5-12.5Z" />
+              </svg>
+            </button>
+          ) : null}
+        </div>
       </header>
 
       <dl className="typography-body-sm mb-4 grid gap-3 sm:grid-cols-2">

@@ -589,6 +589,7 @@ function MonstersPageContent() {
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {filteredMonsters.map((monster) => (
             <MonsterCard
+              detailHref={`/monsters/${encodeURIComponent(monster.id)}`}
               isAdminMode={isAdminMode}
               key={monster.id}
               onMonsterUpdated={async () => {
