@@ -10,6 +10,7 @@ import {
   toMonsterFormState,
   toMonsterPayload,
 } from "@/page/admin-monsters-create/utils/form-state";
+import { LifeCounters } from "@/page/monsters/components/monster-card/components/life-counters";
 import { NamedTextSection } from "@/page/monsters/components/monster-card/components/named-text-section";
 import { ABILITY_ORDER } from "@/page/monsters/components/monster-card/constants";
 import type { MonsterCardProps } from "@/page/monsters/components/monster-card/types";
@@ -19,6 +20,7 @@ import {
   formatSkillBonuses,
   inferProficiencyBonus,
 } from "@/page/monsters/components/monster-card/utils/formatMonster";
+import { parseLeadingInteger } from "@/page/monsters/utils/monster-filter-values";
 
 const ROLE_HEADER = "admin";
 
@@ -762,6 +764,13 @@ export function MonsterCard({
         <div>
           <dt className="text-muted">Hit Points</dt>
           <dd>{monster.hitPoints}</dd>
+          {!isInlineEditing &&
+            (() => {
+              const maxHp = parseLeadingInteger(monster.hitPoints);
+              return maxHp !== null ? (
+                <LifeCounters monsterId={monster.id} maxHp={maxHp} />
+              ) : null;
+            })()}
         </div>
         <div>
           <dt className="text-muted">Speed</dt>
