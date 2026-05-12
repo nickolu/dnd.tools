@@ -12,6 +12,7 @@ import {
   getReadableFetchError,
 } from "@/lib/api/client";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
+import { useSavedMonsterListStore } from "@/lib/store/useSavedMonsterListStore";
 import {
   applyPersistedFilterQueryParams,
   clearFilterQueryParams,
@@ -21,6 +22,7 @@ import {
 } from "@/lib/util/filter-query-persistence";
 import {
   MonsterCard,
+  MonsterListSelector,
   MonsterRangeFilters,
   MonsterResultsSummary,
 } from "@/page/monsters/components";
@@ -133,8 +135,25 @@ function MonstersPageContent() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null);
   const isAdminMode = searchParams.get("admin") === "true";
+
+  // Saved monster list state
+  const lists = useSavedMonsterListStore((s) => s.lists);
+  const listIdParam = searchParams.get("list");
+  const activeList = useMemo(
+    () =>
+      listIdParam ? (lists.find((l) => l.id === listIdParam) ?? null) : null,
+    [listIdParam, lists]
+  );
+
+  // Pre-filter monsters to active list scope before applying other filters
+  const monstersInScope = useMemo(() => {
+    if (!activeList) return monsters;
+    const idSet = new Set(activeList.monsterIds);
+    return monsters.filter((monster) => idSet.has(monster.id));
+  }, [monsters, activeList]);
+
   const { filteredMonsters, filters } = useMonsterFilters(
-    monsters,
+    monstersInScope,
     searchParams
   );
   const [searchInput, setSearchInput] = useState(filters.query);
@@ -148,6 +167,17 @@ function MonstersPageContent() {
   );
   const homeIntentFilterGroupKey = getHomeIntentFilterGroupKey(searchParams);
 
+  // Strip stale ?list=<id> if the list no longer exists
+  useEffect(() => {
+    if (listIdParam && !activeList) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("list");
+      router.replace(
+        `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+      );
+    }
+  }, [listIdParam, activeList, pathname, router, searchParams]);
+
   useEffect(() => {
     if (searchParams.get("intent") !== "search") {
       return;
@@ -156,6 +186,19 @@ function MonstersPageContent() {
     searchRef.current?.focus();
     searchRef.current?.select();
   }, [searchParams]);
+
+  // Handle intent=list from home page navigation: just clean up the intent param
+  useEffect(() => {
+    if (searchParams.get("intent") !== "list") {
+      return;
+    }
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("intent");
+    router.replace(
+      `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+    );
+  }, [searchParams, pathname, router]);
 
   useEffect(() => {
     if (hasHydratedPersistedFiltersRef.current) {
@@ -432,6 +475,12 @@ function MonstersPageContent() {
       <section className="surface-card p-6">
         <h1 className="typography-h1">Monsters</h1>
         <MonsterResultsSummary
+          {...(activeList
+            ? {
+                activeListName: activeList.name,
+                activeListTotal: monstersInScope.length,
+              }
+            : {})}
           isLoading={isLoading}
           total={monsters.length}
           visible={filteredMonsters.length}
@@ -488,6 +537,22 @@ function MonstersPageContent() {
         <div className="mt-4 space-y-3">
           <div className="relative">
             <div className="flex items-center gap-2">
+              <MonsterListSelector
+                activeListId={activeList?.id ?? null}
+                onListSelect={(listId) => {
+                  const params = new URLSearchParams(searchParams.toString());
+                  if (listId) {
+                    params.set("list", listId);
+                  } else {
+                    params.delete("list");
+                  }
+                  params.delete("intent");
+                  params.delete("filter");
+                  router.push(
+                    `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
+                  );
+                }}
+              />
               <input
                 className="input-field w-full px-3 py-2"
                 onChange={(event) => {
