@@ -2,14 +2,17 @@ export type {
   Combatant,
   CombatantSide,
   Encounter,
+  EncounterMap,
   EncounterRuleset,
   EncounterTips,
   InitiativeState,
   PartyMember,
+  Position,
 } from "./encounter.schema";
 export {
   combatantSchema,
   combatantSideSchema,
+  encounterMapSchema,
   encounterRulesetSchema,
   encounterSchema,
   encounterTipsSchema,

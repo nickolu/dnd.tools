@@ -14,6 +14,7 @@
   --color-accent-contrast: #1a1714;
   --color-focus-ring: #2d8a7e;
   --color-focus-ring-glow: rgba(45, 138, 126, 0.24);
+  --color-danger: #b25450;
   --font-body: var(--font-geist-sans), system-ui, sans-serif;
   --font-heading:
     var(--font-spectral), "Iowan Old Style", "Palatino Linotype", Georgia, serif;
@@ -39,6 +40,7 @@
   --color-accent-contrast: var(--color-accent-contrast);
   --color-focus-ring: var(--color-focus-ring);
   --color-focus-ring-glow: var(--color-focus-ring-glow);
+  --color-danger: var(--color-danger);
 }
 
 body {
