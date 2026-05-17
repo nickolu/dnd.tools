@@ -3,6 +3,7 @@ export { CombatantList } from "./combatant-list";
 export { EncounterEditor } from "./encounter-editor";
 export { EncounterEditorSidebar } from "./encounter-editor-sidebar";
 export { EncounterList } from "./encounter-list";
+export { EncounterMap } from "./encounter-map";
 export { EncounterTipsPanel } from "./encounter-tips-panel";
 export { InitiativeTracker } from "./initiative-tracker";
 export { MonsterAddPanel } from "./monster-add-panel";

@@ -12,10 +12,12 @@ import {
   type Combatant,
   type CombatantSide,
   type Encounter,
+  type EncounterMap,
   type EncounterRuleset,
   type EncounterTips,
   encounterTipsSchema,
   type PartyMember,
+  type Position,
 } from "@/lib/domain/encounter/encounter.schema";
 import { parseHitPoints } from "@/lib/domain/encounter/utils/parseHitPoints";
 import type { Monster } from "@/lib/domain/monster.schema";
@@ -94,7 +96,25 @@ type EncounterLibraryStore = {
   // Tips
   generateTips: (id: string, request: TipsRequestPayload) => Promise<void>;
   clearTips: (id: string) => void;
+  // Map
+  setMap: (id: string, partial: Partial<EncounterMap>) => void;
+  clearMap: (id: string) => void;
+  placeToken: (
+    id: string,
+    kind: TokenKind,
+    targetId: string,
+    pos: Position
+  ) => void;
+  removeToken: (id: string, kind: TokenKind, targetId: string) => void;
+  moveToken: (
+    id: string,
+    kind: TokenKind,
+    targetId: string,
+    pos: Position
+  ) => void;
 };
+
+export type TokenKind = "pc" | "combatant";
 
 const noopStorage: StateStorage = {
   getItem: () => null,
@@ -138,6 +158,40 @@ function updateCombatant(
     combatants: encounter.combatants.map((c) =>
       c.id === combatantId ? patch(c) : c
     ),
+  };
+}
+
+function applyTokenPosition(
+  encounter: Encounter,
+  kind: TokenKind,
+  targetId: string,
+  pos: Position | null
+): Encounter {
+  if (kind === "pc") {
+    return {
+      ...encounter,
+      partyMembers: encounter.partyMembers.map((p) => {
+        if (p.id !== targetId) return p;
+        if (pos === null) {
+          const { position: _drop, ...rest } = p;
+          void _drop;
+          return rest;
+        }
+        return { ...p, position: pos };
+      }),
+    };
+  }
+  return {
+    ...encounter,
+    combatants: encounter.combatants.map((c) => {
+      if (c.id !== targetId) return c;
+      if (pos === null) {
+        const { position: _drop, ...rest } = c;
+        void _drop;
+        return rest;
+      }
+      return { ...c, position: pos };
+    }),
   };
 }
 
@@ -214,6 +268,7 @@ function readTips(v: unknown): Encounter["tips"] {
 function migratePartyMember(raw: unknown): PartyMember {
   const r = isPlainObject(raw) ? raw : {};
   const notesValue = typeof r.notes === "string" ? r.notes : undefined;
+  const position = readPosition(r.position);
   const member: PartyMember = {
     id: readString(r.id, crypto.randomUUID()),
     kind: "pc",
@@ -221,6 +276,7 @@ function migratePartyMember(raw: unknown): PartyMember {
     level: clamp(Math.trunc(readFiniteNumber(r.level, 1)), 1, 20),
     initiativeMod: Math.trunc(readFiniteNumber(r.initiativeMod, 0)),
     initiative: readNullableNumber(r.initiative),
+    ...(position !== null ? { position } : {}),
     ...(notesValue !== undefined ? { notes: notesValue } : {}),
   };
   return member;
@@ -252,10 +308,28 @@ function migrateCombatant(raw: unknown): Combatant {
   return combatant;
 }
 
+function readMap(v: unknown): EncounterMap | null {
+  if (!isPlainObject(v)) return null;
+  if (v.grid !== "square") return null;
+  const cols = clamp(Math.trunc(readFiniteNumber(v.cols, 20)), 4, 60);
+  const rows = clamp(Math.trunc(readFiniteNumber(v.rows, 15)), 4, 60);
+  const cellSize = clamp(Math.trunc(readFiniteNumber(v.cellSize, 48)), 24, 96);
+  const backgroundUrl =
+    typeof v.backgroundUrl === "string" ? v.backgroundUrl : undefined;
+  return {
+    grid: "square",
+    cols,
+    rows,
+    cellSize,
+    ...(backgroundUrl !== undefined ? { backgroundUrl } : {}),
+  };
+}
+
 function migrateEncounterToCurrent(raw: unknown): Encounter {
   const r = isPlainObject(raw) ? raw : {};
   const partyMembersRaw = Array.isArray(r.partyMembers) ? r.partyMembers : [];
   const combatantsRaw = Array.isArray(r.combatants) ? r.combatants : [];
+  const map = readMap(r.map);
   return {
     id: readString(r.id, crypto.randomUUID()),
     name: readString(r.name, "Untitled encounter"),
@@ -265,6 +339,7 @@ function migrateEncounterToCurrent(raw: unknown): Encounter {
     initiative: readInitiativeState(r.initiative),
     tips: readTips(r.tips),
     tipsGeneratedAt: readNullableNumber(r.tipsGeneratedAt),
+    ...(map !== null ? { map } : {}),
     createdAt: readFiniteNumber(r.createdAt, Date.now()),
     updatedAt: readFiniteNumber(r.updatedAt, Date.now()),
   };
@@ -756,6 +831,77 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           },
         }));
       },
+
+      setMap: (id: string, partial: Partial<EncounterMap>): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => {
+            const current: EncounterMap = e.map ?? {
+              grid: "square",
+              cols: 20,
+              rows: 15,
+              cellSize: 48,
+            };
+            const next: EncounterMap = { ...current, ...partial };
+            return { ...e, map: next };
+          }),
+        }));
+      },
+
+      clearMap: (id: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => {
+            const { map: _drop, ...rest } = e;
+            void _drop;
+            return {
+              ...rest,
+              partyMembers: e.partyMembers.map((p) => {
+                const { position: _p, ...pRest } = p;
+                void _p;
+                return pRest;
+              }),
+              combatants: e.combatants.map((c) => {
+                const { position: _p, ...cRest } = c;
+                void _p;
+                return cRest;
+              }),
+            };
+          }),
+        }));
+      },
+
+      placeToken: (
+        id: string,
+        kind: TokenKind,
+        targetId: string,
+        pos: Position
+      ): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) =>
+            applyTokenPosition(e, kind, targetId, pos)
+          ),
+        }));
+      },
+
+      moveToken: (
+        id: string,
+        kind: TokenKind,
+        targetId: string,
+        pos: Position
+      ): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) =>
+            applyTokenPosition(e, kind, targetId, pos)
+          ),
+        }));
+      },
+
+      removeToken: (id: string, kind: TokenKind, targetId: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) =>
+            applyTokenPosition(e, kind, targetId, null)
+          ),
+        }));
+      },
     }),
     {
       name: "dnd-tools-encounters",
@@ -763,7 +909,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         encounters: state.encounters,
       }),
       storage: createJSONStorage(() => persistenceStorage),
-      version: 2,
+      version: 3,
       migrate: migrateEncounterLibrary,
     }
   )

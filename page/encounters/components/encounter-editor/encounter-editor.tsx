@@ -47,6 +47,7 @@ export function EncounterEditor({ encounterId }: Props) {
 
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
+  const [focusMap, setFocusMap] = useState(false);
 
   // Hook must run unconditionally — fall back to an empty shell when missing.
   const balance = useEncounterBalance(encounter ?? EMPTY_ENCOUNTER);
@@ -144,6 +145,14 @@ export function EncounterEditor({ encounterId }: Props) {
           <button
             type="button"
             className="admin-button-secondary typography-body-sm px-3 py-1"
+            onClick={() => setFocusMap((v) => !v)}
+            aria-pressed={focusMap}
+          >
+            {focusMap ? "Exit focus mode" : "Focus map"}
+          </button>
+          <button
+            type="button"
+            className="admin-button-secondary typography-body-sm px-3 py-1"
             onClick={handleDelete}
           >
             Delete encounter
@@ -151,8 +160,8 @@ export function EncounterEditor({ encounterId }: Props) {
         </div>
       </header>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="flex flex-col gap-4">
+      <div className={focusMap ? "grid gap-4" : "grid gap-4 lg:grid-cols-2"}>
+        <div className={focusMap ? "hidden" : "flex flex-col gap-4"}>
           <PartyRoster
             encounterId={encounter.id}
             partyMembers={encounter.partyMembers}

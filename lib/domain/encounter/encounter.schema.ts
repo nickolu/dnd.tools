@@ -8,6 +8,14 @@ const positionSchema = z.object({
   y: z.number(),
 });
 
+export const encounterMapSchema = z.object({
+  grid: z.literal("square"),
+  cols: z.number().int().min(4).max(60),
+  rows: z.number().int().min(4).max(60),
+  cellSize: z.number().int().min(24).max(96),
+  backgroundUrl: z.string().url().optional(),
+});
+
 export const encounterTipsSchema = z.object({
   terrainIdeas: z.array(z.string()),
   environmentalHazards: z.array(z.string()),
@@ -27,6 +35,7 @@ export const partyMemberSchema = z.object({
   level: z.number().int().min(1).max(20),
   initiativeMod: z.number().int(),
   initiative: z.number().int().nullable(),
+  position: positionSchema.optional(),
   notes: z.string().optional(),
 });
 
@@ -52,6 +61,7 @@ export const encounterSchema = z.object({
   initiative: initiativeStateSchema,
   tips: encounterTipsSchema.nullable(),
   tipsGeneratedAt: z.number().nullable(),
+  map: encounterMapSchema.optional(),
   createdAt: z.number(),
   updatedAt: z.number(),
 });
@@ -59,7 +69,9 @@ export const encounterSchema = z.object({
 export type EncounterRuleset = z.infer<typeof encounterRulesetSchema>;
 export type CombatantSide = z.infer<typeof combatantSideSchema>;
 export type EncounterTips = z.infer<typeof encounterTipsSchema>;
+export type EncounterMap = z.infer<typeof encounterMapSchema>;
 export type InitiativeState = z.infer<typeof initiativeStateSchema>;
+export type Position = z.infer<typeof positionSchema>;
 export type PartyMember = z.infer<typeof partyMemberSchema>;
 export type Combatant = z.infer<typeof combatantSchema>;
 export type Encounter = z.infer<typeof encounterSchema>;
