@@ -13,6 +13,7 @@ import {
 } from "@/lib/api/client";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { useSpells } from "@/lib/query/hooks/useSpells";
+import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
 import { useSavedMonsterListStore } from "@/lib/store/useSavedMonsterListStore";
 import { useSavedSpellListStore } from "@/lib/store/useSavedSpellListStore";
 
@@ -44,9 +45,27 @@ const MONSTER_WIDGET_FILTERS: WidgetFilterOption[] = [
   { id: "senses:darkvision", label: "Darkvision" },
 ];
 
+const NEW_ENCOUNTER_CHIP_ID = "new";
+const ENCOUNTERS_WIDGET_PINNED_CHIP: WidgetFilterOption = {
+  id: NEW_ENCOUNTER_CHIP_ID,
+  label: "+ New encounter",
+};
+
 export default function Home() {
   const savedSpellLists = useSavedSpellListStore((s) => s.lists);
   const savedMonsterLists = useSavedMonsterListStore((s) => s.lists);
+  const savedEncounters = useEncounterLibraryStore((s) => s.encounters);
+
+  const encounterWidgetFilters = useMemo<WidgetFilterOption[]>(() => {
+    const recent = [...savedEncounters]
+      .sort((a, b) => b.updatedAt - a.updatedAt)
+      .slice(0, 6)
+      .map<WidgetFilterOption>((e) => ({
+        id: `open:${e.id}`,
+        label: e.name,
+      }));
+    return [ENCOUNTERS_WIDGET_PINNED_CHIP, ...recent];
+  }, [savedEncounters]);
 
   const spellWidgetFilters = useMemo<WidgetFilterOption[]>(() => {
     if (savedSpellLists.length === 0) return SPELL_WIDGET_FILTERS;
@@ -85,10 +104,14 @@ export default function Home() {
 
   const [monsterSearch, setMonsterSearch] = useState("");
   const [spellSearch, setSpellSearch] = useState("");
+  const [encounterSearch, setEncounterSearch] = useState("");
   const [monsterFilter, setMonsterFilter] = useState<string | undefined>(
     undefined
   );
   const [spellFilter, setSpellFilter] = useState<string | undefined>(undefined);
+  const [encounterFilter, setEncounterFilter] = useState<string | undefined>(
+    undefined
+  );
   const [isRefreshingAll, setIsRefreshingAll] = useState(false);
   const [lastSyncedSpellsAt, setLastSyncedSpellsAt] = useState<number | null>(
     null
@@ -249,6 +272,21 @@ export default function Home() {
           selectedFilterId={monsterFilter}
           title="Monsters"
           value={monsterSearch}
+        />
+
+        <ToolWidgetCard
+          description={
+            savedEncounters.length === 0
+              ? "Build balanced encounters with CR 2.0 math."
+              : `${savedEncounters.length} saved encounter${savedEncounters.length === 1 ? "" : "s"}`
+          }
+          filterOptions={encounterWidgetFilters}
+          onFilterSelect={setEncounterFilter}
+          onSearchChange={setEncounterSearch}
+          route="/encounters"
+          selectedFilterId={encounterFilter}
+          title="Encounters"
+          value={encounterSearch}
         />
       </section>
     </main>
