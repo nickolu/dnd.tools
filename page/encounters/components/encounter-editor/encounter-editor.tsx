@@ -12,6 +12,7 @@ import { useEncounterBalance } from "@/page/encounters/hooks/useEncounterBalance
 
 import { BalanceSummary } from "../balance-summary";
 import { CombatantList } from "../combatant-list";
+import { EncounterEditorSidebar } from "../encounter-editor-sidebar";
 import { MonsterAddPanel } from "../monster-add-panel";
 import { PartyRoster } from "../party-roster";
 import { RulesetToggle } from "../ruleset-toggle";
@@ -26,9 +27,11 @@ const EMPTY_ENCOUNTER = {
   ruleset: "advanced" as const,
   partyMembers: [],
   combatants: [],
+  initiative: { round: 1, activeIndex: null },
+  tips: null,
+  tipsGeneratedAt: null,
   createdAt: 0,
   updatedAt: 0,
-  schemaVersion: 1 as const,
 };
 
 export function EncounterEditor({ encounterId }: Props) {
@@ -156,8 +159,6 @@ export function EncounterEditor({ encounterId }: Props) {
             allies={allies}
           />
           <MonsterAddPanel encounterId={encounter.id} />
-        </div>
-        <div className="flex flex-col gap-4">
           <BalanceSummary
             result={balance}
             hasParty={encounter.partyMembers.length > 0}
@@ -166,6 +167,9 @@ export function EncounterEditor({ encounterId }: Props) {
             encounterId={encounter.id}
             combatants={encounter.combatants}
           />
+        </div>
+        <div className="flex flex-col gap-4">
+          <EncounterEditorSidebar encounterId={encounter.id} />
         </div>
       </div>
     </main>

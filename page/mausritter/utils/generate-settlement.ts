@@ -3,9 +3,9 @@ import governanceData from "@/lib/domain/mausritter/data/settlements/governance.
 import industryData from "@/lib/domain/mausritter/data/settlements/industry.json";
 import detailsData from "@/lib/domain/mausritter/data/settlements/settlement-details.json";
 import sizeData from "@/lib/domain/mausritter/data/settlements/settlement-size.json";
+import { matchesRoll, rollDie } from "@/lib/util/dice";
 
 import type { GeneratedSettlement } from "../types";
-import { matchesRoll, rollDie } from "./dice";
 import { generateSettlementName, generateTavernName } from "./generate-name";
 import { generateNpc } from "./generate-npc";
 import { rollOnRandomTable } from "./roll-on-table";

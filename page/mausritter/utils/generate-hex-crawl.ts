@@ -1,7 +1,7 @@
 import factionsData from "@/lib/domain/mausritter/data/factions/factions.json";
+import { shuffled } from "@/lib/util/dice";
 
 import type { GeneratedFaction, HexCrawlConfig, HexCrawlState } from "../types";
-import { shuffled } from "./dice";
 import { generateAdventureSite } from "./generate-adventure-site";
 import { generateHex } from "./generate-hex";
 import { generateSettlement } from "./generate-settlement";

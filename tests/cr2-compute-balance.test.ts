@@ -9,7 +9,14 @@ import type {
 } from "@/lib/domain/encounter/encounter.schema";
 
 function pc(level: number, id: string): PartyMember {
-  return { id, kind: "pc", name: `PC ${level}`, level };
+  return {
+    id,
+    kind: "pc",
+    name: `PC ${level}`,
+    level,
+    initiativeMod: 0,
+    initiative: null,
+  };
 }
 
 function combatant(
@@ -25,6 +32,7 @@ function combatant(
     side,
     maxHp: 10,
     currentHp: 10,
+    initiative: null,
   };
 }
 
@@ -39,9 +47,11 @@ function encounter(
     ruleset,
     partyMembers,
     combatants,
+    initiative: { round: 1, activeIndex: null },
+    tips: null,
+    tipsGeneratedAt: null,
     createdAt: 0,
     updatedAt: 0,
-    schemaVersion: 1,
   };
 }
 

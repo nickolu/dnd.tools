@@ -45,7 +45,9 @@ describe("useEncounterLibraryStore", () => {
     expect(encounter.ruleset).toBe("advanced");
     expect(encounter.partyMembers).toEqual([]);
     expect(encounter.combatants).toEqual([]);
-    expect(encounter.schemaVersion).toBe(1);
+    expect(encounter.initiative).toEqual({ round: 1, activeIndex: null });
+    expect(encounter.tips).toBeNull();
+    expect(encounter.tipsGeneratedAt).toBeNull();
   });
 
   it("createEncounter with explicit blank name is a no-op", () => {
