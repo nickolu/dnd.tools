@@ -1,4 +1,4 @@
-import { matchesRoll, parseDie, pickRandom, rollDie } from "./dice";
+import { matchesRoll, parseDie, pickRandom, rollDie } from "@/lib/util/dice";
 
 type TableLike = {
   die: string;

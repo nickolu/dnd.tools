@@ -4,9 +4,9 @@ import obstacleData from "@/lib/domain/mausritter/data/adventure-sites/obstacle.
 import puzzleData from "@/lib/domain/mausritter/data/adventure-sites/puzzle.json";
 import roomStockingData from "@/lib/domain/mausritter/data/adventure-sites/room-stocking.json";
 import trapData from "@/lib/domain/mausritter/data/adventure-sites/trap.json";
+import { matchesRoll, rollDie } from "@/lib/util/dice";
 
 import type { GeneratedRoom } from "../types";
-import { matchesRoll, rollDie } from "./dice";
 import { generateTreasure } from "./generate-treasure";
 import { rollOnRandomTable } from "./roll-on-table";
 

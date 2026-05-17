@@ -4,9 +4,9 @@ import countrysideData from "@/lib/domain/mausritter/data/hex-contents/landmarks
 import forestData from "@/lib/domain/mausritter/data/hex-contents/landmarks-forest.json";
 import humanTownData from "@/lib/domain/mausritter/data/hex-contents/landmarks-human-town.json";
 import riverData from "@/lib/domain/mausritter/data/hex-contents/landmarks-river.json";
+import { matchesRoll, rollDie } from "@/lib/util/dice";
 
 import type { GeneratedHex } from "../types";
-import { matchesRoll, rollDie } from "./dice";
 import { rollOnRandomTable } from "./roll-on-table";
 
 const landmarkTableByType: Record<string, typeof countrysideData> = {

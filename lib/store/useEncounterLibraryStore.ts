@@ -8,15 +8,19 @@ import {
   type StateStorage,
 } from "zustand/middleware";
 
-import type {
-  Combatant,
-  CombatantSide,
-  Encounter,
-  EncounterRuleset,
-  PartyMember,
+import {
+  type Combatant,
+  type CombatantSide,
+  type Encounter,
+  type EncounterRuleset,
+  type EncounterTips,
+  encounterTipsSchema,
+  type PartyMember,
 } from "@/lib/domain/encounter/encounter.schema";
 import { parseHitPoints } from "@/lib/domain/encounter/utils/parseHitPoints";
 import type { Monster } from "@/lib/domain/monster.schema";
+import type { TipsRequestPayload } from "@/lib/encounter-tips/types";
+import { rollDie } from "@/lib/util/dice";
 
 type AddPcInput = {
   name: string;
@@ -31,8 +35,15 @@ type AddCombatantInput = {
   quantity?: number;
 };
 
+type TipsEphemeral = {
+  loading: boolean;
+  error: string | null;
+};
+
 type EncounterLibraryStore = {
   encounters: Encounter[];
+  // Ephemeral per-encounter LLM call state (not persisted to IDB)
+  tipsEphemeral: Record<string, TipsEphemeral>;
   // Library
   createEncounter: (name?: string) => string;
   deleteEncounter: (id: string) => void;
@@ -53,6 +64,36 @@ type EncounterLibraryStore = {
   adjustHp: (id: string, combatantId: string, delta: number) => void;
   setHp: (id: string, combatantId: string, currentHp: number) => void;
   setMaxHp: (id: string, combatantId: string, maxHp: number) => void;
+  // Initiative
+  setCombatantInitiative: (
+    id: string,
+    combatantId: string,
+    value: number | null
+  ) => void;
+  setPartyMemberInitiative: (
+    id: string,
+    memberId: string,
+    value: number | null
+  ) => void;
+  setPartyMemberInitiativeMod: (
+    id: string,
+    memberId: string,
+    mod: number
+  ) => void;
+  rollCombatantInitiatives: (
+    id: string,
+    dexModByCombatantId: Map<string, number>,
+    sideFilter?: CombatantSide
+  ) => void;
+  rollPartyMemberInitiatives: (id: string) => void;
+  setActiveTurn: (id: string, activeIndex: number | null) => void;
+  nextTurn: (id: string) => void;
+  previousTurn: (id: string) => void;
+  resetInitiative: (id: string) => void;
+  endEncounter: (id: string) => void;
+  // Tips
+  generateTips: (id: string, request: TipsRequestPayload) => Promise<void>;
+  clearTips: (id: string) => void;
 };
 
 const noopStorage: StateStorage = {
@@ -111,10 +152,147 @@ function bounded(level: number): number {
   return clamp(Math.trunc(level), 1, 20);
 }
 
+export type PersistedEncounterLibrary = {
+  encounters: Encounter[];
+};
+
+function isPlainObject(v: unknown): v is Record<string, unknown> {
+  return v !== null && typeof v === "object" && !Array.isArray(v);
+}
+
+function readString(v: unknown, fallback: string): string {
+  return typeof v === "string" ? v : fallback;
+}
+
+function readFiniteNumber(v: unknown, fallback: number): number {
+  return typeof v === "number" && Number.isFinite(v) ? v : fallback;
+}
+
+function readNullableNumber(v: unknown): number | null {
+  return typeof v === "number" && Number.isFinite(v) ? v : null;
+}
+
+function readRuleset(v: unknown): EncounterRuleset {
+  return v === "basic" ? "basic" : "advanced";
+}
+
+function readSide(v: unknown): CombatantSide {
+  return v === "ally" ? "ally" : "enemy";
+}
+
+function readPosition(v: unknown): { x: number; y: number } | null {
+  if (!isPlainObject(v)) return null;
+  const x = readNullableNumber(v.x);
+  const y = readNullableNumber(v.y);
+  if (x === null || y === null) return null;
+  return { x, y };
+}
+
+function readInitiativeState(v: unknown): {
+  round: number;
+  activeIndex: number | null;
+} {
+  if (!isPlainObject(v)) return { round: 1, activeIndex: null };
+  return {
+    round: Math.max(1, Math.trunc(readFiniteNumber(v.round, 1))),
+    activeIndex: readNullableNumber(v.activeIndex),
+  };
+}
+
+function readTips(v: unknown): Encounter["tips"] {
+  if (!isPlainObject(v)) return null;
+  const arrOfStrings = (raw: unknown): string[] =>
+    Array.isArray(raw) ? raw.filter((s) => typeof s === "string") : [];
+  return {
+    terrainIdeas: arrOfStrings(v.terrainIdeas),
+    environmentalHazards: arrOfStrings(v.environmentalHazards),
+    mechanicSuggestions: arrOfStrings(v.mechanicSuggestions),
+    tacticalNotes: readString(v.tacticalNotes, ""),
+  };
+}
+
+function migratePartyMember(raw: unknown): PartyMember {
+  const r = isPlainObject(raw) ? raw : {};
+  const notesValue = typeof r.notes === "string" ? r.notes : undefined;
+  const member: PartyMember = {
+    id: readString(r.id, crypto.randomUUID()),
+    kind: "pc",
+    name: readString(r.name, "PC"),
+    level: clamp(Math.trunc(readFiniteNumber(r.level, 1)), 1, 20),
+    initiativeMod: Math.trunc(readFiniteNumber(r.initiativeMod, 0)),
+    initiative: readNullableNumber(r.initiative),
+    ...(notesValue !== undefined ? { notes: notesValue } : {}),
+  };
+  return member;
+}
+
+function migrateCombatant(raw: unknown): Combatant {
+  const r = isPlainObject(raw) ? raw : {};
+  const maxHp = Math.max(1, Math.trunc(readFiniteNumber(r.maxHp, 1)));
+  const currentHp = clamp(
+    Math.trunc(readFiniteNumber(r.currentHp, maxHp)),
+    0,
+    maxHp
+  );
+  const position = readPosition(r.position);
+  const nameOverride =
+    typeof r.nameOverride === "string" ? r.nameOverride : undefined;
+  const combatant: Combatant = {
+    id: readString(r.id, crypto.randomUUID()),
+    monsterId: readString(r.monsterId, ""),
+    monsterName: readString(r.monsterName, "Unknown"),
+    monsterCrNumeric: Math.max(0, readFiniteNumber(r.monsterCrNumeric, 0)),
+    side: readSide(r.side),
+    maxHp,
+    currentHp,
+    initiative: readNullableNumber(r.initiative),
+    ...(nameOverride !== undefined ? { nameOverride } : {}),
+    ...(position !== null ? { position } : {}),
+  };
+  return combatant;
+}
+
+function migrateEncounterToCurrent(raw: unknown): Encounter {
+  const r = isPlainObject(raw) ? raw : {};
+  const partyMembersRaw = Array.isArray(r.partyMembers) ? r.partyMembers : [];
+  const combatantsRaw = Array.isArray(r.combatants) ? r.combatants : [];
+  return {
+    id: readString(r.id, crypto.randomUUID()),
+    name: readString(r.name, "Untitled encounter"),
+    ruleset: readRuleset(r.ruleset),
+    partyMembers: partyMembersRaw.map(migratePartyMember),
+    combatants: combatantsRaw.map(migrateCombatant),
+    initiative: readInitiativeState(r.initiative),
+    tips: readTips(r.tips),
+    tipsGeneratedAt: readNullableNumber(r.tipsGeneratedAt),
+    createdAt: readFiniteNumber(r.createdAt, Date.now()),
+    updatedAt: readFiniteNumber(r.updatedAt, Date.now()),
+  };
+}
+
+// Migrates persisted state from older `version` values up to the current
+// schema. Each step is additive: Slice 2 fills in `initiative`, `tips`,
+// `tipsGeneratedAt` on encounters (with defaults) and `initiativeMod`,
+// `initiative` on party members + combatants. Unknown shapes are coerced
+// with sensible defaults rather than dropped so saved encounters survive
+// even if a v1 record was hand-edited.
+export function migrateEncounterLibrary(
+  persistedState: unknown,
+  fromVersion: number
+): PersistedEncounterLibrary {
+  const state = isPlainObject(persistedState) ? persistedState : {};
+  const rawEncounters = Array.isArray(state.encounters) ? state.encounters : [];
+  if (fromVersion < 1) {
+    return { encounters: [] };
+  }
+  return { encounters: rawEncounters.map(migrateEncounterToCurrent) };
+}
+
 export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
   persist(
     (set, get) => ({
       encounters: [],
+      tipsEphemeral: {},
 
       createEncounter: (name?: string): string => {
         if (name !== undefined && name.trim() === "") {
@@ -128,9 +306,11 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           ruleset: "advanced",
           partyMembers: [],
           combatants: [],
+          initiative: { round: 1, activeIndex: null },
+          tips: null,
+          tipsGeneratedAt: null,
           createdAt: now,
           updatedAt: now,
-          schemaVersion: 1,
         };
         set((state) => ({ encounters: [...state.encounters, newEncounter] }));
         return id;
@@ -196,6 +376,8 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           kind: "pc",
           name: trimmed,
           level: bounded(input.level),
+          initiativeMod: 0,
+          initiative: null,
         };
         set((state) => ({
           encounters: updateEncounter(state.encounters, id, (e) => ({
@@ -255,6 +437,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
             side: input.side,
             maxHp,
             currentHp: maxHp,
+            initiative: null,
           });
         }
         set((state) => ({
@@ -329,6 +512,250 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           ),
         }));
       },
+
+      setCombatantInitiative: (
+        id: string,
+        combatantId: string,
+        value: number | null
+      ): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) =>
+            updateCombatant(e, combatantId, (c) => ({
+              ...c,
+              initiative: value === null ? null : Math.trunc(value),
+            }))
+          ),
+        }));
+      },
+
+      setPartyMemberInitiative: (
+        id: string,
+        memberId: string,
+        value: number | null
+      ): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => ({
+            ...e,
+            partyMembers: e.partyMembers.map((p) =>
+              p.id === memberId
+                ? {
+                    ...p,
+                    initiative: value === null ? null : Math.trunc(value),
+                  }
+                : p
+            ),
+          })),
+        }));
+      },
+
+      setPartyMemberInitiativeMod: (
+        id: string,
+        memberId: string,
+        mod: number
+      ): void => {
+        const safe = Number.isFinite(mod) ? Math.trunc(mod) : 0;
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => ({
+            ...e,
+            partyMembers: e.partyMembers.map((p) =>
+              p.id === memberId ? { ...p, initiativeMod: safe } : p
+            ),
+          })),
+        }));
+      },
+
+      rollCombatantInitiatives: (
+        id: string,
+        dexModByCombatantId: Map<string, number>,
+        sideFilter?: CombatantSide
+      ): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => ({
+            ...e,
+            combatants: e.combatants.map((c) => {
+              if (sideFilter && c.side !== sideFilter) return c;
+              const mod = dexModByCombatantId.get(c.id) ?? 0;
+              return { ...c, initiative: rollDie(20) + mod };
+            }),
+          })),
+        }));
+      },
+
+      rollPartyMemberInitiatives: (id: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => ({
+            ...e,
+            partyMembers: e.partyMembers.map((p) => ({
+              ...p,
+              initiative: rollDie(20) + p.initiativeMod,
+            })),
+          })),
+        }));
+      },
+
+      setActiveTurn: (id: string, activeIndex: number | null): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => ({
+            ...e,
+            initiative: { ...e.initiative, activeIndex },
+          })),
+        }));
+      },
+
+      nextTurn: (id: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => {
+            const total = e.partyMembers.length + e.combatants.length;
+            if (total === 0) return e;
+            const current = e.initiative.activeIndex;
+            if (current === null) {
+              return {
+                ...e,
+                initiative: { round: e.initiative.round, activeIndex: 0 },
+              };
+            }
+            const wraps = current + 1 >= total;
+            return {
+              ...e,
+              initiative: {
+                round: wraps ? e.initiative.round + 1 : e.initiative.round,
+                activeIndex: wraps ? 0 : current + 1,
+              },
+            };
+          }),
+        }));
+      },
+
+      previousTurn: (id: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => {
+            const total = e.partyMembers.length + e.combatants.length;
+            if (total === 0) return e;
+            const current = e.initiative.activeIndex;
+            if (current === null || current <= 0) {
+              if (e.initiative.round <= 1) return e;
+              return {
+                ...e,
+                initiative: {
+                  round: e.initiative.round - 1,
+                  activeIndex: total - 1,
+                },
+              };
+            }
+            return {
+              ...e,
+              initiative: {
+                round: e.initiative.round,
+                activeIndex: current - 1,
+              },
+            };
+          }),
+        }));
+      },
+
+      resetInitiative: (id: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => ({
+            ...e,
+            partyMembers: e.partyMembers.map((p) => ({
+              ...p,
+              initiative: null,
+            })),
+            combatants: e.combatants.map((c) => ({ ...c, initiative: null })),
+            initiative: { round: 1, activeIndex: null },
+          })),
+        }));
+      },
+
+      endEncounter: (id: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => ({
+            ...e,
+            partyMembers: e.partyMembers.map((p) => ({
+              ...p,
+              initiative: null,
+            })),
+            combatants: e.combatants.map((c) => ({
+              ...c,
+              initiative: null,
+              currentHp: c.maxHp,
+            })),
+            initiative: { round: 1, activeIndex: null },
+          })),
+        }));
+      },
+
+      generateTips: async (
+        id: string,
+        request: TipsRequestPayload
+      ): Promise<void> => {
+        set((state) => ({
+          tipsEphemeral: {
+            ...state.tipsEphemeral,
+            [id]: { loading: true, error: null },
+          },
+        }));
+        try {
+          const response = await fetch("/api/encounters/tips", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(request),
+          });
+          const envelope: unknown = await response.json();
+          if (!isPlainObject(envelope)) {
+            throw new Error("Unexpected response shape.");
+          }
+          if (envelope.ok !== true) {
+            const errObj = isPlainObject(envelope.error)
+              ? envelope.error
+              : null;
+            const message =
+              errObj && typeof errObj.message === "string"
+                ? errObj.message
+                : "Failed to generate tips.";
+            throw new Error(message);
+          }
+          const tipsParse = encounterTipsSchema.safeParse(envelope.data);
+          if (!tipsParse.success) {
+            throw new Error("Tips response invalid shape.");
+          }
+          const tips: EncounterTips = tipsParse.data;
+          set((state) => ({
+            encounters: updateEncounter(state.encounters, id, (e) => ({
+              ...e,
+              tips,
+              tipsGeneratedAt: Date.now(),
+            })),
+            tipsEphemeral: {
+              ...state.tipsEphemeral,
+              [id]: { loading: false, error: null },
+            },
+          }));
+        } catch (error) {
+          const message =
+            error instanceof Error ? error.message : "Failed to generate tips.";
+          set((state) => ({
+            tipsEphemeral: {
+              ...state.tipsEphemeral,
+              [id]: { loading: false, error: message },
+            },
+          }));
+        }
+      },
+
+      clearTips: (id: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => ({
+            ...e,
+            tips: null,
+            tipsGeneratedAt: null,
+          })),
+          tipsEphemeral: {
+            ...state.tipsEphemeral,
+            [id]: { loading: false, error: null },
+          },
+        }));
+      },
     }),
     {
       name: "dnd-tools-encounters",
@@ -336,7 +763,8 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         encounters: state.encounters,
       }),
       storage: createJSONStorage(() => persistenceStorage),
-      version: 1,
+      version: 2,
+      migrate: migrateEncounterLibrary,
     }
   )
 );

@@ -1,7 +1,7 @@
 import npcData from "@/lib/domain/mausritter/data/npcs/non-player-mice.json";
+import { matchesRoll, rollDie } from "@/lib/util/dice";
 
 import type { GeneratedNpc } from "../types";
-import { matchesRoll, rollDie } from "./dice";
 import { generateMouseName } from "./generate-name";
 
 function getVal(

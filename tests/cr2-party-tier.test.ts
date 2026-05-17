@@ -4,7 +4,14 @@ import { getPartyTier } from "@/lib/domain/encounter/cr2/getPartyTier";
 import type { PartyMember } from "@/lib/domain/encounter/encounter.schema";
 
 function pc(level: number, id = `pc-${level}`): PartyMember {
-  return { id, kind: "pc", name: `PC ${level}`, level };
+  return {
+    id,
+    kind: "pc",
+    name: `PC ${level}`,
+    level,
+    initiativeMod: 0,
+    initiative: null,
+  };
 }
 
 describe("getPartyTier", () => {

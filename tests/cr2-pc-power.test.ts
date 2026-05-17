@@ -5,7 +5,14 @@ import { PC_POWER_BY_LEVEL } from "@/lib/domain/encounter/cr2/constants";
 import type { PartyMember } from "@/lib/domain/encounter/encounter.schema";
 
 function pc(level: number, id = `pc-${level}`): PartyMember {
-  return { id, kind: "pc", name: `PC ${level}`, level };
+  return {
+    id,
+    kind: "pc",
+    name: `PC ${level}`,
+    level,
+    initiativeMod: 0,
+    initiative: null,
+  };
 }
 
 describe("PC_POWER_BY_LEVEL", () => {
@@ -57,6 +64,7 @@ describe("computePartyPower", () => {
       side: "ally" as const,
       maxHp: 10,
       currentHp: 10,
+      initiative: null,
     };
     const partyPowerWithAlly = computePartyPower(
       [pc(5), pc(5), pc(5), pc(5)],

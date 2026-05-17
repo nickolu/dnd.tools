@@ -1,7 +1,11 @@
 export { BalanceSummary } from "./balance-summary";
 export { CombatantList } from "./combatant-list";
 export { EncounterEditor } from "./encounter-editor";
+export { EncounterEditorSidebar } from "./encounter-editor-sidebar";
 export { EncounterList } from "./encounter-list";
+export { EncounterTipsPanel } from "./encounter-tips-panel";
+export { InitiativeTracker } from "./initiative-tracker";
 export { MonsterAddPanel } from "./monster-add-panel";
 export { PartyRoster } from "./party-roster";
 export { RulesetToggle } from "./ruleset-toggle";
+export { SpellAggregatePanel } from "./spell-aggregate-panel";

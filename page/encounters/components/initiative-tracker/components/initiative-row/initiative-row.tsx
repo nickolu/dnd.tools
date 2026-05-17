@@ -1,0 +1,131 @@
+"use client";
+
+import type { InitiativeRow as RowData } from "@/page/encounters/utils/initiativeOrder";
+
+type Props = {
+  row: RowData;
+  hpDisplay?: string;
+  isActive: boolean;
+  // For PC rows we additionally surface initiativeMod for the user to edit.
+  editableMod?: boolean;
+  onSetInitiative: (value: number | null) => void;
+  onSetMod?: (mod: number) => void;
+  onRoll: () => void;
+};
+
+export function InitiativeRow({
+  row,
+  hpDisplay,
+  isActive,
+  editableMod,
+  onSetInitiative,
+  onSetMod,
+  onRoll,
+}: Props) {
+  const initiativeValue = row.initiative === null ? "" : String(row.initiative);
+  const modValue = String(row.dexMod);
+  const sideLabel = row.side === "enemy" ? "Enemy" : "Ally";
+
+  return (
+    <li
+      className="flex flex-col gap-2 rounded-md border p-2"
+      style={{
+        borderColor: isActive
+          ? "var(--color-accent)"
+          : "var(--color-border-subtle)",
+      }}
+      aria-current={isActive ? "true" : undefined}
+    >
+      <div className="flex flex-wrap items-center gap-2">
+        <span
+          aria-hidden="true"
+          style={{
+            display: "inline-block",
+            width: "0.25rem",
+            height: "1.25rem",
+            background: isActive
+              ? "var(--color-accent)"
+              : "var(--color-border-strong)",
+            borderRadius: "999px",
+          }}
+        />
+        <span className="typography-body flex-1">{row.name}</span>
+        <span className="typography-body-sm text-muted">{sideLabel}</span>
+        {hpDisplay ? (
+          <span className="typography-body-sm text-muted">HP {hpDisplay}</span>
+        ) : null}
+      </div>
+      <div className="flex flex-wrap items-center gap-1.5">
+        <label className="flex items-center gap-1">
+          <span className="typography-kicker text-muted">Init</span>
+          <input
+            type="number"
+            inputMode="numeric"
+            className="input-field typography-body-sm w-16 px-2 py-1 text-right"
+            value={initiativeValue}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (v.trim() === "") {
+                onSetInitiative(null);
+                return;
+              }
+              const parsed = Number.parseInt(v, 10);
+              if (Number.isFinite(parsed)) onSetInitiative(parsed);
+            }}
+            aria-label={`Initiative for ${row.name}`}
+          />
+        </label>
+        <button
+          type="button"
+          className="admin-button-secondary typography-body-sm px-2 py-1"
+          onClick={() =>
+            onSetInitiative(row.initiative === null ? 0 : row.initiative - 1)
+          }
+          aria-label="Decrease initiative"
+        >
+          −
+        </button>
+        <button
+          type="button"
+          className="admin-button-secondary typography-body-sm px-2 py-1"
+          onClick={() =>
+            onSetInitiative(row.initiative === null ? 0 : row.initiative + 1)
+          }
+          aria-label="Increase initiative"
+        >
+          +
+        </button>
+        <button
+          type="button"
+          className="admin-button-secondary typography-body-sm px-2 py-1"
+          onClick={onRoll}
+          aria-label={`Roll initiative for ${row.name}`}
+        >
+          Roll
+        </button>
+        {editableMod && onSetMod ? (
+          <label className="ml-auto flex items-center gap-1">
+            <span className="typography-kicker text-muted">Mod</span>
+            <input
+              type="number"
+              inputMode="numeric"
+              className="input-field typography-body-sm w-14 px-2 py-1 text-right"
+              value={modValue}
+              onChange={(e) => {
+                const parsed = Number.parseInt(e.target.value, 10);
+                if (!Number.isFinite(parsed)) return;
+                onSetMod(parsed);
+              }}
+              aria-label={`Initiative modifier for ${row.name}`}
+              placeholder="0"
+            />
+          </label>
+        ) : (
+          <span className="typography-body-sm text-muted ml-auto">
+            Mod {row.dexMod >= 0 ? `+${row.dexMod}` : row.dexMod}
+          </span>
+        )}
+      </div>
+    </li>
+  );
+}

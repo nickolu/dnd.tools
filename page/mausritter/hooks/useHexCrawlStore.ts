@@ -7,6 +7,7 @@ import forestData from "@/lib/domain/mausritter/data/hex-contents/landmarks-fore
 import humanTownData from "@/lib/domain/mausritter/data/hex-contents/landmarks-human-town.json";
 import riverData from "@/lib/domain/mausritter/data/hex-contents/landmarks-river.json";
 import eventsData from "@/lib/domain/mausritter/data/settlements/events.json";
+import { shuffled } from "@/lib/util/dice";
 
 import { DEFAULT_CONFIG } from "../constants";
 import type {
@@ -15,7 +16,6 @@ import type {
   GeneratedLore,
   HexCrawlConfig,
 } from "../types";
-import { shuffled } from "../utils/dice";
 import { generateAdventureSite } from "../utils/generate-adventure-site";
 import { generateHex } from "../utils/generate-hex";
 import { generateHexCrawl } from "../utils/generate-hex-crawl";

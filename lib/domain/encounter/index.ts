@@ -3,6 +3,8 @@ export type {
   CombatantSide,
   Encounter,
   EncounterRuleset,
+  EncounterTips,
+  InitiativeState,
   PartyMember,
 } from "./encounter.schema";
 export {
@@ -10,6 +12,8 @@ export {
   combatantSideSchema,
   encounterRulesetSchema,
   encounterSchema,
+  encounterTipsSchema,
+  initiativeStateSchema,
   partyMemberSchema,
 } from "./encounter.schema";
 export { parseHitPoints } from "./utils/parseHitPoints";
