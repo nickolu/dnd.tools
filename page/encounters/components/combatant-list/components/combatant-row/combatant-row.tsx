@@ -27,7 +27,8 @@ export function CombatantRow({ encounterId, combatant, displayName }: Props) {
   const confirmTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const downed = combatant.currentHp <= 0;
-  const bloodied = combatant.currentHp > 0 && combatant.currentHp <= combatant.maxHp / 2;
+  const bloodied =
+    combatant.currentHp > 0 && combatant.currentHp <= combatant.maxHp / 2;
 
   function commitName() {
     setEditingName(false);
@@ -150,7 +151,11 @@ export function CombatantRow({ encounterId, combatant, displayName }: Props) {
               removeCombatant(encounterId, combatant.id);
             }
           }}
-          aria-label={confirmRemove ? `Confirm remove ${displayName}` : `Remove ${displayName}`}
+          aria-label={
+            confirmRemove
+              ? `Confirm remove ${displayName}`
+              : `Remove ${displayName}`
+          }
           style={
             confirmRemove
               ? {

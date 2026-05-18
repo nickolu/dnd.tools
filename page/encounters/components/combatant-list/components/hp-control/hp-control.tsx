@@ -15,7 +15,8 @@ export function HpControl({ currentHp, maxHp, onAdjust, onSet }: Props) {
   const downed = currentHp <= 0;
   const bloodied = currentHp > 0 && currentHp <= maxHp / 2;
 
-  const hpPercent = maxHp > 0 ? Math.max(0, Math.min(100, (currentHp / maxHp) * 100)) : 0;
+  const hpPercent =
+    maxHp > 0 ? Math.max(0, Math.min(100, (currentHp / maxHp) * 100)) : 0;
 
   let barColor: string;
   if (downed) {
