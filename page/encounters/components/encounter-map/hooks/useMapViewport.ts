@@ -4,7 +4,8 @@ import { type RefObject, useCallback, useRef, useState } from "react";
 
 const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 5;
-const ZOOM_STEP = 0.15;
+const WHEEL_ZOOM_STEP = 0.06;
+const BUTTON_ZOOM_STEP = 0.15;
 
 type UseMapViewportOptions = {
   totalWidth: number;
@@ -64,8 +65,8 @@ export function useMapViewport({
       const svgPoint = pt.matrixTransform(ctm.inverse());
 
       setZoom((prevZoom) => {
-        const delta = -e.deltaY;
-        const factor = 1 + ZOOM_STEP * (delta > 0 ? 1 : -1);
+        const normalizedDelta = Math.sign(-e.deltaY) * Math.min(1, Math.abs(e.deltaY) / 100);
+        const factor = 1 + WHEEL_ZOOM_STEP * normalizedDelta;
         const newZoom = clampZoom(prevZoom * factor);
         const zoomRatio = newZoom / prevZoom;
 
@@ -160,11 +161,11 @@ export function useMapViewport({
   );
 
   const zoomIn = useCallback(() => {
-    setZoom((prev) => clampZoom(prev * (1 + ZOOM_STEP)));
+    setZoom((prev) => clampZoom(prev * (1 + BUTTON_ZOOM_STEP)));
   }, []);
 
   const zoomOut = useCallback(() => {
-    setZoom((prev) => clampZoom(prev * (1 - ZOOM_STEP)));
+    setZoom((prev) => clampZoom(prev * (1 - BUTTON_ZOOM_STEP)));
   }, []);
 
   const resetView = useCallback(() => {
