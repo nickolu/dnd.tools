@@ -50,11 +50,16 @@ type TipsEphemeral = {
 
 type SavedPartyMember = { name: string; level: number };
 
+const MAX_UNDO_STACK = 20;
+
 type EncounterLibraryStore = {
   encounters: Encounter[];
   savedParty: SavedPartyMember[];
   // Ephemeral per-encounter LLM call state (not persisted to IDB)
   tipsEphemeral: Record<string, TipsEphemeral>;
+  // Ephemeral undo/redo stacks per encounter (not persisted to IDB)
+  undoStacks: Record<string, Encounter[]>;
+  redoStacks: Record<string, Encounter[]>;
   // Library
   createEncounter: (name?: string) => string;
   setSavedParty: (party: SavedPartyMember[]) => void;
@@ -123,6 +128,12 @@ type EncounterLibraryStore = {
   clearDeathSaves: (encounterId: string, memberId: string) => void;
   // Notes
   setEncounterNotes: (id: string, notes: string) => void;
+  // Undo / Redo
+  pushSnapshot: (id: string, snapshot: Encounter) => void;
+  undoEncounter: (id: string) => void;
+  redoEncounter: (id: string) => void;
+  canUndo: (id: string) => boolean;
+  canRedo: (id: string) => boolean;
   // Map
   setMap: (id: string, partial: Partial<EncounterMap>) => void;
   clearMap: (id: string) => void;
@@ -462,6 +473,8 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
       encounters: [],
       savedParty: [],
       tipsEphemeral: {},
+      undoStacks: {},
+      redoStacks: {},
 
       createEncounter: (name?: string): string => {
         if (name !== undefined && name.trim() === "") {
@@ -1129,6 +1142,63 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           }),
         }));
       },
+
+      pushSnapshot: (id: string, snapshot: Encounter): void => {
+        set((state) => {
+          const stack = state.undoStacks[id] ?? [];
+          const newStack = [...stack, snapshot].slice(-MAX_UNDO_STACK);
+          return {
+            undoStacks: { ...state.undoStacks, [id]: newStack },
+            redoStacks: { ...state.redoStacks, [id]: [] },
+          };
+        });
+      },
+
+      undoEncounter: (id: string): void => {
+        const state = get();
+        const undoStack = state.undoStacks[id] ?? [];
+        if (undoStack.length === 0) return;
+        const snapshot = undoStack.at(-1);
+        if (!snapshot) return;
+        const newUndoStack = undoStack.slice(0, -1);
+        const current = state.encounters.find((e) => e.id === id);
+        if (!current) return;
+        const currentSnapshot = structuredClone(current);
+        const redoStack = state.redoStacks[id] ?? [];
+        set({
+          encounters: state.encounters.map((e) => (e.id === id ? snapshot : e)),
+          undoStacks: { ...state.undoStacks, [id]: newUndoStack },
+          redoStacks: {
+            ...state.redoStacks,
+            [id]: [...redoStack, currentSnapshot].slice(-MAX_UNDO_STACK),
+          },
+        });
+      },
+
+      redoEncounter: (id: string): void => {
+        const state = get();
+        const redoStack = state.redoStacks[id] ?? [];
+        if (redoStack.length === 0) return;
+        const snapshot = redoStack.at(-1);
+        if (!snapshot) return;
+        const newRedoStack = redoStack.slice(0, -1);
+        const current = state.encounters.find((e) => e.id === id);
+        if (!current) return;
+        const currentSnapshot = structuredClone(current);
+        const undoStack = state.undoStacks[id] ?? [];
+        set({
+          encounters: state.encounters.map((e) => (e.id === id ? snapshot : e)),
+          undoStacks: {
+            ...state.undoStacks,
+            [id]: [...undoStack, currentSnapshot].slice(-MAX_UNDO_STACK),
+          },
+          redoStacks: { ...state.redoStacks, [id]: newRedoStack },
+        });
+      },
+
+      canUndo: (id: string): boolean => (get().undoStacks[id]?.length ?? 0) > 0,
+
+      canRedo: (id: string): boolean => (get().redoStacks[id]?.length ?? 0) > 0,
 
       setMap: (id: string, partial: Partial<EncounterMap>): void => {
         set((state) => ({
