@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const encounterRulesetSchema = z.enum(["basic", "advanced"]);
+export const encounterRulesetSchema = z.literal("advanced");
 export const combatantSideSchema = z.enum(["ally", "enemy"]);
 
 export const CONDITIONS = [

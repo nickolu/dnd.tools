@@ -15,7 +15,6 @@ import {
   CONDITIONS,
   type Encounter,
   type EncounterMap,
-  type EncounterRuleset,
   type EncounterTips,
   encounterTipsSchema,
   type PartyMember,
@@ -58,7 +57,6 @@ type EncounterLibraryStore = {
   renameEncounter: (id: string, name: string) => void;
   duplicateEncounter: (id: string) => string;
   // Editor
-  setRuleset: (id: string, ruleset: EncounterRuleset) => void;
   addPC: (id: string, input: AddPcInput) => string;
   removePartyMember: (id: string, memberId: string) => void;
   updatePartyMember: (
@@ -240,8 +238,8 @@ function readNullableNumber(v: unknown): number | null {
   return typeof v === "number" && Number.isFinite(v) ? v : null;
 }
 
-function readRuleset(v: unknown): EncounterRuleset {
-  return v === "basic" ? "basic" : "advanced";
+function readRuleset(): "advanced" {
+  return "advanced";
 }
 
 function readSide(v: unknown): CombatantSide {
@@ -477,15 +475,6 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         };
         set((state) => ({ encounters: [...state.encounters, copy] }));
         return newId;
-      },
-
-      setRuleset: (id: string, ruleset: EncounterRuleset): void => {
-        set((state) => ({
-          encounters: updateEncounter(state.encounters, id, (e) => ({
-            ...e,
-            ruleset,
-          })),
-        }));
       },
 
       addPC: (id: string, input: AddPcInput): string => {

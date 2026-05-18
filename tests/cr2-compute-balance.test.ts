@@ -4,7 +4,6 @@ import { computeBalance } from "@/lib/domain/encounter/cr2/computeBalance";
 import type {
   Combatant,
   Encounter,
-  EncounterRuleset,
   PartyMember,
 } from "@/lib/domain/encounter/encounter.schema";
 
@@ -38,14 +37,13 @@ function combatant(
 }
 
 function encounter(
-  ruleset: EncounterRuleset,
   partyMembers: PartyMember[],
   combatants: Combatant[]
 ): Encounter {
   return {
     id: "enc-1",
     name: "Test",
-    ruleset,
+    ruleset: "advanced",
     partyMembers,
     combatants,
     initiative: { round: 1, activeIndex: null },
@@ -57,81 +55,64 @@ function encounter(
 }
 
 describe("computeBalance", () => {
-  it("party of 4 level-5 PCs vs 1 CR 1 enemy (Basic)", () => {
+  it("party of 4 level-5 PCs vs 1 CR 1 enemy → Mild", () => {
+    // 4 × 32 = 128 party power; tier 2, CR 1 → 17 encounter power
     const enc = encounter(
-      "basic",
       [pc(5, "a"), pc(5, "b"), pc(5, "c"), pc(5, "d")],
       [combatant("e1", 1, "enemy")]
     );
     const result = computeBalance(enc);
 
     expect(result.partyPower).toBe(128); // 4 × 32
-    expect(result.encounterPower).toBe(22); // CR 1 → 22
+    expect(result.encounterPower).toBe(17); // CR 1 tier 2 → 17
     expect(result.tier).toBe(2);
     expect(result.hasInterpolatedEnemy).toBe(false);
-    // 22 / 128 = 0.17 → well below Mild (0.40 threshold)
     expect(result.classification.bucket).toBe("Mild");
   });
 
-  it("party of 4 level-5 PCs vs 6 CR 1 enemies (Basic) ≈ Oppressive", () => {
+  it("party of 4 level-17 PCs vs 1 CR 1 enemy uses tier-dependent power", () => {
     const enc = encounter(
-      "basic",
-      [pc(5, "a"), pc(5, "b"), pc(5, "c"), pc(5, "d")],
-      Array.from({ length: 6 }, (_, i) => combatant(`e${i}`, 1, "enemy"))
+      [pc(17, "a"), pc(17, "b"), pc(17, "c"), pc(17, "d")],
+      [combatant("e1", 1, "enemy")]
     );
-    const result = computeBalance(enc);
-
-    expect(result.partyPower).toBe(128);
-    expect(result.encounterPower).toBe(132); // 6 × 22
-    // 132 / 128 = 1.03 → between Oppressive (1.0) and Overwhelming would exist in Advanced
-    // In Basic, Oppressive is highest, no Overwhelming
-    expect(result.classification.bucket).toBe("Oppressive");
+    // Advanced T4 CR 1 → 8
+    expect(computeBalance(enc).encounterPower).toBe(8);
   });
 
   it("ally combatant adds to party power, not encounter power", () => {
     const enc = encounter(
-      "basic",
       [pc(5, "a"), pc(5, "b"), pc(5, "c"), pc(5, "d")],
       [combatant("ally1", 1, "ally"), combatant("enemy1", 1, "enemy")]
     );
     const result = computeBalance(enc);
 
-    expect(result.partyPower).toBe(128 + 22); // PCs + ally CR 1
-    expect(result.encounterPower).toBe(22); // enemy CR 1 only
+    // tier 2: CR 1 ally power = 17; PC power = 128
+    expect(result.partyPower).toBe(128 + 17); // PCs + ally CR 1 (tier 2)
+    expect(result.encounterPower).toBe(17); // enemy CR 1 (tier 2) only
   });
 
   it("flags hasInterpolatedEnemy when an enemy CR is interpolated", () => {
     const enc = encounter(
-      "basic",
       [pc(5, "a")],
-      [combatant("e1", 7, "enemy")] // CR 7 → interpolated in Basic
+      [combatant("e1", 7, "enemy")] // CR 7 → interpolated in Advanced
     );
     expect(computeBalance(enc).hasInterpolatedEnemy).toBe(true);
   });
 
   it("does not flag when all enemies hit exact rows", () => {
     const enc = encounter(
-      "basic",
       [pc(5, "a")],
-      [combatant("e1", 1, "enemy"), combatant("e2", 2, "enemy")]
+      [combatant("e1", 1, "enemy"), combatant("e2", 5, "enemy")]
     );
     expect(computeBalance(enc).hasInterpolatedEnemy).toBe(false);
   });
 
-  it("Advanced ruleset uses tier-dependent Monster Power", () => {
-    const enc = encounter(
-      "advanced",
-      [pc(17, "a")], // tier 4
-      [combatant("e1", 1, "enemy")]
-    );
-    // Advanced T4 CR 1 → 8 (vs Basic 22)
-    expect(computeBalance(enc).encounterPower).toBe(8);
-  });
-
-  it("empty party with enemies → partyPower 0, highest bucket", () => {
-    const enc = encounter("basic", [], [combatant("e1", 1, "enemy")]);
+  it("empty party with enemies → partyPower 0, Impossible bucket", () => {
+    const enc = encounter([], [combatant("e1", 1, "enemy")]);
     const result = computeBalance(enc);
     expect(result.partyPower).toBe(0);
-    expect(result.classification.bucket).toBe("Oppressive");
+    // encounterPower > 0 with partyPower = 0 means partyPower * any multiplier = 0
+    // encounterPower >= 0 = all thresholds → highest bucket
+    expect(result.classification.bucket).toBe("Impossible");
   });
 });

@@ -1,8 +1,4 @@
-import type {
-  DifficultyBucket,
-  DifficultyBucketBasic,
-  PartyTier,
-} from "./types";
+import type { DifficultyBucket, PartyTier } from "./types";
 
 export const PC_POWER_BY_LEVEL: Record<number, number> = {
   1: 11,
@@ -27,61 +23,30 @@ export const PC_POWER_BY_LEVEL: Record<number, number> = {
   20: 141,
 };
 
-export const DIFFICULTY_BUCKETS_BASIC: readonly DifficultyBucketBasic[] = [
+export const DIFFICULTY_BUCKETS_ADVANCED: readonly DifficultyBucket[] = [
   "Mild",
   "Bruising",
   "Bloody",
   "Brutal",
   "Oppressive",
-];
-
-export const DIFFICULTY_BUCKETS_ADVANCED: readonly DifficultyBucket[] = [
-  ...DIFFICULTY_BUCKETS_BASIC,
   "Overwhelming",
   "Crushing",
   "Devastating",
   "Impossible",
 ];
 
-export const DIFFICULTY_MULTIPLIERS_BASIC: Record<
-  DifficultyBucketBasic,
-  number
-> = {
-  Mild: 0.4,
-  Bruising: 0.6,
-  Bloody: 0.75,
-  Brutal: 0.9,
-  Oppressive: 1.0,
-};
-
 export const DIFFICULTY_MULTIPLIERS_ADVANCED: Record<DifficultyBucket, number> =
   {
-    ...DIFFICULTY_MULTIPLIERS_BASIC,
+    Mild: 0.4,
+    Bruising: 0.6,
+    Bloody: 0.75,
+    Brutal: 0.9,
+    Oppressive: 1.0,
     Overwhelming: 1.1,
     Crushing: 1.3,
     Devastating: 1.6,
     Impossible: 2.25,
   };
-
-/** CR 2.0 Basic — single Monster Power value per CR. */
-export const MONSTER_POWER_BASIC: Record<number, number> = {
-  0: 1,
-  0.125: 5,
-  0.25: 10,
-  0.5: 16,
-  1: 22,
-  2: 28,
-  3: 37,
-  4: 48,
-  5: 60,
-  6: 65,
-  8: 85,
-  10: 95,
-  15: 130,
-  20: 180,
-  25: 300,
-  30: 425,
-};
 
 /**
  * CR 2.0 Advanced — Monster Power per CR per party tier (1-4).
@@ -107,12 +72,6 @@ export const MONSTER_POWER_ADVANCED: Record<
   5: { 1: 70, 2: 60, 3: 45, 4: 40 },
   10: { 1: 115, 2: 95, 3: 75, 4: 60 },
 };
-
-export const SORTED_BASIC_CRS: readonly number[] = Object.keys(
-  MONSTER_POWER_BASIC
-)
-  .map(Number)
-  .sort((a, b) => a - b);
 
 export const SORTED_ADVANCED_CRS: readonly number[] = Object.keys(
   MONSTER_POWER_ADVANCED

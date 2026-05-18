@@ -17,7 +17,6 @@ import { EncounterMap } from "../encounter-map";
 import { InitiativeTracker } from "../initiative-tracker";
 import { MonsterAddPanel } from "../monster-add-panel";
 import { PartyRoster } from "../party-roster";
-import { RulesetToggle } from "../ruleset-toggle";
 import { SpellAggregatePanel } from "../spell-aggregate-panel";
 
 type Props = {
@@ -45,7 +44,6 @@ export function EncounterEditor({ encounterId }: Props) {
     (s) => s.duplicateEncounter
   );
   const deleteEncounter = useEncounterLibraryStore((s) => s.deleteEncounter);
-  const setRuleset = useEncounterLibraryStore((s) => s.setRuleset);
   const router = useRouter();
 
   // Warm the monster cache so MonsterAddPanel renders quickly.
@@ -157,10 +155,6 @@ export function EncounterEditor({ encounterId }: Props) {
           )}
         </div>
         <div className="flex flex-wrap items-end gap-3">
-          <RulesetToggle
-            ruleset={encounter.ruleset}
-            onChange={(next) => setRuleset(encounter.id, next)}
-          />
           <button
             type="button"
             className="admin-button-secondary typography-body-sm px-3 py-1"
