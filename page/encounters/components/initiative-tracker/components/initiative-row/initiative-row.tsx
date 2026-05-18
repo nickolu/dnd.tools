@@ -1,10 +1,18 @@
 "use client";
 
+import Link from "next/link";
+
 import type { InitiativeRow as RowData } from "@/page/encounters/utils/initiativeOrder";
+
+import { HpControl } from "../../../combatant-list/components/hp-control";
 
 type Props = {
   row: RowData;
-  hpDisplay?: string;
+  currentHp?: number;
+  maxHp?: number;
+  monsterId?: string;
+  onAdjustHp?: (delta: number) => void;
+  onSetHp?: (value: number) => void;
   isActive: boolean;
   // For PC rows we additionally surface initiativeMod for the user to edit.
   editableMod?: boolean;
@@ -13,27 +21,13 @@ type Props = {
   onRoll: () => void;
 };
 
-function parseHpStatus(hpDisplay: string): {
-  downed: boolean;
-  bloodied: boolean;
-} {
-  const parts = hpDisplay.split("/");
-  if (parts.length !== 2) return { downed: false, bloodied: false };
-  const currentStr = parts[0] ?? "";
-  const maxStr = parts[1] ?? "";
-  const current = Number.parseInt(currentStr, 10);
-  const max = Number.parseInt(maxStr, 10);
-  if (!Number.isFinite(current) || !Number.isFinite(max)) {
-    return { downed: false, bloodied: false };
-  }
-  const downed = current <= 0;
-  const bloodied = current > 0 && current <= max / 2;
-  return { downed, bloodied };
-}
-
 export function InitiativeRow({
   row,
-  hpDisplay,
+  currentHp,
+  maxHp,
+  monsterId,
+  onAdjustHp,
+  onSetHp,
   isActive,
   editableMod,
   onSetInitiative,
@@ -44,26 +38,11 @@ export function InitiativeRow({
   const modValue = String(row.dexMod);
   const sideLabel = row.side === "enemy" ? "Enemy" : "Ally";
 
-  let hpColor: string = "var(--color-text-muted)";
-  let dotColor: string = "#4a9e6b";
-  let hpStatusLabel = "healthy";
-
-  if (hpDisplay) {
-    const { downed, bloodied } = parseHpStatus(hpDisplay);
-    if (downed) {
-      hpColor = "var(--color-danger)";
-      dotColor = "var(--color-danger)";
-      hpStatusLabel = "downed";
-    } else if (bloodied) {
-      hpColor = "var(--color-accent)";
-      dotColor = "var(--color-accent)";
-      hpStatusLabel = "bloodied";
-    } else {
-      hpColor = "#4a9e6b";
-      dotColor = "#4a9e6b";
-      hpStatusLabel = "healthy";
-    }
-  }
+  const hasHpControl =
+    currentHp !== undefined &&
+    maxHp !== undefined &&
+    onAdjustHp !== undefined &&
+    onSetHp !== undefined;
 
   return (
     <li
@@ -88,33 +67,29 @@ export function InitiativeRow({
             borderRadius: "999px",
           }}
         />
-        <span className="typography-body flex-1">{row.name}</span>
-        <span className="typography-body-sm text-muted">{sideLabel}</span>
-        {hpDisplay ? (
-          <span
-            className="typography-body-sm"
-            style={{
-              color: hpColor,
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.3rem",
-            }}
+        {monsterId ? (
+          <Link
+            href={`/monsters/${monsterId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="typography-body flex-1 hover:underline"
+            style={{ textDecoration: "none" }}
           >
-            <span
-              aria-label={hpStatusLabel}
-              style={{
-                display: "inline-block",
-                width: "0.45rem",
-                height: "0.45rem",
-                borderRadius: "50%",
-                background: dotColor,
-                flexShrink: 0,
-              }}
-            />
-            HP {hpDisplay}
-          </span>
-        ) : null}
+            {row.name}
+          </Link>
+        ) : (
+          <span className="typography-body flex-1">{row.name}</span>
+        )}
+        <span className="typography-body-sm text-muted">{sideLabel}</span>
       </div>
+      {hasHpControl && (
+        <HpControl
+          currentHp={currentHp}
+          maxHp={maxHp}
+          onAdjust={onAdjustHp}
+          onSet={onSetHp}
+        />
+      )}
       <div className="flex flex-wrap items-center gap-1.5">
         <label className="flex items-center gap-1">
           <span className="typography-kicker text-muted">Init</span>
