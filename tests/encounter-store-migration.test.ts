@@ -112,6 +112,31 @@ describe("migrateEncounterLibrary (v1 → v2)", () => {
     });
   });
 
+  it("backfills conditions array on combatants (v3 → v4)", () => {
+    const v3Encounter = {
+      ...V1_ENCOUNTER,
+      initiative: { round: 1, activeIndex: null },
+      tips: null,
+      tipsGeneratedAt: null,
+      combatants: [
+        {
+          id: "c-1",
+          monsterId: "m-goblin",
+          monsterName: "Goblin",
+          monsterCrNumeric: 0.25,
+          side: "enemy",
+          maxHp: 7,
+          currentHp: 7,
+          initiative: null,
+          // no conditions field — v3 shape
+        },
+      ],
+    };
+    const migrated = migrateEncounterLibrary({ encounters: [v3Encounter] }, 3);
+    const c = migrated.encounters[0]!.combatants[0]!;
+    expect(c.conditions).toEqual([]);
+  });
+
   it("preserves combatant nameOverride and position when present", () => {
     const migrated = migrateEncounterLibrary(
       {

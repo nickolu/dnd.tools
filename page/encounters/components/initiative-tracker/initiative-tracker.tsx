@@ -39,6 +39,8 @@ export function InitiativeTracker({ encounterId }: Props) {
   );
   const adjustHp = useEncounterLibraryStore((s) => s.adjustHp);
   const setHp = useEncounterLibraryStore((s) => s.setHp);
+  const toggleCondition = useEncounterLibraryStore((s) => s.toggleCondition);
+  const clearConditions = useEncounterLibraryStore((s) => s.clearConditions);
   const nextTurn = useEncounterLibraryStore((s) => s.nextTurn);
   const previousTurn = useEncounterLibraryStore((s) => s.previousTurn);
   const resetInitiative = useEncounterLibraryStore((s) => s.resetInitiative);
@@ -150,6 +152,11 @@ export function InitiativeTracker({ encounterId }: Props) {
                   setCombatantInitiative(encounterId, row.id, value)
                 }
                 onRoll={() => rollSingleCombatant(row.id)}
+                conditions={combatant?.conditions ?? []}
+                onToggleCondition={(condition) =>
+                  toggleCondition(encounterId, row.id, condition)
+                }
+                onClearConditions={() => clearConditions(encounterId, row.id)}
               />
             );
           })}

@@ -3,6 +3,26 @@ import { z } from "zod";
 export const encounterRulesetSchema = z.enum(["basic", "advanced"]);
 export const combatantSideSchema = z.enum(["ally", "enemy"]);
 
+export const CONDITIONS = [
+  "blinded",
+  "charmed",
+  "deafened",
+  "exhaustion",
+  "frightened",
+  "grappled",
+  "incapacitated",
+  "invisible",
+  "paralyzed",
+  "petrified",
+  "poisoned",
+  "prone",
+  "restrained",
+  "stunned",
+] as const;
+
+export const conditionSchema = z.enum(CONDITIONS);
+export type Condition = z.infer<typeof conditionSchema>;
+
 const positionSchema = z.object({
   x: z.number(),
   y: z.number(),
@@ -50,6 +70,7 @@ export const combatantSchema = z.object({
   currentHp: z.number().int(),
   initiative: z.number().int().nullable(),
   position: positionSchema.optional(),
+  conditions: z.array(conditionSchema).default([]),
 });
 
 export const encounterSchema = z.object({

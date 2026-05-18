@@ -11,6 +11,8 @@ import {
 import {
   type Combatant,
   type CombatantSide,
+  type Condition,
+  CONDITIONS,
   type Encounter,
   type EncounterMap,
   type EncounterRuleset,
@@ -96,6 +98,13 @@ type EncounterLibraryStore = {
   // Tips
   generateTips: (id: string, request: TipsRequestPayload) => Promise<void>;
   clearTips: (id: string) => void;
+  // Conditions
+  toggleCondition: (
+    encounterId: string,
+    combatantId: string,
+    condition: Condition
+  ) => void;
+  clearConditions: (encounterId: string, combatantId: string) => void;
   // Map
   setMap: (id: string, partial: Partial<EncounterMap>) => void;
   clearMap: (id: string) => void;
@@ -293,6 +302,13 @@ function migrateCombatant(raw: unknown): Combatant {
   const position = readPosition(r.position);
   const nameOverride =
     typeof r.nameOverride === "string" ? r.nameOverride : undefined;
+  const conditionsSet = new Set<string>(CONDITIONS);
+  const conditions: Condition[] = Array.isArray(r.conditions)
+    ? r.conditions.filter(
+        (c: unknown): c is Condition =>
+          typeof c === "string" && conditionsSet.has(c)
+      )
+    : [];
   const combatant: Combatant = {
     id: readString(r.id, crypto.randomUUID()),
     monsterId: readString(r.monsterId, ""),
@@ -302,6 +318,7 @@ function migrateCombatant(raw: unknown): Combatant {
     maxHp,
     currentHp,
     initiative: readNullableNumber(r.initiative),
+    conditions,
     ...(nameOverride !== undefined ? { nameOverride } : {}),
     ...(position !== null ? { position } : {}),
   };
@@ -513,6 +530,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
             maxHp,
             currentHp: maxHp,
             initiative: null,
+            conditions: [],
           });
         }
         set((state) => ({
@@ -818,6 +836,37 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         }
       },
 
+      toggleCondition: (
+        encounterId: string,
+        combatantId: string,
+        condition: Condition
+      ): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) =>
+            updateCombatant(e, combatantId, (c) => {
+              const has = c.conditions.includes(condition);
+              return {
+                ...c,
+                conditions: has
+                  ? c.conditions.filter((cond) => cond !== condition)
+                  : [...c.conditions, condition],
+              };
+            })
+          ),
+        }));
+      },
+
+      clearConditions: (encounterId: string, combatantId: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) =>
+            updateCombatant(e, combatantId, (c) => ({
+              ...c,
+              conditions: [],
+            }))
+          ),
+        }));
+      },
+
       clearTips: (id: string): void => {
         set((state) => ({
           encounters: updateEncounter(state.encounters, id, (e) => ({
@@ -909,7 +958,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         encounters: state.encounters,
       }),
       storage: createJSONStorage(() => persistenceStorage),
-      version: 3,
+      version: 4,
       migrate: migrateEncounterLibrary,
     }
   )

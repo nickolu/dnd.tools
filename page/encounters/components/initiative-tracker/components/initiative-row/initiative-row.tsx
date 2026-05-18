@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 
+import type { Condition } from "@/lib/domain/encounter/encounter.schema";
 import type { InitiativeRow as RowData } from "@/page/encounters/utils/initiativeOrder";
 
 import { HpControl } from "../../../combatant-list/components/hp-control";
+import { ConditionBadges } from "../condition-badges";
 
 type Props = {
   row: RowData;
@@ -19,6 +21,9 @@ type Props = {
   onSetInitiative: (value: number | null) => void;
   onSetMod?: (mod: number) => void;
   onRoll: () => void;
+  conditions?: Condition[];
+  onToggleCondition?: (condition: Condition) => void;
+  onClearConditions?: () => void;
 };
 
 export function InitiativeRow({
@@ -33,6 +38,9 @@ export function InitiativeRow({
   onSetInitiative,
   onSetMod,
   onRoll,
+  conditions,
+  onToggleCondition,
+  onClearConditions,
 }: Props) {
   const initiativeValue = row.initiative === null ? "" : String(row.initiative);
   const modValue = String(row.dexMod);
@@ -82,6 +90,15 @@ export function InitiativeRow({
         )}
         <span className="typography-body-sm text-muted">{sideLabel}</span>
       </div>
+      {conditions !== undefined &&
+        onToggleCondition !== undefined &&
+        onClearConditions !== undefined && (
+          <ConditionBadges
+            conditions={conditions}
+            onToggle={onToggleCondition}
+            onClear={onClearConditions}
+          />
+        )}
       {hasHpControl && (
         <HpControl
           currentHp={currentHp}
