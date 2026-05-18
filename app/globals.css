@@ -95,8 +95,6 @@ body {
 }
 
 .app-shell {
-  margin: 0 auto;
-  max-width: 80rem;
   min-height: 100vh;
   padding: var(--space-page-y) var(--space-page-x);
 }
