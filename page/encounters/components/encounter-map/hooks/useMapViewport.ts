@@ -65,7 +65,8 @@ export function useMapViewport({
       const svgPoint = pt.matrixTransform(ctm.inverse());
 
       setZoom((prevZoom) => {
-        const normalizedDelta = Math.sign(-e.deltaY) * Math.min(1, Math.abs(e.deltaY) / 100);
+        const normalizedDelta =
+          Math.sign(-e.deltaY) * Math.min(1, Math.abs(e.deltaY) / 100);
         const factor = 1 + WHEEL_ZOOM_STEP * normalizedDelta;
         const newZoom = clampZoom(prevZoom * factor);
         const zoomRatio = newZoom / prevZoom;
