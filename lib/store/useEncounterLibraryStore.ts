@@ -112,6 +112,8 @@ type EncounterLibraryStore = {
     condition: Condition
   ) => void;
   clearConditions: (encounterId: string, combatantId: string) => void;
+  // Notes
+  setEncounterNotes: (id: string, notes: string) => void;
   // Map
   setMap: (id: string, partial: Partial<EncounterMap>) => void;
   clearMap: (id: string) => void;
@@ -383,6 +385,7 @@ function migrateEncounterToCurrent(raw: unknown): Encounter {
   const partyMembersRaw = Array.isArray(r.partyMembers) ? r.partyMembers : [];
   const combatantsRaw = Array.isArray(r.combatants) ? r.combatants : [];
   const map = readMap(r.map);
+  const notes = typeof r.notes === "string" ? r.notes : undefined;
   return {
     id: readString(r.id, crypto.randomUUID()),
     name: readString(r.name, "Untitled encounter"),
@@ -393,6 +396,7 @@ function migrateEncounterToCurrent(raw: unknown): Encounter {
     tips: readTips(r.tips),
     tipsGeneratedAt: readNullableNumber(r.tipsGeneratedAt),
     ...(map !== null ? { map } : {}),
+    ...(notes !== undefined ? { notes } : {}),
     createdAt: readFiniteNumber(r.createdAt, Date.now()),
     updatedAt: readFiniteNumber(r.updatedAt, Date.now()),
   };
@@ -1023,6 +1027,19 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
             ...state.tipsEphemeral,
             [id]: { loading: false, error: null },
           },
+        }));
+      },
+
+      setEncounterNotes: (id: string, notes: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => {
+            if (!notes.trim()) {
+              const { notes: _drop, ...rest } = e;
+              void _drop;
+              return rest;
+            }
+            return { ...e, notes };
+          }),
         }));
       },
 
