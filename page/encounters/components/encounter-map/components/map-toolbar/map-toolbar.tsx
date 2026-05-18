@@ -23,6 +23,10 @@ type Props = {
   onResetView: () => void;
   pendingShapeKind: MapShape["kind"] | null;
   onPendingShapeKind: (kind: MapShape["kind"] | null) => void;
+  isDrawing: boolean;
+  onDrawingToggle: () => void;
+  hasDrawings: boolean;
+  onClearDrawings: () => void;
 };
 
 function clampInt(value: number, min: number, max: number): number {
@@ -40,6 +44,10 @@ export function MapToolbar({
   onResetView,
   pendingShapeKind,
   onPendingShapeKind,
+  isDrawing,
+  onDrawingToggle,
+  hasDrawings,
+  onClearDrawings,
 }: Props) {
   return (
     <div className="flex flex-wrap items-end gap-2">
@@ -145,6 +153,30 @@ export function MapToolbar({
             {label}
           </button>
         ))}
+      </div>
+      <div className="flex items-center gap-1">
+        <span className="typography-kicker text-muted">Draw:</span>
+        <button
+          type="button"
+          className={`typography-body-sm px-2 py-1 ${
+            isDrawing ? "admin-button" : "admin-button-secondary"
+          }`}
+          onClick={onDrawingToggle}
+          aria-pressed={isDrawing}
+          aria-label="Toggle freehand drawing mode"
+        >
+          ✏ Draw
+        </button>
+        {hasDrawings && (
+          <button
+            type="button"
+            className="admin-button-danger typography-body-sm px-2 py-1"
+            onClick={onClearDrawings}
+            aria-label="Clear all drawings"
+          >
+            Clear drawings
+          </button>
+        )}
       </div>
       <button
         type="button"

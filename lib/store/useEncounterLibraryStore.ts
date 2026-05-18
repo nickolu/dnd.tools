@@ -17,6 +17,7 @@ import {
   type EncounterMap,
   type EncounterTips,
   encounterTipsSchema,
+  type MapDrawing,
   type MapShape,
   type PartyMember,
   type Position,
@@ -181,6 +182,9 @@ type EncounterLibraryStore = {
   ) => void;
   addMapShape: (encounterId: string, shape: Omit<MapShape, "id">) => void;
   removeMapShape: (encounterId: string, shapeId: string) => void;
+  addMapDrawing: (encounterId: string, drawing: Omit<MapDrawing, "id">) => void;
+  removeMapDrawing: (encounterId: string, drawingId: string) => void;
+  clearMapDrawings: (encounterId: string) => void;
 };
 
 export type TokenKind = "pc" | "combatant";
@@ -450,6 +454,20 @@ function readMapShape(v: unknown): MapShape | null {
   return { id, kind, position: pos, size, color };
 }
 
+function readMapDrawing(v: unknown): MapDrawing | null {
+  if (!isPlainObject(v)) return null;
+  const id = typeof v.id === "string" && v.id ? v.id : null;
+  if (!id) return null;
+  const path = typeof v.path === "string" ? v.path : null;
+  if (path === null) return null;
+  const color = typeof v.color === "string" && v.color ? v.color : "#e8e2d9";
+  const strokeWidth =
+    typeof v.strokeWidth === "number" && Number.isFinite(v.strokeWidth)
+      ? v.strokeWidth
+      : 2;
+  return { id, path, color, strokeWidth };
+}
+
 function readMap(v: unknown): EncounterMap | null {
   if (!isPlainObject(v)) return null;
   if (v.grid !== "square") return null;
@@ -462,6 +480,10 @@ function readMap(v: unknown): EncounterMap | null {
   const shapes = rawShapes
     .map(readMapShape)
     .filter((s): s is MapShape => s !== null);
+  const rawDrawings = Array.isArray(v.drawings) ? v.drawings : [];
+  const drawings = rawDrawings
+    .map(readMapDrawing)
+    .filter((d): d is MapDrawing => d !== null);
   return {
     grid: "square",
     cols,
@@ -469,6 +491,7 @@ function readMap(v: unknown): EncounterMap | null {
     cellSize,
     ...(backgroundUrl !== undefined ? { backgroundUrl } : {}),
     ...(shapes.length > 0 ? { shapes } : {}),
+    ...(drawings.length > 0 ? { drawings } : {}),
   };
 }
 
@@ -1499,6 +1522,57 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
               ? {
                   ...e.map,
                   shapes: (e.map.shapes ?? []).filter((s) => s.id !== shapeId),
+                }
+              : e.map,
+          })),
+        }));
+      },
+
+      addMapDrawing: (
+        encounterId: string,
+        drawing: Omit<MapDrawing, "id">
+      ): void => {
+        const drawingWithId: MapDrawing = {
+          ...drawing,
+          id: crypto.randomUUID(),
+        };
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) => ({
+            ...e,
+            map: e.map
+              ? {
+                  ...e.map,
+                  drawings: [...(e.map.drawings ?? []), drawingWithId],
+                }
+              : e.map,
+          })),
+        }));
+      },
+
+      removeMapDrawing: (encounterId: string, drawingId: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) => ({
+            ...e,
+            map: e.map
+              ? {
+                  ...e.map,
+                  drawings: (e.map.drawings ?? []).filter(
+                    (d) => d.id !== drawingId
+                  ),
+                }
+              : e.map,
+          })),
+        }));
+      },
+
+      clearMapDrawings: (encounterId: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) => ({
+            ...e,
+            map: e.map
+              ? {
+                  ...e.map,
+                  drawings: [],
                 }
               : e.map,
           })),
