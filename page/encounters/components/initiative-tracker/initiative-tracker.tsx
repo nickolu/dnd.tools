@@ -42,6 +42,7 @@ export function InitiativeTracker({ encounterId }: Props) {
   const setHp = useEncounterLibraryStore((s) => s.setHp);
   const toggleCondition = useEncounterLibraryStore((s) => s.toggleCondition);
   const clearConditions = useEncounterLibraryStore((s) => s.clearConditions);
+  const removeToken = useEncounterLibraryStore((s) => s.removeToken);
   const nextTurn = useEncounterLibraryStore((s) => s.nextTurn);
   const previousTurn = useEncounterLibraryStore((s) => s.previousTurn);
   const resetInitiative = useEncounterLibraryStore((s) => s.resetInitiative);
@@ -152,12 +153,21 @@ export function InitiativeTracker({ encounterId }: Props) {
           {sortedRows.map((row, idx) => {
             const isActive = idx === activeIndex;
             if (row.kind === "party") {
+              const pc = encounter.partyMembers.find((p) => p.id === row.id);
+              const pcOnMap = pc?.position !== undefined;
               return (
                 <InitiativeRow
                   key={row.id}
                   row={row}
                   isActive={isActive}
                   editableMod
+                  isOnMap={pcOnMap}
+                  {...(pcOnMap
+                    ? {
+                        onRemoveFromMap: () =>
+                          removeToken(encounterId, "pc", row.id),
+                      }
+                    : {})}
                   onSetInitiative={(value) =>
                     setPartyMemberInitiative(encounterId, row.id, value)
                   }
@@ -175,6 +185,7 @@ export function InitiativeTracker({ encounterId }: Props) {
             const monsterForRow = combatant
               ? monsterById.get(combatant.monsterId)
               : undefined;
+            const combatantOnMap = combatant?.position !== undefined;
             const hpProps = combatant
               ? {
                   currentHp: combatant.currentHp,
@@ -183,6 +194,13 @@ export function InitiativeTracker({ encounterId }: Props) {
                   ...(ac !== undefined ? { armorClass: ac } : {}),
                   ...(monsterForRow !== undefined
                     ? { monster: monsterForRow }
+                    : {}),
+                  isOnMap: combatantOnMap,
+                  ...(combatantOnMap
+                    ? {
+                        onRemoveFromMap: () =>
+                          removeToken(encounterId, "combatant", row.id),
+                      }
                     : {}),
                   onAdjustHp: (delta: number) =>
                     adjustHp(encounterId, row.id, delta),
