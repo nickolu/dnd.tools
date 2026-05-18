@@ -38,6 +38,15 @@ export const mapShapeSchema = z.object({
 
 export type MapShape = z.infer<typeof mapShapeSchema>;
 
+export const mapDrawingSchema = z.object({
+  id: z.string().min(1),
+  path: z.string(),
+  color: z.string().default("#e8e2d9"),
+  strokeWidth: z.number().default(2),
+});
+
+export type MapDrawing = z.infer<typeof mapDrawingSchema>;
+
 export const encounterMapSchema = z.object({
   grid: z.literal("square"),
   cols: z.number().int().min(4).max(60),
@@ -45,6 +54,7 @@ export const encounterMapSchema = z.object({
   cellSize: z.number().int().min(24).max(96),
   backgroundUrl: z.string().url().optional(),
   shapes: z.array(mapShapeSchema).optional(),
+  drawings: z.array(mapDrawingSchema).optional(),
 });
 
 export const encounterTipsSchema = z.object({

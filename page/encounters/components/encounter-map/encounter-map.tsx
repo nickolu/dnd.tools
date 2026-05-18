@@ -27,6 +27,16 @@ import type { TokenRef, TokenViewModel } from "./types";
 import { cellToPixel, pixelToCell } from "./utils/cell-coords";
 
 const SHAPE_COLORS = ["#d4a041", "#4a90d9", "#d94a4a", "#4ad94a", "#9b59b6"];
+const DRAWING_COLORS = ["#e8e2d9", "#d4a041", "#4a90d9", "#d94a4a", "#4ad94a"];
+const MIN_DRAWING_DISTANCE = 3;
+
+function pointsToPathData(points: { x: number; y: number }[]): string {
+  if (points.length < 2) return "";
+  const first = points[0];
+  const rest = points.slice(1);
+  if (!first) return "";
+  return `M ${first.x} ${first.y} ${rest.map((p) => `L ${p.x} ${p.y}`).join(" ")}`;
+}
 
 type Props = {
   encounterId: string;
@@ -89,6 +99,8 @@ export function EncounterMap({ encounterId }: Props) {
   const removeToken = useEncounterLibraryStore((s) => s.removeToken);
   const addMapShape = useEncounterLibraryStore((s) => s.addMapShape);
   const removeMapShape = useEncounterLibraryStore((s) => s.removeMapShape);
+  const addMapDrawing = useEncounterLibraryStore((s) => s.addMapDrawing);
+  const clearMapDrawings = useEncounterLibraryStore((s) => s.clearMapDrawings);
 
   const pendingPlace = useMapPlacementStore((s) => s.pendingPlace);
   const setPendingPlace = useMapPlacementStore((s) => s.setPendingPlace);
@@ -100,6 +112,14 @@ export function EncounterMap({ encounterId }: Props) {
   const [pendingShapeKind, setPendingShapeKind] = useState<
     MapShape["kind"] | null
   >(null);
+  // Drawing mode state
+  const [isDrawingMode, setIsDrawingMode] = useState(false);
+  const [currentPath, setCurrentPath] = useState<{ x: number; y: number }[]>(
+    []
+  );
+  const [drawingColorIndex, setDrawingColorIndex] = useState(0);
+  const isDrawingActiveRef = useRef(false);
+
   // Track whether the last pointer-down started a meaningful pan (to suppress click)
   const wasPanningRef = useRef(false);
 
@@ -124,7 +144,7 @@ export function EncounterMap({ encounterId }: Props) {
     totalHeight,
     svgRef,
     containerRef,
-    disabled: !!pendingPlace || !!pendingShapeKind,
+    disabled: !!pendingPlace || !!pendingShapeKind || isDrawingMode,
   });
 
   // Attach wheel handler with non-passive option so we can preventDefault
@@ -165,6 +185,22 @@ export function EncounterMap({ encounterId }: Props) {
 
   const shapes = encounter.map?.shapes ?? [];
   const shapeColorIndex = shapes.length % SHAPE_COLORS.length;
+  const drawings = encounter.map?.drawings ?? [];
+  const hasDrawings = drawings.length > 0;
+
+  function getSvgPoint(
+    e: React.PointerEvent<SVGSVGElement>
+  ): { x: number; y: number } | null {
+    const svg = svgRef.current;
+    if (!svg) return null;
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return null;
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX;
+    pt.y = e.clientY;
+    const transformed = pt.matrixTransform(ctm.inverse());
+    return { x: transformed.x, y: transformed.y };
+  }
 
   function getSvgCell(e: React.MouseEvent<SVGSVGElement>) {
     const svg = svgRef.current;
@@ -185,6 +221,8 @@ export function EncounterMap({ encounterId }: Props) {
   }
 
   function handleSvgClick(e: React.MouseEvent<SVGSVGElement>) {
+    // Suppress click in drawing mode — pointer events handle drawing
+    if (isDrawingMode) return;
     // Suppress click if it ended a pan drag
     if (wasPanningRef.current) {
       wasPanningRef.current = false;
@@ -223,6 +261,11 @@ export function EncounterMap({ encounterId }: Props) {
       setPendingShapeKind(null);
       setSelected(null);
       setSelectedShapeId(null);
+      if (isDrawingMode) {
+        isDrawingActiveRef.current = false;
+        setCurrentPath([]);
+        setIsDrawingMode(false);
+      }
       return;
     }
     if (selectedShapeId && (e.key === "Delete" || e.key === "Backspace")) {
@@ -273,6 +316,14 @@ export function EncounterMap({ encounterId }: Props) {
             onResetView={resetView}
             pendingShapeKind={pendingShapeKind}
             onPendingShapeKind={setPendingShapeKind}
+            isDrawing={isDrawingMode}
+            onDrawingToggle={() => {
+              setIsDrawingMode((prev) => !prev);
+              setCurrentPath([]);
+              isDrawingActiveRef.current = false;
+            }}
+            hasDrawings={hasDrawings}
+            onClearDrawings={() => clearMapDrawings(encounterId)}
           />
           <TokenTray
             tokens={tray}
@@ -300,6 +351,15 @@ export function EncounterMap({ encounterId }: Props) {
               aria-label="Encounter battle map"
               onClick={handleSvgClick}
               onPointerDown={(e) => {
+                if (isDrawingMode) {
+                  e.currentTarget.setPointerCapture(e.pointerId);
+                  isDrawingActiveRef.current = true;
+                  const pt = getSvgPoint(e);
+                  if (pt) {
+                    setCurrentPath([pt]);
+                  }
+                  return;
+                }
                 // Only pan when not placing tokens/shapes and the target is the SVG/grid background
                 if (pendingPlace || pendingShapeKind) return;
                 if (!(e.target instanceof Element)) return;
@@ -313,18 +373,57 @@ export function EncounterMap({ encounterId }: Props) {
                 handlePanStart(e);
               }}
               onPointerMove={(e) => {
+                if (isDrawingMode && isDrawingActiveRef.current) {
+                  const pt = getSvgPoint(e);
+                  if (!pt) return;
+                  setCurrentPath((prev) => {
+                    if (prev.length === 0) return [pt];
+                    const last = prev[prev.length - 1];
+                    if (!last) return prev;
+                    const dx = pt.x - last.x;
+                    const dy = pt.y - last.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < MIN_DRAWING_DISTANCE) return prev;
+                    return [...prev, pt];
+                  });
+                  return;
+                }
                 if (isPanning) {
                   wasPanningRef.current = true;
                   handlePanMove(e);
                 }
               }}
               onPointerUp={(e) => {
+                if (isDrawingMode && isDrawingActiveRef.current) {
+                  isDrawingActiveRef.current = false;
+                  e.currentTarget.releasePointerCapture(e.pointerId);
+                  setCurrentPath((prev) => {
+                    if (prev.length < 2) {
+                      return [];
+                    }
+                    const pathData = pointsToPathData(prev);
+                    if (pathData) {
+                      setDrawingColorIndex((ci) => {
+                        const colorIndex = ci % DRAWING_COLORS.length;
+                        addMapDrawing(encounterId, {
+                          path: pathData,
+                          color: DRAWING_COLORS[colorIndex] ?? "#e8e2d9",
+                          strokeWidth: 2,
+                        });
+                        return ci + 1;
+                      });
+                    }
+                    return [];
+                  });
+                  return;
+                }
                 handlePanEnd(e);
               }}
               style={{
                 display: "block",
-                cursor:
-                  pendingPlace || pendingShapeKind
+                cursor: isDrawingMode
+                  ? "crosshair"
+                  : pendingPlace || pendingShapeKind
                     ? "crosshair"
                     : isPanning
                       ? "grabbing"
@@ -336,6 +435,36 @@ export function EncounterMap({ encounterId }: Props) {
                 rows={map.rows}
                 cellSize={map.cellSize}
               />
+              {/* Drawings layer — rendered behind shapes and tokens */}
+              {drawings.map((drawing) => (
+                <path
+                  key={drawing.id}
+                  d={drawing.path}
+                  fill="none"
+                  stroke={drawing.color}
+                  strokeWidth={drawing.strokeWidth}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  opacity={0.8}
+                  pointerEvents="none"
+                />
+              ))}
+              {/* Current drawing in progress */}
+              {currentPath.length > 1 && (
+                <path
+                  d={pointsToPathData(currentPath)}
+                  fill="none"
+                  stroke={
+                    DRAWING_COLORS[drawingColorIndex % DRAWING_COLORS.length] ??
+                    "#e8e2d9"
+                  }
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  opacity={0.6}
+                  pointerEvents="none"
+                />
+              )}
               {shapes.map((shape) => {
                 const isSelected = selectedShapeId === shape.id;
                 const px = shape.position.x * map.cellSize;
@@ -436,7 +565,8 @@ export function EncounterMap({ encounterId }: Props) {
             Drag tokens to move. Click a tray chip then a cell to place. Select
             a token or shape and press Delete to remove. Click a shape button
             then a cell to place a shape. Scroll to zoom, drag the background to
-            pan.
+            pan. Toggle Draw mode to sketch freehand annotations; press Escape
+            to exit drawing mode.
           </p>
         </>
       ) : (
