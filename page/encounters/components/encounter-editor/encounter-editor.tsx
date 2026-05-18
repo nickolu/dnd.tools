@@ -11,6 +11,7 @@ import { selectEncounterById } from "@/lib/store/encounterSelectors";
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
 import { useEncountersHasHydrated } from "@/lib/store/useEncountersHasHydrated";
 import { useEncounterBalance } from "@/page/encounters/hooks/useEncounterBalance";
+import { buildEncounterSummary } from "@/page/encounters/utils/exportEncounterSummary";
 
 import { BalanceSummary } from "../balance-summary";
 import { CombatantList } from "../combatant-list";
@@ -61,6 +62,7 @@ export function EncounterEditor({ encounterId }: Props) {
   useMonsters();
 
   const [notesOpen, setNotesOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const [setupOpen, setSetupOpen] = useState(true);
@@ -183,6 +185,14 @@ export function EncounterEditor({ encounterId }: Props) {
     }
   }
 
+  async function handleExport() {
+    if (!encounter) return;
+    const summary = buildEncounterSummary(encounter, balance);
+    await navigator.clipboard.writeText(summary);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
   return (
     <main className="mx-auto flex w-full flex-col gap-4">
       <header className="flex flex-wrap items-start justify-between gap-3">
@@ -270,6 +280,13 @@ export function EncounterEditor({ encounterId }: Props) {
             }}
           >
             Duplicate
+          </button>
+          <button
+            type="button"
+            className="admin-button-secondary typography-body-sm px-3 py-1"
+            onClick={handleExport}
+          >
+            {copied ? "Copied!" : "Export"}
           </button>
           <button
             type="button"
