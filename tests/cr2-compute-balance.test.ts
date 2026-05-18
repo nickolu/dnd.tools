@@ -33,6 +33,7 @@ function combatant(
     maxHp: 10,
     currentHp: 10,
     initiative: null,
+    conditions: [],
   };
 }
 

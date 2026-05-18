@@ -65,6 +65,7 @@ describe("computePartyPower", () => {
       maxHp: 10,
       currentHp: 10,
       initiative: null,
+      conditions: [],
     };
     const partyPowerWithAlly = computePartyPower(
       [pc(5), pc(5), pc(5), pc(5)],

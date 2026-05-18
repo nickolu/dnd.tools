@@ -59,6 +59,7 @@ describe("buildTipsRequest", () => {
           maxHp: 7,
           currentHp: 7,
           initiative: null,
+          conditions: [],
         },
         {
           id: "c2",
@@ -69,6 +70,7 @@ describe("buildTipsRequest", () => {
           maxHp: 7,
           currentHp: 7,
           initiative: null,
+          conditions: [],
         },
         {
           id: "c3",
@@ -79,6 +81,7 @@ describe("buildTipsRequest", () => {
           maxHp: 7,
           currentHp: 7,
           initiative: null,
+          conditions: [],
         },
       ],
     });
@@ -108,6 +111,7 @@ describe("buildTipsRequest", () => {
           maxHp: 7,
           currentHp: 7,
           initiative: null,
+          conditions: [],
         },
         {
           id: "c2",
@@ -118,6 +122,7 @@ describe("buildTipsRequest", () => {
           maxHp: 10,
           currentHp: 10,
           initiative: null,
+          conditions: [],
         },
       ],
     });
@@ -154,6 +159,7 @@ describe("buildTipsRequest", () => {
           maxHp: 256,
           currentHp: 256,
           initiative: null,
+          conditions: [],
         },
       ],
     });
@@ -203,6 +209,7 @@ describe("buildTipsRequest", () => {
           maxHp: 1,
           currentHp: 1,
           initiative: null,
+          conditions: [],
         },
       ],
     });
