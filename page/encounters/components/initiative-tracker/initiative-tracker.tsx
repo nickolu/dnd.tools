@@ -18,6 +18,7 @@ import { InitiativeRow } from "./components/initiative-row";
 import { InitiativeToolbar } from "./components/initiative-toolbar";
 import { RoundCounter } from "./components/round-counter";
 import { useDexModByCombatantId } from "./hooks/useDexModByCombatantId";
+import { useRollAnimation } from "./hooks/useRollAnimation";
 
 type Props = {
   encounterId: string;
@@ -64,6 +65,8 @@ export function InitiativeTracker({ encounterId }: Props) {
   const dexModByCombatantId = useDexModByCombatantId(
     encounter?.combatants ?? []
   );
+
+  const { animateRoll, isRolling, displayValue } = useRollAnimation();
 
   const { data: monsters = [] } = useMonsters();
   const acByMonsterId = useMemo(() => {
@@ -116,6 +119,8 @@ export function InitiativeTracker({ encounterId }: Props) {
   const activeIndex = encounter.initiative.activeIndex;
 
   function handleRollAll() {
+    const allIds = sortedRows.map((r) => r.id);
+    animateRoll(allIds);
     rollPartyMemberInitiatives(encounterId);
     rollCombatantInitiatives(encounterId, dexModByCombatantId);
   }
@@ -123,6 +128,7 @@ export function InitiativeTracker({ encounterId }: Props) {
   function rollSingleParty(memberId: string) {
     const member = encounter!.partyMembers.find((p) => p.id === memberId);
     if (!member) return;
+    animateRoll([memberId]);
     setPartyMemberInitiative(
       encounterId,
       memberId,
@@ -132,6 +138,7 @@ export function InitiativeTracker({ encounterId }: Props) {
 
   function rollSingleCombatant(combatantId: string) {
     const mod = dexModByCombatantId.get(combatantId) ?? 0;
+    animateRoll([combatantId]);
     setCombatantInitiative(encounterId, combatantId, rollInitiative(mod));
   }
 
@@ -249,6 +256,9 @@ export function InitiativeTracker({ encounterId }: Props) {
                     setPartyMemberInitiativeMod(encounterId, row.id, mod)
                   }
                   onRoll={() => rollSingleParty(row.id)}
+                  {...(isRolling(row.id)
+                    ? { rollingDisplay: displayValue(row.id) }
+                    : {})}
                   conditions={pc?.conditions ?? []}
                   onToggleCondition={(condition) =>
                     toggleCondition(encounterId, row.id, condition)
@@ -344,6 +354,9 @@ export function InitiativeTracker({ encounterId }: Props) {
                   setCombatantInitiative(encounterId, row.id, value)
                 }
                 onRoll={() => rollSingleCombatant(row.id)}
+                {...(isRolling(row.id)
+                  ? { rollingDisplay: displayValue(row.id) }
+                  : {})}
                 onDuplicate={() => duplicateCombatant(encounterId, row.id)}
                 conditions={combatant?.conditions ?? []}
                 onToggleCondition={(condition) =>

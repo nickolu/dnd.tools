@@ -39,6 +39,7 @@ type Props = {
   onSetDeathSave?: (type: "success" | "failure", count: number) => void;
   concentrating?: boolean;
   onToggleConcentration?: () => void;
+  rollingDisplay?: number | null;
 };
 
 export function InitiativeRow({
@@ -67,9 +68,11 @@ export function InitiativeRow({
   onSetDeathSave,
   concentrating,
   onToggleConcentration,
+  rollingDisplay,
 }: Props) {
   const [statBlockExpanded, setStatBlockExpanded] = useState(false);
   const initiativeValue = row.initiative === null ? "" : String(row.initiative);
+  const showAnimated = rollingDisplay !== undefined && rollingDisplay !== null;
   const modValue = String(row.dexMod);
   const sideLabel = row.side === "enemy" ? "Enemy" : "Ally";
 
@@ -201,25 +204,43 @@ export function InitiativeRow({
         />
       )}
       <div className="flex flex-wrap items-center gap-1.5">
-        <label className="flex items-center gap-1">
+        <div className="flex items-center gap-1">
           <span className="typography-kicker text-muted">Init</span>
-          <input
-            type="number"
-            inputMode="numeric"
-            className="input-field typography-body-sm w-16 px-2 py-1 text-right"
-            value={initiativeValue}
-            onChange={(e) => {
-              const v = e.target.value;
-              if (v.trim() === "") {
-                onSetInitiative(null);
-                return;
-              }
-              const parsed = Number.parseInt(v, 10);
-              if (Number.isFinite(parsed)) onSetInitiative(parsed);
-            }}
-            aria-label={`Initiative for ${row.name}`}
-          />
-        </label>
+          {showAnimated ? (
+            <span
+              className="typography-body-sm text-right"
+              style={{
+                display: "inline-block",
+                width: "4rem",
+                fontVariantNumeric: "tabular-nums",
+                color: "var(--color-accent)",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+              aria-live="polite"
+              aria-label={`Rolling initiative for ${row.name}`}
+            >
+              {rollingDisplay}
+            </span>
+          ) : (
+            <input
+              type="number"
+              inputMode="numeric"
+              className="input-field typography-body-sm w-16 px-2 py-1 text-right"
+              value={initiativeValue}
+              onChange={(e) => {
+                const v = e.target.value;
+                if (v.trim() === "") {
+                  onSetInitiative(null);
+                  return;
+                }
+                const parsed = Number.parseInt(v, 10);
+                if (Number.isFinite(parsed)) onSetInitiative(parsed);
+              }}
+              aria-label={`Initiative for ${row.name}`}
+            />
+          )}
+        </div>
         <button
           type="button"
           className="admin-button-secondary typography-body-sm px-2 py-1"
