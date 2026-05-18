@@ -9,11 +9,15 @@ import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
 import { aggregateSpells } from "@/page/encounters/utils/aggregateSpells";
 
 import { SpellSummaryRow } from "./components/spell-summary-row";
+import { SpellTableView } from "./components/spell-table-view";
 import {
   DEFAULT_GROUPING,
+  DEFAULT_VIEW_MODE,
   GROUPING_LABEL,
   GROUPING_OPTIONS,
   GROUPING_STORAGE_KEY,
+  type SpellViewMode,
+  VIEW_MODE_STORAGE_KEY,
 } from "./constants";
 import type { SpellAggregateGrouping } from "./types";
 import { groupByLevel, groupBySchool } from "./utils/groupAggregatedSpells";
@@ -23,6 +27,7 @@ type Props = {
 };
 
 const STORAGE_EVENT_NAME = "dnd-tools-grouping-storage";
+const VIEW_MODE_EVENT_NAME = "dnd-tools-view-mode-storage";
 
 function readStoredGrouping(): SpellAggregateGrouping {
   if (typeof window === "undefined") return DEFAULT_GROUPING;
@@ -49,6 +54,31 @@ function getGroupingServerSnapshot(): SpellAggregateGrouping {
   return DEFAULT_GROUPING;
 }
 
+function readStoredViewMode(): SpellViewMode {
+  if (typeof window === "undefined") return DEFAULT_VIEW_MODE;
+  const raw = window.localStorage.getItem(VIEW_MODE_STORAGE_KEY);
+  if (raw === "list" || raw === "table") return raw;
+  return DEFAULT_VIEW_MODE;
+}
+
+function subscribeToViewMode(onChange: () => void): () => void {
+  if (typeof window === "undefined") return () => {};
+  const handler = (e: StorageEvent) => {
+    if (e.key === VIEW_MODE_STORAGE_KEY) onChange();
+  };
+  const localHandler = () => onChange();
+  window.addEventListener("storage", handler);
+  window.addEventListener(VIEW_MODE_EVENT_NAME, localHandler);
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(VIEW_MODE_EVENT_NAME, localHandler);
+  };
+}
+
+function getViewModeServerSnapshot(): SpellViewMode {
+  return DEFAULT_VIEW_MODE;
+}
+
 export function SpellAggregatePanel({ encounterId }: Props) {
   const encounter = useEncounterLibraryStore(selectEncounterById(encounterId));
   const { data: monsters = [], isLoading: monstersLoading } = useMonsters();
@@ -60,10 +90,22 @@ export function SpellAggregatePanel({ encounterId }: Props) {
     getGroupingServerSnapshot
   );
 
+  const viewMode = useSyncExternalStore(
+    subscribeToViewMode,
+    readStoredViewMode,
+    getViewModeServerSnapshot
+  );
+
   function handleGroupingChange(next: SpellAggregateGrouping) {
     if (typeof window === "undefined") return;
     window.localStorage.setItem(GROUPING_STORAGE_KEY, next);
     window.dispatchEvent(new Event(STORAGE_EVENT_NAME));
+  }
+
+  function handleViewModeChange(next: SpellViewMode) {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(VIEW_MODE_STORAGE_KEY, next);
+    window.dispatchEvent(new Event(VIEW_MODE_EVENT_NAME));
   }
 
   const monstersById = useMemo(
@@ -97,21 +139,43 @@ export function SpellAggregatePanel({ encounterId }: Props) {
 
   return (
     <section className="surface-card flex flex-col gap-3 p-4">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="typography-h2">Spells</h2>
-        <div className="flex gap-1" role="group" aria-label="Group spells by">
-          {GROUPING_OPTIONS.map((value) => (
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex gap-1" role="group" aria-label="Group spells by">
+            {GROUPING_OPTIONS.map((value) => (
+              <button
+                key={value}
+                type="button"
+                className="filter-chip"
+                data-active={value === grouping}
+                onClick={() => handleGroupingChange(value)}
+                aria-pressed={value === grouping}
+              >
+                {GROUPING_LABEL[value]}
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-1" role="group" aria-label="View mode">
             <button
-              key={value}
               type="button"
               className="filter-chip"
-              data-active={value === grouping}
-              onClick={() => handleGroupingChange(value)}
-              aria-pressed={value === grouping}
+              data-active={viewMode === "list"}
+              onClick={() => handleViewModeChange("list")}
+              aria-pressed={viewMode === "list"}
             >
-              {GROUPING_LABEL[value]}
+              List
             </button>
-          ))}
+            <button
+              type="button"
+              className="filter-chip"
+              data-active={viewMode === "table"}
+              onClick={() => handleViewModeChange("table")}
+              aria-pressed={viewMode === "table"}
+            >
+              Table
+            </button>
+          </div>
         </div>
       </div>
 
@@ -135,6 +199,8 @@ export function SpellAggregatePanel({ encounterId }: Props) {
         <p className="typography-body-sm text-muted">
           None of the monsters in this encounter cast spells.
         </p>
+      ) : viewMode === "table" ? (
+        <SpellTableView spells={aggregate.spells} />
       ) : (
         <div className="flex flex-col gap-3">
           {groups.map((group) => (
