@@ -57,6 +57,11 @@ export function EncounterEditor({ encounterId }: Props) {
   const [mapSidebarTab, setMapSidebarTab] = useState<"initiative" | "spells">(
     "initiative"
   );
+  const [sidebarWidth, setSidebarWidth] = useState(() => {
+    if (typeof window === "undefined") return 320;
+    const saved = localStorage.getItem("dnd-tools-map-sidebar-width");
+    return saved ? Number(saved) : 320;
+  });
 
   useEffect(() => {
     if (!mapFocused) return;
@@ -256,7 +261,7 @@ export function EncounterEditor({ encounterId }: Props) {
             zIndex: 100,
             background: "var(--color-canvas)",
             display: "grid",
-            gridTemplateColumns: "1fr 320px",
+            gridTemplateColumns: `1fr 6px ${sidebarWidth}px`,
             gap: "1rem",
             padding: "1rem",
             overflow: "hidden",
@@ -290,6 +295,55 @@ export function EncounterEditor({ encounterId }: Props) {
             <div style={{ flex: 1, minHeight: 0 }}>
               <EncounterMap encounterId={encounter.id} />
             </div>
+          </div>
+          {/* Resize handle */}
+          <div
+            style={{
+              width: "6px",
+              cursor: "col-resize",
+              background: "transparent",
+              position: "relative",
+            }}
+            onPointerDown={(e) => {
+              e.preventDefault();
+              const startX = e.clientX;
+              const startWidth = sidebarWidth;
+
+              const onPointerMove = (ev: PointerEvent) => {
+                const delta = startX - ev.clientX;
+                const newWidth = Math.max(
+                  200,
+                  Math.min(600, startWidth + delta)
+                );
+                setSidebarWidth(newWidth);
+                localStorage.setItem(
+                  "dnd-tools-map-sidebar-width",
+                  String(newWidth)
+                );
+              };
+
+              const onPointerUp = () => {
+                document.removeEventListener("pointermove", onPointerMove);
+                document.removeEventListener("pointerup", onPointerUp);
+              };
+
+              document.addEventListener("pointermove", onPointerMove);
+              document.addEventListener("pointerup", onPointerUp);
+            }}
+          >
+            {/* Visual indicator */}
+            <div
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: "2px",
+                height: "2rem",
+                background: "var(--color-border-strong)",
+                borderRadius: "999px",
+              }}
+            />
           </div>
           <div
             style={{
