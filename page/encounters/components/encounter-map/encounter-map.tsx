@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type {
   Combatant,
+  MapShape,
   PartyMember,
   Position,
 } from "@/lib/domain/encounter/encounter.schema";
@@ -23,7 +24,9 @@ import { useMapViewport } from "./hooks/useMapViewport";
 import { useTokenDrag } from "./hooks/useTokenDrag";
 import { useMapPlacementStore } from "./stores/useMapPlacementStore";
 import type { TokenRef, TokenViewModel } from "./types";
-import { pixelToCell } from "./utils/cell-coords";
+import { cellToPixel, pixelToCell } from "./utils/cell-coords";
+
+const SHAPE_COLORS = ["#d4a041", "#4a90d9", "#d94a4a", "#4ad94a", "#9b59b6"];
 
 type Props = {
   encounterId: string;
@@ -84,6 +87,8 @@ export function EncounterMap({ encounterId }: Props) {
   const placeToken = useEncounterLibraryStore((s) => s.placeToken);
   const moveToken = useEncounterLibraryStore((s) => s.moveToken);
   const removeToken = useEncounterLibraryStore((s) => s.removeToken);
+  const addMapShape = useEncounterLibraryStore((s) => s.addMapShape);
+  const removeMapShape = useEncounterLibraryStore((s) => s.removeMapShape);
 
   const pendingPlace = useMapPlacementStore((s) => s.pendingPlace);
   const setPendingPlace = useMapPlacementStore((s) => s.setPendingPlace);
@@ -91,6 +96,10 @@ export function EncounterMap({ encounterId }: Props) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [selected, setSelected] = useState<TokenRef | null>(null);
+  const [selectedShapeId, setSelectedShapeId] = useState<string | null>(null);
+  const [pendingShapeKind, setPendingShapeKind] = useState<
+    MapShape["kind"] | null
+  >(null);
   // Track whether the last pointer-down started a meaningful pan (to suppress click)
   const wasPanningRef = useRef(false);
 
@@ -115,7 +124,7 @@ export function EncounterMap({ encounterId }: Props) {
     totalHeight,
     svgRef,
     containerRef,
-    disabled: !!pendingPlace,
+    disabled: !!pendingPlace || !!pendingShapeKind,
   });
 
   // Attach wheel handler with non-passive option so we can preventDefault
@@ -154,32 +163,55 @@ export function EncounterMap({ encounterId }: Props) {
 
   if (!encounter) return null;
 
-  function handleSvgClick(e: React.MouseEvent<SVGSVGElement>) {
-    // Suppress click if it ended a pan drag
-    if (wasPanningRef.current) {
-      wasPanningRef.current = false;
-      return;
-    }
-    if (!pendingPlace) {
-      // Clicking empty space deselects.
-      setSelected(null);
-      return;
-    }
+  const shapes = encounter.map?.shapes ?? [];
+  const shapeColorIndex = shapes.length % SHAPE_COLORS.length;
+
+  function getSvgCell(e: React.MouseEvent<SVGSVGElement>) {
     const svg = svgRef.current;
-    if (!svg) return;
+    if (!svg) return null;
     const ctm = svg.getScreenCTM();
-    if (!ctm) return;
+    if (!ctm) return null;
     const pt = svg.createSVGPoint();
     pt.x = e.clientX;
     pt.y = e.clientY;
     const transformed = pt.matrixTransform(ctm.inverse());
-    const cell = pixelToCell(
+    return pixelToCell(
       transformed.x,
       transformed.y,
       map.cellSize,
       map.cols,
       map.rows
     );
+  }
+
+  function handleSvgClick(e: React.MouseEvent<SVGSVGElement>) {
+    // Suppress click if it ended a pan drag
+    if (wasPanningRef.current) {
+      wasPanningRef.current = false;
+      return;
+    }
+
+    if (pendingShapeKind) {
+      const cell = getSvgCell(e);
+      if (!cell) return;
+      addMapShape(encounterId, {
+        kind: pendingShapeKind,
+        position: cell,
+        size: 1,
+        color: SHAPE_COLORS[shapeColorIndex] ?? "#d4a041",
+      });
+      setPendingShapeKind(null);
+      return;
+    }
+
+    if (!pendingPlace) {
+      // Clicking empty space deselects.
+      setSelected(null);
+      setSelectedShapeId(null);
+      return;
+    }
+    const cell = getSvgCell(e);
+    if (!cell) return;
     placeToken(encounterId, pendingPlace.kind, pendingPlace.id, cell);
     setSelected(pendingPlace);
     setPendingPlace(null);
@@ -188,7 +220,15 @@ export function EncounterMap({ encounterId }: Props) {
   function handleKeyDown(e: KeyboardEvent<HTMLDivElement>) {
     if (e.key === "Escape") {
       setPendingPlace(null);
+      setPendingShapeKind(null);
       setSelected(null);
+      setSelectedShapeId(null);
+      return;
+    }
+    if (selectedShapeId && (e.key === "Delete" || e.key === "Backspace")) {
+      e.preventDefault();
+      removeMapShape(encounterId, selectedShapeId);
+      setSelectedShapeId(null);
       return;
     }
     if (selected && (e.key === "Delete" || e.key === "Backspace")) {
@@ -231,6 +271,8 @@ export function EncounterMap({ encounterId }: Props) {
             onZoomIn={zoomIn}
             onZoomOut={zoomOut}
             onResetView={resetView}
+            pendingShapeKind={pendingShapeKind}
+            onPendingShapeKind={setPendingShapeKind}
           />
           <TokenTray
             tokens={tray}
@@ -258,8 +300,8 @@ export function EncounterMap({ encounterId }: Props) {
               aria-label="Encounter battle map"
               onClick={handleSvgClick}
               onPointerDown={(e) => {
-                // Only pan when not placing tokens and the target is the SVG/grid background
-                if (pendingPlace) return;
+                // Only pan when not placing tokens/shapes and the target is the SVG/grid background
+                if (pendingPlace || pendingShapeKind) return;
                 if (!(e.target instanceof Element)) return;
                 const target = e.target;
                 const isBackground =
@@ -281,11 +323,12 @@ export function EncounterMap({ encounterId }: Props) {
               }}
               style={{
                 display: "block",
-                cursor: pendingPlace
-                  ? "crosshair"
-                  : isPanning
-                    ? "grabbing"
-                    : "grab",
+                cursor:
+                  pendingPlace || pendingShapeKind
+                    ? "crosshair"
+                    : isPanning
+                      ? "grabbing"
+                      : "grab",
               }}
             >
               <MapGrid
@@ -293,6 +336,59 @@ export function EncounterMap({ encounterId }: Props) {
                 rows={map.rows}
                 cellSize={map.cellSize}
               />
+              {shapes.map((shape) => {
+                const isSelected = selectedShapeId === shape.id;
+                const px = shape.position.x * map.cellSize;
+                const py = shape.position.y * map.cellSize;
+                const sizePx = shape.size * map.cellSize;
+                const { cx, cy } = cellToPixel(shape.position, map.cellSize);
+                const strokeDash = isSelected ? "6,3" : undefined;
+                const commonProps = {
+                  fill: shape.color,
+                  fillOpacity: 0.3,
+                  stroke: shape.color,
+                  strokeWidth: 2,
+                  strokeDasharray: strokeDash,
+                  style: { pointerEvents: "all" as const, cursor: "pointer" },
+                  onClick: (e: React.MouseEvent) => {
+                    e.stopPropagation();
+                    setSelectedShapeId(shape.id);
+                    setSelected(null);
+                  },
+                };
+                if (shape.kind === "square") {
+                  return (
+                    <rect
+                      key={shape.id}
+                      x={px}
+                      y={py}
+                      width={sizePx}
+                      height={sizePx}
+                      {...commonProps}
+                    />
+                  );
+                }
+                if (shape.kind === "circle") {
+                  return (
+                    <circle
+                      key={shape.id}
+                      cx={cx}
+                      cy={cy}
+                      r={sizePx / 2}
+                      {...commonProps}
+                    />
+                  );
+                }
+                // triangle
+                const points = [
+                  `${cx},${py}`,
+                  `${px},${py + sizePx}`,
+                  `${px + sizePx},${py + sizePx}`,
+                ].join(" ");
+                return (
+                  <polygon key={shape.id} points={points} {...commonProps} />
+                );
+              })}
               {placed.map((tok) => {
                 const isDragging =
                   dragState !== null &&
@@ -338,8 +434,9 @@ export function EncounterMap({ encounterId }: Props) {
           </div>
           <p className="typography-body-sm text-muted">
             Drag tokens to move. Click a tray chip then a cell to place. Select
-            a token and press Delete to remove from the map. Scroll to zoom,
-            drag the background to pan.
+            a token or shape and press Delete to remove. Click a shape button
+            then a cell to place a shape. Scroll to zoom, drag the background to
+            pan.
           </p>
         </>
       ) : (

@@ -28,12 +28,23 @@ const positionSchema = z.object({
   y: z.number(),
 });
 
+export const mapShapeSchema = z.object({
+  id: z.string().min(1),
+  kind: z.enum(["square", "circle", "triangle"]),
+  position: positionSchema,
+  size: z.number().int().min(1).max(10).default(1),
+  color: z.string().default("#d4a041"),
+});
+
+export type MapShape = z.infer<typeof mapShapeSchema>;
+
 export const encounterMapSchema = z.object({
   grid: z.literal("square"),
   cols: z.number().int().min(4).max(60),
   rows: z.number().int().min(4).max(60),
   cellSize: z.number().int().min(24).max(96),
   backgroundUrl: z.string().url().optional(),
+  shapes: z.array(mapShapeSchema).optional(),
 });
 
 export const encounterTipsSchema = z.object({
