@@ -58,6 +58,8 @@ export const partyMemberSchema = z.object({
   position: positionSchema.optional(),
   notes: z.string().optional(),
   conditions: z.array(conditionSchema).default([]),
+  maxHp: z.number().int().positive().optional(),
+  currentHp: z.number().int().min(0).optional(),
 });
 
 export const combatantSchema = z.object({

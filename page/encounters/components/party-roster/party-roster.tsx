@@ -89,6 +89,28 @@ export function PartyRoster({ encounterId, partyMembers, allies }: Props) {
                   </option>
                 ))}
               </select>
+              <input
+                type="number"
+                inputMode="numeric"
+                className="input-field typography-body-sm w-20 px-2 py-1"
+                value={p.maxHp ?? ""}
+                min={1}
+                placeholder="Max HP"
+                onChange={(e) => {
+                  const raw = e.target.value;
+                  if (raw === "") {
+                    updatePartyMember(encounterId, p.id, {
+                      maxHp: undefined,
+                    });
+                  } else {
+                    const parsed = Number.parseInt(raw, 10);
+                    if (Number.isFinite(parsed) && parsed > 0) {
+                      updatePartyMember(encounterId, p.id, { maxHp: parsed });
+                    }
+                  }
+                }}
+                aria-label={`Max HP for ${p.name}`}
+              />
               <button
                 type="button"
                 className="admin-button-secondary typography-body-sm px-2 py-1"

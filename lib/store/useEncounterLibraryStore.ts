@@ -31,7 +31,9 @@ type AddPcInput = {
   level: number;
 };
 
-type UpdatePartyMemberPatch = Partial<Pick<PartyMember, "name" | "level">>;
+type UpdatePartyMemberPatch = Partial<
+  Pick<PartyMember, "name" | "level" | "maxHp">
+>;
 
 type AddCombatantInput = {
   monster: Monster;
@@ -290,6 +292,8 @@ function migratePartyMember(raw: unknown): PartyMember {
           typeof c === "string" && conditionsSet.has(c)
       )
     : [];
+  const maxHp = readNullableNumber(r.maxHp);
+  const currentHp = readNullableNumber(r.currentHp);
   const member: PartyMember = {
     id: readString(r.id, crypto.randomUUID()),
     kind: "pc",
@@ -300,6 +304,12 @@ function migratePartyMember(raw: unknown): PartyMember {
     conditions,
     ...(position !== null ? { position } : {}),
     ...(notesValue !== undefined ? { notes: notesValue } : {}),
+    ...(maxHp !== null && maxHp > 0
+      ? {
+          maxHp,
+          currentHp: currentHp !== null ? clamp(currentHp, 0, maxHp) : maxHp,
+        }
+      : {}),
   };
   return member;
 }
@@ -546,6 +556,19 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
               if (patch.level !== undefined) {
                 next.level = bounded(patch.level);
               }
+              if (patch.maxHp !== undefined) {
+                const safeMax = Math.max(1, Math.trunc(patch.maxHp));
+                next.maxHp = safeMax;
+                if (next.currentHp === undefined) {
+                  next.currentHp = safeMax;
+                } else if (next.currentHp > safeMax) {
+                  next.currentHp = safeMax;
+                }
+              } else if ("maxHp" in patch && patch.maxHp === undefined) {
+                // Explicitly clearing maxHp disables HP tracking
+                delete next.maxHp;
+                delete next.currentHp;
+              }
               return next;
             }),
           })),
@@ -610,25 +633,56 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         }));
       },
 
-      adjustHp: (id: string, combatantId: string, delta: number): void => {
+      adjustHp: (id: string, targetId: string, delta: number): void => {
         set((state) => ({
-          encounters: updateEncounter(state.encounters, id, (e) =>
-            updateCombatant(e, combatantId, (c) => ({
-              ...c,
-              currentHp: clamp(c.currentHp + delta, 0, c.maxHp),
-            }))
-          ),
+          encounters: updateEncounter(state.encounters, id, (e) => {
+            const isCombatant = e.combatants.some((c) => c.id === targetId);
+            if (isCombatant) {
+              return updateCombatant(e, targetId, (c) => ({
+                ...c,
+                currentHp: clamp(c.currentHp + delta, 0, c.maxHp),
+              }));
+            }
+            return {
+              ...e,
+              partyMembers: e.partyMembers.map((p) => {
+                if (
+                  p.id !== targetId ||
+                  p.maxHp === undefined ||
+                  p.currentHp === undefined
+                )
+                  return p;
+                return {
+                  ...p,
+                  currentHp: clamp(p.currentHp + delta, 0, p.maxHp),
+                };
+              }),
+            };
+          }),
         }));
       },
 
-      setHp: (id: string, combatantId: string, currentHp: number): void => {
+      setHp: (id: string, targetId: string, currentHp: number): void => {
         set((state) => ({
-          encounters: updateEncounter(state.encounters, id, (e) =>
-            updateCombatant(e, combatantId, (c) => ({
-              ...c,
-              currentHp: clamp(Math.trunc(currentHp), 0, c.maxHp),
-            }))
-          ),
+          encounters: updateEncounter(state.encounters, id, (e) => {
+            const isCombatant = e.combatants.some((c) => c.id === targetId);
+            if (isCombatant) {
+              return updateCombatant(e, targetId, (c) => ({
+                ...c,
+                currentHp: clamp(Math.trunc(currentHp), 0, c.maxHp),
+              }));
+            }
+            return {
+              ...e,
+              partyMembers: e.partyMembers.map((p) => {
+                if (p.id !== targetId || p.maxHp === undefined) return p;
+                return {
+                  ...p,
+                  currentHp: clamp(Math.trunc(currentHp), 0, p.maxHp),
+                };
+              }),
+            };
+          }),
         }));
       },
 

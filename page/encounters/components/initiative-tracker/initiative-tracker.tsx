@@ -159,12 +159,24 @@ export function InitiativeTracker({ encounterId }: Props) {
             if (row.kind === "party") {
               const pc = encounter.partyMembers.find((p) => p.id === row.id);
               const pcOnMap = pc?.position !== undefined;
+              const pcHpProps =
+                pc?.maxHp !== undefined && pc?.currentHp !== undefined
+                  ? {
+                      currentHp: pc.currentHp,
+                      maxHp: pc.maxHp,
+                      onAdjustHp: (delta: number) =>
+                        adjustHp(encounterId, row.id, delta),
+                      onSetHp: (value: number) =>
+                        setHp(encounterId, row.id, value),
+                    }
+                  : {};
               return (
                 <InitiativeRow
                   key={row.id}
                   row={row}
                   isActive={isActive}
                   editableMod
+                  {...pcHpProps}
                   isOnMap={pcOnMap}
                   {...(pcOnMap
                     ? {
