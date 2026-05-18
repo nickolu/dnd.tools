@@ -62,6 +62,9 @@ export const partyMemberSchema = z.object({
   conditions: z.array(conditionSchema).default([]),
   maxHp: z.number().int().positive().optional(),
   currentHp: z.number().int().min(0).optional(),
+  armorClass: z.number().int().min(1).optional(),
+  speed: z.number().int().min(0).optional(),
+  passivePerception: z.number().int().min(1).optional(),
 });
 
 export const combatantSchema = z.object({

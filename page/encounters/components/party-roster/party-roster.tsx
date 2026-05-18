@@ -111,6 +111,76 @@ export function PartyRoster({ encounterId, partyMembers, allies }: Props) {
                 }}
                 aria-label={`Max HP for ${p.name}`}
               />
+              <input
+                type="number"
+                inputMode="numeric"
+                className="input-field typography-body-sm w-14 px-2 py-1"
+                value={p.armorClass ?? ""}
+                min={1}
+                placeholder="AC"
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === "") {
+                    updatePartyMember(encounterId, p.id, {
+                      armorClass: undefined,
+                    });
+                    return;
+                  }
+                  const parsed = Number.parseInt(v, 10);
+                  if (Number.isFinite(parsed) && parsed > 0) {
+                    updatePartyMember(encounterId, p.id, {
+                      armorClass: parsed,
+                    });
+                  }
+                }}
+                aria-label={`AC for ${p.name}`}
+              />
+              <input
+                type="number"
+                inputMode="numeric"
+                className="input-field typography-body-sm w-14 px-2 py-1"
+                value={p.speed ?? ""}
+                min={0}
+                placeholder="Spd"
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === "") {
+                    updatePartyMember(encounterId, p.id, {
+                      speed: undefined,
+                    });
+                    return;
+                  }
+                  const parsed = Number.parseInt(v, 10);
+                  if (Number.isFinite(parsed) && parsed >= 0) {
+                    updatePartyMember(encounterId, p.id, { speed: parsed });
+                  }
+                }}
+                aria-label={`Speed for ${p.name}`}
+              />
+              <input
+                type="number"
+                inputMode="numeric"
+                className="input-field typography-body-sm w-14 px-2 py-1"
+                value={p.passivePerception ?? ""}
+                min={1}
+                placeholder="PP"
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === "") {
+                    updatePartyMember(encounterId, p.id, {
+                      passivePerception: undefined,
+                    });
+                    return;
+                  }
+                  const parsed = Number.parseInt(v, 10);
+                  if (Number.isFinite(parsed) && parsed > 0) {
+                    updatePartyMember(encounterId, p.id, {
+                      passivePerception: parsed,
+                    });
+                  }
+                }}
+                aria-label={`Passive Perception for ${p.name}`}
+              />
               <button
                 type="button"
                 className="admin-button-secondary typography-body-sm px-2 py-1"
