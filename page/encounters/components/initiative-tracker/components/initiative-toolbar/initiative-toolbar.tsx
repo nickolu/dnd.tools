@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
 type Props = {
   onRollAll: () => void;
   onRollEnemies: () => void;
@@ -15,6 +17,35 @@ export function InitiativeToolbar({
   onReset,
   onEnd,
 }: Props) {
+  const [confirmReset, setConfirmReset] = useState(false);
+  const confirmResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+
+  function clearConfirmResetTimer() {
+    if (confirmResetTimerRef.current !== null) {
+      clearTimeout(confirmResetTimerRef.current);
+      confirmResetTimerRef.current = null;
+    }
+  }
+
+  useEffect(() => {
+    return () => clearConfirmResetTimer();
+  }, []);
+
+  function handleResetEncounter() {
+    if (confirmReset) {
+      clearConfirmResetTimer();
+      setConfirmReset(false);
+      onEnd();
+    } else {
+      setConfirmReset(true);
+      confirmResetTimerRef.current = setTimeout(() => {
+        setConfirmReset(false);
+      }, 3000);
+    }
+  }
+
   return (
     <div className="flex flex-wrap gap-1.5">
       <button
@@ -47,19 +78,10 @@ export function InitiativeToolbar({
       </button>
       <button
         type="button"
-        className="admin-button-secondary typography-body-sm px-2 py-1"
-        onClick={() => {
-          if (
-            window.confirm(
-              "Reset encounter? This will restore all HP, clear conditions, and reset initiative."
-            )
-          ) {
-            onEnd();
-          }
-        }}
-        style={{ color: "var(--color-danger)" }}
+        className="admin-button-danger typography-body-sm px-2 py-1"
+        onClick={handleResetEncounter}
       >
-        Reset encounter
+        {confirmReset ? "Confirm reset?" : "Reset encounter"}
       </button>
     </div>
   );

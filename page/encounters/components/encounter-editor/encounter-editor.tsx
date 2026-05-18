@@ -68,6 +68,13 @@ export function EncounterEditor({ encounterId }: Props) {
   const [nameDraft, setNameDraft] = useState("");
   const [setupOpen, setSetupOpen] = useState(true);
   const [mapFocused, setMapFocused] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const confirmDeleteTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+  const [showTemplateInput, setShowTemplateInput] = useState(false);
+  const [templateName, setTemplateName] = useState("");
+  const templateInputRef = useRef<HTMLInputElement>(null);
   const [mapSidebarTab, setMapSidebarTab] = useState<"initiative" | "spells">(
     "initiative"
   );
@@ -131,6 +138,15 @@ export function EncounterEditor({ encounterId }: Props) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [encounterId, undoEncounter, redoEncounter]);
 
+  // Cleanup confirm delete timer on unmount
+  useEffect(() => {
+    return () => {
+      if (confirmDeleteTimerRef.current !== null) {
+        clearTimeout(confirmDeleteTimerRef.current);
+      }
+    };
+  }, []);
+
   // Hook must run unconditionally — fall back to an empty shell when missing.
   const { balance, remainingBalance } = useEncounterBalance(
     encounter ?? EMPTY_ENCOUNTER
@@ -174,16 +190,44 @@ export function EncounterEditor({ encounterId }: Props) {
     setEditingName(false);
   }
 
+  function clearConfirmDeleteTimer() {
+    if (confirmDeleteTimerRef.current !== null) {
+      clearTimeout(confirmDeleteTimerRef.current);
+      confirmDeleteTimerRef.current = null;
+    }
+  }
+
   function handleDelete() {
     if (!encounter) return;
-    if (
-      window.confirm(
-        `Delete encounter "${encounter.name}"? This cannot be undone.`
-      )
-    ) {
+    if (confirmDelete) {
+      clearConfirmDeleteTimer();
+      setConfirmDelete(false);
       deleteEncounter(encounter.id);
       router.push("/encounters");
+    } else {
+      setConfirmDelete(true);
+      confirmDeleteTimerRef.current = setTimeout(() => {
+        setConfirmDelete(false);
+      }, 3000);
     }
+  }
+
+  function handleSaveAsTemplate() {
+    if (!encounter) return;
+    const trimmed = templateName.trim();
+    if (trimmed) {
+      saveAsTemplate(encounter.id, trimmed);
+    }
+    setShowTemplateInput(false);
+    setTemplateName("");
+  }
+
+  function handleShowTemplateInput() {
+    if (!encounter) return;
+    setTemplateName(encounter.name);
+    setShowTemplateInput(true);
+    // Focus the input after render
+    setTimeout(() => templateInputRef.current?.focus(), 0);
   }
 
   async function handleExport() {
@@ -282,18 +326,45 @@ export function EncounterEditor({ encounterId }: Props) {
           >
             Duplicate
           </button>
-          <button
-            type="button"
-            className="admin-button-secondary typography-body-sm px-3 py-1"
-            onClick={() => {
-              const name = window.prompt("Template name:", encounter.name);
-              if (name?.trim()) {
-                saveAsTemplate(encounter.id, name.trim());
-              }
-            }}
-          >
-            Save as template
-          </button>
+          {showTemplateInput ? (
+            <div className="flex items-center gap-1">
+              <input
+                ref={templateInputRef}
+                className="input-field typography-body-sm px-2 py-1"
+                value={templateName}
+                onChange={(e) => setTemplateName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSaveAsTemplate();
+                  else if (e.key === "Escape") {
+                    setShowTemplateInput(false);
+                    setTemplateName("");
+                  }
+                }}
+                onBlur={() => {
+                  setTimeout(() => {
+                    setShowTemplateInput(false);
+                    setTemplateName("");
+                  }, 150);
+                }}
+                placeholder="Template name"
+              />
+              <button
+                type="button"
+                className="admin-button typography-body-sm px-3 py-1"
+                onClick={handleSaveAsTemplate}
+              >
+                Save
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="admin-button-secondary typography-body-sm px-3 py-1"
+              onClick={handleShowTemplateInput}
+            >
+              Save as template
+            </button>
+          )}
           <button
             type="button"
             className="admin-button-secondary typography-body-sm px-3 py-1"
@@ -306,7 +377,7 @@ export function EncounterEditor({ encounterId }: Props) {
             className="admin-button-danger typography-body-sm px-3 py-1"
             onClick={handleDelete}
           >
-            Delete encounter
+            {confirmDelete ? "Confirm delete?" : "Delete encounter"}
           </button>
         </div>
       </header>

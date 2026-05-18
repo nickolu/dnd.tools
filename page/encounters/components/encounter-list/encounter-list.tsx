@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
 import { useEncountersHasHydrated } from "@/lib/store/useEncountersHasHydrated";
@@ -23,6 +23,39 @@ export function EncounterList() {
   const searchParams = useSearchParams();
   const hydrated = useEncountersHasHydrated();
   const intentHandledRef = useRef(false);
+  const [confirmDeleteTemplateId, setConfirmDeleteTemplateId] = useState<
+    string | null
+  >(null);
+  const confirmTemplateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+  const [confirmDeleteEncounterId, setConfirmDeleteEncounterId] = useState<
+    string | null
+  >(null);
+  const confirmEncounterTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+
+  function clearTemplateTimer() {
+    if (confirmTemplateTimerRef.current !== null) {
+      clearTimeout(confirmTemplateTimerRef.current);
+      confirmTemplateTimerRef.current = null;
+    }
+  }
+
+  function clearEncounterTimer() {
+    if (confirmEncounterTimerRef.current !== null) {
+      clearTimeout(confirmEncounterTimerRef.current);
+      confirmEncounterTimerRef.current = null;
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      clearTemplateTimer();
+      clearEncounterTimer();
+    };
+  }, []);
 
   function handleCreate() {
     const id = createEncounter();
@@ -84,18 +117,30 @@ export function EncounterList() {
                   type="button"
                   className="admin-button-danger typography-body-sm px-1.5 py-0.5"
                   onClick={() => {
-                    if (
-                      window.confirm(
-                        `Delete template "${t.name}"? This cannot be undone.`
-                      )
-                    ) {
+                    if (confirmDeleteTemplateId === t.id) {
+                      clearTemplateTimer();
+                      setConfirmDeleteTemplateId(null);
                       deleteTemplate(t.id);
+                    } else {
+                      clearTemplateTimer();
+                      setConfirmDeleteTemplateId(t.id);
+                      confirmTemplateTimerRef.current = setTimeout(() => {
+                        setConfirmDeleteTemplateId(null);
+                      }, 3000);
                     }
                   }}
-                  title="Delete template"
-                  aria-label={`Delete template ${t.name}`}
+                  title={
+                    confirmDeleteTemplateId === t.id
+                      ? "Confirm delete template"
+                      : "Delete template"
+                  }
+                  aria-label={
+                    confirmDeleteTemplateId === t.id
+                      ? `Confirm delete template ${t.name}`
+                      : `Delete template ${t.name}`
+                  }
                 >
-                  ×
+                  {confirmDeleteTemplateId === t.id ? "?" : "×"}
                 </button>
               </div>
             ))}
@@ -164,12 +209,20 @@ export function EncounterList() {
                     type="button"
                     className="admin-button-danger typography-body-sm px-3 py-1"
                     onClick={() => {
-                      if (window.confirm(`Delete encounter "${e.name}"?`)) {
+                      if (confirmDeleteEncounterId === e.id) {
+                        clearEncounterTimer();
+                        setConfirmDeleteEncounterId(null);
                         deleteEncounter(e.id);
+                      } else {
+                        clearEncounterTimer();
+                        setConfirmDeleteEncounterId(e.id);
+                        confirmEncounterTimerRef.current = setTimeout(() => {
+                          setConfirmDeleteEncounterId(null);
+                        }, 3000);
                       }
                     }}
                   >
-                    Delete
+                    {confirmDeleteEncounterId === e.id ? "Confirm?" : "Delete"}
                   </button>
                 </div>
               </li>
