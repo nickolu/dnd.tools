@@ -38,6 +38,9 @@ export function EncounterEditor({ encounterId }: Props) {
   const hydrated = useEncountersHasHydrated();
   const encounter = useEncounterLibraryStore(selectEncounterById(encounterId));
   const renameEncounter = useEncounterLibraryStore((s) => s.renameEncounter);
+  const duplicateEncounter = useEncounterLibraryStore(
+    (s) => s.duplicateEncounter
+  );
   const deleteEncounter = useEncounterLibraryStore((s) => s.deleteEncounter);
   const setRuleset = useEncounterLibraryStore((s) => s.setRuleset);
   const router = useRouter();
@@ -149,6 +152,16 @@ export function EncounterEditor({ encounterId }: Props) {
             aria-pressed={setupOpen}
           >
             {setupOpen ? "Hide setup" : "Show setup"}
+          </button>
+          <button
+            type="button"
+            className="admin-button-secondary typography-body-sm px-3 py-1"
+            onClick={() => {
+              const newId = duplicateEncounter(encounter.id);
+              if (newId) router.push(`/encounters/${newId}`);
+            }}
+          >
+            Duplicate
           </button>
           <button
             type="button"

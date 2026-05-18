@@ -10,6 +10,9 @@ import { useEncountersHasHydrated } from "@/lib/store/useEncountersHasHydrated";
 export function EncounterList() {
   const encounters = useEncounterLibraryStore((s) => s.encounters);
   const createEncounter = useEncounterLibraryStore((s) => s.createEncounter);
+  const duplicateEncounter = useEncounterLibraryStore(
+    (s) => s.duplicateEncounter
+  );
   const deleteEncounter = useEncounterLibraryStore((s) => s.deleteEncounter);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -104,6 +107,16 @@ export function EncounterList() {
                   >
                     Open
                   </Link>
+                  <button
+                    type="button"
+                    className="admin-button-secondary typography-body-sm px-3 py-1"
+                    onClick={() => {
+                      const newId = duplicateEncounter(e.id);
+                      if (newId) router.push(`/encounters/${newId}`);
+                    }}
+                  >
+                    Duplicate
+                  </button>
                   <button
                     type="button"
                     className="admin-button-secondary typography-body-sm px-3 py-1"
