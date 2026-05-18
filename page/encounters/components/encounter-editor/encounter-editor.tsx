@@ -129,7 +129,9 @@ export function EncounterEditor({ encounterId }: Props) {
   }, [encounterId, undoEncounter, redoEncounter]);
 
   // Hook must run unconditionally — fall back to an empty shell when missing.
-  const balance = useEncounterBalance(encounter ?? EMPTY_ENCOUNTER);
+  const { balance, remainingBalance } = useEncounterBalance(
+    encounter ?? EMPTY_ENCOUNTER
+  );
 
   if (!hydrated) {
     return (
@@ -291,6 +293,7 @@ export function EncounterEditor({ encounterId }: Props) {
             <MonsterAddPanel encounterId={encounter.id} />
             <BalanceSummary
               result={balance}
+              remainingResult={remainingBalance}
               hasParty={encounter.partyMembers.length > 0}
             />
             <CombatantList
@@ -319,6 +322,7 @@ export function EncounterEditor({ encounterId }: Props) {
             <MonsterAddPanel encounterId={encounter.id} />
             <BalanceSummary
               result={balance}
+              remainingResult={remainingBalance}
               hasParty={encounter.partyMembers.length > 0}
             />
             <CombatantList
