@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { type ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import { SearchInput } from "@/components/search-input";
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
@@ -20,6 +20,8 @@ export function EncounterList() {
   const createFromTemplate = useEncounterLibraryStore(
     (s) => s.createFromTemplate
   );
+  const exportEncounters = useEncounterLibraryStore((s) => s.exportEncounters);
+  const importEncounters = useEncounterLibraryStore((s) => s.importEncounters);
   const router = useRouter();
   const searchParams = useSearchParams();
   const hydrated = useEncountersHasHydrated();
@@ -37,6 +39,8 @@ export function EncounterList() {
   const confirmEncounterTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [importResult, setImportResult] = useState<string | null>(null);
 
   function clearTemplateTimer() {
     if (confirmTemplateTimerRef.current !== null) {
@@ -62,6 +66,39 @@ export function EncounterList() {
   function handleCreate() {
     const id = createEncounter();
     if (id) router.push(`/encounters/${id}`);
+  }
+
+  function handleExport() {
+    const json = exportEncounters();
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "dnd-tools-encounters.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function handleImport(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const raw = e.target?.result;
+        if (typeof raw !== "string") throw new Error("Could not read file.");
+        const result = importEncounters(raw);
+        setImportResult(
+          `Imported ${result.imported} encounter(s)${result.skipped > 0 ? `, skipped ${result.skipped} duplicate(s)` : ""}`
+        );
+        setTimeout(() => setImportResult(null), 3000);
+      } catch {
+        setImportResult("Import failed: invalid file format");
+        setTimeout(() => setImportResult(null), 3000);
+      }
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    };
+    reader.readAsText(file);
   }
 
   // Handle filter intents from the home widget once IDB has hydrated.
@@ -97,14 +134,42 @@ export function EncounterList() {
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
       <header className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="typography-h1">Encounters</h1>
-        <button
-          type="button"
-          className="admin-button typography-body-sm px-3 py-1"
-          onClick={handleCreate}
-        >
-          + New encounter
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          {encounters.length > 0 && (
+            <button
+              type="button"
+              className="admin-button-secondary typography-body-sm px-3 py-1"
+              onClick={handleExport}
+            >
+              Export
+            </button>
+          )}
+          <button
+            type="button"
+            className="admin-button-secondary typography-body-sm px-3 py-1"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            Import
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json,.json"
+            className="hidden"
+            onChange={handleImport}
+          />
+          <button
+            type="button"
+            className="admin-button typography-body-sm px-3 py-1"
+            onClick={handleCreate}
+          >
+            + New encounter
+          </button>
+        </div>
       </header>
+      {importResult && (
+        <p className="typography-body-sm text-muted">{importResult}</p>
+      )}
       {sorted.length > 3 ? (
         <SearchInput
           placeholder="Search encounters"
