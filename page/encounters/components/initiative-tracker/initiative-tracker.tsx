@@ -43,6 +43,7 @@ export function InitiativeTracker({ encounterId }: Props) {
   );
   const adjustHp = useEncounterLibraryStore((s) => s.adjustHp);
   const setHp = useEncounterLibraryStore((s) => s.setHp);
+  const setDeathSave = useEncounterLibraryStore((s) => s.setDeathSave);
   const toggleCondition = useEncounterLibraryStore((s) => s.toggleCondition);
   const clearConditions = useEncounterLibraryStore((s) => s.clearConditions);
   const removeToken = useEncounterLibraryStore((s) => s.removeToken);
@@ -250,6 +251,18 @@ export function InitiativeTracker({ encounterId }: Props) {
                     toggleCondition(encounterId, row.id, condition)
                   }
                   onClearConditions={() => clearConditions(encounterId, row.id)}
+                  {...(pc?.currentHp === 0 && pc?.maxHp !== undefined
+                    ? {
+                        deathSaves: pc.deathSaves ?? {
+                          successes: 0,
+                          failures: 0,
+                        },
+                        onSetDeathSave: (
+                          type: "success" | "failure",
+                          count: number
+                        ) => setDeathSave(encounterId, row.id, type, count),
+                      }
+                    : {})}
                 />
               );
             }

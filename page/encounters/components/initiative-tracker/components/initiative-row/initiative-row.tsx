@@ -9,6 +9,7 @@ import type { InitiativeRow as RowData } from "@/page/encounters/utils/initiativ
 
 import { HpControl } from "../../../combatant-list/components/hp-control";
 import { ConditionBadges } from "../condition-badges";
+import { DeathSaves } from "../death-saves";
 import { MonsterStatSummary } from "../monster-stat-summary";
 
 type Props = {
@@ -34,6 +35,8 @@ type Props = {
   onClearConditions?: () => void;
   monster?: Monster;
   onDuplicate?: () => void;
+  deathSaves?: { successes: number; failures: number };
+  onSetDeathSave?: (type: "success" | "failure", count: number) => void;
 };
 
 export function InitiativeRow({
@@ -58,6 +61,8 @@ export function InitiativeRow({
   onClearConditions,
   monster,
   onDuplicate,
+  deathSaves,
+  onSetDeathSave,
 }: Props) {
   const [statBlockExpanded, setStatBlockExpanded] = useState(false);
   const initiativeValue = row.initiative === null ? "" : String(row.initiative);
@@ -164,6 +169,14 @@ export function InitiativeRow({
           maxHp={maxHp}
           onAdjust={onAdjustHp}
           onSet={onSetHp}
+        />
+      )}
+      {deathSaves !== undefined && onSetDeathSave !== undefined && (
+        <DeathSaves
+          successes={deathSaves.successes}
+          failures={deathSaves.failures}
+          onSetSuccess={(count) => onSetDeathSave("success", count)}
+          onSetFailure={(count) => onSetDeathSave("failure", count)}
         />
       )}
       <div className="flex flex-wrap items-center gap-1.5">

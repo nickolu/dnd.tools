@@ -113,6 +113,14 @@ type EncounterLibraryStore = {
     condition: Condition
   ) => void;
   clearConditions: (encounterId: string, combatantId: string) => void;
+  // Death saves
+  setDeathSave: (
+    encounterId: string,
+    memberId: string,
+    type: "success" | "failure",
+    count: number
+  ) => void;
+  clearDeathSaves: (encounterId: string, memberId: string) => void;
   // Notes
   setEncounterNotes: (id: string, notes: string) => void;
   // Map
@@ -303,6 +311,22 @@ function migratePartyMember(raw: unknown): PartyMember {
   const armorClass = readNullableNumber(r.armorClass);
   const speed = readNullableNumber(r.speed);
   const passivePerception = readNullableNumber(r.passivePerception);
+  const rawDeathSaves = isPlainObject(r.deathSaves) ? r.deathSaves : null;
+  const deathSaves =
+    rawDeathSaves !== null
+      ? {
+          successes: clamp(
+            Math.trunc(readFiniteNumber(rawDeathSaves.successes, 0)),
+            0,
+            3
+          ),
+          failures: clamp(
+            Math.trunc(readFiniteNumber(rawDeathSaves.failures, 0)),
+            0,
+            3
+          ),
+        }
+      : null;
   const member: PartyMember = {
     id: readString(r.id, crypto.randomUUID()),
     kind: "pc",
@@ -326,6 +350,7 @@ function migratePartyMember(raw: unknown): PartyMember {
     ...(passivePerception !== null && passivePerception >= 1
       ? { passivePerception }
       : {}),
+    ...(deathSaves !== null ? { deathSaves } : {}),
   };
   return member;
 }
@@ -701,10 +726,13 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
                   p.currentHp === undefined
                 )
                   return p;
-                return {
-                  ...p,
-                  currentHp: clamp(p.currentHp + delta, 0, p.maxHp),
-                };
+                const newHp = clamp(p.currentHp + delta, 0, p.maxHp);
+                if (newHp > 0 && p.deathSaves) {
+                  const { deathSaves: _drop, ...rest } = p;
+                  void _drop;
+                  return { ...rest, currentHp: newHp };
+                }
+                return { ...p, currentHp: newHp };
               }),
             };
           }),
@@ -725,10 +753,13 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
               ...e,
               partyMembers: e.partyMembers.map((p) => {
                 if (p.id !== targetId || p.maxHp === undefined) return p;
-                return {
-                  ...p,
-                  currentHp: clamp(Math.trunc(currentHp), 0, p.maxHp),
-                };
+                const newHp = clamp(Math.trunc(currentHp), 0, p.maxHp);
+                if (newHp > 0 && p.deathSaves) {
+                  const { deathSaves: _drop, ...rest } = p;
+                  void _drop;
+                  return { ...rest, currentHp: newHp };
+                }
+                return { ...p, currentHp: newHp };
               }),
             };
           }),
@@ -906,11 +937,11 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         set((state) => ({
           encounters: updateEncounter(state.encounters, id, (e) => ({
             ...e,
-            partyMembers: e.partyMembers.map((p) => ({
-              ...p,
-              initiative: null,
-              conditions: [],
-            })),
+            partyMembers: e.partyMembers.map((p) => {
+              const { deathSaves: _drop, ...rest } = p;
+              void _drop;
+              return { ...rest, initiative: null, conditions: [] };
+            }),
             combatants: e.combatants.map((c) => ({
               ...c,
               initiative: null,
@@ -918,6 +949,42 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
               conditions: [],
             })),
             initiative: { round: 1, activeIndex: null },
+          })),
+        }));
+      },
+
+      setDeathSave: (encounterId, memberId, type, count) => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) => ({
+            ...e,
+            partyMembers: e.partyMembers.map((p) => {
+              if (p.id !== memberId) return p;
+              const current = p.deathSaves ?? { successes: 0, failures: 0 };
+              return {
+                ...p,
+                deathSaves: {
+                  ...current,
+                  [type === "success" ? "successes" : "failures"]: Math.max(
+                    0,
+                    Math.min(3, count)
+                  ),
+                },
+              };
+            }),
+          })),
+        }));
+      },
+
+      clearDeathSaves: (encounterId, memberId) => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) => ({
+            ...e,
+            partyMembers: e.partyMembers.map((p) => {
+              if (p.id !== memberId) return p;
+              const { deathSaves: _drop, ...rest } = p;
+              void _drop;
+              return rest;
+            }),
           })),
         }));
       },
