@@ -6,6 +6,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { CopyVisibleNamesAction } from "@/components/copy-visible-names-action";
 import { FilterGroup } from "@/components/filter-group";
 import { FilterLogicPopover } from "@/components/filter-logic-popover";
+import { PageLoadingSkeleton } from "@/components/page-loading-skeleton";
 import {
   clearCollectionCache,
   getCollectionLastSyncedAt,
@@ -554,7 +555,7 @@ function SpellsPageContent() {
 
 export default function SpellsPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageLoadingSkeleton />}>
       <SpellsPageContent />
     </Suspense>
   );

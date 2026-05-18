@@ -2,11 +2,12 @@
 
 import { Suspense } from "react";
 
+import { PageLoadingSkeleton } from "@/components/page-loading-skeleton";
 import { EncounterList } from "@/page/encounters/components";
 
 export default function EncountersPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageLoadingSkeleton />}>
       <EncounterList />
     </Suspense>
   );
