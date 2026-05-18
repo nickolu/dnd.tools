@@ -11,6 +11,10 @@ import { selectEncounterById } from "@/lib/store/encounterSelectors";
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
 import { useEncountersHasHydrated } from "@/lib/store/useEncountersHasHydrated";
 import { useEncounterBalance } from "@/page/encounters/hooks/useEncounterBalance";
+import {
+  useWidgetOrder,
+  type WidgetId,
+} from "@/page/encounters/hooks/useWidgetOrder";
 import { buildEncounterSummary } from "@/page/encounters/utils/exportEncounterSummary";
 
 import { BalanceSummary } from "../balance-summary";
@@ -21,6 +25,7 @@ import { InitiativeTracker } from "../initiative-tracker";
 import { MonsterAddPanel } from "../monster-add-panel";
 import { PartyRoster } from "../party-roster";
 import { SpellAggregatePanel } from "../spell-aggregate-panel";
+import { WidgetWrapper } from "../widget-wrapper";
 
 type Props = {
   encounterId: string;
@@ -61,6 +66,8 @@ export function EncounterEditor({ encounterId }: Props) {
 
   // Warm the monster cache so MonsterAddPanel renders quickly.
   useMonsters();
+
+  const { order, moveUp, moveDown } = useWidgetOrder();
 
   const [notesOpen, setNotesOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -179,7 +186,53 @@ export function EncounterEditor({ encounterId }: Props) {
     );
   }
 
-  const allies = encounter.combatants.filter((c) => c.side === "ally");
+  // encounter is guaranteed non-null here — the null guard above returns early.
+  const safeEncounter = encounter;
+  const allies = safeEncounter.combatants.filter((c) => c.side === "ally");
+
+  function renderWidget(id: WidgetId, index: number, total: number) {
+    const content = (() => {
+      switch (id) {
+        case "party":
+          return (
+            <PartyRoster
+              encounterId={safeEncounter.id}
+              partyMembers={safeEncounter.partyMembers}
+              allies={allies}
+            />
+          );
+        case "monsters":
+          return <MonsterAddPanel encounterId={safeEncounter.id} />;
+        case "balance":
+          return (
+            <BalanceSummary
+              result={balance}
+              remainingResult={remainingBalance}
+              hasParty={safeEncounter.partyMembers.length > 0}
+            />
+          );
+        case "combatants":
+          return (
+            <CombatantList
+              encounterId={safeEncounter.id}
+              combatants={safeEncounter.combatants}
+            />
+          );
+      }
+    })();
+
+    return (
+      <WidgetWrapper
+        key={id}
+        canMoveUp={index > 0}
+        canMoveDown={index < total - 1}
+        onMoveUp={() => moveUp(id)}
+        onMoveDown={() => moveDown(id)}
+      >
+        {content}
+      </WidgetWrapper>
+    );
+  }
 
   function handleNameCommit() {
     if (!encounter) return;
@@ -387,21 +440,7 @@ export function EncounterEditor({ encounterId }: Props) {
       <div className="flex flex-col gap-4 lg:hidden">
         {setupOpen && (
           <div className="flex flex-col gap-4">
-            <PartyRoster
-              encounterId={encounter.id}
-              partyMembers={encounter.partyMembers}
-              allies={allies}
-            />
-            <MonsterAddPanel encounterId={encounter.id} />
-            <BalanceSummary
-              result={balance}
-              remainingResult={remainingBalance}
-              hasParty={encounter.partyMembers.length > 0}
-            />
-            <CombatantList
-              encounterId={encounter.id}
-              combatants={encounter.combatants}
-            />
+            {order.map((id, i) => renderWidget(id, i, order.length))}
           </div>
         )}
         <EncounterEditorSidebar encounterId={encounter.id} />
@@ -416,21 +455,7 @@ export function EncounterEditor({ encounterId }: Props) {
       >
         {setupOpen && (
           <div className="flex flex-col gap-4">
-            <PartyRoster
-              encounterId={encounter.id}
-              partyMembers={encounter.partyMembers}
-              allies={allies}
-            />
-            <MonsterAddPanel encounterId={encounter.id} />
-            <BalanceSummary
-              result={balance}
-              remainingResult={remainingBalance}
-              hasParty={encounter.partyMembers.length > 0}
-            />
-            <CombatantList
-              encounterId={encounter.id}
-              combatants={encounter.combatants}
-            />
+            {order.map((id, i) => renderWidget(id, i, order.length))}
           </div>
         )}
         <div className="flex flex-col gap-4">
