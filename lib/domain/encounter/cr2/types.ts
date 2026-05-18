@@ -1,19 +1,13 @@
-export type DifficultyBucketBasic =
+export type DifficultyBucket =
   | "Mild"
   | "Bruising"
   | "Bloody"
   | "Brutal"
-  | "Oppressive";
-
-export type DifficultyBucketAdvancedExtra =
+  | "Oppressive"
   | "Overwhelming"
   | "Crushing"
   | "Devastating"
   | "Impossible";
-
-export type DifficultyBucket =
-  | DifficultyBucketBasic
-  | DifficultyBucketAdvancedExtra;
 
 export type PartyTier = 1 | 2 | 3 | 4;
 

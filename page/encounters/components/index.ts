@@ -8,5 +8,4 @@ export { EncounterTipsPanel } from "./encounter-tips-panel";
 export { InitiativeTracker } from "./initiative-tracker";
 export { MonsterAddPanel } from "./monster-add-panel";
 export { PartyRoster } from "./party-roster";
-export { RulesetToggle } from "./ruleset-toggle";
 export { SpellAggregatePanel } from "./spell-aggregate-panel";

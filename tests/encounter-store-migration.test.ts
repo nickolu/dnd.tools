@@ -81,12 +81,16 @@ describe("migrateEncounterLibrary (v1 → v2)", () => {
     const enc = migrated.encounters[0]!;
     expect(enc.id).toBe("broken");
     expect(enc.name).toBe("Untitled encounter");
-    // ruleset falls back to "advanced" when the persisted value isn't a
-    // valid enum value
+    // ruleset is always coerced to "advanced"
     expect(enc.ruleset).toBe("advanced");
     expect(enc.partyMembers).toEqual([]);
     expect(enc.combatants).toEqual([]);
     expect(enc.initiative).toEqual({ round: 1, activeIndex: null });
+  });
+
+  it("coerces old 'basic' ruleset to 'advanced' during migration", () => {
+    const migrated = migrateEncounterLibrary({ encounters: [V1_ENCOUNTER] }, 1);
+    expect(migrated.encounters[0]!.ruleset).toBe("advanced");
   });
 
   it("treats non-object persisted state as empty", () => {
