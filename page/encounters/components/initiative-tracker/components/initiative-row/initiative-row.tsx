@@ -25,6 +25,8 @@ type Props = {
   onSetInitiative: (value: number | null) => void;
   onSetMod?: (mod: number) => void;
   onRoll: () => void;
+  isOnMap?: boolean;
+  onRemoveFromMap?: () => void;
   conditions?: Condition[];
   onToggleCondition?: (condition: Condition) => void;
   onClearConditions?: () => void;
@@ -44,6 +46,8 @@ export function InitiativeRow({
   onSetInitiative,
   onSetMod,
   onRoll,
+  isOnMap,
+  onRemoveFromMap,
   conditions,
   onToggleCondition,
   onClearConditions,
@@ -108,6 +112,28 @@ export function InitiativeRow({
           >
             AC {armorClass}
           </span>
+        ) : null}
+        {isOnMap ? (
+          <button
+            type="button"
+            className="typography-kicker"
+            style={{
+              background:
+                "color-mix(in srgb, var(--color-focus-ring) 15%, transparent)",
+              color: "var(--color-focus-ring)",
+              border:
+                "1px solid color-mix(in srgb, var(--color-focus-ring) 30%, transparent)",
+              borderRadius: "999px",
+              padding: "0.1rem 0.4rem",
+              cursor: onRemoveFromMap ? "pointer" : "default",
+              fontSize: "0.625rem",
+            }}
+            title="On map — click to remove"
+            onClick={onRemoveFromMap}
+            aria-label="Remove from map"
+          >
+            On map
+          </button>
         ) : null}
       </div>
       {conditions !== undefined &&
