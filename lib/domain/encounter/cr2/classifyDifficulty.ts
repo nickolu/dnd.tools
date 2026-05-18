@@ -1,7 +1,5 @@
-import type { EncounterRuleset } from "../encounter.schema";
 import {
   DIFFICULTY_BUCKETS_ADVANCED,
-  DIFFICULTY_BUCKETS_BASIC,
   DIFFICULTY_MULTIPLIERS_ADVANCED,
 } from "./constants";
 import type { DifficultyClassification } from "./types";
@@ -16,15 +14,9 @@ import type { DifficultyClassification } from "./types";
  */
 export function classifyDifficulty(
   partyPower: number,
-  encounterPower: number,
-  ruleset: EncounterRuleset
+  encounterPower: number
 ): DifficultyClassification {
-  const buckets =
-    ruleset === "basic"
-      ? DIFFICULTY_BUCKETS_BASIC
-      : DIFFICULTY_BUCKETS_ADVANCED;
-  // Advanced multipliers is a superset of basic, so it works for both rulesets.
-  // The basic bucket list iterated above just stops at "Oppressive".
+  const buckets = DIFFICULTY_BUCKETS_ADVANCED;
   const multipliers = DIFFICULTY_MULTIPLIERS_ADVANCED;
 
   const lowestBucket = buckets[0]!;

@@ -1,8 +1,4 @@
-import type {
-  Combatant,
-  EncounterRuleset,
-  PartyMember,
-} from "../encounter.schema";
+import type { Combatant, PartyMember } from "../encounter.schema";
 import { computeMonsterPower } from "./computeMonsterPower";
 import { PC_POWER_BY_LEVEL } from "./constants";
 import { getPartyTier } from "./getPartyTier";
@@ -14,8 +10,7 @@ import { getPartyTier } from "./getPartyTier";
  */
 export function computePartyPower(
   partyMembers: PartyMember[],
-  allies: Combatant[],
-  ruleset: EncounterRuleset
+  allies: Combatant[]
 ): number {
   const tier = getPartyTier(partyMembers);
   const pcPower = partyMembers.reduce(
@@ -23,8 +18,7 @@ export function computePartyPower(
     0
   );
   const allyPower = allies.reduce(
-    (sum, a) =>
-      sum + computeMonsterPower(a.monsterCrNumeric, tier, ruleset).power,
+    (sum, a) => sum + computeMonsterPower(a.monsterCrNumeric, tier).power,
     0
   );
   return pcPower + allyPower;

@@ -87,14 +87,6 @@ describe("useEncounterLibraryStore", () => {
     expect(useEncounterLibraryStore.getState().encounters).toHaveLength(0);
   });
 
-  it("setRuleset updates ruleset", () => {
-    const id = useEncounterLibraryStore.getState().createEncounter();
-    useEncounterLibraryStore.getState().setRuleset(id, "basic");
-    expect(useEncounterLibraryStore.getState().encounters[0]!.ruleset).toBe(
-      "basic"
-    );
-  });
-
   it("addPC bounds level to [1, 20] and trims name", () => {
     const id = useEncounterLibraryStore.getState().createEncounter();
     const memberId = useEncounterLibraryStore.getState().addPC(id, {

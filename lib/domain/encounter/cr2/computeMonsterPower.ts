@@ -1,32 +1,11 @@
-import type { EncounterRuleset } from "../encounter.schema";
-import {
-  MONSTER_POWER_ADVANCED,
-  MONSTER_POWER_BASIC,
-  SORTED_ADVANCED_CRS,
-  SORTED_BASIC_CRS,
-} from "./constants";
+import { MONSTER_POWER_ADVANCED, SORTED_ADVANCED_CRS } from "./constants";
 import type { MonsterPowerResult, PartyTier } from "./types";
 
 export function computeMonsterPower(
   crNumeric: number,
-  partyTier: PartyTier,
-  ruleset: EncounterRuleset
+  partyTier: PartyTier
 ): MonsterPowerResult {
-  if (ruleset === "basic") {
-    return lookupBasic(crNumeric);
-  }
   return lookupAdvanced(crNumeric, partyTier);
-}
-
-function lookupBasic(crNumeric: number): MonsterPowerResult {
-  const exact = MONSTER_POWER_BASIC[crNumeric];
-  if (exact !== undefined) {
-    return { power: exact, isInterpolated: false };
-  }
-  return interpolate(crNumeric, SORTED_BASIC_CRS, (cr) => {
-    const v = MONSTER_POWER_BASIC[cr];
-    return v ?? 0;
-  });
 }
 
 function lookupAdvanced(

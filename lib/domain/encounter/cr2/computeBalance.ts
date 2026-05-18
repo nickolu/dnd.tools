@@ -10,29 +10,20 @@ export function computeBalance(encounter: Encounter): BalanceResult {
   const enemies = encounter.combatants.filter((c) => c.side === "enemy");
 
   const tier = getPartyTier(encounter.partyMembers);
-  const partyPower = computePartyPower(
-    encounter.partyMembers,
-    allies,
-    encounter.ruleset
-  );
+  const partyPower = computePartyPower(encounter.partyMembers, allies);
 
   let encounterPower = 0;
   let hasInterpolatedEnemy = false;
   for (const enemy of enemies) {
     const { power, isInterpolated } = computeMonsterPower(
       enemy.monsterCrNumeric,
-      tier,
-      encounter.ruleset
+      tier
     );
     encounterPower += power;
     if (isInterpolated) hasInterpolatedEnemy = true;
   }
 
-  const classification = classifyDifficulty(
-    partyPower,
-    encounterPower,
-    encounter.ruleset
-  );
+  const classification = classifyDifficulty(partyPower, encounterPower);
 
   return {
     partyPower,

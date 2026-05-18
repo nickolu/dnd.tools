@@ -40,22 +40,21 @@ describe("PC_POWER_BY_LEVEL", () => {
 
 describe("computePartyPower", () => {
   it("sums PC power for a mixed-level party (1+5+10 = 96)", () => {
-    expect(computePartyPower([pc(1), pc(5), pc(10)], [], "advanced")).toBe(96);
+    expect(computePartyPower([pc(1), pc(5), pc(10)], [])).toBe(96);
   });
 
   it("empty party with no allies has 0 power", () => {
-    expect(computePartyPower([], [], "advanced")).toBe(0);
+    expect(computePartyPower([], [])).toBe(0);
   });
 
   it("single level-20 PC has 141 power", () => {
-    expect(computePartyPower([pc(20)], [], "basic")).toBe(141);
+    expect(computePartyPower([pc(20)], [])).toBe(141);
   });
 
   it("adds ally combatant power on top of PC power", () => {
     const partyPowerNoAlly = computePartyPower(
       [pc(5), pc(5), pc(5), pc(5)],
-      [],
-      "advanced"
+      []
     );
     const ally = {
       id: "ally-1",
@@ -70,8 +69,7 @@ describe("computePartyPower", () => {
     };
     const partyPowerWithAlly = computePartyPower(
       [pc(5), pc(5), pc(5), pc(5)],
-      [ally],
-      "advanced"
+      [ally]
     );
     // Advanced T2 CR 1 → 17 power
     expect(partyPowerWithAlly - partyPowerNoAlly).toBe(17);
