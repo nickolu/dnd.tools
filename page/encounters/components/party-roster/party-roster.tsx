@@ -64,131 +64,139 @@ export function PartyRoster({ encounterId, partyMembers, allies }: Props) {
       ) : (
         <ul className="flex flex-col gap-2">
           {partyMembers.map((p) => (
-            <li key={p.id} className="flex flex-wrap items-center gap-2">
-              <input
-                className="input-field typography-body-sm min-w-0 flex-1 px-2 py-1"
-                value={p.name}
-                onChange={(e) =>
-                  updatePartyMember(encounterId, p.id, { name: e.target.value })
-                }
-                aria-label={`Name for ${p.name}`}
-              />
-              <select
-                className="input-field typography-body-sm px-2 py-1"
-                value={p.level}
-                onChange={(e) =>
-                  updatePartyMember(encounterId, p.id, {
-                    level: Number.parseInt(e.target.value, 10),
-                  })
-                }
-                aria-label={`Level for ${p.name}`}
-              >
-                {Array.from({ length: 20 }, (_, i) => i + 1).map((n) => (
-                  <option key={n} value={n}>
-                    Lvl {n}
-                  </option>
-                ))}
-              </select>
-              <input
-                type="number"
-                inputMode="numeric"
-                className="input-field typography-body-sm w-20 px-2 py-1"
-                value={p.maxHp ?? ""}
-                min={1}
-                placeholder="Max HP"
-                onChange={(e) => {
-                  const raw = e.target.value;
-                  if (raw === "") {
+            <li key={p.id} className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <input
+                  className="input-field typography-body-sm min-w-0 flex-1 px-2 py-1"
+                  value={p.name}
+                  onChange={(e) =>
                     updatePartyMember(encounterId, p.id, {
-                      maxHp: undefined,
-                    });
-                  } else {
-                    const parsed = Number.parseInt(raw, 10);
-                    if (Number.isFinite(parsed) && parsed > 0) {
-                      updatePartyMember(encounterId, p.id, { maxHp: parsed });
+                      name: e.target.value,
+                    })
+                  }
+                  aria-label={`Name for ${p.name}`}
+                />
+                <select
+                  className="input-field typography-body-sm px-2 py-1"
+                  value={p.level}
+                  onChange={(e) =>
+                    updatePartyMember(encounterId, p.id, {
+                      level: Number.parseInt(e.target.value, 10),
+                    })
+                  }
+                  aria-label={`Level for ${p.name}`}
+                >
+                  {Array.from({ length: 20 }, (_, i) => i + 1).map((n) => (
+                    <option key={n} value={n}>
+                      Lvl {n}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  className="admin-button-danger typography-body-sm px-2 py-1"
+                  onClick={() => removePartyMember(encounterId, p.id)}
+                  aria-label={`Remove ${p.name}`}
+                >
+                  Remove
+                </button>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  className="input-field typography-body-sm w-20 px-2 py-1"
+                  value={p.maxHp ?? ""}
+                  min={1}
+                  placeholder="Max HP"
+                  onChange={(e) => {
+                    const raw = e.target.value;
+                    if (raw === "") {
+                      updatePartyMember(encounterId, p.id, {
+                        maxHp: undefined,
+                      });
+                    } else {
+                      const parsed = Number.parseInt(raw, 10);
+                      if (Number.isFinite(parsed) && parsed > 0) {
+                        updatePartyMember(encounterId, p.id, {
+                          maxHp: parsed,
+                        });
+                      }
                     }
-                  }
-                }}
-                aria-label={`Max HP for ${p.name}`}
-              />
-              <input
-                type="number"
-                inputMode="numeric"
-                className="input-field typography-body-sm w-14 px-2 py-1"
-                value={p.armorClass ?? ""}
-                min={1}
-                placeholder="AC"
-                onChange={(e) => {
-                  const v = e.target.value;
-                  if (v === "") {
-                    updatePartyMember(encounterId, p.id, {
-                      armorClass: undefined,
-                    });
-                    return;
-                  }
-                  const parsed = Number.parseInt(v, 10);
-                  if (Number.isFinite(parsed) && parsed > 0) {
-                    updatePartyMember(encounterId, p.id, {
-                      armorClass: parsed,
-                    });
-                  }
-                }}
-                aria-label={`AC for ${p.name}`}
-              />
-              <input
-                type="number"
-                inputMode="numeric"
-                className="input-field typography-body-sm w-14 px-2 py-1"
-                value={p.speed ?? ""}
-                min={0}
-                placeholder="Spd"
-                onChange={(e) => {
-                  const v = e.target.value;
-                  if (v === "") {
-                    updatePartyMember(encounterId, p.id, {
-                      speed: undefined,
-                    });
-                    return;
-                  }
-                  const parsed = Number.parseInt(v, 10);
-                  if (Number.isFinite(parsed) && parsed >= 0) {
-                    updatePartyMember(encounterId, p.id, { speed: parsed });
-                  }
-                }}
-                aria-label={`Speed for ${p.name}`}
-              />
-              <input
-                type="number"
-                inputMode="numeric"
-                className="input-field typography-body-sm w-14 px-2 py-1"
-                value={p.passivePerception ?? ""}
-                min={1}
-                placeholder="PP"
-                onChange={(e) => {
-                  const v = e.target.value;
-                  if (v === "") {
-                    updatePartyMember(encounterId, p.id, {
-                      passivePerception: undefined,
-                    });
-                    return;
-                  }
-                  const parsed = Number.parseInt(v, 10);
-                  if (Number.isFinite(parsed) && parsed > 0) {
-                    updatePartyMember(encounterId, p.id, {
-                      passivePerception: parsed,
-                    });
-                  }
-                }}
-                aria-label={`Passive Perception for ${p.name}`}
-              />
-              <button
-                type="button"
-                className="admin-button-danger typography-body-sm px-2 py-1"
-                onClick={() => removePartyMember(encounterId, p.id)}
-                aria-label={`Remove ${p.name}`}
-              >
-                Remove
-              </button>
+                  }}
+                  aria-label={`Max HP for ${p.name}`}
+                />
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  className="input-field typography-body-sm w-14 px-2 py-1"
+                  value={p.armorClass ?? ""}
+                  min={1}
+                  placeholder="AC"
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (v === "") {
+                      updatePartyMember(encounterId, p.id, {
+                        armorClass: undefined,
+                      });
+                      return;
+                    }
+                    const parsed = Number.parseInt(v, 10);
+                    if (Number.isFinite(parsed) && parsed > 0) {
+                      updatePartyMember(encounterId, p.id, {
+                        armorClass: parsed,
+                      });
+                    }
+                  }}
+                  aria-label={`AC for ${p.name}`}
+                />
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  className="input-field typography-body-sm w-14 px-2 py-1"
+                  value={p.speed ?? ""}
+                  min={0}
+                  placeholder="Spd"
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (v === "") {
+                      updatePartyMember(encounterId, p.id, {
+                        speed: undefined,
+                      });
+                      return;
+                    }
+                    const parsed = Number.parseInt(v, 10);
+                    if (Number.isFinite(parsed) && parsed >= 0) {
+                      updatePartyMember(encounterId, p.id, { speed: parsed });
+                    }
+                  }}
+                  aria-label={`Speed for ${p.name}`}
+                />
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  className="input-field typography-body-sm w-14 px-2 py-1"
+                  value={p.passivePerception ?? ""}
+                  min={1}
+                  placeholder="PP"
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (v === "") {
+                      updatePartyMember(encounterId, p.id, {
+                        passivePerception: undefined,
+                      });
+                      return;
+                    }
+                    const parsed = Number.parseInt(v, 10);
+                    if (Number.isFinite(parsed) && parsed > 0) {
+                      updatePartyMember(encounterId, p.id, {
+                        passivePerception: parsed,
+                      });
+                    }
+                  }}
+                  aria-label={`Passive Perception for ${p.name}`}
+                />
+              </div>
             </li>
           ))}
         </ul>
