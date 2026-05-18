@@ -7,6 +7,7 @@ import { CopyVisibleNamesAction } from "@/components/copy-visible-names-action";
 import { FilterGroup } from "@/components/filter-group";
 import { FilterLogicPopover } from "@/components/filter-logic-popover";
 import { PageLoadingSkeleton } from "@/components/page-loading-skeleton";
+import { SearchInput } from "@/components/search-input";
 import {
   clearCollectionCache,
   getCollectionLastSyncedAt,
@@ -561,11 +562,11 @@ function MonstersPageContent() {
                   );
                 }}
               />
-              <input
-                className="input-field w-full px-3 py-2"
+              <SearchInput
                 onChange={(event) => {
                   setSearchInput(event.target.value);
                 }}
+                onClear={() => setSearchInput("")}
                 placeholder="Search monsters"
                 ref={searchRef}
                 value={searchInput}

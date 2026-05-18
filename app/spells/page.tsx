@@ -7,6 +7,7 @@ import { CopyVisibleNamesAction } from "@/components/copy-visible-names-action";
 import { FilterGroup } from "@/components/filter-group";
 import { FilterLogicPopover } from "@/components/filter-logic-popover";
 import { PageLoadingSkeleton } from "@/components/page-loading-skeleton";
+import { SearchInput } from "@/components/search-input";
 import {
   clearCollectionCache,
   getCollectionLastSyncedAt,
@@ -462,11 +463,11 @@ function SpellsPageContent() {
                   );
                 }}
               />
-              <input
-                className="input-field w-full px-3 py-2"
+              <SearchInput
                 onChange={(event) => {
                   updateSearchParam("q", event.target.value);
                 }}
+                onClear={() => updateSearchParam("q", "")}
                 placeholder="Search spells"
                 ref={searchRef}
                 value={filters.query}
