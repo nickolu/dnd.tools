@@ -50,11 +50,26 @@ type TipsEphemeral = {
 
 type SavedPartyMember = { name: string; level: number };
 
+export type EncounterTemplate = {
+  id: string;
+  name: string;
+  combatants: Array<{
+    monsterId: string;
+    monsterName: string;
+    monsterCrNumeric: number;
+    side: "ally" | "enemy";
+    maxHp: number;
+  }>;
+  notes?: string;
+  createdAt: number;
+};
+
 const MAX_UNDO_STACK = 20;
 
 type EncounterLibraryStore = {
   encounters: Encounter[];
   savedParty: SavedPartyMember[];
+  templates: EncounterTemplate[];
   // Ephemeral per-encounter LLM call state (not persisted to IDB)
   tipsEphemeral: Record<string, TipsEphemeral>;
   // Ephemeral undo/redo stacks per encounter (not persisted to IDB)
@@ -66,6 +81,10 @@ type EncounterLibraryStore = {
   deleteEncounter: (id: string) => void;
   renameEncounter: (id: string, name: string) => void;
   duplicateEncounter: (id: string) => string;
+  // Templates
+  saveAsTemplate: (encounterId: string, name: string) => void;
+  deleteTemplate: (templateId: string) => void;
+  createFromTemplate: (templateId: string) => string;
   // Editor
   addPC: (id: string, input: AddPcInput) => string;
   removePartyMember: (id: string, memberId: string) => void;
@@ -249,6 +268,7 @@ function bounded(level: number): number {
 export type EncounterLibraryState = {
   encounters: Encounter[];
   savedParty: SavedPartyMember[];
+  templates: EncounterTemplate[];
 };
 
 function isPlainObject(v: unknown): v is Record<string, unknown> {
@@ -443,6 +463,28 @@ function migrateEncounterToCurrent(raw: unknown): Encounter {
   };
 }
 
+function migrateTemplate(raw: unknown): EncounterTemplate {
+  const r = isPlainObject(raw) ? raw : {};
+  const rawCombatants = Array.isArray(r.combatants) ? r.combatants : [];
+  const combatants = rawCombatants
+    .filter((c): c is Record<string, unknown> => isPlainObject(c))
+    .map((c) => ({
+      monsterId: readString(c.monsterId, ""),
+      monsterName: readString(c.monsterName, "Unknown"),
+      monsterCrNumeric: Math.max(0, readFiniteNumber(c.monsterCrNumeric, 0)),
+      side: readSide(c.side),
+      maxHp: Math.max(1, Math.trunc(readFiniteNumber(c.maxHp, 1))),
+    }));
+  const notes = typeof r.notes === "string" ? r.notes : undefined;
+  return {
+    id: readString(r.id, crypto.randomUUID()),
+    name: readString(r.name, "Untitled template"),
+    combatants,
+    createdAt: readFiniteNumber(r.createdAt, Date.now()),
+    ...(notes !== undefined ? { notes } : {}),
+  };
+}
+
 // Migrates persisted state from older `version` values up to the current
 // schema. Each step is additive: Slice 2 fills in `initiative`, `tips`,
 // `tipsGeneratedAt` on encounters (with defaults) and `initiativeMod`,
@@ -456,7 +498,7 @@ export function migrateEncounterLibrary(
   const state = isPlainObject(persistedState) ? persistedState : {};
   const rawEncounters = Array.isArray(state.encounters) ? state.encounters : [];
   if (fromVersion < 1) {
-    return { encounters: [], savedParty: [] };
+    return { encounters: [], savedParty: [], templates: [] };
   }
   const rawSavedParty = Array.isArray(state.savedParty) ? state.savedParty : [];
   const savedParty = rawSavedParty
@@ -465,9 +507,14 @@ export function migrateEncounterLibrary(
       name: readString(p.name, "PC"),
       level: clamp(Math.trunc(readFiniteNumber(p.level, 1)), 1, 20),
     }));
+  const rawTemplates = Array.isArray(state.templates) ? state.templates : [];
+  const templates = rawTemplates
+    .filter((t): t is Record<string, unknown> => isPlainObject(t))
+    .map(migrateTemplate);
   return {
     encounters: rawEncounters.map(migrateEncounterToCurrent),
     savedParty,
+    templates,
   };
 }
 
@@ -476,6 +523,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
     (set, get) => ({
       encounters: [],
       savedParty: [],
+      templates: [],
       tipsEphemeral: {},
       undoStacks: {},
       redoStacks: {},
@@ -556,6 +604,76 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         };
         set((state) => ({ encounters: [...state.encounters, copy] }));
         return newId;
+      },
+
+      saveAsTemplate: (encounterId: string, name: string): void => {
+        const trimmed = name.trim();
+        if (!trimmed) return;
+        const source = get().encounters.find((e) => e.id === encounterId);
+        if (!source) return;
+        const template: EncounterTemplate = {
+          id: crypto.randomUUID(),
+          name: trimmed,
+          combatants: source.combatants.map((c) => ({
+            monsterId: c.monsterId,
+            monsterName: c.monsterName,
+            monsterCrNumeric: c.monsterCrNumeric,
+            side: c.side,
+            maxHp: c.maxHp,
+          })),
+          createdAt: Date.now(),
+          ...(source.notes ? { notes: source.notes } : {}),
+        };
+        set((state) => ({ templates: [...state.templates, template] }));
+      },
+
+      deleteTemplate: (templateId: string): void => {
+        set((state) => ({
+          templates: state.templates.filter((t) => t.id !== templateId),
+        }));
+      },
+
+      createFromTemplate: (templateId: string): string => {
+        const template = get().templates.find((t) => t.id === templateId);
+        if (!template) return "";
+        const id = crypto.randomUUID();
+        const now = Date.now();
+        const savedParty = get().savedParty;
+        const partyMembers: PartyMember[] = savedParty.map((p) => ({
+          id: crypto.randomUUID(),
+          kind: "pc" as const,
+          name: p.name,
+          level: p.level,
+          initiativeMod: 0,
+          initiative: null,
+          conditions: [],
+        }));
+        const combatants: Combatant[] = template.combatants.map((tc) => ({
+          id: crypto.randomUUID(),
+          monsterId: tc.monsterId,
+          monsterName: tc.monsterName,
+          monsterCrNumeric: tc.monsterCrNumeric,
+          side: tc.side,
+          maxHp: tc.maxHp,
+          currentHp: tc.maxHp,
+          initiative: null,
+          conditions: [],
+        }));
+        const newEncounter: Encounter = {
+          id,
+          name: template.name,
+          ruleset: "advanced",
+          partyMembers,
+          combatants,
+          initiative: { round: 1, activeIndex: null },
+          tips: null,
+          tipsGeneratedAt: null,
+          createdAt: now,
+          updatedAt: now,
+          ...(template.notes ? { notes: template.notes } : {}),
+        };
+        set((state) => ({ encounters: [...state.encounters, newEncounter] }));
+        return id;
       },
 
       addPC: (id: string, input: AddPcInput): string => {
@@ -1305,9 +1423,10 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
       partialize: (state) => ({
         encounters: state.encounters,
         savedParty: state.savedParty,
+        templates: state.templates,
       }),
       storage: createJSONStorage(() => persistenceStorage),
-      version: 5,
+      version: 6,
       migrate: migrateEncounterLibrary,
     }
   )

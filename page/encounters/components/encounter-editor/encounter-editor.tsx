@@ -47,6 +47,7 @@ export function EncounterEditor({ encounterId }: Props) {
     (s) => s.duplicateEncounter
   );
   const deleteEncounter = useEncounterLibraryStore((s) => s.deleteEncounter);
+  const saveAsTemplate = useEncounterLibraryStore((s) => s.saveAsTemplate);
   const setMap = useEncounterLibraryStore((s) => s.setMap);
   const setEncounterNotes = useEncounterLibraryStore(
     (s) => s.setEncounterNotes
@@ -280,6 +281,18 @@ export function EncounterEditor({ encounterId }: Props) {
             }}
           >
             Duplicate
+          </button>
+          <button
+            type="button"
+            className="admin-button-secondary typography-body-sm px-3 py-1"
+            onClick={() => {
+              const name = window.prompt("Template name:", encounter.name);
+              if (name?.trim()) {
+                saveAsTemplate(encounter.id, name.trim());
+              }
+            }}
+          >
+            Save as template
           </button>
           <button
             type="button"

@@ -97,14 +97,17 @@ describe("migrateEncounterLibrary (v1 → v2)", () => {
     expect(migrateEncounterLibrary(null, 1)).toEqual({
       encounters: [],
       savedParty: [],
+      templates: [],
     });
     expect(migrateEncounterLibrary(undefined, 1)).toEqual({
       encounters: [],
       savedParty: [],
+      templates: [],
     });
     expect(migrateEncounterLibrary("garbage", 1)).toEqual({
       encounters: [],
       savedParty: [],
+      templates: [],
     });
   });
 
