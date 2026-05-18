@@ -29,6 +29,9 @@ type Props = {
   onToggleCondition?: (condition: Condition) => void;
   onClearConditions?: () => void;
   monster?: Monster;
+  isOnMap?: boolean;
+  isPendingPlacement?: boolean;
+  onPlaceOnMap?: () => void;
 };
 
 export function InitiativeRow({
@@ -48,6 +51,9 @@ export function InitiativeRow({
   onToggleCondition,
   onClearConditions,
   monster,
+  isOnMap,
+  isPendingPlacement,
+  onPlaceOnMap,
 }: Props) {
   const [statBlockExpanded, setStatBlockExpanded] = useState(false);
   const initiativeValue = row.initiative === null ? "" : String(row.initiative);
@@ -205,6 +211,23 @@ export function InitiativeRow({
           </span>
         )}
       </div>
+      {onPlaceOnMap !== undefined || isOnMap ? (
+        <div className="flex items-center gap-2">
+          {isOnMap ? (
+            <span className="typography-body-sm text-muted">On map</span>
+          ) : onPlaceOnMap !== undefined ? (
+            <button
+              type="button"
+              className="filter-chip"
+              data-active={isPendingPlacement}
+              aria-pressed={isPendingPlacement}
+              onClick={onPlaceOnMap}
+            >
+              {isPendingPlacement ? "Placing…" : "Place on map"}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
     </li>
   );
 }

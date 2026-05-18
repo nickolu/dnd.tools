@@ -12,6 +12,7 @@ import {
 } from "@/page/encounters/utils/initiativeOrder";
 import { rollInitiative } from "@/page/encounters/utils/rollInitiative";
 
+import { useMapPlacementStore } from "../encounter-map/stores/useMapPlacementStore";
 import { InitiativeRow } from "./components/initiative-row";
 import { InitiativeToolbar } from "./components/initiative-toolbar";
 import { RoundCounter } from "./components/round-counter";
@@ -46,6 +47,9 @@ export function InitiativeTracker({ encounterId }: Props) {
   const previousTurn = useEncounterLibraryStore((s) => s.previousTurn);
   const resetInitiative = useEncounterLibraryStore((s) => s.resetInitiative);
   const endEncounter = useEncounterLibraryStore((s) => s.endEncounter);
+
+  const pendingPlace = useMapPlacementStore((s) => s.pendingPlace);
+  const setPendingPlace = useMapPlacementStore((s) => s.setPendingPlace);
 
   const dexModByCombatantId = useDexModByCombatantId(
     encounter?.combatants ?? []
@@ -152,6 +156,8 @@ export function InitiativeTracker({ encounterId }: Props) {
           {sortedRows.map((row, idx) => {
             const isActive = idx === activeIndex;
             if (row.kind === "party") {
+              const member = encounter.partyMembers.find((p) => p.id === row.id);
+              const partyIsOnMap = !!member?.position;
               return (
                 <InitiativeRow
                   key={row.id}
@@ -165,6 +171,21 @@ export function InitiativeTracker({ encounterId }: Props) {
                     setPartyMemberInitiativeMod(encounterId, row.id, mod)
                   }
                   onRoll={() => rollSingleParty(row.id)}
+                  isOnMap={partyIsOnMap}
+                  isPendingPlacement={
+                    pendingPlace?.kind === "pc" && pendingPlace.id === row.id
+                  }
+                  {...(encounter.map && !partyIsOnMap
+                    ? {
+                        onPlaceOnMap: () =>
+                          setPendingPlace(
+                            pendingPlace?.kind === "pc" &&
+                              pendingPlace.id === row.id
+                              ? null
+                              : { kind: "pc", id: row.id }
+                          ),
+                      }
+                    : {})}
                 />
               );
             }
@@ -189,6 +210,7 @@ export function InitiativeTracker({ encounterId }: Props) {
                   onSetHp: (value: number) => setHp(encounterId, row.id, value),
                 }
               : {};
+            const combatantIsOnMap = !!combatant?.position;
             return (
               <InitiativeRow
                 key={row.id}
@@ -204,6 +226,22 @@ export function InitiativeTracker({ encounterId }: Props) {
                   toggleCondition(encounterId, row.id, condition)
                 }
                 onClearConditions={() => clearConditions(encounterId, row.id)}
+                isOnMap={combatantIsOnMap}
+                isPendingPlacement={
+                  pendingPlace?.kind === "combatant" &&
+                  pendingPlace.id === row.id
+                }
+                {...(encounter.map && !combatantIsOnMap
+                  ? {
+                      onPlaceOnMap: () =>
+                        setPendingPlace(
+                          pendingPlace?.kind === "combatant" &&
+                            pendingPlace.id === row.id
+                            ? null
+                            : { kind: "combatant", id: row.id }
+                        ),
+                    }
+                  : {})}
               />
             );
           })}
