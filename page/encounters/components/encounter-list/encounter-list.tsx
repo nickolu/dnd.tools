@@ -98,7 +98,7 @@ export function EncounterList() {
                   </span>
                   <span>{enemyCount} enemies</span>
                   <span>{allyCount} allies</span>
-                  <span>{e.ruleset === "basic" ? "Basic" : "Advanced"}</span>
+                  <span>Advanced</span>
                 </div>
                 <div className="flex gap-2">
                   <Link

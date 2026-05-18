@@ -361,7 +361,7 @@ function migrateEncounterToCurrent(raw: unknown): Encounter {
   return {
     id: readString(r.id, crypto.randomUUID()),
     name: readString(r.name, "Untitled encounter"),
-    ruleset: readRuleset(r.ruleset),
+    ruleset: readRuleset(),
     partyMembers: partyMembersRaw.map(migratePartyMember),
     combatants: combatantsRaw.map(migrateCombatant),
     initiative: readInitiativeState(r.initiative),
