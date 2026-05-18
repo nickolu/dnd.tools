@@ -45,11 +45,15 @@ export function EncounterEditor({ encounterId }: Props) {
   );
   const deleteEncounter = useEncounterLibraryStore((s) => s.deleteEncounter);
   const setMap = useEncounterLibraryStore((s) => s.setMap);
+  const setEncounterNotes = useEncounterLibraryStore(
+    (s) => s.setEncounterNotes
+  );
   const router = useRouter();
 
   // Warm the monster cache so MonsterAddPanel renders quickly.
   useMonsters();
 
+  const [notesOpen, setNotesOpen] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const [setupOpen, setSetupOpen] = useState(true);
@@ -251,6 +255,35 @@ export function EncounterEditor({ encounterId }: Props) {
           <EncounterEditorSidebar encounterId={encounter.id} />
         </div>
       </div>
+
+      {/* Notes section */}
+      <section className="surface-card flex flex-col gap-2 p-4">
+        <button
+          type="button"
+          className="typography-h2 flex items-center gap-1 text-left"
+          onClick={() => setNotesOpen((v) => !v)}
+        >
+          <span
+            style={{
+              display: "inline-block",
+              width: "1em",
+              textAlign: "center",
+            }}
+          >
+            {notesOpen ? "▾" : "▸"}
+          </span>
+          Notes
+        </button>
+        {notesOpen && (
+          <textarea
+            className="input-field typography-body-sm w-full px-3 py-2"
+            rows={4}
+            placeholder="Session notes, loot, key decisions..."
+            value={encounter.notes ?? ""}
+            onChange={(e) => setEncounterNotes(encounter.id, e.target.value)}
+          />
+        )}
+      </section>
 
       {/* Full-screen map overlay */}
       {mapFocused && (

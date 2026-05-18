@@ -91,6 +91,7 @@ export const encounterSchema = z.object({
   tips: encounterTipsSchema.nullable(),
   tipsGeneratedAt: z.number().nullable(),
   map: encounterMapSchema.optional(),
+  notes: z.string().optional(),
   createdAt: z.number(),
   updatedAt: z.number(),
 });
