@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 
 import type { Condition } from "@/lib/domain/encounter/encounter.schema";
+import type { Monster } from "@/lib/domain/monster.schema";
 import type { InitiativeRow as RowData } from "@/page/encounters/utils/initiativeOrder";
 
 import { HpControl } from "../../../combatant-list/components/hp-control";
 import { ConditionBadges } from "../condition-badges";
+import { MonsterStatSummary } from "../monster-stat-summary";
 
 type Props = {
   row: RowData;
@@ -25,6 +28,7 @@ type Props = {
   conditions?: Condition[];
   onToggleCondition?: (condition: Condition) => void;
   onClearConditions?: () => void;
+  monster?: Monster;
 };
 
 export function InitiativeRow({
@@ -43,7 +47,9 @@ export function InitiativeRow({
   conditions,
   onToggleCondition,
   onClearConditions,
+  monster,
 }: Props) {
+  const [statBlockExpanded, setStatBlockExpanded] = useState(false);
   const initiativeValue = row.initiative === null ? "" : String(row.initiative);
   const modValue = String(row.dexMod);
   const sideLabel = row.side === "enemy" ? "Enemy" : "Ally";
@@ -113,6 +119,13 @@ export function InitiativeRow({
             onClear={onClearConditions}
           />
         )}
+      {monster !== undefined && (
+        <MonsterStatSummary
+          monster={monster}
+          expanded={statBlockExpanded}
+          onToggle={() => setStatBlockExpanded((v) => !v)}
+        />
+      )}
       {hasHpControl && (
         <HpControl
           currentHp={currentHp}

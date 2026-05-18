@@ -60,6 +60,11 @@ export function InitiativeTracker({ encounterId }: Props) {
     return map;
   }, [monsters]);
 
+  const monsterById = useMemo(
+    () => new Map(monsters.map((m) => [m.id, m])),
+    [monsters]
+  );
+
   const sortedRows = useMemo(() => {
     if (!encounter) return [];
     const partyRows = encounter.partyMembers.map(partyMemberToRow);
@@ -145,12 +150,18 @@ export function InitiativeTracker({ encounterId }: Props) {
             const ac = combatant
               ? acByMonsterId.get(combatant.monsterId)
               : undefined;
+            const monsterForRow = combatant
+              ? monsterById.get(combatant.monsterId)
+              : undefined;
             const hpProps = combatant
               ? {
                   currentHp: combatant.currentHp,
                   maxHp: combatant.maxHp,
                   monsterId: combatant.monsterId,
                   ...(ac !== undefined ? { armorClass: ac } : {}),
+                  ...(monsterForRow !== undefined
+                    ? { monster: monsterForRow }
+                    : {}),
                   onAdjustHp: (delta: number) =>
                     adjustHp(encounterId, row.id, delta),
                   onSetHp: (value: number) => setHp(encounterId, row.id, value),
