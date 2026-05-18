@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { selectEncounterById } from "@/lib/store/encounterSelectors";
@@ -13,6 +13,7 @@ import {
 import { rollInitiative } from "@/page/encounters/utils/rollInitiative";
 
 import { useMapPlacementStore } from "../encounter-map/stores/useMapPlacementStore";
+import { CondensedInitiativeRow } from "./components/condensed-initiative-row";
 import { InitiativeRow } from "./components/initiative-row";
 import { InitiativeToolbar } from "./components/initiative-toolbar";
 import { RoundCounter } from "./components/round-counter";
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export function InitiativeTracker({ encounterId }: Props) {
+  const [condensed, setCondensed] = useState(false);
   const encounter = useEncounterLibraryStore(selectEncounterById(encounterId));
   const setCombatantInitiative = useEncounterLibraryStore(
     (s) => s.setCombatantInitiative
@@ -130,24 +132,46 @@ export function InitiativeTracker({ encounterId }: Props) {
     <section className="surface-card flex flex-col gap-3 p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="typography-h2">Initiative</h2>
-        <RoundCounter
-          round={encounter.initiative.round}
-          onPrev={() => previousTurn(encounterId)}
-          onNext={() => nextTurn(encounterId)}
-        />
+        <div className="flex items-center gap-2">
+          <RoundCounter
+            round={encounter.initiative.round}
+            onPrev={() => previousTurn(encounterId)}
+            onNext={() => nextTurn(encounterId)}
+          />
+          <div className="flex gap-1">
+            <button
+              type="button"
+              className="filter-chip"
+              data-active={!condensed}
+              onClick={() => setCondensed(false)}
+            >
+              Full
+            </button>
+            <button
+              type="button"
+              className="filter-chip"
+              data-active={condensed}
+              onClick={() => setCondensed(true)}
+            >
+              Compact
+            </button>
+          </div>
+        </div>
       </div>
-      <InitiativeToolbar
-        onRollAll={handleRollAll}
-        onRollEnemies={() =>
-          rollCombatantInitiatives(encounterId, dexModByCombatantId, "enemy")
-        }
-        onRollAllies={() => {
-          rollPartyMemberInitiatives(encounterId);
-          rollCombatantInitiatives(encounterId, dexModByCombatantId, "ally");
-        }}
-        onReset={() => resetInitiative(encounterId)}
-        onEnd={() => endEncounter(encounterId)}
-      />
+      {!condensed && (
+        <InitiativeToolbar
+          onRollAll={handleRollAll}
+          onRollEnemies={() =>
+            rollCombatantInitiatives(encounterId, dexModByCombatantId, "enemy")
+          }
+          onRollAllies={() => {
+            rollPartyMemberInitiatives(encounterId);
+            rollCombatantInitiatives(encounterId, dexModByCombatantId, "ally");
+          }}
+          onReset={() => resetInitiative(encounterId)}
+          onEnd={() => endEncounter(encounterId)}
+        />
+      )}
       {!hasRows ? (
         <p className="typography-body-sm text-muted">
           Add PCs or monsters to start tracking initiative.
@@ -170,6 +194,16 @@ export function InitiativeTracker({ encounterId }: Props) {
                         setHp(encounterId, row.id, value),
                     }
                   : {};
+              if (condensed) {
+                return (
+                  <CondensedInitiativeRow
+                    key={row.id}
+                    row={row}
+                    isActive={isActive}
+                    {...pcHpProps}
+                  />
+                );
+              }
               return (
                 <InitiativeRow
                   key={row.id}
@@ -235,6 +269,27 @@ export function InitiativeTracker({ encounterId }: Props) {
                   onSetHp: (value: number) => setHp(encounterId, row.id, value),
                 }
               : {};
+            if (condensed) {
+              const condensedHpProps =
+                combatant !== undefined
+                  ? {
+                      currentHp: combatant.currentHp,
+                      maxHp: combatant.maxHp,
+                      onAdjustHp: (delta: number) =>
+                        adjustHp(encounterId, row.id, delta),
+                      onSetHp: (value: number) =>
+                        setHp(encounterId, row.id, value),
+                    }
+                  : {};
+              return (
+                <CondensedInitiativeRow
+                  key={row.id}
+                  row={row}
+                  isActive={isActive}
+                  {...condensedHpProps}
+                />
+              );
+            }
             return (
               <InitiativeRow
                 key={row.id}
