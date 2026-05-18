@@ -131,6 +131,7 @@ function SpellsPageContent() {
   const searchRef = useRef<HTMLInputElement>(null);
   const { data: spells = [], error, isError, isLoading, refetch } = useSpells();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isRetrying, setIsRetrying] = useState(false);
 
   // Saved spell list state
   const lists = useSavedSpellListStore((s) => s.lists);
@@ -426,12 +427,18 @@ function SpellsPageContent() {
             </p>
             <button
               className="admin-button-secondary typography-body-sm px-3 py-1"
-              onClick={() => {
-                void refetch();
+              disabled={isRetrying}
+              onClick={async () => {
+                setIsRetrying(true);
+                try {
+                  await refetch();
+                } finally {
+                  setIsRetrying(false);
+                }
               }}
               type="button"
             >
-              Retry
+              {isRetrying ? "Retrying…" : "Retry"}
             </button>
           </div>
         ) : null}

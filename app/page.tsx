@@ -113,6 +113,8 @@ export default function Home() {
     undefined
   );
   const [isRefreshingAll, setIsRefreshingAll] = useState(false);
+  const [isRetryingSpells, setIsRetryingSpells] = useState(false);
+  const [isRetryingMonsters, setIsRetryingMonsters] = useState(false);
   const [lastSyncedSpellsAt, setLastSyncedSpellsAt] = useState<number | null>(
     null
   );
@@ -230,23 +232,35 @@ export default function Home() {
             {isSpellsError ? (
               <button
                 className="admin-button-secondary typography-body-sm px-3 py-1"
-                onClick={() => {
-                  void refetchSpells();
+                disabled={isRetryingSpells}
+                onClick={async () => {
+                  setIsRetryingSpells(true);
+                  try {
+                    await refetchSpells();
+                  } finally {
+                    setIsRetryingSpells(false);
+                  }
                 }}
                 type="button"
               >
-                Retry spells
+                {isRetryingSpells ? "Retrying…" : "Retry spells"}
               </button>
             ) : null}
             {isMonstersError ? (
               <button
                 className="admin-button-secondary typography-body-sm px-3 py-1"
-                onClick={() => {
-                  void refetchMonsters();
+                disabled={isRetryingMonsters}
+                onClick={async () => {
+                  setIsRetryingMonsters(true);
+                  try {
+                    await refetchMonsters();
+                  } finally {
+                    setIsRetryingMonsters(false);
+                  }
                 }}
                 type="button"
               >
-                Retry monsters
+                {isRetryingMonsters ? "Retrying…" : "Retry monsters"}
               </button>
             ) : null}
           </div>
