@@ -379,6 +379,7 @@ export function EncounterEditor({ encounterId }: Props) {
           >
             {confirmDelete ? "Confirm delete?" : "Delete encounter"}
           </button>
+          <KeyboardShortcutsHelp showTrigger />
         </div>
       </header>
 
@@ -599,7 +600,6 @@ export function EncounterEditor({ encounterId }: Props) {
           </div>
         </div>
       )}
-      <KeyboardShortcutsHelp />
     </main>
   );
 }

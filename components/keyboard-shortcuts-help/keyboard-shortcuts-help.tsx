@@ -38,7 +38,11 @@ const SHORTCUTS = [
   },
 ];
 
-export function KeyboardShortcutsHelp() {
+type Props = {
+  showTrigger?: boolean;
+};
+
+export function KeyboardShortcutsHelp({ showTrigger = false }: Props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -62,7 +66,28 @@ export function KeyboardShortcutsHelp() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open]);
 
-  if (!open) return null;
+  if (!open) {
+    return showTrigger ? (
+      <button
+        type="button"
+        className="admin-button-secondary typography-body-sm"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "2rem",
+          height: "2rem",
+          padding: 0,
+          borderRadius: "var(--radius-sm)",
+        }}
+        onClick={() => setOpen(true)}
+        title="Keyboard shortcuts (?)"
+        aria-label="Show keyboard shortcuts"
+      >
+        ?
+      </button>
+    ) : null;
+  }
 
   return (
     <div

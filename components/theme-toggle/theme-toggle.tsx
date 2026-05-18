@@ -12,6 +12,7 @@ export function ThemeToggle() {
       aria-label={
         theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
       }
+      title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
       className="admin-button-secondary"
       style={{
         display: "inline-flex",
