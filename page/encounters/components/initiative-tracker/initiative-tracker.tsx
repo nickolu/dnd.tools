@@ -46,6 +46,9 @@ export function InitiativeTracker({ encounterId }: Props) {
   const toggleCondition = useEncounterLibraryStore((s) => s.toggleCondition);
   const clearConditions = useEncounterLibraryStore((s) => s.clearConditions);
   const removeToken = useEncounterLibraryStore((s) => s.removeToken);
+  const duplicateCombatant = useEncounterLibraryStore(
+    (s) => s.duplicateCombatant
+  );
   const nextTurn = useEncounterLibraryStore((s) => s.nextTurn);
   const previousTurn = useEncounterLibraryStore((s) => s.previousTurn);
   const resetInitiative = useEncounterLibraryStore((s) => s.resetInitiative);
@@ -325,6 +328,7 @@ export function InitiativeTracker({ encounterId }: Props) {
                   setCombatantInitiative(encounterId, row.id, value)
                 }
                 onRoll={() => rollSingleCombatant(row.id)}
+                onDuplicate={() => duplicateCombatant(encounterId, row.id)}
                 conditions={combatant?.conditions ?? []}
                 onToggleCondition={(condition) =>
                   toggleCondition(encounterId, row.id, condition)
