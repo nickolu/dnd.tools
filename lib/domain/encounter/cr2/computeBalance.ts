@@ -5,9 +5,16 @@ import { computePartyPower } from "./computePartyPower";
 import { getPartyTier } from "./getPartyTier";
 import type { BalanceResult } from "./types";
 
-export function computeBalance(encounter: Encounter): BalanceResult {
-  const allies = encounter.combatants.filter((c) => c.side === "ally");
-  const enemies = encounter.combatants.filter((c) => c.side === "enemy");
+export function computeBalance(
+  encounter: Encounter,
+  options?: { aliveOnly?: boolean }
+): BalanceResult {
+  const allies = encounter.combatants.filter(
+    (c) => c.side === "ally" && (!options?.aliveOnly || c.currentHp > 0)
+  );
+  const enemies = encounter.combatants.filter(
+    (c) => c.side === "enemy" && (!options?.aliveOnly || c.currentHp > 0)
+  );
 
   const tier = getPartyTier(encounter.partyMembers);
   const partyPower = computePartyPower(encounter.partyMembers, allies);

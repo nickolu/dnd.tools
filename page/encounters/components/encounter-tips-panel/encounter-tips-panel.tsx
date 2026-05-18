@@ -38,7 +38,7 @@ export function EncounterTipsPanel({ encounterId }: Props) {
   );
   const { data: monsters = [] } = useMonsters();
 
-  const balance = useEncounterBalance(
+  const { balance } = useEncounterBalance(
     encounter ?? {
       id: "",
       name: "",

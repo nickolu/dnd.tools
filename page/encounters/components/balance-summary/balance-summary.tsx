@@ -6,10 +6,11 @@ import { getBucketTone } from "@/page/encounters/utils/getBucketTone";
 
 type Props = {
   result: BalanceResult;
+  remainingResult?: BalanceResult | null;
   hasParty: boolean;
 };
 
-export function BalanceSummary({ result, hasParty }: Props) {
+export function BalanceSummary({ result, remainingResult, hasParty }: Props) {
   if (!hasParty) {
     return (
       <section className="surface-card flex flex-col gap-1 p-4">
@@ -57,6 +58,17 @@ export function BalanceSummary({ result, hasParty }: Props) {
           </span>
         ) : null}
       </div>
+      {remainingResult && (
+        <div className="flex items-center gap-2">
+          <span className="typography-kicker text-muted">Remaining</span>
+          <span className="typography-body-sm">
+            {remainingResult.classification.bucket}
+          </span>
+          <span className="typography-body-sm text-muted">
+            (power: {remainingResult.encounterPower})
+          </span>
+        </div>
+      )}
       {hasInterpolatedEnemy ? (
         <p className="typography-body-sm text-muted">
           Some monster Power values are approximated where the CR is not in the
