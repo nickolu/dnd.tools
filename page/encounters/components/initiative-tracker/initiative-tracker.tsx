@@ -211,6 +211,9 @@ export function InitiativeTracker({ encounterId }: Props) {
                   isActive={isActive}
                   editableMod
                   {...pcHpProps}
+                  {...(pc?.armorClass !== undefined
+                    ? { armorClass: String(pc.armorClass) }
+                    : {})}
                   isOnMap={pcOnMap}
                   {...(pcOnMap
                     ? {

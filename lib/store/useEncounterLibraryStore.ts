@@ -31,7 +31,10 @@ type AddPcInput = {
 };
 
 type UpdatePartyMemberPatch = Partial<
-  Pick<PartyMember, "name" | "level" | "maxHp">
+  Pick<
+    PartyMember,
+    "name" | "level" | "maxHp" | "armorClass" | "speed" | "passivePerception"
+  >
 >;
 
 type AddCombatantInput = {
@@ -294,6 +297,9 @@ function migratePartyMember(raw: unknown): PartyMember {
     : [];
   const maxHp = readNullableNumber(r.maxHp);
   const currentHp = readNullableNumber(r.currentHp);
+  const armorClass = readNullableNumber(r.armorClass);
+  const speed = readNullableNumber(r.speed);
+  const passivePerception = readNullableNumber(r.passivePerception);
   const member: PartyMember = {
     id: readString(r.id, crypto.randomUUID()),
     kind: "pc",
@@ -309,6 +315,13 @@ function migratePartyMember(raw: unknown): PartyMember {
           maxHp,
           currentHp: currentHp !== null ? clamp(currentHp, 0, maxHp) : maxHp,
         }
+      : {}),
+    ...(armorClass !== null && armorClass >= 1 ? { armorClass } : {}),
+    ...(speed !== null && speed >= 0
+      ? { speed: Math.max(0, Math.trunc(speed)) }
+      : {}),
+    ...(passivePerception !== null && passivePerception >= 1
+      ? { passivePerception }
       : {}),
   };
   return member;
@@ -559,6 +572,27 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
                 // Explicitly clearing maxHp disables HP tracking
                 delete next.maxHp;
                 delete next.currentHp;
+              }
+              if (patch.armorClass !== undefined) {
+                next.armorClass = patch.armorClass;
+              } else if (
+                "armorClass" in patch &&
+                patch.armorClass === undefined
+              ) {
+                delete next.armorClass;
+              }
+              if (patch.speed !== undefined) {
+                next.speed = patch.speed;
+              } else if ("speed" in patch && patch.speed === undefined) {
+                delete next.speed;
+              }
+              if (patch.passivePerception !== undefined) {
+                next.passivePerception = patch.passivePerception;
+              } else if (
+                "passivePerception" in patch &&
+                patch.passivePerception === undefined
+              ) {
+                delete next.passivePerception;
               }
               return next;
             }),
