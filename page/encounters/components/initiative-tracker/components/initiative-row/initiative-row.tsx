@@ -27,6 +27,8 @@ type Props = {
   onRoll: () => void;
   isOnMap?: boolean;
   onRemoveFromMap?: () => void;
+  isPendingPlacement?: boolean;
+  onPlaceOnMap?: () => void;
   conditions?: Condition[];
   onToggleCondition?: (condition: Condition) => void;
   onClearConditions?: () => void;
@@ -48,6 +50,8 @@ export function InitiativeRow({
   onRoll,
   isOnMap,
   onRemoveFromMap,
+  isPendingPlacement,
+  onPlaceOnMap,
   conditions,
   onToggleCondition,
   onClearConditions,
@@ -231,6 +235,19 @@ export function InitiativeRow({
           </span>
         )}
       </div>
+      {!isOnMap && onPlaceOnMap !== undefined ? (
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="filter-chip"
+            data-active={isPendingPlacement}
+            aria-pressed={isPendingPlacement}
+            onClick={onPlaceOnMap}
+          >
+            {isPendingPlacement ? "Placing…" : "Place on map"}
+          </button>
+        </div>
+      ) : null}
     </li>
   );
 }

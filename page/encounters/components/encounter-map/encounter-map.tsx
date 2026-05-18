@@ -20,6 +20,7 @@ import { Token } from "./components/token";
 import { TokenTray } from "./components/token-tray";
 import { MAP_DEFAULTS } from "./constants";
 import { useTokenDrag } from "./hooks/useTokenDrag";
+import { useMapPlacementStore } from "./stores/useMapPlacementStore";
 import type { TokenRef, TokenViewModel } from "./types";
 import { pixelToCell } from "./utils/cell-coords";
 
@@ -83,9 +84,11 @@ export function EncounterMap({ encounterId }: Props) {
   const moveToken = useEncounterLibraryStore((s) => s.moveToken);
   const removeToken = useEncounterLibraryStore((s) => s.removeToken);
 
+  const pendingPlace = useMapPlacementStore((s) => s.pendingPlace);
+  const setPendingPlace = useMapPlacementStore((s) => s.setPendingPlace);
+
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [selected, setSelected] = useState<TokenRef | null>(null);
-  const [pendingPlace, setPendingPlace] = useState<TokenRef | null>(null);
 
   const map = encounter?.map ?? MAP_DEFAULTS;
 
