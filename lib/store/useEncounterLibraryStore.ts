@@ -17,6 +17,7 @@ import {
   type EncounterMap,
   type EncounterTips,
   encounterTipsSchema,
+  type MapShape,
   type PartyMember,
   type Position,
 } from "@/lib/domain/encounter/encounter.schema";
@@ -178,6 +179,8 @@ type EncounterLibraryStore = {
     targetId: string,
     pos: Position
   ) => void;
+  addMapShape: (encounterId: string, shape: Omit<MapShape, "id">) => void;
+  removeMapShape: (encounterId: string, shapeId: string) => void;
 };
 
 export type TokenKind = "pc" | "combatant";
@@ -431,6 +434,22 @@ function migrateCombatant(raw: unknown): Combatant {
   return combatant;
 }
 
+function readMapShape(v: unknown): MapShape | null {
+  if (!isPlainObject(v)) return null;
+  const id = typeof v.id === "string" && v.id ? v.id : null;
+  if (!id) return null;
+  const kind =
+    v.kind === "square" || v.kind === "circle" || v.kind === "triangle"
+      ? v.kind
+      : null;
+  if (!kind) return null;
+  const pos = readPosition(v.position);
+  if (!pos) return null;
+  const size = clamp(Math.trunc(readFiniteNumber(v.size, 1)), 1, 10);
+  const color = typeof v.color === "string" && v.color ? v.color : "#d4a041";
+  return { id, kind, position: pos, size, color };
+}
+
 function readMap(v: unknown): EncounterMap | null {
   if (!isPlainObject(v)) return null;
   if (v.grid !== "square") return null;
@@ -439,12 +458,17 @@ function readMap(v: unknown): EncounterMap | null {
   const cellSize = clamp(Math.trunc(readFiniteNumber(v.cellSize, 48)), 24, 96);
   const backgroundUrl =
     typeof v.backgroundUrl === "string" ? v.backgroundUrl : undefined;
+  const rawShapes = Array.isArray(v.shapes) ? v.shapes : [];
+  const shapes = rawShapes
+    .map(readMapShape)
+    .filter((s): s is MapShape => s !== null);
   return {
     grid: "square",
     cols,
     rows,
     cellSize,
     ...(backgroundUrl !== undefined ? { backgroundUrl } : {}),
+    ...(shapes.length > 0 ? { shapes } : {}),
   };
 }
 
@@ -1449,6 +1473,35 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           encounters: updateEncounter(state.encounters, id, (e) =>
             applyTokenPosition(e, kind, targetId, null)
           ),
+        }));
+      },
+
+      addMapShape: (encounterId: string, shape: Omit<MapShape, "id">): void => {
+        const shapeWithId: MapShape = { ...shape, id: crypto.randomUUID() };
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) => ({
+            ...e,
+            map: e.map
+              ? {
+                  ...e.map,
+                  shapes: [...(e.map.shapes ?? []), shapeWithId],
+                }
+              : e.map,
+          })),
+        }));
+      },
+
+      removeMapShape: (encounterId: string, shapeId: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) => ({
+            ...e,
+            map: e.map
+              ? {
+                  ...e.map,
+                  shapes: (e.map.shapes ?? []).filter((s) => s.id !== shapeId),
+                }
+              : e.map,
+          })),
         }));
       },
     }),

@@ -1,6 +1,9 @@
 "use client";
 
-import type { EncounterMap } from "@/lib/domain/encounter/encounter.schema";
+import type {
+  EncounterMap,
+  MapShape,
+} from "@/lib/domain/encounter/encounter.schema";
 
 import {
   CELL_SIZE_OPTIONS,
@@ -18,6 +21,8 @@ type Props = {
   onZoomIn: () => void;
   onZoomOut: () => void;
   onResetView: () => void;
+  pendingShapeKind: MapShape["kind"] | null;
+  onPendingShapeKind: (kind: MapShape["kind"] | null) => void;
 };
 
 function clampInt(value: number, min: number, max: number): number {
@@ -33,6 +38,8 @@ export function MapToolbar({
   onZoomIn,
   onZoomOut,
   onResetView,
+  pendingShapeKind,
+  onPendingShapeKind,
 }: Props) {
   return (
     <div className="flex flex-wrap items-end gap-2">
@@ -111,6 +118,33 @@ export function MapToolbar({
         >
           Reset view
         </button>
+      </div>
+      <div className="flex items-center gap-1">
+        <span className="typography-kicker text-muted">Shapes:</span>
+        {(
+          [
+            { kind: "square" as const, label: "\u25a1 Square" },
+            { kind: "circle" as const, label: "\u25cb Circle" },
+            { kind: "triangle" as const, label: "\u25b3 Triangle" },
+          ] satisfies { kind: MapShape["kind"]; label: string }[]
+        ).map(({ kind, label }) => (
+          <button
+            key={kind}
+            type="button"
+            className={`typography-body-sm px-2 py-1 ${
+              pendingShapeKind === kind
+                ? "admin-button"
+                : "admin-button-secondary"
+            }`}
+            onClick={() =>
+              onPendingShapeKind(pendingShapeKind === kind ? null : kind)
+            }
+            aria-pressed={pendingShapeKind === kind}
+            aria-label={`Place ${kind} shape`}
+          >
+            {label}
+          </button>
+        ))}
       </div>
       <button
         type="button"
