@@ -37,6 +37,8 @@ type Props = {
   onDuplicate?: () => void;
   deathSaves?: { successes: number; failures: number };
   onSetDeathSave?: (type: "success" | "failure", count: number) => void;
+  concentrating?: boolean;
+  onToggleConcentration?: () => void;
 };
 
 export function InitiativeRow({
@@ -63,6 +65,8 @@ export function InitiativeRow({
   onDuplicate,
   deathSaves,
   onSetDeathSave,
+  concentrating,
+  onToggleConcentration,
 }: Props) {
   const [statBlockExpanded, setStatBlockExpanded] = useState(false);
   const initiativeValue = row.initiative === null ? "" : String(row.initiative);
@@ -156,6 +160,23 @@ export function InitiativeRow({
             onClear={onClearConditions}
           />
         )}
+      {onToggleConcentration && (
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="filter-chip"
+            data-active={concentrating}
+            aria-pressed={concentrating}
+            onClick={onToggleConcentration}
+            title={
+              concentrating ? "Break concentration" : "Mark as concentrating"
+            }
+            style={{ fontSize: "0.7rem" }}
+          >
+            {concentrating ? "Concentrating" : "Conc."}
+          </button>
+        </div>
+      )}
       {monster !== undefined && (
         <MonsterStatSummary
           monster={monster}

@@ -85,6 +85,7 @@ export const combatantSchema = z.object({
   initiative: z.number().int().nullable(),
   position: positionSchema.optional(),
   conditions: z.array(conditionSchema).default([]),
+  concentrating: z.boolean().optional(),
 });
 
 export const encounterSchema = z.object({

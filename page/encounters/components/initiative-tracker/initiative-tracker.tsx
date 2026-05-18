@@ -50,6 +50,9 @@ export function InitiativeTracker({ encounterId }: Props) {
   const duplicateCombatant = useEncounterLibraryStore(
     (s) => s.duplicateCombatant
   );
+  const toggleConcentration = useEncounterLibraryStore(
+    (s) => s.toggleConcentration
+  );
   const nextTurn = useEncounterLibraryStore((s) => s.nextTurn);
   const previousTurn = useEncounterLibraryStore((s) => s.previousTurn);
   const resetInitiative = useEncounterLibraryStore((s) => s.resetInitiative);
@@ -347,6 +350,10 @@ export function InitiativeTracker({ encounterId }: Props) {
                   toggleCondition(encounterId, row.id, condition)
                 }
                 onClearConditions={() => clearConditions(encounterId, row.id)}
+                {...(combatant?.concentrating ? { concentrating: true } : {})}
+                onToggleConcentration={() =>
+                  toggleConcentration(encounterId, row.id)
+                }
               />
             );
           })}
