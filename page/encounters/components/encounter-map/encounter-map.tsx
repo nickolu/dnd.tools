@@ -260,7 +260,8 @@ export function EncounterMap({ encounterId }: Props) {
               onPointerDown={(e) => {
                 // Only pan when not placing tokens and the target is the SVG/grid background
                 if (pendingPlace) return;
-                const target = e.target as Element;
+                if (!(e.target instanceof Element)) return;
+                const target = e.target;
                 const isBackground =
                   target === svgRef.current ||
                   target.tagName === "rect" ||
