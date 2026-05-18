@@ -30,7 +30,7 @@ function mockMonster(overrides: Partial<Monster> = {}): Monster {
 
 describe("useEncounterLibraryStore", () => {
   beforeEach(() => {
-    useEncounterLibraryStore.setState({ encounters: [] });
+    useEncounterLibraryStore.setState({ encounters: [], savedParty: [] });
   });
 
   it("starts with empty encounters", () => {

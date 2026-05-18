@@ -44,12 +44,16 @@ type TipsEphemeral = {
   error: string | null;
 };
 
+type SavedPartyMember = { name: string; level: number };
+
 type EncounterLibraryStore = {
   encounters: Encounter[];
+  savedParty: SavedPartyMember[];
   // Ephemeral per-encounter LLM call state (not persisted to IDB)
   tipsEphemeral: Record<string, TipsEphemeral>;
   // Library
   createEncounter: (name?: string) => string;
+  setSavedParty: (party: SavedPartyMember[]) => void;
   deleteEncounter: (id: string) => void;
   renameEncounter: (id: string, name: string) => void;
   duplicateEncounter: (id: string) => string;
@@ -215,8 +219,9 @@ function bounded(level: number): number {
   return clamp(Math.trunc(level), 1, 20);
 }
 
-export type PersistedEncounterLibrary = {
+export type EncounterLibraryState = {
   encounters: Encounter[];
+  savedParty: SavedPartyMember[];
 };
 
 function isPlainObject(v: unknown): v is Record<string, unknown> {
@@ -371,19 +376,30 @@ function migrateEncounterToCurrent(raw: unknown): Encounter {
 export function migrateEncounterLibrary(
   persistedState: unknown,
   fromVersion: number
-): PersistedEncounterLibrary {
+): EncounterLibraryState {
   const state = isPlainObject(persistedState) ? persistedState : {};
   const rawEncounters = Array.isArray(state.encounters) ? state.encounters : [];
   if (fromVersion < 1) {
-    return { encounters: [] };
+    return { encounters: [], savedParty: [] };
   }
-  return { encounters: rawEncounters.map(migrateEncounterToCurrent) };
+  const rawSavedParty = Array.isArray(state.savedParty) ? state.savedParty : [];
+  const savedParty = rawSavedParty
+    .filter((p): p is Record<string, unknown> => isPlainObject(p))
+    .map((p) => ({
+      name: readString(p.name, "PC"),
+      level: clamp(Math.trunc(readFiniteNumber(p.level, 1)), 1, 20),
+    }));
+  return {
+    encounters: rawEncounters.map(migrateEncounterToCurrent),
+    savedParty,
+  };
 }
 
 export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
   persist(
     (set, get) => ({
       encounters: [],
+      savedParty: [],
       tipsEphemeral: {},
 
       createEncounter: (name?: string): string => {
@@ -392,11 +408,20 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         }
         const id = crypto.randomUUID();
         const now = Date.now();
+        const savedParty = get().savedParty;
+        const partyMembers: PartyMember[] = savedParty.map((p) => ({
+          id: crypto.randomUUID(),
+          kind: "pc" as const,
+          name: p.name,
+          level: p.level,
+          initiativeMod: 0,
+          initiative: null,
+        }));
         const newEncounter: Encounter = {
           id,
           name: name?.trim() || "New encounter",
           ruleset: "advanced",
-          partyMembers: [],
+          partyMembers,
           combatants: [],
           initiative: { round: 1, activeIndex: null },
           tips: null,
@@ -406,6 +431,10 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         };
         set((state) => ({ encounters: [...state.encounters, newEncounter] }));
         return id;
+      },
+
+      setSavedParty: (party: SavedPartyMember[]): void => {
+        set({ savedParty: party });
       },
 
       deleteEncounter: (id: string): void => {
@@ -956,9 +985,10 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
       name: "dnd-tools-encounters",
       partialize: (state) => ({
         encounters: state.encounters,
+        savedParty: state.savedParty,
       }),
       storage: createJSONStorage(() => persistenceStorage),
-      version: 4,
+      version: 5,
       migrate: migrateEncounterLibrary,
     }
   )
