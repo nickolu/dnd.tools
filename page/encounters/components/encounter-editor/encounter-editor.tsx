@@ -44,6 +44,7 @@ export function EncounterEditor({ encounterId }: Props) {
     (s) => s.duplicateEncounter
   );
   const deleteEncounter = useEncounterLibraryStore((s) => s.deleteEncounter);
+  const setMap = useEncounterLibraryStore((s) => s.setMap);
   const router = useRouter();
 
   // Warm the monster cache so MonsterAddPanel renders quickly.
@@ -165,10 +166,13 @@ export function EncounterEditor({ encounterId }: Props) {
           </button>
           <button
             type="button"
-            className="admin-button-secondary typography-body-sm px-3 py-1"
-            onClick={() => setMapFocused(true)}
+            className="admin-button typography-body-sm px-3 py-1"
+            onClick={() => {
+              if (!encounter.map) setMap(encounter.id, {});
+              setMapFocused(true);
+            }}
           >
-            Focus map
+            {encounter.map ? "Focus map ↗" : "Enable & focus map"}
           </button>
           <button
             type="button"
