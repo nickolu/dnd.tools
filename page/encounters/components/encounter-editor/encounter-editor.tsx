@@ -18,6 +18,7 @@ import { InitiativeTracker } from "../initiative-tracker";
 import { MonsterAddPanel } from "../monster-add-panel";
 import { PartyRoster } from "../party-roster";
 import { RulesetToggle } from "../ruleset-toggle";
+import { SpellAggregatePanel } from "../spell-aggregate-panel";
 
 type Props = {
   encounterId: string;
@@ -54,6 +55,9 @@ export function EncounterEditor({ encounterId }: Props) {
   const [nameDraft, setNameDraft] = useState("");
   const [setupOpen, setSetupOpen] = useState(true);
   const [mapFocused, setMapFocused] = useState(false);
+  const [mapSidebarTab, setMapSidebarTab] = useState<"initiative" | "spells">(
+    "initiative"
+  );
 
   useEffect(() => {
     if (!mapFocused) return;
@@ -294,9 +298,38 @@ export function EncounterEditor({ encounterId }: Props) {
               overflow: "auto",
               borderLeft: "1px solid var(--color-border-subtle)",
               paddingLeft: "1rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5rem",
             }}
           >
-            <InitiativeTracker encounterId={encounter.id} />
+            <div className="flex gap-1" role="tablist" aria-label="Map sidebar">
+              <button
+                type="button"
+                className="filter-chip"
+                role="tab"
+                aria-selected={mapSidebarTab === "initiative"}
+                data-active={mapSidebarTab === "initiative"}
+                onClick={() => setMapSidebarTab("initiative")}
+              >
+                Initiative
+              </button>
+              <button
+                type="button"
+                className="filter-chip"
+                role="tab"
+                aria-selected={mapSidebarTab === "spells"}
+                data-active={mapSidebarTab === "spells"}
+                onClick={() => setMapSidebarTab("spells")}
+              >
+                Spells
+              </button>
+            </div>
+            {mapSidebarTab === "initiative" ? (
+              <InitiativeTracker encounterId={encounter.id} />
+            ) : (
+              <SpellAggregatePanel encounterId={encounter.id} />
+            )}
           </div>
         </div>
       )}
