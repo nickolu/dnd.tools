@@ -1,6 +1,6 @@
 "use client";
 
-import { type KeyboardEvent, useEffect, useState } from "react";
+import { type KeyboardEvent, useState } from "react";
 
 type Props = {
   currentHp: number;
@@ -10,20 +10,22 @@ type Props = {
 };
 
 export function HpControl({ currentHp, maxHp, onAdjust, onSet }: Props) {
-  const [inputValue, setInputValue] = useState(String(currentHp));
   const [amount, setAmount] = useState("");
 
-  useEffect(() => {
-    setInputValue(String(currentHp));
-  }, [currentHp]);
+  const downed = currentHp <= 0;
+  const bloodied = currentHp > 0 && currentHp <= maxHp / 2;
 
-  function commit() {
-    const parsed = Number.parseInt(inputValue, 10);
-    if (!Number.isFinite(parsed)) {
-      setInputValue(String(currentHp));
-      return;
-    }
-    onSet(parsed);
+  const hpPercent = maxHp > 0 ? Math.max(0, Math.min(100, (currentHp / maxHp) * 100)) : 0;
+
+  let barColor: string;
+  if (downed) {
+    barColor = "var(--color-text-muted)";
+  } else if (hpPercent <= 25) {
+    barColor = "var(--color-danger)";
+  } else if (hpPercent <= 50) {
+    barColor = "var(--color-accent)";
+  } else {
+    barColor = "#4a9e6b";
   }
 
   function applyDamageHeal(sign: 1 | -1) {
@@ -33,12 +35,9 @@ export function HpControl({ currentHp, maxHp, onAdjust, onSet }: Props) {
     setAmount("");
   }
 
-  function handleKey(e: KeyboardEvent<HTMLInputElement>) {
+  function handleAmountKey(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
-      e.currentTarget.blur();
-    } else if (e.key === "Escape") {
-      setInputValue(String(currentHp));
-      e.currentTarget.blur();
+      applyDamageHeal(-1);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       onAdjust(e.shiftKey ? 10 : 1);
@@ -48,56 +47,72 @@ export function HpControl({ currentHp, maxHp, onAdjust, onSet }: Props) {
     }
   }
 
-  const downed = currentHp <= 0;
-
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-wrap items-center gap-1.5">
-        <button
-          type="button"
-          className="admin-button-secondary typography-body-sm px-2 py-1"
-          onClick={() => onAdjust(-10)}
-          aria-label="Damage 10"
-        >
-          -10
-        </button>
-        <button
-          type="button"
-          className="admin-button-secondary typography-body-sm px-2 py-1"
-          onClick={() => onAdjust(-1)}
-          aria-label="Damage 1"
-        >
-          -1
-        </button>
-        <input
-          type="number"
-          inputMode="numeric"
-          className="input-field typography-body-sm w-16 px-2 py-1 text-right"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onBlur={commit}
-          onKeyDown={handleKey}
+      {/* HP display row */}
+      <div className="flex items-center gap-2">
+        <span
+          className="typography-body-sm"
           aria-label="Current HP"
-          style={downed ? { color: "var(--color-text-muted)" } : undefined}
-        />
-        <button
-          type="button"
-          className="admin-button-secondary typography-body-sm px-2 py-1"
-          onClick={() => onAdjust(+1)}
-          aria-label="Heal 1"
+          style={{
+            color: downed ? "var(--color-danger)" : "var(--color-text-primary)",
+            fontVariantNumeric: "tabular-nums",
+          }}
         >
-          +1
-        </button>
-        <button
-          type="button"
-          className="admin-button-secondary typography-body-sm px-2 py-1"
-          onClick={() => onAdjust(+10)}
-          aria-label="Heal 10"
-        >
-          +10
-        </button>
-        <span className="typography-body-sm text-muted ml-1">/ {maxHp}</span>
+          {currentHp} / {maxHp}
+        </span>
+        {downed && (
+          <span
+            className="typography-kicker"
+            style={{
+              color: "var(--color-danger)",
+              background: "rgba(178, 84, 80, 0.15)",
+              border: "1px solid rgba(178, 84, 80, 0.3)",
+              borderRadius: "999px",
+              padding: "0.1rem 0.45rem",
+            }}
+          >
+            Downed
+          </span>
+        )}
+        {bloodied && (
+          <span
+            className="typography-kicker"
+            style={{
+              color: "var(--color-accent)",
+              background: "rgba(212, 160, 65, 0.15)",
+              border: "1px solid rgba(212, 160, 65, 0.3)",
+              borderRadius: "999px",
+              padding: "0.1rem 0.45rem",
+            }}
+          >
+            Bloodied
+          </span>
+        )}
       </div>
+
+      {/* HP bar */}
+      <div
+        style={{
+          height: "0.35rem",
+          borderRadius: "999px",
+          background: "var(--color-border-subtle)",
+          overflow: "hidden",
+        }}
+        aria-hidden="true"
+      >
+        <div
+          style={{
+            height: "100%",
+            width: `${hpPercent}%`,
+            background: barColor,
+            borderRadius: "999px",
+            transition: "width 0.2s ease, background 0.2s ease",
+          }}
+        />
+      </div>
+
+      {/* Controls row */}
       <div className="flex items-center gap-1.5">
         <input
           type="number"
@@ -106,6 +121,7 @@ export function HpControl({ currentHp, maxHp, onAdjust, onSet }: Props) {
           className="input-field typography-body-sm w-16 px-2 py-1"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
+          onKeyDown={handleAmountKey}
           placeholder="0"
           aria-label="Damage or heal amount"
         />
@@ -114,6 +130,8 @@ export function HpControl({ currentHp, maxHp, onAdjust, onSet }: Props) {
           className="admin-button-secondary typography-body-sm px-2 py-1"
           onClick={() => applyDamageHeal(-1)}
           disabled={!amount}
+          style={amount ? { color: "var(--color-danger)" } : undefined}
+          aria-label="Apply damage"
         >
           Damage
         </button>
@@ -122,8 +140,19 @@ export function HpControl({ currentHp, maxHp, onAdjust, onSet }: Props) {
           className="admin-button-secondary typography-body-sm px-2 py-1"
           onClick={() => applyDamageHeal(+1)}
           disabled={!amount}
+          style={amount ? { color: "var(--color-accent)" } : undefined}
+          aria-label="Apply heal"
         >
           Heal
+        </button>
+        <button
+          type="button"
+          className="admin-button-secondary typography-body-sm px-2 py-1"
+          onClick={() => onSet(maxHp)}
+          aria-label="Full heal"
+          style={{ color: "var(--color-accent)" }}
+        >
+          Full Heal
         </button>
       </div>
     </div>

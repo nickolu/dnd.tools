@@ -13,6 +13,24 @@ type Props = {
   onRoll: () => void;
 };
 
+function parseHpStatus(hpDisplay: string): {
+  downed: boolean;
+  bloodied: boolean;
+} {
+  const parts = hpDisplay.split("/");
+  if (parts.length !== 2) return { downed: false, bloodied: false };
+  const currentStr = parts[0] ?? "";
+  const maxStr = parts[1] ?? "";
+  const current = Number.parseInt(currentStr, 10);
+  const max = Number.parseInt(maxStr, 10);
+  if (!Number.isFinite(current) || !Number.isFinite(max)) {
+    return { downed: false, bloodied: false };
+  }
+  const downed = current <= 0;
+  const bloodied = current > 0 && current <= max / 2;
+  return { downed, bloodied };
+}
+
 export function InitiativeRow({
   row,
   hpDisplay,
@@ -25,6 +43,27 @@ export function InitiativeRow({
   const initiativeValue = row.initiative === null ? "" : String(row.initiative);
   const modValue = String(row.dexMod);
   const sideLabel = row.side === "enemy" ? "Enemy" : "Ally";
+
+  let hpColor: string = "var(--color-text-muted)";
+  let dotColor: string = "#4a9e6b";
+  let hpStatusLabel = "healthy";
+
+  if (hpDisplay) {
+    const { downed, bloodied } = parseHpStatus(hpDisplay);
+    if (downed) {
+      hpColor = "var(--color-danger)";
+      dotColor = "var(--color-danger)";
+      hpStatusLabel = "downed";
+    } else if (bloodied) {
+      hpColor = "var(--color-accent)";
+      dotColor = "var(--color-accent)";
+      hpStatusLabel = "bloodied";
+    } else {
+      hpColor = "#4a9e6b";
+      dotColor = "#4a9e6b";
+      hpStatusLabel = "healthy";
+    }
+  }
 
   return (
     <li
@@ -52,7 +91,28 @@ export function InitiativeRow({
         <span className="typography-body flex-1">{row.name}</span>
         <span className="typography-body-sm text-muted">{sideLabel}</span>
         {hpDisplay ? (
-          <span className="typography-body-sm text-muted">HP {hpDisplay}</span>
+          <span
+            className="typography-body-sm"
+            style={{
+              color: hpColor,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.3rem",
+            }}
+          >
+            <span
+              aria-label={hpStatusLabel}
+              style={{
+                display: "inline-block",
+                width: "0.45rem",
+                height: "0.45rem",
+                borderRadius: "50%",
+                background: dotColor,
+                flexShrink: 0,
+              }}
+            />
+            HP {hpDisplay}
+          </span>
         ) : null}
       </div>
       <div className="flex flex-wrap items-center gap-1.5">
