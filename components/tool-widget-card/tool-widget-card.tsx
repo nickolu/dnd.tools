@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useRef } from "react";
 
 import { useRouteTransition } from "@/components/route-transition";
+import { SearchInput } from "@/components/search-input";
 import { FilterChip } from "@/components/tool-widget-card/components/filter-chip";
 import { useWidgetIntent } from "@/components/tool-widget-card/hooks/useWidgetIntent";
 import type {
@@ -77,8 +78,7 @@ export function ToolWidgetCard({
       ) : null}
 
       <div className="mb-4">
-        <input
-          className="input-field w-full px-3 py-2"
+        <SearchInput
           onChange={(event) => {
             const nextValue = event.target.value;
             setIntent({ target: "search", value: nextValue });
@@ -86,6 +86,10 @@ export function ToolWidgetCard({
           }}
           onClick={(event) => {
             event.stopPropagation();
+          }}
+          onClear={() => {
+            setIntent({ target: "search", value: "" });
+            onSearchChange?.("");
           }}
           onFocus={(event) => {
             const nextIntent = {

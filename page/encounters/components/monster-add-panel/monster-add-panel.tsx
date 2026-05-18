@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import { SearchInput } from "@/components/search-input";
 import type { CombatantSide } from "@/lib/domain/encounter/encounter.schema";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
@@ -34,11 +35,13 @@ export function MonsterAddPanel({ encounterId }: Props) {
     <section className="surface-card flex flex-col gap-3 p-4">
       <h2 className="typography-h2">Add monsters</h2>
       <div className="flex flex-wrap items-center gap-2">
-        <input
-          className="input-field typography-body-sm min-w-[12rem] flex-1 px-2 py-1"
+        <SearchInput
+          wrapperClassName="relative min-w-[12rem] flex-1"
+          className="input-field typography-body-sm w-full px-2 py-1 pr-7"
           placeholder="Search monsters..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onClear={() => setQuery("")}
           aria-label="Search monsters"
         />
         <div className="flex gap-1" role="group" aria-label="Side">
