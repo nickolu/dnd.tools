@@ -14,6 +14,7 @@ import {
   getReadableFetchError,
 } from "@/lib/api/client";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
+import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
 import { useSavedMonsterListStore } from "@/lib/store/useSavedMonsterListStore";
 import {
   applyPersistedFilterQueryParams,
@@ -141,6 +142,7 @@ function MonstersPageContent() {
 
   // Saved monster list state
   const lists = useSavedMonsterListStore((s) => s.lists);
+  const encounters = useEncounterLibraryStore((s) => s.encounters);
   const listIdParam = searchParams.get("list");
   const activeList = useMemo(
     () =>
@@ -148,12 +150,30 @@ function MonstersPageContent() {
     [listIdParam, lists]
   );
 
+  const encounterMonsterIds = useMemo(() => {
+    if (!listIdParam?.startsWith("encounter:")) return null;
+    const encId = listIdParam.slice("encounter:".length);
+    const enc = encounters.find((e) => e.id === encId);
+    if (!enc) return null;
+    return [
+      ...new Set(
+        enc.combatants.filter((c) => c.monsterId).map((c) => c.monsterId)
+      ),
+    ];
+  }, [listIdParam, encounters]);
+
   // Pre-filter monsters to active list scope before applying other filters
   const monstersInScope = useMemo(() => {
-    if (!activeList) return monsters;
-    const idSet = new Set(activeList.monsterIds);
-    return monsters.filter((monster) => idSet.has(monster.id));
-  }, [monsters, activeList]);
+    if (activeList) {
+      const idSet = new Set(activeList.monsterIds);
+      return monsters.filter((monster) => idSet.has(monster.id));
+    }
+    if (encounterMonsterIds) {
+      const idSet = new Set(encounterMonsterIds);
+      return monsters.filter((monster) => idSet.has(monster.id));
+    }
+    return monsters;
+  }, [monsters, activeList, encounterMonsterIds]);
 
   const { filteredMonsters, filters } = useMonsterFilters(
     monstersInScope,
@@ -172,14 +192,21 @@ function MonstersPageContent() {
 
   // Strip stale ?list=<id> if the list no longer exists
   useEffect(() => {
-    if (listIdParam && !activeList) {
+    if (listIdParam && !activeList && !encounterMonsterIds) {
       const params = new URLSearchParams(searchParams.toString());
       params.delete("list");
       router.replace(
         `${pathname}${params.toString() ? `?${params.toString()}` : ""}`
       );
     }
-  }, [listIdParam, activeList, pathname, router, searchParams]);
+  }, [
+    listIdParam,
+    activeList,
+    encounterMonsterIds,
+    pathname,
+    router,
+    searchParams,
+  ]);
 
   useEffect(() => {
     if (searchParams.get("intent") !== "search") {
@@ -478,12 +505,25 @@ function MonstersPageContent() {
       <section className="surface-card p-6">
         <h1 className="typography-h1">Monsters</h1>
         <MonsterResultsSummary
-          {...(activeList
-            ? {
+          {...(() => {
+            if (activeList) {
+              return {
                 activeListName: activeList.name,
                 activeListTotal: monstersInScope.length,
+              };
+            }
+            if (encounterMonsterIds) {
+              const encId = listIdParam?.slice("encounter:".length) ?? "";
+              const enc = encounters.find((e) => e.id === encId);
+              if (enc) {
+                return {
+                  activeListName: enc.name,
+                  activeListTotal: monstersInScope.length,
+                };
               }
-            : {})}
+            }
+            return {};
+          })()}
           isLoading={isLoading}
           total={monsters.length}
           visible={filteredMonsters.length}
@@ -547,7 +587,7 @@ function MonstersPageContent() {
           <div className="relative">
             <div className="flex items-center gap-2">
               <MonsterListSelector
-                activeListId={activeList?.id ?? null}
+                activeListId={listIdParam}
                 onListSelect={(listId) => {
                   const params = new URLSearchParams(searchParams.toString());
                   if (listId) {
