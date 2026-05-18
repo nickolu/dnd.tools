@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import { SearchInput } from "@/components/search-input";
 import type { CombatantSide } from "@/lib/domain/encounter/encounter.schema";
@@ -22,6 +22,26 @@ export function MonsterAddPanel({ encounterId }: Props) {
   const [query, setQuery] = useState("");
   const [side, setSide] = useState<CombatantSide>("enemy");
   const [quantity, setQuantity] = useState(1);
+  const [addedMessage, setAddedMessage] = useState<string | null>(null);
+  const addedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleAdd = useCallback(
+    (monsterName: string, monsterId: string) => {
+      addCombatant(encounterId, {
+        monster: monsters.find((m) => m.id === monsterId)!,
+        side,
+        quantity,
+      });
+      if (addedTimerRef.current) clearTimeout(addedTimerRef.current);
+      setAddedMessage(
+        quantity > 1
+          ? `Added ${quantity}× ${monsterName}`
+          : `Added ${monsterName}`
+      );
+      addedTimerRef.current = setTimeout(() => setAddedMessage(null), 2000);
+    },
+    [addCombatant, encounterId, monsters, side, quantity]
+  );
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -75,6 +95,14 @@ export function MonsterAddPanel({ encounterId }: Props) {
           />
         </label>
       </div>
+      {addedMessage ? (
+        <p
+          className="typography-body-sm"
+          style={{ color: "var(--color-accent)" }}
+        >
+          {addedMessage}
+        </p>
+      ) : null}
       {isError ? (
         <p className="typography-body-sm text-secondary">
           Failed to load monsters.
@@ -93,13 +121,7 @@ export function MonsterAddPanel({ encounterId }: Props) {
                 <button
                   type="button"
                   className="admin-button-secondary typography-body-sm flex w-full items-baseline justify-between gap-2 px-2 py-1 text-left"
-                  onClick={() =>
-                    addCombatant(encounterId, {
-                      monster: m,
-                      side,
-                      quantity,
-                    })
-                  }
+                  onClick={() => handleAdd(m.name, m.id)}
                 >
                   <span>{m.name}</span>
                   <span className="text-muted">CR {formatCr(m.crNumeric)}</span>
