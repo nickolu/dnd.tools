@@ -82,7 +82,7 @@ export function EncounterList() {
                 </button>
                 <button
                   type="button"
-                  className="admin-button-secondary typography-body-sm px-1.5 py-0.5"
+                  className="admin-button-danger typography-body-sm px-1.5 py-0.5"
                   onClick={() => {
                     if (
                       window.confirm(
@@ -162,7 +162,7 @@ export function EncounterList() {
                   </button>
                   <button
                     type="button"
-                    className="admin-button-secondary typography-body-sm px-3 py-1"
+                    className="admin-button-danger typography-body-sm px-3 py-1"
                     onClick={() => {
                       if (window.confirm(`Delete encounter "${e.name}"?`)) {
                         deleteEncounter(e.id);

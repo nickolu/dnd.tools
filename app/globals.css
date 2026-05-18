@@ -313,6 +313,22 @@ body {
   color: var(--color-accent-contrast);
 }
 
+.admin-button-danger {
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-danger) 40%, transparent);
+  border-radius: var(--radius-sm);
+  color: var(--color-danger);
+  transition:
+    border-color var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    background-color var(--motion-fast) ease;
+}
+
+.admin-button-danger:hover {
+  border-color: var(--color-danger);
+  background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
+}
+
 .admin-textarea {
   background: var(--color-surface);
   border: 1px solid var(--color-border-subtle);

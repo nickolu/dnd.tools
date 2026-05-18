@@ -303,7 +303,7 @@ export function EncounterEditor({ encounterId }: Props) {
           </button>
           <button
             type="button"
-            className="admin-button-secondary typography-body-sm px-3 py-1"
+            className="admin-button-danger typography-body-sm px-3 py-1"
             onClick={handleDelete}
           >
             Delete encounter

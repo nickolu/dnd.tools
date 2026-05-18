@@ -183,7 +183,7 @@ export function PartyRoster({ encounterId, partyMembers, allies }: Props) {
               />
               <button
                 type="button"
-                className="admin-button-secondary typography-body-sm px-2 py-1"
+                className="admin-button-danger typography-body-sm px-2 py-1"
                 onClick={() => removePartyMember(encounterId, p.id)}
                 aria-label={`Remove ${p.name}`}
               >
