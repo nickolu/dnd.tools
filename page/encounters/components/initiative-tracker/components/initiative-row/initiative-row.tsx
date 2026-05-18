@@ -13,6 +13,7 @@ type Props = {
   currentHp?: number;
   maxHp?: number;
   monsterId?: string;
+  armorClass?: string;
   onAdjustHp?: (delta: number) => void;
   onSetHp?: (value: number) => void;
   isActive: boolean;
@@ -31,6 +32,7 @@ export function InitiativeRow({
   currentHp,
   maxHp,
   monsterId,
+  armorClass,
   onAdjustHp,
   onSetHp,
   isActive,
@@ -89,6 +91,18 @@ export function InitiativeRow({
           <span className="typography-body flex-1">{row.name}</span>
         )}
         <span className="typography-body-sm text-muted">{sideLabel}</span>
+        {armorClass ? (
+          <span
+            className="typography-body-sm"
+            style={{
+              color: "var(--color-text-secondary)",
+              fontVariantNumeric: "tabular-nums",
+            }}
+            title={`Armor Class: ${armorClass}`}
+          >
+            AC {armorClass}
+          </span>
+        ) : null}
       </div>
       {conditions !== undefined &&
         onToggleCondition !== undefined &&

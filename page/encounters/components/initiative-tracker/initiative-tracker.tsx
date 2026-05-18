@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 
+import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { selectEncounterById } from "@/lib/store/encounterSelectors";
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
 import {
@@ -49,6 +50,15 @@ export function InitiativeTracker({ encounterId }: Props) {
   const dexModByCombatantId = useDexModByCombatantId(
     encounter?.combatants ?? []
   );
+
+  const { data: monsters = [] } = useMonsters();
+  const acByMonsterId = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const m of monsters) {
+      map.set(m.id, m.armorClass);
+    }
+    return map;
+  }, [monsters]);
 
   const sortedRows = useMemo(() => {
     if (!encounter) return [];
@@ -132,11 +142,15 @@ export function InitiativeTracker({ encounterId }: Props) {
               );
             }
             const combatant = encounter.combatants.find((c) => c.id === row.id);
+            const ac = combatant
+              ? acByMonsterId.get(combatant.monsterId)
+              : undefined;
             const hpProps = combatant
               ? {
                   currentHp: combatant.currentHp,
                   maxHp: combatant.maxHp,
                   monsterId: combatant.monsterId,
+                  ...(ac !== undefined ? { armorClass: ac } : {}),
                   onAdjustHp: (delta: number) =>
                     adjustHp(encounterId, row.id, delta),
                   onSetHp: (value: number) => setHp(encounterId, row.id, value),
