@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { KeyboardShortcutsHelp } from "@/components/keyboard-shortcuts-help";
+import type { Encounter } from "@/lib/domain/encounter/encounter.schema";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { selectEncounterById } from "@/lib/store/encounterSelectors";
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
@@ -49,6 +50,11 @@ export function EncounterEditor({ encounterId }: Props) {
   const setEncounterNotes = useEncounterLibraryStore(
     (s) => s.setEncounterNotes
   );
+  const pushSnapshot = useEncounterLibraryStore((s) => s.pushSnapshot);
+  const undoEncounter = useEncounterLibraryStore((s) => s.undoEncounter);
+  const redoEncounter = useEncounterLibraryStore((s) => s.redoEncounter);
+  const canUndo = useEncounterLibraryStore((s) => s.canUndo(encounterId));
+  const canRedo = useEncounterLibraryStore((s) => s.canRedo(encounterId));
   const router = useRouter();
 
   // Warm the monster cache so MonsterAddPanel renders quickly.
@@ -76,6 +82,51 @@ export function EncounterEditor({ encounterId }: Props) {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [mapFocused]);
+
+  // Auto-snapshot: track the previous encounter state and push to undo stack
+  // whenever updatedAt changes (i.e. any mutation happened).
+  // Skip auto-snapshot when the change came from undo/redo (those actions
+  // manage the stacks themselves).
+  const prevEncounterRef = useRef<Encounter | null>(null);
+  const undoRedoInProgressRef = useRef(false);
+  useEffect(() => {
+    if (!encounter) return;
+    const prev = prevEncounterRef.current;
+    if (prev !== null && prev.updatedAt !== encounter.updatedAt) {
+      if (!undoRedoInProgressRef.current) {
+        // Save the state *before* the mutation (prev) onto the undo stack
+        pushSnapshot(encounter.id, structuredClone(prev));
+      }
+    }
+    undoRedoInProgressRef.current = false;
+    prevEncounterRef.current = encounter;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [encounter?.updatedAt]);
+
+  // Undo/redo keyboard shortcuts: Ctrl+Z / Ctrl+Shift+Z (or Cmd on Mac)
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (!(e.ctrlKey || e.metaKey)) return;
+      if (e.key === "z" || e.key === "Z") {
+        const target = e.target;
+        if (target instanceof HTMLElement) {
+          const tag = target.tagName;
+          if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+        }
+        if (e.shiftKey) {
+          e.preventDefault();
+          undoRedoInProgressRef.current = true;
+          redoEncounter(encounterId);
+        } else {
+          e.preventDefault();
+          undoRedoInProgressRef.current = true;
+          undoEncounter(encounterId);
+        }
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [encounterId, undoEncounter, redoEncounter]);
 
   // Hook must run unconditionally — fall back to an empty shell when missing.
   const balance = useEncounterBalance(encounter ?? EMPTY_ENCOUNTER);
@@ -166,6 +217,30 @@ export function EncounterEditor({ encounterId }: Props) {
           )}
         </div>
         <div className="flex flex-wrap items-end gap-3">
+          <button
+            type="button"
+            className="admin-button-secondary typography-body-sm px-2 py-1"
+            onClick={() => {
+              undoRedoInProgressRef.current = true;
+              undoEncounter(encounterId);
+            }}
+            disabled={!canUndo}
+            title="Undo (Ctrl+Z)"
+          >
+            Undo
+          </button>
+          <button
+            type="button"
+            className="admin-button-secondary typography-body-sm px-2 py-1"
+            onClick={() => {
+              undoRedoInProgressRef.current = true;
+              redoEncounter(encounterId);
+            }}
+            disabled={!canRedo}
+            title="Redo (Ctrl+Shift+Z)"
+          >
+            Redo
+          </button>
           <button
             type="button"
             className="admin-button-secondary typography-body-sm px-3 py-1"

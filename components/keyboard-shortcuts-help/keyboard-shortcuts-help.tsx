@@ -23,6 +23,13 @@ const SHORTCUTS = [
     ],
   },
   {
+    section: "Encounter Editor",
+    shortcuts: [
+      { keys: "Ctrl+Z", description: "Undo last action" },
+      { keys: "Ctrl+Shift+Z", description: "Redo" },
+    ],
+  },
+  {
     section: "General",
     shortcuts: [
       { keys: "?", description: "Show this help" },
