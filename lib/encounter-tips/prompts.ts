@@ -25,7 +25,7 @@ export function buildEncounterTipsPrompt(input: TipsRequestPayload): string {
       return `- ${c.name}${countSuffix} (CR ${c.cr}, ${c.size} ${c.type})${traits}`;
     })
     .join("\n");
-  return [
+  const parts = [
     partyLine,
     difficultyLine,
     `Ruleset: ${input.ruleset}.`,
@@ -34,5 +34,11 @@ export function buildEncounterTipsPrompt(input: TipsRequestPayload): string {
     monsterLines,
     "",
     "Return JSON in the exact shape specified.",
-  ].join("\n");
+  ];
+
+  if (input.context) {
+    parts.push(`\nAdditional DM context: ${input.context}`);
+  }
+
+  return parts.join("\n");
 }

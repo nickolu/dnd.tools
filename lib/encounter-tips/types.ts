@@ -15,4 +15,5 @@ export type TipsRequestPayload = {
   difficulty: DifficultyBucket;
   combatants: TipsCombatantInput[];
   ruleset: "5e-2014" | "5e-2024";
+  context?: string;
 };
