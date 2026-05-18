@@ -47,14 +47,14 @@ export function EncounterEditor({ encounterId }: Props) {
 
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
-  const [focusMap, setFocusMap] = useState(false);
+  const [setupOpen, setSetupOpen] = useState(true);
 
   // Hook must run unconditionally — fall back to an empty shell when missing.
   const balance = useEncounterBalance(encounter ?? EMPTY_ENCOUNTER);
 
   if (!hydrated) {
     return (
-      <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
+      <main className="mx-auto flex w-full flex-col gap-4">
         <p className="typography-body-sm text-muted">Loading encounter...</p>
       </main>
     );
@@ -62,7 +62,7 @@ export function EncounterEditor({ encounterId }: Props) {
 
   if (!encounter) {
     return (
-      <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
+      <main className="mx-auto flex w-full flex-col gap-4">
         <div className="surface-card flex flex-col items-start gap-2 p-4">
           <h1 className="typography-h1">Encounter not found</h1>
           <p className="typography-body-sm text-muted">
@@ -103,7 +103,7 @@ export function EncounterEditor({ encounterId }: Props) {
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
+    <main className="mx-auto flex w-full flex-col gap-4">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
           <Link
@@ -145,10 +145,10 @@ export function EncounterEditor({ encounterId }: Props) {
           <button
             type="button"
             className="admin-button-secondary typography-body-sm px-3 py-1"
-            onClick={() => setFocusMap((v) => !v)}
-            aria-pressed={focusMap}
+            onClick={() => setSetupOpen((v) => !v)}
+            aria-pressed={setupOpen}
           >
-            {focusMap ? "Exit focus mode" : "Focus map"}
+            {setupOpen ? "Hide setup" : "Show setup"}
           </button>
           <button
             type="button"
@@ -160,23 +160,54 @@ export function EncounterEditor({ encounterId }: Props) {
         </div>
       </header>
 
-      <div className={focusMap ? "grid gap-4" : "grid gap-4 lg:grid-cols-2"}>
-        <div className={focusMap ? "hidden" : "flex flex-col gap-4"}>
-          <PartyRoster
-            encounterId={encounter.id}
-            partyMembers={encounter.partyMembers}
-            allies={allies}
-          />
-          <MonsterAddPanel encounterId={encounter.id} />
-          <BalanceSummary
-            result={balance}
-            hasParty={encounter.partyMembers.length > 0}
-          />
-          <CombatantList
-            encounterId={encounter.id}
-            combatants={encounter.combatants}
-          />
-        </div>
+      {/* Mobile: stacked layout with collapsible setup */}
+      <div className="flex flex-col gap-4 lg:hidden">
+        {setupOpen && (
+          <div className="flex flex-col gap-4">
+            <PartyRoster
+              encounterId={encounter.id}
+              partyMembers={encounter.partyMembers}
+              allies={allies}
+            />
+            <MonsterAddPanel encounterId={encounter.id} />
+            <BalanceSummary
+              result={balance}
+              hasParty={encounter.partyMembers.length > 0}
+            />
+            <CombatantList
+              encounterId={encounter.id}
+              combatants={encounter.combatants}
+            />
+          </div>
+        )}
+        <EncounterEditorSidebar encounterId={encounter.id} />
+      </div>
+
+      {/* Desktop: sidebar layout with fixed-width setup column */}
+      <div
+        className="hidden gap-4 lg:grid"
+        style={{
+          gridTemplateColumns: setupOpen ? "320px 1fr" : "1fr",
+        }}
+      >
+        {setupOpen && (
+          <div className="flex flex-col gap-4">
+            <PartyRoster
+              encounterId={encounter.id}
+              partyMembers={encounter.partyMembers}
+              allies={allies}
+            />
+            <MonsterAddPanel encounterId={encounter.id} />
+            <BalanceSummary
+              result={balance}
+              hasParty={encounter.partyMembers.length > 0}
+            />
+            <CombatantList
+              encounterId={encounter.id}
+              combatants={encounter.combatants}
+            />
+          </div>
+        )}
         <div className="flex flex-col gap-4">
           <EncounterEditorSidebar encounterId={encounter.id} />
         </div>
