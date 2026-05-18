@@ -111,6 +111,8 @@ type EncounterLibraryStore = {
   // Tips
   generateTips: (id: string, request: TipsRequestPayload) => Promise<void>;
   clearTips: (id: string) => void;
+  // Concentration
+  toggleConcentration: (encounterId: string, combatantId: string) => void;
   // Conditions
   toggleCondition: (
     encounterId: string,
@@ -384,6 +386,7 @@ function migrateCombatant(raw: unknown): Combatant {
           typeof c === "string" && conditionsSet.has(c)
       )
     : [];
+  const concentrating = r.concentrating === true ? true : undefined;
   const combatant: Combatant = {
     id: readString(r.id, crypto.randomUUID()),
     monsterId: readString(r.monsterId, ""),
@@ -396,6 +399,7 @@ function migrateCombatant(raw: unknown): Combatant {
     conditions,
     ...(nameOverride !== undefined ? { nameOverride } : {}),
     ...(position !== null ? { position } : {}),
+    ...(concentrating ? { concentrating } : {}),
   };
   return combatant;
 }
@@ -725,10 +729,16 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           encounters: updateEncounter(state.encounters, id, (e) => {
             const isCombatant = e.combatants.some((c) => c.id === targetId);
             if (isCombatant) {
-              return updateCombatant(e, targetId, (c) => ({
-                ...c,
-                currentHp: clamp(c.currentHp + delta, 0, c.maxHp),
-              }));
+              return updateCombatant(e, targetId, (c) => {
+                const newHp = clamp(c.currentHp + delta, 0, c.maxHp);
+                let result: Combatant = { ...c, currentHp: newHp };
+                if (newHp <= 0 && c.concentrating) {
+                  const { concentrating: _drop, ...rest } = result;
+                  void _drop;
+                  result = rest;
+                }
+                return result;
+              });
             }
             return {
               ...e,
@@ -955,12 +965,16 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
               void _drop;
               return { ...rest, initiative: null, conditions: [] };
             }),
-            combatants: e.combatants.map((c) => ({
-              ...c,
-              initiative: null,
-              currentHp: c.maxHp,
-              conditions: [],
-            })),
+            combatants: e.combatants.map((c) => {
+              const { concentrating: _drop, ...rest } = c;
+              void _drop;
+              return {
+                ...rest,
+                initiative: null,
+                currentHp: c.maxHp,
+                conditions: [],
+              };
+            }),
             initiative: { round: 1, activeIndex: null },
           })),
         }));
@@ -1113,6 +1127,21 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
               ),
             };
           }),
+        }));
+      },
+
+      toggleConcentration: (encounterId: string, combatantId: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) =>
+            updateCombatant(e, combatantId, (c) => {
+              if (c.concentrating) {
+                const { concentrating: _drop, ...rest } = c;
+                void _drop;
+                return rest;
+              }
+              return { ...c, concentrating: true };
+            })
+          ),
         }));
       },
 
