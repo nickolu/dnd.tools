@@ -71,6 +71,7 @@ type EncounterLibraryStore = {
   ) => void;
   addCombatant: (id: string, input: AddCombatantInput) => string[];
   removeCombatant: (id: string, combatantId: string) => void;
+  duplicateCombatant: (id: string, combatantId: string) => void;
   updateCombatantName: (id: string, combatantId: string, name: string) => void;
   adjustHp: (id: string, combatantId: string, delta: number) => void;
   setHp: (id: string, combatantId: string, currentHp: number) => void;
@@ -639,6 +640,25 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
             ...e,
             combatants: e.combatants.filter((c) => c.id !== combatantId),
           })),
+        }));
+      },
+
+      duplicateCombatant: (id: string, combatantId: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => {
+            const source = e.combatants.find((c) => c.id === combatantId);
+            if (!source) return e;
+            const { position: _drop, ...rest } = source;
+            void _drop;
+            const copy: Combatant = {
+              ...rest,
+              id: crypto.randomUUID(),
+              currentHp: source.maxHp,
+              initiative: null,
+              conditions: [],
+            };
+            return { ...e, combatants: [...e.combatants, copy] };
+          }),
         }));
       },
 

@@ -33,6 +33,7 @@ type Props = {
   onToggleCondition?: (condition: Condition) => void;
   onClearConditions?: () => void;
   monster?: Monster;
+  onDuplicate?: () => void;
 };
 
 export function InitiativeRow({
@@ -56,6 +57,7 @@ export function InitiativeRow({
   onToggleCondition,
   onClearConditions,
   monster,
+  onDuplicate,
 }: Props) {
   const [statBlockExpanded, setStatBlockExpanded] = useState(false);
   const initiativeValue = row.initiative === null ? "" : String(row.initiative);
@@ -212,6 +214,17 @@ export function InitiativeRow({
         >
           Roll
         </button>
+        {onDuplicate && (
+          <button
+            type="button"
+            className="admin-button-secondary typography-body-sm px-2 py-1"
+            onClick={onDuplicate}
+            aria-label={`Duplicate ${row.name}`}
+            title="Add another"
+          >
+            +1
+          </button>
+        )}
         {editableMod && onSetMod ? (
           <label className="ml-auto flex items-center gap-1">
             <span className="typography-kicker text-muted">Mod</span>
