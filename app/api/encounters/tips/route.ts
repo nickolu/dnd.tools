@@ -48,6 +48,7 @@ const requestSchema = z.object({
     .min(1)
     .max(MAX_COMBATANTS),
   ruleset: z.enum(["5e-2014", "5e-2024"]).default("5e-2024"),
+  context: z.string().max(500).optional(),
 });
 
 const tipsResponseSchema = z.object({
@@ -78,7 +79,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const userPrompt = buildEncounterTipsPrompt(parsed.data);
+    const { context: rawContext, ...rest } = parsed.data;
+    const tipsPayload = rawContext
+      ? { ...rest, context: rawContext }
+      : { ...rest };
+    const userPrompt = buildEncounterTipsPrompt(tipsPayload);
     const raw = await requestNarrativeFromOpenAi({
       apiKey: OPENAI_API_KEY,
       model: OPENAI_MODEL,

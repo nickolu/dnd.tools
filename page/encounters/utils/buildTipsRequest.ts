@@ -48,7 +48,8 @@ function selectKeyTraits(monster: Monster): string[] {
 export function buildTipsRequest(
   encounter: Encounter,
   monstersById: Map<string, Monster>,
-  difficulty: DifficultyBucket
+  difficulty: DifficultyBucket,
+  context?: string
 ): TipsRequestPayload {
   const collapsed = new Map<string, { monster: Monster; count: number }>();
   for (const c of encounter.combatants) {
@@ -83,5 +84,6 @@ export function buildTipsRequest(
     difficulty,
     combatants,
     ruleset: "5e-2024",
+    ...(context ? { context } : {}),
   };
 }

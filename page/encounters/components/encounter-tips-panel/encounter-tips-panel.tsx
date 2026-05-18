@@ -59,6 +59,7 @@ export function EncounterTipsPanel({ encounterId }: Props) {
   );
 
   const [confirmingLarge, setConfirmingLarge] = useState(false);
+  const [context, setContext] = useState("");
 
   if (!encounter) return null;
   const loading = ephemeral?.loading ?? false;
@@ -74,7 +75,8 @@ export function EncounterTipsPanel({ encounterId }: Props) {
     const request = buildTipsRequest(
       encounter,
       monstersById,
-      balance.classification.bucket
+      balance.classification.bucket,
+      context.trim() || undefined
     );
     await generateTips(encounterId, request);
   }
@@ -176,6 +178,14 @@ export function EncounterTipsPanel({ encounterId }: Props) {
             Get terrain ideas, hazards, mechanics, and tactical notes tuned to
             this encounter&apos;s monsters.
           </p>
+          <textarea
+            className="input-field typography-body-sm w-full px-2 py-1"
+            placeholder="Optional: describe the scenario (e.g., 'haunted forest ambush', 'boss fight in a throne room')"
+            value={context}
+            onChange={(e) => setContext(e.target.value)}
+            maxLength={500}
+            rows={2}
+          />
           <button
             type="button"
             className="admin-button typography-body-sm w-fit px-3 py-1"
