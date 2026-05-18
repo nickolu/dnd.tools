@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useSyncExternalStore } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { useSpells } from "@/lib/query/hooks/useSpells";
@@ -131,6 +131,19 @@ export function SpellAggregatePanel({ encounterId }: Props) {
     return groupByLevel(aggregate.spells);
   }, [aggregate.spells, grouping]);
 
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
+    new Set()
+  );
+
+  function toggleGroup(key: string) {
+    setCollapsedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }
+
   if (!encounter) return null;
 
   const isCatalogLoading = monstersLoading || spellsLoading;
@@ -176,6 +189,26 @@ export function SpellAggregatePanel({ encounterId }: Props) {
               Table
             </button>
           </div>
+          {viewMode === "list" && groups.length > 0 && (
+            <div className="flex gap-1">
+              <button
+                type="button"
+                className="admin-button-secondary typography-body-sm px-2 py-1"
+                onClick={() =>
+                  setCollapsedGroups(new Set(groups.map((g) => g.key)))
+                }
+              >
+                Collapse all
+              </button>
+              <button
+                type="button"
+                className="admin-button-secondary typography-body-sm px-2 py-1"
+                onClick={() => setCollapsedGroups(new Set())}
+              >
+                Expand all
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -204,15 +237,31 @@ export function SpellAggregatePanel({ encounterId }: Props) {
       ) : (
         <div className="flex flex-col gap-3">
           {groups.map((group) => (
-            <div key={group.key} className="flex flex-col gap-1.5">
-              <span className="typography-kicker text-muted">
-                {group.label}
-              </span>
-              <ul className="flex flex-col gap-1.5">
-                {group.spells.map((entry) => (
-                  <SpellSummaryRow key={entry.spell.id} entry={entry} />
-                ))}
-              </ul>
+            <div key={group.key}>
+              <button
+                type="button"
+                className="typography-kicker text-muted flex w-full items-center gap-1 text-left"
+                onClick={() => toggleGroup(group.key)}
+                aria-expanded={!collapsedGroups.has(group.key)}
+              >
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "1em",
+                    textAlign: "center",
+                  }}
+                >
+                  {collapsedGroups.has(group.key) ? "▸" : "▾"}
+                </span>
+                {group.label} ({group.spells.length})
+              </button>
+              {!collapsedGroups.has(group.key) && (
+                <ul className="flex flex-col gap-1.5">
+                  {group.spells.map((entry) => (
+                    <SpellSummaryRow key={entry.spell.id} entry={entry} />
+                  ))}
+                </ul>
+              )}
             </div>
           ))}
         </div>
