@@ -57,6 +57,7 @@ export const partyMemberSchema = z.object({
   initiative: z.number().int().nullable(),
   position: positionSchema.optional(),
   notes: z.string().optional(),
+  conditions: z.array(conditionSchema).default([]),
 });
 
 export const combatantSchema = z.object({
