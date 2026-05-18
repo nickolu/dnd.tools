@@ -801,6 +801,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
               ...c,
               initiative: null,
               currentHp: c.maxHp,
+              conditions: [],
             })),
             initiative: { round: 1, activeIndex: null },
           })),

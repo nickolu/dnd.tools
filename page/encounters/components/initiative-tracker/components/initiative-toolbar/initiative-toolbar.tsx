@@ -43,14 +43,23 @@ export function InitiativeToolbar({
         className="admin-button-secondary typography-body-sm px-2 py-1"
         onClick={onReset}
       >
-        Reset
+        Reset initiative
       </button>
       <button
         type="button"
         className="admin-button-secondary typography-body-sm px-2 py-1"
-        onClick={onEnd}
+        onClick={() => {
+          if (
+            window.confirm(
+              "Reset encounter? This will restore all HP, clear conditions, and reset initiative."
+            )
+          ) {
+            onEnd();
+          }
+        }}
+        style={{ color: "var(--color-danger)" }}
       >
-        End encounter
+        Reset encounter
       </button>
     </div>
   );
