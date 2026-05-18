@@ -134,6 +134,7 @@ function MonstersPageContent() {
     refetch,
   } = useMonsters();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isRetrying, setIsRetrying] = useState(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null);
   const isAdminMode = searchParams.get("admin") === "true";
 
@@ -525,12 +526,18 @@ function MonstersPageContent() {
             </p>
             <button
               className="admin-button-secondary typography-body-sm px-3 py-1"
-              onClick={() => {
-                void refetch();
+              disabled={isRetrying}
+              onClick={async () => {
+                setIsRetrying(true);
+                try {
+                  await refetch();
+                } finally {
+                  setIsRetrying(false);
+                }
               }}
               type="button"
             >
-              Retry
+              {isRetrying ? "Retrying…" : "Retry"}
             </button>
           </div>
         ) : null}
