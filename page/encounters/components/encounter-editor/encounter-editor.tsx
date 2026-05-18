@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { selectEncounterById } from "@/lib/store/encounterSelectors";
@@ -13,6 +13,8 @@ import { useEncounterBalance } from "@/page/encounters/hooks/useEncounterBalance
 import { BalanceSummary } from "../balance-summary";
 import { CombatantList } from "../combatant-list";
 import { EncounterEditorSidebar } from "../encounter-editor-sidebar";
+import { EncounterMap } from "../encounter-map";
+import { InitiativeTracker } from "../initiative-tracker";
 import { MonsterAddPanel } from "../monster-add-panel";
 import { PartyRoster } from "../party-roster";
 import { RulesetToggle } from "../ruleset-toggle";
@@ -51,6 +53,16 @@ export function EncounterEditor({ encounterId }: Props) {
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const [setupOpen, setSetupOpen] = useState(true);
+  const [mapFocused, setMapFocused] = useState(false);
+
+  useEffect(() => {
+    if (!mapFocused) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setMapFocused(false);
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [mapFocused]);
 
   // Hook must run unconditionally — fall back to an empty shell when missing.
   const balance = useEncounterBalance(encounter ?? EMPTY_ENCOUNTER);
@@ -156,6 +168,13 @@ export function EncounterEditor({ encounterId }: Props) {
           <button
             type="button"
             className="admin-button-secondary typography-body-sm px-3 py-1"
+            onClick={() => setMapFocused(true)}
+          >
+            Focus map
+          </button>
+          <button
+            type="button"
+            className="admin-button-secondary typography-body-sm px-3 py-1"
             onClick={() => {
               const newId = duplicateEncounter(encounter.id);
               if (newId) router.push(`/encounters/${newId}`);
@@ -225,6 +244,62 @@ export function EncounterEditor({ encounterId }: Props) {
           <EncounterEditorSidebar encounterId={encounter.id} />
         </div>
       </div>
+
+      {/* Full-screen map overlay */}
+      {mapFocused && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 100,
+            background: "var(--color-canvas)",
+            display: "grid",
+            gridTemplateColumns: "1fr 320px",
+            gap: "1rem",
+            padding: "1rem",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5rem",
+              overflow: "auto",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "0.5rem",
+              }}
+            >
+              <span className="typography-h2">{encounter.name} — Map</span>
+              <button
+                type="button"
+                className="admin-button-secondary typography-body-sm px-3 py-1"
+                onClick={() => setMapFocused(false)}
+              >
+                Exit map
+              </button>
+            </div>
+            <div style={{ flex: 1, minHeight: 0 }}>
+              <EncounterMap encounterId={encounter.id} />
+            </div>
+          </div>
+          <div
+            style={{
+              overflow: "auto",
+              borderLeft: "1px solid var(--color-border-subtle)",
+              paddingLeft: "1rem",
+            }}
+          >
+            <InitiativeTracker encounterId={encounter.id} />
+          </div>
+        </div>
+      )}
     </main>
   );
 }
