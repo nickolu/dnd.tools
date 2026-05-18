@@ -7,6 +7,7 @@ import { Spectral } from "next/font/google";
 import { Providers } from "@/app/providers";
 import { GlobalNav } from "@/components/global-nav";
 import { RouteTransitionProvider } from "@/components/route-transition";
+import { UndoDeleteToast } from "@/components/undo-delete-toast";
 
 /**
  * Font variable contract:
@@ -51,6 +52,7 @@ export default function RootLayout({
               <GlobalNav />
               {children}
             </div>
+            <UndoDeleteToast />
           </RouteTransitionProvider>
         </Providers>
       </body>

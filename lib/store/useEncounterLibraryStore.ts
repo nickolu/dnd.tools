@@ -75,10 +75,17 @@ type EncounterLibraryStore = {
   // Ephemeral undo/redo stacks per encounter (not persisted to IDB)
   undoStacks: Record<string, Encounter[]>;
   redoStacks: Record<string, Encounter[]>;
+  // Ephemeral soft-delete state (not persisted to IDB)
+  pendingDelete: {
+    encounter: Encounter;
+    timer: ReturnType<typeof setTimeout>;
+  } | null;
   // Library
   createEncounter: (name?: string) => string;
   setSavedParty: (party: SavedPartyMember[]) => void;
   deleteEncounter: (id: string) => void;
+  undoDelete: () => void;
+  confirmDelete: () => void;
   renameEncounter: (id: string, name: string) => void;
   duplicateEncounter: (id: string) => string;
   // Templates
@@ -527,6 +534,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
       tipsEphemeral: {},
       undoStacks: {},
       redoStacks: {},
+      pendingDelete: null,
 
       createEncounter: (name?: string): string => {
         if (name !== undefined && name.trim() === "") {
@@ -565,9 +573,35 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
       },
 
       deleteEncounter: (id: string): void => {
-        set((state) => ({
-          encounters: state.encounters.filter((e) => e.id !== id),
+        const state = get();
+        const encounter = state.encounters.find((e) => e.id === id);
+        if (!encounter) return;
+        // If there's already a pending delete, confirm it first
+        if (state.pendingDelete) {
+          clearTimeout(state.pendingDelete.timer);
+        }
+        const timer = setTimeout(() => {
+          get().confirmDelete();
+        }, 10000);
+        set((s) => ({
+          encounters: s.encounters.filter((e) => e.id !== id),
+          pendingDelete: { encounter, timer },
         }));
+      },
+
+      undoDelete: (): void => {
+        const state = get();
+        if (!state.pendingDelete) return;
+        clearTimeout(state.pendingDelete.timer);
+        const { encounter } = state.pendingDelete;
+        set((s) => ({
+          encounters: [...s.encounters, encounter],
+          pendingDelete: null,
+        }));
+      },
+
+      confirmDelete: (): void => {
+        set({ pendingDelete: null });
       },
 
       renameEncounter: (id: string, name: string): void => {
@@ -1424,6 +1458,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         encounters: state.encounters,
         savedParty: state.savedParty,
         templates: state.templates,
+        // pendingDelete is intentionally excluded — it holds a timer and must not be persisted
       }),
       storage: createJSONStorage(() => persistenceStorage),
       version: 6,
