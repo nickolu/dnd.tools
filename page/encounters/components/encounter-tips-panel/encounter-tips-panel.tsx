@@ -132,6 +132,11 @@ export function EncounterTipsPanel({ encounterId }: Props) {
             items={tips.mechanicSuggestions}
           />
           <TipsSection title="Tactical notes" paragraph={tips.tacticalNotes} />
+          <TipsSection title="Puzzles" items={tips.puzzles} />
+          <TipsSection
+            title="Roleplaying hooks"
+            items={tips.roleplayingHooks}
+          />
           <div className="flex flex-wrap gap-2">
             <button
               type="button"

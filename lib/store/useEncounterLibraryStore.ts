@@ -276,6 +276,8 @@ function readTips(v: unknown): Encounter["tips"] {
     environmentalHazards: arrOfStrings(v.environmentalHazards),
     mechanicSuggestions: arrOfStrings(v.mechanicSuggestions),
     tacticalNotes: readString(v.tacticalNotes, ""),
+    puzzles: arrOfStrings(v.puzzles),
+    roleplayingHooks: arrOfStrings(v.roleplayingHooks),
   };
 }
 
