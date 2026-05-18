@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { KeyboardShortcutsHelp } from "@/components/keyboard-shortcuts-help";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { selectEncounterById } from "@/lib/store/encounterSelectors";
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
@@ -418,6 +419,7 @@ export function EncounterEditor({ encounterId }: Props) {
           </div>
         </div>
       )}
+      <KeyboardShortcutsHelp />
     </main>
   );
 }
