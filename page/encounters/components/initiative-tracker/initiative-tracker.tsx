@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { selectEncounterById } from "@/lib/store/encounterSelectors";
@@ -73,6 +73,28 @@ export function InitiativeTracker({ encounterId }: Props) {
     );
     return sortInitiative([...partyRows, ...combatantRows]);
   }, [encounter, dexModByCombatantId]);
+
+  // Keyboard shortcuts for turn navigation
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      // Skip when focused on an input, textarea, or select
+      const target = e.target;
+      if (target instanceof HTMLElement) {
+        const tag = target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+      }
+
+      if (e.key === "ArrowRight" || e.key === " ") {
+        e.preventDefault();
+        nextTurn(encounterId);
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        previousTurn(encounterId);
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [encounterId, nextTurn, previousTurn]);
 
   if (!encounter) return null;
 
