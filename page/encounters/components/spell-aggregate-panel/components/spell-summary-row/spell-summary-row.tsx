@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import type { AggregatedSpell } from "@/page/encounters/utils/aggregateSpells";
 import {
   formatSpellComponents,
@@ -34,7 +36,15 @@ export function SpellSummaryRow({ entry }: Props) {
       style={{ borderColor: "var(--color-border-subtle)" }}
     >
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <span className="typography-body">{spell.name}</span>
+        <Link
+          href={`/spells/${spell.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="typography-body hover:underline"
+          style={{ textDecoration: "none" }}
+        >
+          {spell.name}
+        </Link>
         <span className="typography-body-sm text-muted">
           {formatSpellLevelAndSchool(spell)}
         </span>
