@@ -11,6 +11,7 @@ function pc(level: number, id = `pc-${level}`): PartyMember {
     level,
     initiativeMod: 0,
     initiative: null,
+    conditions: [],
   };
 }
 

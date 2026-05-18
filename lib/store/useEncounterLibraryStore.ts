@@ -283,6 +283,13 @@ function migratePartyMember(raw: unknown): PartyMember {
   const r = isPlainObject(raw) ? raw : {};
   const notesValue = typeof r.notes === "string" ? r.notes : undefined;
   const position = readPosition(r.position);
+  const conditionsSet = new Set<string>(CONDITIONS);
+  const conditions: Condition[] = Array.isArray(r.conditions)
+    ? r.conditions.filter(
+        (c: unknown): c is Condition =>
+          typeof c === "string" && conditionsSet.has(c)
+      )
+    : [];
   const member: PartyMember = {
     id: readString(r.id, crypto.randomUUID()),
     kind: "pc",
@@ -290,6 +297,7 @@ function migratePartyMember(raw: unknown): PartyMember {
     level: clamp(Math.trunc(readFiniteNumber(r.level, 1)), 1, 20),
     initiativeMod: Math.trunc(readFiniteNumber(r.initiativeMod, 0)),
     initiative: readNullableNumber(r.initiative),
+    conditions,
     ...(position !== null ? { position } : {}),
     ...(notesValue !== undefined ? { notes: notesValue } : {}),
   };
@@ -416,6 +424,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           level: p.level,
           initiativeMod: 0,
           initiative: null,
+          conditions: [],
         }));
         const newEncounter: Encounter = {
           id,
@@ -499,6 +508,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           level: bounded(input.level),
           initiativeMod: 0,
           initiative: null,
+          conditions: [],
         };
         set((state) => ({
           encounters: updateEncounter(state.encounters, id, (e) => ({
@@ -796,6 +806,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
             partyMembers: e.partyMembers.map((p) => ({
               ...p,
               initiative: null,
+              conditions: [],
             })),
             combatants: e.combatants.map((c) => ({
               ...c,
@@ -868,32 +879,57 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
 
       toggleCondition: (
         encounterId: string,
-        combatantId: string,
+        targetId: string,
         condition: Condition
       ): void => {
         set((state) => ({
-          encounters: updateEncounter(state.encounters, encounterId, (e) =>
-            updateCombatant(e, combatantId, (c) => {
-              const has = c.conditions.includes(condition);
-              return {
-                ...c,
-                conditions: has
-                  ? c.conditions.filter((cond) => cond !== condition)
-                  : [...c.conditions, condition],
-              };
-            })
-          ),
+          encounters: updateEncounter(state.encounters, encounterId, (e) => {
+            const isCombatant = e.combatants.some((c) => c.id === targetId);
+            if (isCombatant) {
+              return updateCombatant(e, targetId, (c) => {
+                const has = c.conditions.includes(condition);
+                return {
+                  ...c,
+                  conditions: has
+                    ? c.conditions.filter((cond) => cond !== condition)
+                    : [...c.conditions, condition],
+                };
+              });
+            }
+            return {
+              ...e,
+              partyMembers: e.partyMembers.map((p) => {
+                if (p.id !== targetId) return p;
+                const has = p.conditions.includes(condition);
+                return {
+                  ...p,
+                  conditions: has
+                    ? p.conditions.filter((cond) => cond !== condition)
+                    : [...p.conditions, condition],
+                };
+              }),
+            };
+          }),
         }));
       },
 
-      clearConditions: (encounterId: string, combatantId: string): void => {
+      clearConditions: (encounterId: string, targetId: string): void => {
         set((state) => ({
-          encounters: updateEncounter(state.encounters, encounterId, (e) =>
-            updateCombatant(e, combatantId, (c) => ({
-              ...c,
-              conditions: [],
-            }))
-          ),
+          encounters: updateEncounter(state.encounters, encounterId, (e) => {
+            const isCombatant = e.combatants.some((c) => c.id === targetId);
+            if (isCombatant) {
+              return updateCombatant(e, targetId, (c) => ({
+                ...c,
+                conditions: [],
+              }));
+            }
+            return {
+              ...e,
+              partyMembers: e.partyMembers.map((p) =>
+                p.id === targetId ? { ...p, conditions: [] } : p
+              ),
+            };
+          }),
         }));
       },
 

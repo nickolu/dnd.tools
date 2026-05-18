@@ -193,6 +193,11 @@ export function InitiativeTracker({ encounterId }: Props) {
                     setPartyMemberInitiativeMod(encounterId, row.id, mod)
                   }
                   onRoll={() => rollSingleParty(row.id)}
+                  conditions={pc?.conditions ?? []}
+                  onToggleCondition={(condition) =>
+                    toggleCondition(encounterId, row.id, condition)
+                  }
+                  onClearConditions={() => clearConditions(encounterId, row.id)}
                 />
               );
             }

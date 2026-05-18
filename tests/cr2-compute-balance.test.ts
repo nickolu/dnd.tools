@@ -16,6 +16,7 @@ function pc(level: number, id: string): PartyMember {
     level,
     initiativeMod: 0,
     initiative: null,
+    conditions: [],
   };
 }
 

@@ -180,6 +180,7 @@ describe("buildTipsRequest", () => {
           level: 3,
           initiativeMod: 0,
           initiative: null,
+          conditions: [],
         },
         {
           id: "p2",
@@ -188,6 +189,7 @@ describe("buildTipsRequest", () => {
           level: 5,
           initiativeMod: 0,
           initiative: null,
+          conditions: [],
         },
       ],
     });
