@@ -1,7 +1,7 @@
 "use client";
 
 import type { KeyboardEvent } from "react";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type {
   Combatant,
@@ -19,6 +19,7 @@ import { MapToolbar } from "./components/map-toolbar";
 import { Token } from "./components/token";
 import { TokenTray } from "./components/token-tray";
 import { MAP_DEFAULTS } from "./constants";
+import { useMapViewport } from "./hooks/useMapViewport";
 import { useTokenDrag } from "./hooks/useTokenDrag";
 import { useMapPlacementStore } from "./stores/useMapPlacementStore";
 import type { TokenRef, TokenViewModel } from "./types";
@@ -88,9 +89,43 @@ export function EncounterMap({ encounterId }: Props) {
   const setPendingPlace = useMapPlacementStore((s) => s.setPendingPlace);
 
   const svgRef = useRef<SVGSVGElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [selected, setSelected] = useState<TokenRef | null>(null);
+  // Track whether the last pointer-down started a meaningful pan (to suppress click)
+  const wasPanningRef = useRef(false);
 
   const map = encounter?.map ?? MAP_DEFAULTS;
+
+  const totalWidth = map.cols * map.cellSize;
+  const totalHeight = map.rows * map.cellSize;
+
+  const {
+    zoom,
+    isPanning,
+    viewBox,
+    handleWheel,
+    handlePanStart,
+    handlePanMove,
+    handlePanEnd,
+    zoomIn,
+    zoomOut,
+    resetView,
+  } = useMapViewport({
+    totalWidth,
+    totalHeight,
+    svgRef,
+    containerRef,
+    disabled: !!pendingPlace,
+  });
+
+  // Attach wheel handler with non-passive option so we can preventDefault
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const onWheel = (e: WheelEvent) => handleWheel(e);
+    container.addEventListener("wheel", onWheel, { passive: false });
+    return () => container.removeEventListener("wheel", onWheel);
+  }, [handleWheel]);
 
   const handleCommit = useCallback(
     (kind: TokenKind, id: string, pos: Position | null) => {
@@ -120,6 +155,11 @@ export function EncounterMap({ encounterId }: Props) {
   if (!encounter) return null;
 
   function handleSvgClick(e: React.MouseEvent<SVGSVGElement>) {
+    // Suppress click if it ended a pan drag
+    if (wasPanningRef.current) {
+      wasPanningRef.current = false;
+      return;
+    }
     if (!pendingPlace) {
       // Clicking empty space deselects.
       setSelected(null);
@@ -158,9 +198,6 @@ export function EncounterMap({ encounterId }: Props) {
     }
   }
 
-  const width = map.cols * map.cellSize;
-  const height = map.rows * map.cellSize;
-
   return (
     <section className="surface-card flex flex-col gap-3 p-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -190,6 +227,10 @@ export function EncounterMap({ encounterId }: Props) {
             map={encounter.map}
             onChange={(partial) => setMap(encounterId, partial)}
             onClearPositions={() => clearMap(encounterId)}
+            zoom={zoom}
+            onZoomIn={zoomIn}
+            onZoomOut={zoomOut}
+            onResetView={resetView}
           />
           <TokenTray
             tokens={tray}
@@ -199,22 +240,52 @@ export function EncounterMap({ encounterId }: Props) {
             }
           />
           <div
-            className="flex max-h-[600px] overflow-auto rounded-md"
-            style={{ border: "1px solid var(--color-border-subtle)" }}
+            ref={containerRef}
+            className="min-h-[300px] overflow-hidden rounded-md"
+            style={{
+              border: "1px solid var(--color-border-subtle)",
+              height: "600px",
+            }}
             tabIndex={0}
             onKeyDown={handleKeyDown}
           >
             <svg
               ref={svgRef}
-              viewBox={`0 0 ${width} ${height}`}
-              width={width}
-              height={height}
+              viewBox={viewBox}
+              width="100%"
+              height="100%"
               role="application"
               aria-label="Encounter battle map"
               onClick={handleSvgClick}
+              onPointerDown={(e) => {
+                // Only pan when not placing tokens and the target is the SVG/grid background
+                if (pendingPlace) return;
+                if (!(e.target instanceof Element)) return;
+                const target = e.target;
+                const isBackground =
+                  target === svgRef.current ||
+                  target.tagName === "rect" ||
+                  target.tagName === "line";
+                if (!isBackground) return;
+                wasPanningRef.current = false;
+                handlePanStart(e);
+              }}
+              onPointerMove={(e) => {
+                if (isPanning) {
+                  wasPanningRef.current = true;
+                  handlePanMove(e);
+                }
+              }}
+              onPointerUp={(e) => {
+                handlePanEnd(e);
+              }}
               style={{
                 display: "block",
-                cursor: pendingPlace ? "crosshair" : "default",
+                cursor: pendingPlace
+                  ? "crosshair"
+                  : isPanning
+                    ? "grabbing"
+                    : "grab",
               }}
             >
               <MapGrid
@@ -267,7 +338,8 @@ export function EncounterMap({ encounterId }: Props) {
           </div>
           <p className="typography-body-sm text-muted">
             Drag tokens to move. Click a tray chip then a cell to place. Select
-            a token and press Delete to remove from the map.
+            a token and press Delete to remove from the map. Scroll to zoom,
+            drag the background to pan.
           </p>
         </>
       ) : (

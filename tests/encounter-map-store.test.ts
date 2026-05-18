@@ -249,7 +249,7 @@ describe("migrateEncounterLibrary v2 → v3", () => {
     );
     expect(result.encounters[0]!.map).toEqual({
       grid: "square",
-      cols: 60,
+      cols: 100,
       rows: 4,
       cellSize: 96,
     });

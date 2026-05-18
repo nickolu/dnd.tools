@@ -333,8 +333,8 @@ function migrateCombatant(raw: unknown): Combatant {
 function readMap(v: unknown): EncounterMap | null {
   if (!isPlainObject(v)) return null;
   if (v.grid !== "square") return null;
-  const cols = clamp(Math.trunc(readFiniteNumber(v.cols, 20)), 4, 60);
-  const rows = clamp(Math.trunc(readFiniteNumber(v.rows, 15)), 4, 60);
+  const cols = clamp(Math.trunc(readFiniteNumber(v.cols, 20)), 4, 100);
+  const rows = clamp(Math.trunc(readFiniteNumber(v.rows, 15)), 4, 100);
   const cellSize = clamp(Math.trunc(readFiniteNumber(v.cellSize, 48)), 24, 96);
   const backgroundUrl =
     typeof v.backgroundUrl === "string" ? v.backgroundUrl : undefined;

@@ -10,6 +10,6 @@ export const MAP_DEFAULTS: EncounterMap = {
 export const CELL_SIZE_OPTIONS: readonly number[] = [32, 48, 64];
 
 export const MIN_COLS = 4;
-export const MAX_COLS = 60;
+export const MAX_COLS = 100;
 export const MIN_ROWS = 4;
-export const MAX_ROWS = 60;
+export const MAX_ROWS = 100;
