@@ -41,6 +41,8 @@ export const encounterTipsSchema = z.object({
   environmentalHazards: z.array(z.string()),
   mechanicSuggestions: z.array(z.string()),
   tacticalNotes: z.string(),
+  puzzles: z.array(z.string()),
+  roleplayingHooks: z.array(z.string()),
 });
 
 export const initiativeStateSchema = z.object({

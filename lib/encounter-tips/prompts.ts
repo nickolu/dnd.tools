@@ -7,7 +7,9 @@ Return ONLY valid JSON with this exact shape, no additional commentary:
   "terrainIdeas": [string, string, ...],          // 2-5 short, evocative terrain prompts (e.g. "Slick algae-covered stones reduce movement to half speed")
   "environmentalHazards": [string, string, ...],  // 2-5 hazards keyed to the monsters (e.g. "Collapsing scaffolding triggered by 10+ damage to a wooden support")
   "mechanicSuggestions": [string, string, ...],   // 2-5 fight-specific mechanics that synergize with the enemy abilities
-  "tacticalNotes": string                          // 2-4 short paragraphs of overall tactical guidance for running the encounter
+  "tacticalNotes": string,                         // 2-4 short paragraphs of overall tactical guidance for running the encounter
+  "puzzles": [string, string, ...],               // 2-4 environmental puzzles, skill challenges, or riddles the players can interact with (e.g. "A locked portcullis can be raised by solving a weight-balance puzzle using nearby crates")
+  "roleplayingHooks": [string, string, ...]       // 2-4 roleplaying opportunities: NPC motivations, dialogue openings, or dramatic moments tied to the monsters (e.g. "The bandit captain will parley if reduced below half HP, revealing the true employer")
 }
 
 Be specific. Reference the monsters by name when relevant. Keep individual list entries to one or two sentences. Avoid generic advice ("be creative", "vary terrain").`;
