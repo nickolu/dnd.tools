@@ -14,3 +14,7 @@ export const GROUPING_STORAGE_KEY =
   "dnd-tools-encounter-spell-aggregate-grouping";
 
 export const DEFAULT_GROUPING: SpellAggregateGrouping = "level";
+
+export type SpellViewMode = "list" | "table";
+export const VIEW_MODE_STORAGE_KEY = "dnd-tools-encounter-spell-aggregate-view";
+export const DEFAULT_VIEW_MODE: SpellViewMode = "list";
