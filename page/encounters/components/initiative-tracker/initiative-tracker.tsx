@@ -37,6 +37,8 @@ export function InitiativeTracker({ encounterId }: Props) {
   const rollPartyMemberInitiatives = useEncounterLibraryStore(
     (s) => s.rollPartyMemberInitiatives
   );
+  const adjustHp = useEncounterLibraryStore((s) => s.adjustHp);
+  const setHp = useEncounterLibraryStore((s) => s.setHp);
   const nextTurn = useEncounterLibraryStore((s) => s.nextTurn);
   const previousTurn = useEncounterLibraryStore((s) => s.previousTurn);
   const resetInitiative = useEncounterLibraryStore((s) => s.resetInitiative);
@@ -129,7 +131,14 @@ export function InitiativeTracker({ encounterId }: Props) {
             }
             const combatant = encounter.combatants.find((c) => c.id === row.id);
             const hpProps = combatant
-              ? { hpDisplay: `${combatant.currentHp}/${combatant.maxHp}` }
+              ? {
+                  currentHp: combatant.currentHp,
+                  maxHp: combatant.maxHp,
+                  monsterId: combatant.monsterId,
+                  onAdjustHp: (delta: number) =>
+                    adjustHp(encounterId, row.id, delta),
+                  onSetHp: (value: number) => setHp(encounterId, row.id, value),
+                }
               : {};
             return (
               <InitiativeRow

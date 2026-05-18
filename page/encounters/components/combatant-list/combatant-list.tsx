@@ -97,6 +97,7 @@ function SideSection({
                       c.nameOverride ??
                       `${c.monsterName}${autoSuffix(idx, g.combatants.length)}`
                     }
+                    monsterId={c.monsterId}
                   />
                 ))}
               </ul>

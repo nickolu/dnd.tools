@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import type { Combatant } from "@/lib/domain/encounter/encounter.schema";
@@ -11,9 +12,15 @@ type Props = {
   encounterId: string;
   combatant: Combatant;
   displayName: string;
+  monsterId?: string;
 };
 
-export function CombatantRow({ encounterId, combatant, displayName }: Props) {
+export function CombatantRow({
+  encounterId,
+  combatant,
+  displayName,
+  monsterId,
+}: Props) {
   const adjustHp = useEncounterLibraryStore((s) => s.adjustHp);
   const setHp = useEncounterLibraryStore((s) => s.setHp);
   const removeCombatant = useEncounterLibraryStore((s) => s.removeCombatant);
@@ -129,16 +136,44 @@ export function CombatantRow({ encounterId, combatant, displayName }: Props) {
             aria-label="Edit combatant name"
           />
         ) : (
-          <button
-            type="button"
-            className="typography-body-sm flex-1 text-left hover:underline"
-            onClick={() => {
-              setDraft(displayName);
-              setEditingName(true);
-            }}
-          >
-            {displayName}
-          </button>
+          <div className="flex flex-1 items-center gap-1">
+            <button
+              type="button"
+              className="typography-body-sm text-left hover:underline"
+              onClick={() => {
+                setDraft(displayName);
+                setEditingName(true);
+              }}
+            >
+              {displayName}
+            </button>
+            {monsterId && (
+              <Link
+                href={`/monsters/${monsterId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View ${displayName} monster details`}
+                style={{ color: "var(--color-text-muted)", lineHeight: 0 }}
+              >
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M7 1h4v4M11 1L5.5 6.5M4 2H2a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V8"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
+            )}
+          </div>
         )}
         <button
           ref={removeButtonRef}
