@@ -22,10 +22,40 @@ export function PartyRoster({ encounterId, partyMembers, allies }: Props) {
   const updatePartyMember = useEncounterLibraryStore(
     (s) => s.updatePartyMember
   );
+  const setSavedParty = useEncounterLibraryStore((s) => s.setSavedParty);
+  const savedParty = useEncounterLibraryStore((s) => s.savedParty);
 
   return (
     <section className="surface-card flex flex-col gap-3 p-4">
-      <h2 className="typography-h2">Party</h2>
+      <div className="flex flex-wrap items-center gap-2">
+        <h2 className="typography-h2 flex-1">Party</h2>
+        {partyMembers.length > 0 && (
+          <button
+            type="button"
+            className="admin-button-secondary typography-body-sm px-2 py-1"
+            onClick={() => {
+              setSavedParty(
+                partyMembers.map((p) => ({ name: p.name, level: p.level }))
+              );
+            }}
+          >
+            Save as default
+          </button>
+        )}
+        {savedParty.length > 0 && partyMembers.length === 0 && (
+          <button
+            type="button"
+            className="admin-button-secondary typography-body-sm px-2 py-1"
+            onClick={() => {
+              for (const p of savedParty) {
+                addPC(encounterId, { name: p.name, level: p.level });
+              }
+            }}
+          >
+            Load default party ({savedParty.length})
+          </button>
+        )}
+      </div>
       <AddPcForm onAdd={(name, level) => addPC(encounterId, { name, level })} />
       {partyMembers.length === 0 ? (
         <p className="typography-body-sm text-muted">

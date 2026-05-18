@@ -1,6 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
-import { migrateEncounterLibrary } from "@/lib/store/useEncounterLibraryStore";
+import {
+  migrateEncounterLibrary,
+  useEncounterLibraryStore,
+} from "@/lib/store/useEncounterLibraryStore";
 
 // Frozen v1-shape snapshot. v1 records lack Slice 2 fields
 // (initiative, tips, tipsGeneratedAt, initiativeMod) — migration should
@@ -87,9 +90,18 @@ describe("migrateEncounterLibrary (v1 → v2)", () => {
   });
 
   it("treats non-object persisted state as empty", () => {
-    expect(migrateEncounterLibrary(null, 1)).toEqual({ encounters: [] });
-    expect(migrateEncounterLibrary(undefined, 1)).toEqual({ encounters: [] });
-    expect(migrateEncounterLibrary("garbage", 1)).toEqual({ encounters: [] });
+    expect(migrateEncounterLibrary(null, 1)).toEqual({
+      encounters: [],
+      savedParty: [],
+    });
+    expect(migrateEncounterLibrary(undefined, 1)).toEqual({
+      encounters: [],
+      savedParty: [],
+    });
+    expect(migrateEncounterLibrary("garbage", 1)).toEqual({
+      encounters: [],
+      savedParty: [],
+    });
   });
 
   it("preserves an already-v2 encounter's initiative pointer", () => {
@@ -164,5 +176,67 @@ describe("migrateEncounterLibrary (v1 → v2)", () => {
     const c = migrated.encounters[0]!.combatants[0]!;
     expect(c.nameOverride).toBe("Boss");
     expect(c.position).toEqual({ x: 3, y: 4 });
+  });
+});
+
+describe("savedParty persistence (v4 → v5)", () => {
+  it("migration from v4 (no savedParty) produces savedParty: []", () => {
+    const migrated = migrateEncounterLibrary({ encounters: [] }, 4);
+    expect(migrated.savedParty).toEqual([]);
+  });
+
+  it("migration preserves valid savedParty entries and coerces bad ones", () => {
+    const migrated = migrateEncounterLibrary(
+      {
+        encounters: [],
+        savedParty: [
+          { name: "Alice", level: 5 },
+          { name: "Bob", level: 99 }, // level clamped to 20
+          { name: 42, level: 3 }, // name coerced to fallback
+          "not an object", // filtered out
+        ],
+      },
+      4
+    );
+    expect(migrated.savedParty).toEqual([
+      { name: "Alice", level: 5 },
+      { name: "Bob", level: 20 },
+      { name: "PC", level: 3 },
+    ]);
+  });
+});
+
+describe("savedParty store integration", () => {
+  beforeEach(() => {
+    useEncounterLibraryStore.setState({ encounters: [], savedParty: [] });
+  });
+
+  it("setSavedParty updates savedParty in the store", () => {
+    useEncounterLibraryStore
+      .getState()
+      .setSavedParty([{ name: "Alice", level: 5 }]);
+    expect(useEncounterLibraryStore.getState().savedParty).toEqual([
+      { name: "Alice", level: 5 },
+    ]);
+  });
+
+  it("createEncounter auto-populates party members from savedParty", () => {
+    useEncounterLibraryStore
+      .getState()
+      .setSavedParty([{ name: "Alice", level: 5 }]);
+    useEncounterLibraryStore.getState().createEncounter();
+    const encounter = useEncounterLibraryStore.getState().encounters[0]!;
+    expect(encounter.partyMembers).toHaveLength(1);
+    expect(encounter.partyMembers[0]!.name).toBe("Alice");
+    expect(encounter.partyMembers[0]!.level).toBe(5);
+    expect(encounter.partyMembers[0]!.kind).toBe("pc");
+    expect(encounter.partyMembers[0]!.initiativeMod).toBe(0);
+    expect(encounter.partyMembers[0]!.initiative).toBeNull();
+  });
+
+  it("createEncounter with empty savedParty creates encounter with no party members", () => {
+    useEncounterLibraryStore.getState().createEncounter();
+    const encounter = useEncounterLibraryStore.getState().encounters[0]!;
+    expect(encounter.partyMembers).toEqual([]);
   });
 });
