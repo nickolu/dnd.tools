@@ -178,7 +178,7 @@ export function CombatantRow({
         <button
           ref={removeButtonRef}
           type="button"
-          className="admin-button-secondary typography-body-sm px-2 py-1"
+          className="admin-button-danger typography-body-sm px-2 py-1"
           onClick={handleRemoveClick}
           onKeyDown={(e) => {
             if (e.key === "Enter" && confirmRemove) {
@@ -190,14 +190,6 @@ export function CombatantRow({
             confirmRemove
               ? `Confirm remove ${displayName}`
               : `Remove ${displayName}`
-          }
-          style={
-            confirmRemove
-              ? {
-                  color: "var(--color-danger)",
-                  borderColor: "rgba(178, 84, 80, 0.5)",
-                }
-              : undefined
           }
         >
           {confirmRemove ? "Confirm?" : "Remove"}

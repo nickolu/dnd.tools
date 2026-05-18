@@ -114,7 +114,7 @@ export function MapToolbar({
       </div>
       <button
         type="button"
-        className="admin-button-secondary typography-body-sm px-3 py-1"
+        className="admin-button-danger typography-body-sm px-3 py-1"
         onClick={onClearPositions}
       >
         Clear placements

@@ -205,7 +205,7 @@ export function EncounterMap({ encounterId }: Props) {
         {encounter.map ? (
           <button
             type="button"
-            className="admin-button-secondary typography-body-sm px-2 py-1"
+            className="admin-button-danger typography-body-sm px-2 py-1"
             onClick={() => clearMap(encounterId)}
           >
             Reset map
