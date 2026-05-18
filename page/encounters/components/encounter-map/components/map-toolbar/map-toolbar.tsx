@@ -14,6 +14,10 @@ type Props = {
   map: EncounterMap;
   onChange: (partial: Partial<EncounterMap>) => void;
   onClearPositions: () => void;
+  zoom: number;
+  onZoomIn: () => void;
+  onZoomOut: () => void;
+  onResetView: () => void;
 };
 
 function clampInt(value: number, min: number, max: number): number {
@@ -21,7 +25,15 @@ function clampInt(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, Math.trunc(value)));
 }
 
-export function MapToolbar({ map, onChange, onClearPositions }: Props) {
+export function MapToolbar({
+  map,
+  onChange,
+  onClearPositions,
+  zoom,
+  onZoomIn,
+  onZoomOut,
+  onResetView,
+}: Props) {
   return (
     <div className="flex flex-wrap items-end gap-2">
       <label className="flex flex-col gap-1">
@@ -72,6 +84,34 @@ export function MapToolbar({ map, onChange, onClearPositions }: Props) {
           ))}
         </select>
       </label>
+      <div className="flex items-center gap-1">
+        <button
+          type="button"
+          className="admin-button-secondary typography-body-sm px-2 py-1"
+          onClick={onZoomOut}
+          aria-label="Zoom out"
+        >
+          −
+        </button>
+        <span className="typography-body-sm w-12 text-center">
+          {Math.round(zoom * 100)}%
+        </span>
+        <button
+          type="button"
+          className="admin-button-secondary typography-body-sm px-2 py-1"
+          onClick={onZoomIn}
+          aria-label="Zoom in"
+        >
+          +
+        </button>
+        <button
+          type="button"
+          className="admin-button-secondary typography-body-sm px-2 py-1"
+          onClick={onResetView}
+        >
+          Reset view
+        </button>
+      </div>
       <button
         type="button"
         className="admin-button-secondary typography-body-sm px-3 py-1"
