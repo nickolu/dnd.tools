@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
+import { SearchInput } from "@/components/search-input";
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
 import { useEncountersHasHydrated } from "@/lib/store/useEncountersHasHydrated";
 
@@ -29,6 +30,7 @@ export function EncounterList() {
   const confirmTemplateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
+  const [searchQuery, setSearchQuery] = useState("");
   const [confirmDeleteEncounterId, setConfirmDeleteEncounterId] = useState<
     string | null
   >(null);
@@ -85,6 +87,12 @@ export function EncounterList() {
 
   const sorted = [...encounters].sort((a, b) => b.updatedAt - a.updatedAt);
 
+  const filtered = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return sorted;
+    return sorted.filter((e) => e.name.toLowerCase().includes(q));
+  }, [sorted, searchQuery]);
+
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-4">
       <header className="flex flex-wrap items-center justify-between gap-2">
@@ -97,6 +105,14 @@ export function EncounterList() {
           + New encounter
         </button>
       </header>
+      {sorted.length > 3 ? (
+        <SearchInput
+          placeholder="Search encounters"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onClear={() => setSearchQuery("")}
+        />
+      ) : null}
       {templates.length > 0 && (
         <section className="surface-card flex flex-col gap-2 p-4">
           <span className="typography-kicker text-muted">From template</span>
@@ -157,9 +173,21 @@ export function EncounterList() {
             Encounters are saved in this browser only.
           </p>
         </div>
+      ) : filtered.length === 0 ? (
+        <div className="mt-4 flex flex-col items-start gap-2">
+          <p className="typography-body-sm text-muted">
+            No encounters match your search.
+          </p>
+          <button
+            className="admin-button-secondary typography-body-sm px-3 py-1"
+            onClick={() => setSearchQuery("")}
+          >
+            Clear search
+          </button>
+        </div>
       ) : (
         <ul className="grid gap-3 lg:grid-cols-2">
-          {sorted.map((e) => {
+          {filtered.map((e) => {
             const enemyCount = e.combatants.filter(
               (c) => c.side === "enemy"
             ).length;
