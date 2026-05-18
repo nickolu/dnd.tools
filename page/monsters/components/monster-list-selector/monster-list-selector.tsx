@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
 import { useSavedMonsterListStore } from "@/lib/store/useSavedMonsterListStore";
 import type { MonsterListSelectorProps } from "@/page/monsters/components/monster-list-selector/types";
 
@@ -10,6 +11,7 @@ export function MonsterListSelector({
   onListSelect,
 }: MonsterListSelectorProps) {
   const lists = useSavedMonsterListStore((s) => s.lists);
+  const encounters = useEncounterLibraryStore((s) => s.encounters);
   const createList = useSavedMonsterListStore((s) => s.createList);
   const deleteList = useSavedMonsterListStore((s) => s.deleteList);
   const renameList = useSavedMonsterListStore((s) => s.renameList);
@@ -25,6 +27,16 @@ export function MonsterListSelector({
   const firstItemRef = useRef<HTMLButtonElement>(null);
 
   const activeList = lists.find((l) => l.id === activeListId) ?? null;
+
+  const activeLabel = (() => {
+    if (activeList) return activeList.name;
+    if (activeListId?.startsWith("encounter:")) {
+      const encId = activeListId.slice("encounter:".length);
+      const enc = encounters.find((e) => e.id === encId);
+      if (enc) return enc.name;
+    }
+    return "All Monsters";
+  })();
 
   // Close on outside click
   useEffect(() => {
@@ -136,7 +148,7 @@ export function MonsterListSelector({
         ref={triggerRef}
         type="button"
       >
-        {activeList ? activeList.name : "All Monsters"}
+        {activeLabel}
       </button>
 
       {isOpen ? (
@@ -322,6 +334,70 @@ export function MonsterListSelector({
                 </div>
               );
             })}
+
+            {/* Encounters section */}
+            {encounters.length > 0 ? (
+              <>
+                <div
+                  className="my-2 border-t"
+                  style={{ borderColor: "var(--color-border-subtle)" }}
+                />
+                <span className="typography-kicker text-muted block px-3 py-1">
+                  From encounters
+                </span>
+                {encounters.map((enc) => {
+                  const monsterCount = new Set(
+                    enc.combatants
+                      .filter((c) => c.monsterId)
+                      .map((c) => c.monsterId)
+                  ).size;
+                  if (monsterCount === 0) return null;
+                  const encounterListId = `encounter:${enc.id}`;
+                  const isActive = encounterListId === activeListId;
+                  return (
+                    <div
+                      aria-selected={isActive}
+                      className="group flex items-center gap-1 rounded"
+                      key={enc.id}
+                      role="option"
+                      style={{
+                        background: isActive
+                          ? "rgba(212,160,65,0.1)"
+                          : "transparent",
+                      }}
+                    >
+                      {isActive ? (
+                        <span
+                          className="ml-2 h-2 w-2 shrink-0 rounded-full"
+                          style={{ background: "var(--color-accent)" }}
+                        />
+                      ) : (
+                        <span className="ml-2 h-2 w-2 shrink-0" />
+                      )}
+                      <button
+                        className="typography-body-sm min-w-0 flex-1 truncate py-2 text-left"
+                        onClick={() => handleSelectList(encounterListId)}
+                        style={{
+                          background: "transparent",
+                          color: isActive
+                            ? "var(--color-accent)"
+                            : "var(--color-text-primary)",
+                        }}
+                        type="button"
+                      >
+                        {enc.name}
+                      </button>
+                      <span
+                        className="typography-kicker shrink-0 px-1"
+                        style={{ color: "var(--color-text-muted)" }}
+                      >
+                        {monsterCount}
+                      </span>
+                    </div>
+                  );
+                })}
+              </>
+            ) : null}
 
             {/* Divider before new list */}
             <div
