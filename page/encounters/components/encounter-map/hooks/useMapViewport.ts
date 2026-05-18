@@ -44,14 +44,8 @@ export function useMapViewport({
   const maxPanX = totalWidth - viewW + margin;
   const maxPanY = totalHeight - viewH + margin;
 
-  const clampedX = Math.min(
-    maxPanX,
-    Math.max(minPanX, panOffset.x)
-  );
-  const clampedY = Math.min(
-    maxPanY,
-    Math.max(minPanY, panOffset.y)
-  );
+  const clampedX = Math.min(maxPanX, Math.max(minPanX, panOffset.x));
+  const clampedY = Math.min(maxPanY, Math.max(minPanY, panOffset.y));
 
   const viewBox = `${clampedX} ${clampedY} ${viewW} ${viewH}`;
 
