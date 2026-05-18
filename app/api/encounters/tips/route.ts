@@ -56,6 +56,8 @@ const tipsResponseSchema = z.object({
   environmentalHazards: z.array(z.string()).min(2).max(5),
   mechanicSuggestions: z.array(z.string()).min(2).max(5),
   tacticalNotes: z.string().min(1),
+  puzzles: z.array(z.string()).min(2).max(5),
+  roleplayingHooks: z.array(z.string()).min(2).max(5),
 });
 
 export async function POST(request: NextRequest) {

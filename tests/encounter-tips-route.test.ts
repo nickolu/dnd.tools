@@ -107,6 +107,8 @@ describe("POST /api/encounters/tips", () => {
       environmentalHazards: ["c", "d"],
       mechanicSuggestions: ["e", "f"],
       tacticalNotes: "Lead with the goblins flanking.",
+      puzzles: ["g", "h"],
+      roleplayingHooks: ["i", "j"],
     });
     const { POST } = await import("@/app/api/encounters/tips/route");
 
