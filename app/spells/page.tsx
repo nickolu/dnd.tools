@@ -529,9 +529,19 @@ function SpellsPageContent() {
           </p>
         ) : null}
         {!isLoading && !isError && !filteredSpells.length ? (
-          <p className="typography-body-sm text-muted mt-4">
-            No spells match your filters.
-          </p>
+          <div className="mt-4 flex flex-col items-start gap-2">
+            <p className="typography-body-sm text-muted">
+              No spells match your filters.
+            </p>
+            {hasActiveFilters ? (
+              <button
+                className="admin-button-secondary typography-body-sm px-3 py-1"
+                onClick={resetAllFilters}
+              >
+                Clear all filters
+              </button>
+            ) : null}
+          </div>
         ) : null}
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
