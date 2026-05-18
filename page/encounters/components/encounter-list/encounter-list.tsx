@@ -9,11 +9,16 @@ import { useEncountersHasHydrated } from "@/lib/store/useEncountersHasHydrated";
 
 export function EncounterList() {
   const encounters = useEncounterLibraryStore((s) => s.encounters);
+  const templates = useEncounterLibraryStore((s) => s.templates);
   const createEncounter = useEncounterLibraryStore((s) => s.createEncounter);
   const duplicateEncounter = useEncounterLibraryStore(
     (s) => s.duplicateEncounter
   );
   const deleteEncounter = useEncounterLibraryStore((s) => s.deleteEncounter);
+  const deleteTemplate = useEncounterLibraryStore((s) => s.deleteTemplate);
+  const createFromTemplate = useEncounterLibraryStore(
+    (s) => s.createFromTemplate
+  );
   const router = useRouter();
   const searchParams = useSearchParams();
   const hydrated = useEncountersHasHydrated();
@@ -59,6 +64,44 @@ export function EncounterList() {
           + New encounter
         </button>
       </header>
+      {templates.length > 0 && (
+        <section className="surface-card flex flex-col gap-2 p-4">
+          <span className="typography-kicker text-muted">From template</span>
+          <div className="flex flex-wrap gap-2">
+            {templates.map((t) => (
+              <div key={t.id} className="flex items-center gap-1">
+                <button
+                  type="button"
+                  className="filter-chip"
+                  onClick={() => {
+                    const id = createFromTemplate(t.id);
+                    if (id) router.push(`/encounters/${id}`);
+                  }}
+                >
+                  {t.name}
+                </button>
+                <button
+                  type="button"
+                  className="admin-button-secondary typography-body-sm px-1.5 py-0.5"
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        `Delete template "${t.name}"? This cannot be undone.`
+                      )
+                    ) {
+                      deleteTemplate(t.id);
+                    }
+                  }}
+                  title="Delete template"
+                  aria-label={`Delete template ${t.name}`}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
       {sorted.length === 0 ? (
         <div className="surface-card flex flex-col gap-2 p-4">
           <p className="typography-body">
