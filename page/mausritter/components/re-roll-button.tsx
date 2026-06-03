@@ -9,7 +9,7 @@ export function ReRollButton({
 }: ReRollButtonProps) {
   return (
     <button
-      className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded text-xs text-muted opacity-60 transition-opacity hover:opacity-100 hover:bg-white/10"
+      className="no-print inline-flex h-6 w-6 shrink-0 items-center justify-center rounded text-xs text-muted opacity-60 transition-opacity hover:opacity-100 hover:bg-white/10"
       onClick={onClick}
       title={label}
       type="button"

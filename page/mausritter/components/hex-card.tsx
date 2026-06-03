@@ -52,7 +52,7 @@ export function HexCard({ hex }: HexCardProps) {
         </div>
 
         <button
-          className="shrink-0 rounded-lg bg-amber-700/60 px-3 py-1.5 text-xs font-medium text-amber-100 transition-colors hover:bg-amber-700 disabled:opacity-40"
+          className="no-print shrink-0 rounded-lg bg-amber-700/60 px-3 py-1.5 text-xs font-medium text-amber-100 transition-colors hover:bg-amber-700 disabled:opacity-40"
           disabled={isLoadingLore}
           onClick={() => void store.generateHexLore(hex.id)}
           title={
@@ -110,7 +110,7 @@ export function HexCard({ hex }: HexCardProps) {
       )}
 
       {!hex.settlement && !hex.adventureSite && (
-        <div className="mt-2 flex gap-2">
+        <div className="no-print mt-2 flex gap-2">
           <button
             className="text-xs text-muted opacity-60 hover:opacity-100 transition-opacity"
             onClick={() => store.addSettlement(hex.id)}
@@ -129,7 +129,7 @@ export function HexCard({ hex }: HexCardProps) {
       )}
       {hex.settlement && !hex.adventureSite && (
         <button
-          className="mt-2 text-xs text-muted opacity-60 hover:opacity-100 transition-opacity"
+          className="no-print mt-2 text-xs text-muted opacity-60 hover:opacity-100 transition-opacity"
           onClick={() => store.addAdventureSite(hex.id)}
           type="button"
         >
@@ -138,7 +138,7 @@ export function HexCard({ hex }: HexCardProps) {
       )}
       {!hex.settlement && hex.adventureSite && (
         <button
-          className="mt-2 text-xs text-muted opacity-60 hover:opacity-100 transition-opacity"
+          className="no-print mt-2 text-xs text-muted opacity-60 hover:opacity-100 transition-opacity"
           onClick={() => store.addSettlement(hex.id)}
           type="button"
         >
