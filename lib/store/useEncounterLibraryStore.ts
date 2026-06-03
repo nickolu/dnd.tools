@@ -164,6 +164,11 @@ type EncounterLibraryStore = {
   redoEncounter: (id: string) => void;
   canUndo: (id: string) => boolean;
   canRedo: (id: string) => boolean;
+  // Export / Import
+  exportEncounters: () => string;
+  importEncounters: (
+    json: string
+  ) => { imported: number; skipped: number } | never;
   // Map
   setMap: (id: string, partial: Partial<EncounterMap>) => void;
   clearMap: (id: string) => void;
@@ -1563,6 +1568,58 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
               : e.map,
           })),
         }));
+      },
+
+      exportEncounters: (): string => {
+        const { encounters, templates } = get();
+        return JSON.stringify({ encounters, templates }, null, 2);
+      },
+
+      importEncounters: (
+        json: string
+      ): { imported: number; skipped: number } => {
+        const parsed: unknown = JSON.parse(json);
+        if (!isPlainObject(parsed)) {
+          throw new Error("Invalid format: expected an object.");
+        }
+        const rawEncounters = Array.isArray(parsed.encounters)
+          ? parsed.encounters
+          : [];
+        const rawTemplates = Array.isArray(parsed.templates)
+          ? parsed.templates
+          : [];
+        const { encounters: existing, templates: existingTemplates } = get();
+        const existingIds = new Set(existing.map((e) => e.id));
+        const existingTemplateIds = new Set(existingTemplates.map((t) => t.id));
+        const now = Date.now();
+        let imported = 0;
+        let skipped = 0;
+        const newEncounters: Encounter[] = [];
+        for (const raw of rawEncounters) {
+          const migrated = migrateEncounterToCurrent(raw);
+          if (existingIds.has(migrated.id)) {
+            skipped++;
+          } else {
+            newEncounters.push({ ...migrated, updatedAt: now });
+            imported++;
+          }
+        }
+        let importedTemplates = 0;
+        const newTemplates: EncounterTemplate[] = [];
+        for (const raw of rawTemplates) {
+          const migrated = migrateTemplate(raw);
+          if (!existingTemplateIds.has(migrated.id)) {
+            newTemplates.push(migrated);
+            importedTemplates++;
+          }
+        }
+        if (newEncounters.length > 0 || newTemplates.length > 0) {
+          set((state) => ({
+            encounters: [...state.encounters, ...newEncounters],
+            templates: [...state.templates, ...newTemplates],
+          }));
+        }
+        return { imported: imported + importedTemplates, skipped };
       },
 
       clearMapDrawings: (encounterId: string): void => {

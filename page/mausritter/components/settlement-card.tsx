@@ -29,7 +29,7 @@ export function SettlementCard({
         <div className="flex items-center gap-1">
           <ReRollButton onClick={onReroll} label="Re-roll settlement" />
           <button
-            className="text-xs text-muted opacity-60 hover:opacity-100 hover:text-red-400 transition-opacity px-1"
+            className="no-print text-xs text-muted opacity-60 hover:opacity-100 hover:text-red-400 transition-opacity px-1"
             onClick={onRemove}
             title="Remove settlement"
             type="button"
@@ -91,7 +91,7 @@ export function SettlementCard({
             ))}
           </div>
           <button
-            className="mt-1 text-xs text-muted opacity-60 hover:opacity-100 transition-opacity"
+            className="no-print mt-1 text-xs text-muted opacity-60 hover:opacity-100 transition-opacity"
             onClick={onAddNpc}
             type="button"
           >

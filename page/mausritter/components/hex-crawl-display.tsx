@@ -23,7 +23,7 @@ export function HexCrawlDisplay() {
             {siteCount} adventure sites &middot; {factions.length} factions
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="no-print flex items-center gap-2">
           <button
             className="rounded-lg bg-white/10 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/20"
             onClick={generate}
@@ -37,6 +37,13 @@ export function HexCrawlDisplay() {
             type="button"
           >
             Start Over
+          </button>
+          <button
+            className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-white/5"
+            onClick={() => window.print()}
+            type="button"
+          >
+            Print
           </button>
         </div>
       </div>
