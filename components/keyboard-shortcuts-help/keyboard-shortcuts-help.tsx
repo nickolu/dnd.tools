@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SHORTCUTS = [
   {
@@ -44,6 +44,9 @@ type Props = {
 
 export function KeyboardShortcutsHelp({ showTrigger = false }: Props) {
   const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -66,9 +69,47 @@ export function KeyboardShortcutsHelp({ showTrigger = false }: Props) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open]);
 
+  // Focus the close button when the overlay opens
+  useEffect(() => {
+    if (open) {
+      closeButtonRef.current?.focus();
+    } else {
+      triggerRef.current?.focus();
+    }
+  }, [open]);
+
+  function handleOverlayKeyDown(e: React.KeyboardEvent) {
+    if (e.key !== "Tab") return;
+    const panel = panelRef.current;
+    if (!panel) return;
+    const focusable = panel.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (!first || !last) return;
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
+
   if (!open) {
     return showTrigger ? (
       <button
+        ref={triggerRef}
         type="button"
         className="admin-button-secondary typography-body-sm"
         style={{
@@ -91,6 +132,9 @@ export function KeyboardShortcutsHelp({ showTrigger = false }: Props) {
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Keyboard shortcuts"
       style={{
         position: "fixed",
         inset: 0,
@@ -100,9 +144,11 @@ export function KeyboardShortcutsHelp({ showTrigger = false }: Props) {
         justifyContent: "center",
         background: "rgba(0,0,0,0.5)",
       }}
-      onClick={() => setOpen(false)}
+      onClick={handleClose}
+      onKeyDown={handleOverlayKeyDown}
     >
       <div
+        ref={panelRef}
         className="surface-card"
         style={{
           padding: "1.5rem",
@@ -120,9 +166,10 @@ export function KeyboardShortcutsHelp({ showTrigger = false }: Props) {
         >
           <h2 className="typography-h2">Keyboard Shortcuts</h2>
           <button
+            ref={closeButtonRef}
             type="button"
             className="admin-button-secondary typography-body-sm px-2 py-1"
-            onClick={() => setOpen(false)}
+            onClick={handleClose}
           >
             Close
           </button>

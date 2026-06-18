@@ -49,8 +49,20 @@ export default function RootLayout({
         <Providers>
           <RouteTransitionProvider>
             <div className="app-shell">
+              <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[999] focus:rounded focus:px-4 focus:py-2 focus:text-sm"
+                style={{
+                  background: "var(--color-surface)",
+                  color: "var(--color-text)",
+                }}
+              >
+                Skip to content
+              </a>
               <GlobalNav />
-              {children}
+              <div id="main-content" tabIndex={-1} style={{ outline: "none" }}>
+                {children}
+              </div>
             </div>
             <UndoDeleteToast />
           </RouteTransitionProvider>
