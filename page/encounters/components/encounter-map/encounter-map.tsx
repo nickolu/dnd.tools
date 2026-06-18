@@ -101,6 +101,7 @@ export function EncounterMap({ encounterId }: Props) {
   const addMapShape = useEncounterLibraryStore((s) => s.addMapShape);
   const removeMapShape = useEncounterLibraryStore((s) => s.removeMapShape);
   const moveMapShape = useEncounterLibraryStore((s) => s.moveMapShape);
+  const resizeMapShape = useEncounterLibraryStore((s) => s.resizeMapShape);
   const addMapDrawing = useEncounterLibraryStore((s) => s.addMapDrawing);
   const clearMapDrawings = useEncounterLibraryStore((s) => s.clearMapDrawings);
 
@@ -121,6 +122,16 @@ export function EncounterMap({ encounterId }: Props) {
   );
   const [drawingColorIndex, setDrawingColorIndex] = useState(0);
   const isDrawingActiveRef = useRef(false);
+
+  // Resize drag state for shapes
+  const [resizeDrag, setResizeDrag] = useState<{
+    shapeId: string;
+    startSize: number;
+    startPointerX: number;
+    startPointerY: number;
+    currentPointerX: number;
+    currentPointerY: number;
+  } | null>(null);
 
   // Track whether the last pointer-down started a meaningful pan (to suppress click)
   const wasPanningRef = useRef(false);
@@ -207,7 +218,7 @@ export function EncounterMap({ encounterId }: Props) {
   const hasDrawings = drawings.length > 0;
 
   function getSvgPoint(
-    e: React.PointerEvent<SVGSVGElement>
+    e: React.PointerEvent<SVGElement>
   ): { x: number; y: number } | null {
     const svg = svgRef.current;
     if (!svg) return null;
@@ -488,6 +499,26 @@ export function EncounterMap({ encounterId }: Props) {
                 const isDraggingShape =
                   shapeDragState !== null &&
                   shapeDragState.shapeId === shape.id;
+                const isResizing =
+                  resizeDrag !== null && resizeDrag.shapeId === shape.id;
+                const previewSize = isResizing
+                  ? Math.max(
+                      1,
+                      Math.min(
+                        10,
+                        Math.round(
+                          resizeDrag.startSize +
+                            Math.max(
+                              resizeDrag.currentPointerX -
+                                resizeDrag.startPointerX,
+                              resizeDrag.currentPointerY -
+                                resizeDrag.startPointerY
+                            ) /
+                              map.cellSize
+                        )
+                      )
+                    )
+                  : shape.size;
                 const displayPos = isDraggingShape
                   ? {
                       x:
@@ -504,7 +535,7 @@ export function EncounterMap({ encounterId }: Props) {
                   : shape.position;
                 const px = displayPos.x * map.cellSize;
                 const py = displayPos.y * map.cellSize;
-                const sizePx = shape.size * map.cellSize;
+                const sizePx = previewSize * map.cellSize;
                 const { cx, cy } = cellToPixel(displayPos, map.cellSize);
                 const strokeDash = isSelected ? "6,3" : undefined;
                 const shapeHandlers = getShapeHandlers(
@@ -528,6 +559,54 @@ export function EncounterMap({ encounterId }: Props) {
                     setSelected(null);
                   },
                 };
+                const resizeHandle = isSelected ? (
+                  <rect
+                    x={px + sizePx - 8}
+                    y={py + sizePx - 8}
+                    width={12}
+                    height={12}
+                    fill="white"
+                    stroke={shape.color}
+                    strokeWidth={2}
+                    style={{ cursor: "nwse-resize", pointerEvents: "all" }}
+                    onPointerDown={(e) => {
+                      e.stopPropagation();
+                      e.currentTarget.setPointerCapture(e.pointerId);
+                      const pt = getSvgPoint(e);
+                      if (!pt) return;
+                      setResizeDrag({
+                        shapeId: shape.id,
+                        startSize: shape.size,
+                        startPointerX: pt.x,
+                        startPointerY: pt.y,
+                        currentPointerX: pt.x,
+                        currentPointerY: pt.y,
+                      });
+                    }}
+                    onPointerMove={(e) => {
+                      if (!resizeDrag || resizeDrag.shapeId !== shape.id)
+                        return;
+                      const pt = getSvgPoint(e);
+                      if (!pt) return;
+                      setResizeDrag((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              currentPointerX: pt.x,
+                              currentPointerY: pt.y,
+                            }
+                          : prev
+                      );
+                    }}
+                    onPointerUp={(e) => {
+                      if (!resizeDrag || resizeDrag.shapeId !== shape.id)
+                        return;
+                      e.currentTarget.releasePointerCapture(e.pointerId);
+                      resizeMapShape(encounterId, shape.id, previewSize);
+                      setResizeDrag(null);
+                    }}
+                  />
+                ) : null;
                 if (shape.kind === "square") {
                   return (
                     <g key={shape.id} {...shapeHandlers}>
@@ -538,6 +617,7 @@ export function EncounterMap({ encounterId }: Props) {
                         height={sizePx}
                         {...commonProps}
                       />
+                      {resizeHandle}
                     </g>
                   );
                 }
@@ -545,6 +625,7 @@ export function EncounterMap({ encounterId }: Props) {
                   return (
                     <g key={shape.id} {...shapeHandlers}>
                       <circle cx={cx} cy={cy} r={sizePx / 2} {...commonProps} />
+                      {resizeHandle}
                     </g>
                   );
                 }
@@ -557,6 +638,7 @@ export function EncounterMap({ encounterId }: Props) {
                 return (
                   <g key={shape.id} {...shapeHandlers}>
                     <polygon points={points} {...commonProps} />
+                    {resizeHandle}
                   </g>
                 );
               })}
@@ -603,12 +685,46 @@ export function EncounterMap({ encounterId }: Props) {
               })}
             </svg>
           </div>
+          {selectedShapeId &&
+            (() => {
+              const shape = shapes.find((s) => s.id === selectedShapeId);
+              if (!shape) return null;
+              return (
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="typography-body-sm text-muted">
+                    {shape.kind.charAt(0).toUpperCase() + shape.kind.slice(1)} ·{" "}
+                    {shape.size}×{shape.size}
+                  </span>
+                  <button
+                    type="button"
+                    className="admin-button-secondary typography-body-sm px-2 py-0.5"
+                    disabled={shape.size <= 1}
+                    onClick={() =>
+                      resizeMapShape(encounterId, shape.id, shape.size - 1)
+                    }
+                  >
+                    −
+                  </button>
+                  <button
+                    type="button"
+                    className="admin-button-secondary typography-body-sm px-2 py-0.5"
+                    disabled={shape.size >= 10}
+                    onClick={() =>
+                      resizeMapShape(encounterId, shape.id, shape.size + 1)
+                    }
+                  >
+                    +
+                  </button>
+                </div>
+              );
+            })()}
           <p className="typography-body-sm text-muted">
             Drag tokens to move. Click a tray chip then a cell to place. Select
             a token or shape and press Delete to remove. Click a shape button
             then a cell to place a shape. Scroll to zoom, drag the background to
             pan. Toggle Draw mode to sketch freehand annotations; press Escape
-            to exit drawing mode.
+            to exit drawing mode. Select a shape and use +/− or drag the handle
+            to resize.
           </p>
         </>
       ) : (
