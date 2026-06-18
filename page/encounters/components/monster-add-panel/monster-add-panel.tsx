@@ -108,7 +108,15 @@ export function MonsterAddPanel({ encounterId }: Props) {
           Failed to load monsters.
         </p>
       ) : isLoading ? (
-        <p className="typography-body-sm text-muted">Loading monsters...</p>
+        <div className="flex flex-col gap-1">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div
+              key={i}
+              className="h-8 animate-pulse rounded-md"
+              style={{ background: "var(--color-border-subtle)" }}
+            />
+          ))}
+        </div>
       ) : (
         <ul className="flex max-h-72 flex-col gap-1 overflow-y-auto pr-1">
           {results.length === 0 ? (
