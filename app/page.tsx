@@ -11,6 +11,7 @@ import {
   getCollectionLastSyncedAt,
   getReadableFetchError,
 } from "@/lib/api/client";
+import { computeBalance } from "@/lib/domain/encounter/cr2";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { useSpells } from "@/lib/query/hooks/useSpells";
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
@@ -60,10 +61,26 @@ export default function Home() {
     const recent = [...savedEncounters]
       .sort((a, b) => b.updatedAt - a.updatedAt)
       .slice(0, 6)
-      .map<WidgetFilterOption>((e) => ({
-        id: `open:${e.id}`,
-        label: e.name,
-      }));
+      .map<WidgetFilterOption>((e) => {
+        const pcCount = e.partyMembers.length;
+        const enemyCount = e.combatants.filter(
+          (c) => c.side === "enemy"
+        ).length;
+        const parts: string[] = [];
+        if (pcCount > 0) parts.push(`${pcCount} PC${pcCount !== 1 ? "s" : ""}`);
+        if (enemyCount > 0)
+          parts.push(`${enemyCount} ${enemyCount !== 1 ? "enemies" : "enemy"}`);
+        if (pcCount > 0 && enemyCount > 0) {
+          const balance = computeBalance(e);
+          parts.push(balance.classification.bucket);
+        }
+        const sublabel = parts.length > 0 ? parts.join(" · ") : undefined;
+        return {
+          id: `open:${e.id}`,
+          label: e.name,
+          ...(sublabel !== undefined ? { sublabel } : {}),
+        };
+      });
     return [ENCOUNTERS_WIDGET_PINNED_CHIP, ...recent];
   }, [savedEncounters]);
 

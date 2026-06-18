@@ -1,6 +1,7 @@
 export type WidgetFilterOption = {
   id: string;
   label: string;
+  sublabel?: string;
 };
 
 export type WidgetIntent =
