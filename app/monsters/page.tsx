@@ -180,6 +180,20 @@ function MonstersPageContent() {
     searchParams
   );
   const [searchInput, setSearchInput] = useState(filters.query);
+  const initialSort = searchParams.get("sort");
+  const [sort, setSort] = useState<"name" | "cr-asc" | "cr-desc">(
+    initialSort === "cr-asc" || initialSort === "cr-desc" ? initialSort : "name"
+  );
+  const sortedMonsters = useMemo(() => {
+    if (sort === "name") {
+      return [...filteredMonsters].sort((a, b) => a.name.localeCompare(b.name));
+    }
+    if (sort === "cr-asc") {
+      return [...filteredMonsters].sort((a, b) => a.crNumeric - b.crNumeric);
+    }
+    // cr-desc
+    return [...filteredMonsters].sort((a, b) => b.crNumeric - a.crNumeric);
+  }, [filteredMonsters, sort]);
   const filterGroups = useMemo<MonsterFilterGroupType[]>(
     () => getMonsterFilterGroups(monsters),
     [monsters]
@@ -526,7 +540,7 @@ function MonstersPageContent() {
           })()}
           isLoading={isLoading}
           total={monsters.length}
-          visible={filteredMonsters.length}
+          visible={sortedMonsters.length}
         />
         <div className="mt-2 flex items-center justify-between gap-3">
           <p className="typography-body-sm text-muted">
@@ -536,7 +550,7 @@ function MonstersPageContent() {
             <CopyVisibleNamesAction
               disabled={isLoading || isError}
               itemTypeLabel="monster"
-              names={filteredMonsters.map((monster) => monster.name)}
+              names={sortedMonsters.map((monster) => monster.name)}
             />
             <button
               className="admin-button-secondary typography-body-sm px-3 py-1"
@@ -611,6 +625,30 @@ function MonstersPageContent() {
                 ref={searchRef}
                 value={searchInput}
               />
+              <select
+                aria-label="Sort monsters"
+                className="input-field typography-body-sm px-2 py-1"
+                onChange={(e) => {
+                  const raw = e.target.value;
+                  const value =
+                    raw === "cr-asc" || raw === "cr-desc" ? raw : "name";
+                  setSort(value);
+                  const params = new URLSearchParams(searchParams.toString());
+                  if (value === "name") {
+                    params.delete("sort");
+                  } else {
+                    params.set("sort", value);
+                  }
+                  router.replace(`${pathname}?${params.toString()}`, {
+                    scroll: false,
+                  });
+                }}
+                value={sort}
+              >
+                <option value="name">Sort: Name A–Z</option>
+                <option value="cr-asc">Sort: CR Low→High</option>
+                <option value="cr-desc">Sort: CR High→Low</option>
+              </select>
               <FilterLogicPopover
                 globalMatchMode={filters.groupMatchMode}
                 groups={MULTI_SELECTABLE_GROUPS.map((key) => ({
@@ -694,7 +732,7 @@ function MonstersPageContent() {
             Loading monsters...
           </p>
         ) : null}
-        {!isLoading && !isError && !filteredMonsters.length ? (
+        {!isLoading && !isError && !sortedMonsters.length ? (
           <div className="mt-4 flex flex-col items-start gap-2">
             <p className="typography-body-sm text-muted">
               No monsters match your filters.
@@ -711,7 +749,7 @@ function MonstersPageContent() {
         ) : null}
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
-          {filteredMonsters.map((monster) => (
+          {sortedMonsters.map((monster) => (
             <MonsterCard
               detailHref={`/monsters/${encodeURIComponent(monster.id)}`}
               isAdminMode={isAdminMode}
