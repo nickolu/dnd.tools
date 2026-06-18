@@ -122,6 +122,7 @@ type EncounterLibraryStore = {
     patch: UpdatePartyMemberPatch
   ) => void;
   addCombatant: (id: string, input: AddCombatantInput) => string[];
+  addCombatantToGroup: (encounterId: string, groupId: string) => void;
   removeCombatant: (id: string, combatantId: string) => void;
   duplicateCombatant: (id: string, combatantId: string) => void;
   updateCombatantName: (id: string, combatantId: string, name: string) => void;
@@ -256,6 +257,19 @@ function updateCombatant(
       c.id === combatantId ? patch(c) : c
     ),
   };
+}
+
+function countInitiativeSlots(encounter: Encounter): number {
+  const groupIds = new Set<string>();
+  let ungroupedCount = 0;
+  for (const c of encounter.combatants) {
+    if (c.initiativeGroupId) {
+      groupIds.add(c.initiativeGroupId);
+    } else {
+      ungroupedCount++;
+    }
+  }
+  return encounter.partyMembers.length + ungroupedCount + groupIds.size;
 }
 
 function applyTokenPosition(
@@ -445,6 +459,10 @@ function migrateCombatant(raw: unknown): Combatant {
       )
     : [];
   const concentrating = r.concentrating === true ? true : undefined;
+  const initiativeGroupId =
+    typeof r.initiativeGroupId === "string" && r.initiativeGroupId
+      ? r.initiativeGroupId
+      : undefined;
   const combatant: Combatant = {
     id: readString(r.id, crypto.randomUUID()),
     monsterId: readString(r.monsterId, ""),
@@ -458,6 +476,7 @@ function migrateCombatant(raw: unknown): Combatant {
     ...(nameOverride !== undefined ? { nameOverride } : {}),
     ...(position !== null ? { position } : {}),
     ...(concentrating ? { concentrating } : {}),
+    ...(initiativeGroupId !== undefined ? { initiativeGroupId } : {}),
   };
   return combatant;
 }
@@ -930,10 +949,11 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         const maxHp = parseHitPoints(input.monster.hitPoints);
         const ids: string[] = [];
         const newCombatants: Combatant[] = [];
+        const groupId = quantity > 1 ? crypto.randomUUID() : undefined;
         for (let i = 0; i < quantity; i++) {
           const combatantId = crypto.randomUUID();
           ids.push(combatantId);
-          newCombatants.push({
+          const combatant: Combatant = {
             id: combatantId,
             monsterId: input.monster.id,
             monsterName: input.monster.name,
@@ -943,7 +963,11 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
             currentHp: maxHp,
             initiative: null,
             conditions: [],
-          });
+          };
+          if (groupId !== undefined) {
+            combatant.initiativeGroupId = groupId;
+          }
+          newCombatants.push(combatant);
         }
         set((state) => ({
           encounters: updateEncounter(state.encounters, id, (e) => ({
@@ -952,6 +976,30 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           })),
         }));
         return ids;
+      },
+
+      addCombatantToGroup: (encounterId: string, groupId: string): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) => {
+            const sibling = e.combatants.find(
+              (c) => c.initiativeGroupId === groupId
+            );
+            if (!sibling) return e;
+            const newCombatant: Combatant = {
+              id: crypto.randomUUID(),
+              monsterId: sibling.monsterId,
+              monsterName: sibling.monsterName,
+              monsterCrNumeric: sibling.monsterCrNumeric,
+              side: sibling.side,
+              maxHp: sibling.maxHp,
+              currentHp: sibling.maxHp,
+              initiative: sibling.initiative,
+              conditions: [],
+              initiativeGroupId: groupId,
+            };
+            return { ...e, combatants: [...e.combatants, newCombatant] };
+          }),
+        }));
       },
 
       removeCombatant: (id: string, combatantId: string): void => {
@@ -968,8 +1016,13 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           encounters: updateEncounter(state.encounters, id, (e) => {
             const source = e.combatants.find((c) => c.id === combatantId);
             if (!source) return e;
-            const { position: _drop, ...rest } = source;
+            const {
+              position: _drop,
+              initiativeGroupId: _dropGroup,
+              ...rest
+            } = source;
             void _drop;
+            void _dropGroup;
             const copy: Combatant = {
               ...rest,
               id: crypto.randomUUID(),
@@ -1085,13 +1138,27 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         combatantId: string,
         value: number | null
       ): void => {
+        const safeValue = value === null ? null : Math.trunc(value);
         set((state) => ({
-          encounters: updateEncounter(state.encounters, id, (e) =>
-            updateCombatant(e, combatantId, (c) => ({
+          encounters: updateEncounter(state.encounters, id, (e) => {
+            const target = e.combatants.find((c) => c.id === combatantId);
+            const groupId = target?.initiativeGroupId;
+            if (groupId) {
+              // Fan out to all group members
+              return {
+                ...e,
+                combatants: e.combatants.map((c) =>
+                  c.initiativeGroupId === groupId
+                    ? { ...c, initiative: safeValue }
+                    : c
+                ),
+              };
+            }
+            return updateCombatant(e, combatantId, (c) => ({
               ...c,
-              initiative: value === null ? null : Math.trunc(value),
-            }))
-          ),
+              initiative: safeValue,
+            }));
+          }),
         }));
       },
 
@@ -1137,14 +1204,26 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         sideFilter?: CombatantSide
       ): void => {
         set((state) => ({
-          encounters: updateEncounter(state.encounters, id, (e) => ({
-            ...e,
-            combatants: e.combatants.map((c) => {
+          encounters: updateEncounter(state.encounters, id, (e) => {
+            // Roll once per group; ungrouped combatants roll individually
+            const groupRolls = new Map<string, number>();
+            const updatedCombatants = e.combatants.map((c) => {
               if (sideFilter && c.side !== sideFilter) return c;
+              if (c.initiativeGroupId) {
+                if (!groupRolls.has(c.initiativeGroupId)) {
+                  const mod = dexModByCombatantId.get(c.id) ?? 0;
+                  groupRolls.set(c.initiativeGroupId, rollDie(20) + mod);
+                }
+                return {
+                  ...c,
+                  initiative: groupRolls.get(c.initiativeGroupId)!,
+                };
+              }
               const mod = dexModByCombatantId.get(c.id) ?? 0;
               return { ...c, initiative: rollDie(20) + mod };
-            }),
-          })),
+            });
+            return { ...e, combatants: updatedCombatants };
+          }),
         }));
       },
 
@@ -1172,7 +1251,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
       nextTurn: (id: string): void => {
         set((state) => ({
           encounters: updateEncounter(state.encounters, id, (e) => {
-            const total = e.partyMembers.length + e.combatants.length;
+            const total = countInitiativeSlots(e);
             if (total === 0) return e;
             const current = e.initiative.activeIndex;
             if (current === null) {
@@ -1196,7 +1275,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
       previousTurn: (id: string): void => {
         set((state) => ({
           encounters: updateEncounter(state.encounters, id, (e) => {
-            const total = e.partyMembers.length + e.combatants.length;
+            const total = countInitiativeSlots(e);
             if (total === 0) return e;
             const current = e.initiative.activeIndex;
             if (current === null || current <= 0) {
@@ -1719,7 +1798,7 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         // pendingDelete is intentionally excluded — it holds a timer and must not be persisted
       }),
       storage: createJSONStorage(() => persistenceStorage),
-      version: 6,
+      version: 7,
       migrate: migrateEncounterLibrary,
     }
   )

@@ -284,3 +284,69 @@ describe("savedParty store integration", () => {
     expect(state.savedParty[0]!.level).toBe(5);
   });
 });
+
+describe("migration v6 -> v7: initiativeGroupId preserved", () => {
+  it("migrateCombatant passes through initiativeGroupId when present", () => {
+    const v6Encounter = {
+      id: "enc-v6",
+      name: "V6 Encounter",
+      ruleset: "advanced",
+      partyMembers: [],
+      combatants: [
+        {
+          id: "c-1",
+          monsterId: "m-goblin",
+          monsterName: "Goblin",
+          monsterCrNumeric: 0.25,
+          side: "enemy",
+          maxHp: 7,
+          currentHp: 7,
+          initiative: null,
+          conditions: [],
+          initiativeGroupId: "grp-abc",
+        },
+        {
+          id: "c-2",
+          monsterId: "m-goblin",
+          monsterName: "Goblin",
+          monsterCrNumeric: 0.25,
+          side: "enemy",
+          maxHp: 7,
+          currentHp: 7,
+          initiative: null,
+          conditions: [],
+          initiativeGroupId: "grp-abc",
+        },
+        {
+          id: "c-3",
+          monsterId: "m-imp",
+          monsterName: "Imp",
+          monsterCrNumeric: 1,
+          side: "enemy",
+          maxHp: 10,
+          currentHp: 10,
+          initiative: null,
+          conditions: [],
+          // no initiativeGroupId — solo
+        },
+      ],
+      initiative: { round: 1, activeIndex: null },
+      tips: null,
+      tipsGeneratedAt: null,
+      createdAt: 1000,
+      updatedAt: 2000,
+    };
+
+    const migrated = migrateEncounterLibrary({ encounters: [v6Encounter] }, 6);
+    const enc = migrated.encounters[0]!;
+
+    // The two goblins should still share a group
+    const c1 = enc.combatants.find((c) => c.id === "c-1")!;
+    const c2 = enc.combatants.find((c) => c.id === "c-2")!;
+    const c3 = enc.combatants.find((c) => c.id === "c-3")!;
+
+    expect(c1.initiativeGroupId).toBe("grp-abc");
+    expect(c2.initiativeGroupId).toBe("grp-abc");
+    expect(c3.initiativeGroupId).toBeUndefined();
+  });
+});

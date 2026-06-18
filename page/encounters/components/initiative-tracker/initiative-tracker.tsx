@@ -5,15 +5,12 @@ import { useEffect, useMemo, useState } from "react";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { selectEncounterById } from "@/lib/store/encounterSelectors";
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
-import {
-  combatantToRow,
-  partyMemberToRow,
-  sortInitiative,
-} from "@/page/encounters/utils/initiativeOrder";
+import { buildInitiativeSlots } from "@/page/encounters/utils/initiativeOrder";
 import { rollInitiative } from "@/page/encounters/utils/rollInitiative";
 
 import { useMapPlacementStore } from "../encounter-map/stores/useMapPlacementStore";
 import { CondensedInitiativeRow } from "./components/condensed-initiative-row";
+import { GroupedInitiativeRow } from "./components/grouped-initiative-row";
 import { InitiativeRow } from "./components/initiative-row";
 import { InitiativeToolbar } from "./components/initiative-toolbar";
 import { RoundCounter } from "./components/round-counter";
@@ -51,6 +48,9 @@ export function InitiativeTracker({ encounterId }: Props) {
   const duplicateCombatant = useEncounterLibraryStore(
     (s) => s.duplicateCombatant
   );
+  const addCombatantToGroup = useEncounterLibraryStore(
+    (s) => s.addCombatantToGroup
+  );
   const toggleConcentration = useEncounterLibraryStore(
     (s) => s.toggleConcentration
   );
@@ -82,13 +82,13 @@ export function InitiativeTracker({ encounterId }: Props) {
     [monsters]
   );
 
-  const sortedRows = useMemo(() => {
+  const sortedSlots = useMemo(() => {
     if (!encounter) return [];
-    const partyRows = encounter.partyMembers.map(partyMemberToRow);
-    const combatantRows = encounter.combatants.map((c) =>
-      combatantToRow(c, dexModByCombatantId.get(c.id) ?? 0)
+    return buildInitiativeSlots(
+      encounter.combatants,
+      encounter.partyMembers,
+      dexModByCombatantId
     );
-    return sortInitiative([...partyRows, ...combatantRows]);
   }, [encounter, dexModByCombatantId]);
 
   // Keyboard shortcuts for turn navigation
@@ -115,12 +115,27 @@ export function InitiativeTracker({ encounterId }: Props) {
 
   if (!encounter) return null;
 
-  const hasRows = sortedRows.length > 0;
+  const hasRows = sortedSlots.length > 0;
   const activeIndex = encounter.initiative.activeIndex;
 
   function handleRollAll() {
-    const allIds = sortedRows.map((r) => r.id);
-    animateRoll(allIds);
+    // For animation key purposes, collect all IDs (party + combatants)
+    const allPartyIds = encounter!.partyMembers.map((p) => p.id);
+    // For groups, use the first combatant's ID for animation display
+    const allCombatantAnimIds: string[] = [];
+    const seenGroups = new Set<string>();
+    for (const slot of sortedSlots) {
+      if (slot.kind === "group") {
+        if (!seenGroups.has(slot.groupId)) {
+          seenGroups.add(slot.groupId);
+          if (slot.combatants[0])
+            allCombatantAnimIds.push(slot.combatants[0].id);
+        }
+      } else if (slot.kind === "combatant") {
+        allCombatantAnimIds.push(slot.id);
+      }
+    }
+    animateRoll([...allPartyIds, ...allCombatantAnimIds]);
     rollPartyMemberInitiatives(encounterId);
     rollCombatantInitiatives(encounterId, dexModByCombatantId);
   }
@@ -140,6 +155,13 @@ export function InitiativeTracker({ encounterId }: Props) {
     const mod = dexModByCombatantId.get(combatantId) ?? 0;
     animateRoll([combatantId]);
     setCombatantInitiative(encounterId, combatantId, rollInitiative(mod));
+  }
+
+  function rollSingleGroup(_groupId: string, anyMemberId: string) {
+    const mod = dexModByCombatantId.get(anyMemberId) ?? 0;
+    animateRoll([anyMemberId]);
+    // setCombatantInitiative fans out to all group members
+    setCombatantInitiative(encounterId, anyMemberId, rollInitiative(mod));
   }
 
   return (
@@ -192,10 +214,169 @@ export function InitiativeTracker({ encounterId }: Props) {
         </p>
       ) : (
         <ul className="flex flex-col gap-1.5">
-          {sortedRows.map((row, idx) => {
+          {sortedSlots.map((slot, idx) => {
             const isActive = idx === activeIndex;
-            if (row.kind === "party") {
-              const pc = encounter.partyMembers.find((p) => p.id === row.id);
+
+            if (slot.kind === "group") {
+              // Build conditions map for the group's combatants
+              const conditionsMap: Record<
+                string,
+                (typeof slot.combatants)[0]["conditions"]
+              > = {};
+              for (const c of slot.combatants) {
+                conditionsMap[c.id] = c.conditions;
+              }
+              const onMapIds = new Set(
+                slot.combatants
+                  .filter((c) => c.position !== undefined)
+                  .map((c) => c.id)
+              );
+              const pendingCombatantId =
+                pendingPlace?.kind === "combatant" &&
+                slot.combatants.some((c) => c.id === pendingPlace.id)
+                  ? pendingPlace.id
+                  : null;
+              const anyMemberId = slot.combatants[0]?.id ?? "";
+
+              if (condensed) {
+                // Condensed group: show name x count, aggregate HP bar, initiative
+                const totalMaxHp = slot.combatants.reduce(
+                  (s, c) => s + c.maxHp,
+                  0
+                );
+                const totalCurrentHp = slot.combatants.reduce(
+                  (s, c) => s + c.currentHp,
+                  0
+                );
+                const hpPercent =
+                  totalMaxHp > 0
+                    ? Math.max(
+                        0,
+                        Math.min(100, (totalCurrentHp / totalMaxHp) * 100)
+                      )
+                    : 0;
+                let hpColor: string;
+                if (totalCurrentHp <= 0) {
+                  hpColor = "var(--color-text-muted)";
+                } else if (hpPercent <= 25) {
+                  hpColor = "var(--color-danger)";
+                } else if (hpPercent <= 50) {
+                  hpColor = "var(--color-accent)";
+                } else {
+                  hpColor = "#4a9e6b";
+                }
+                return (
+                  <li
+                    key={slot.groupId}
+                    className="relative flex items-center gap-2 rounded-md border px-2 py-1"
+                    style={{
+                      borderColor: isActive
+                        ? "var(--color-accent)"
+                        : "var(--color-border-subtle)",
+                    }}
+                    aria-current={isActive ? "true" : undefined}
+                  >
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        display: "inline-block",
+                        width: "0.2rem",
+                        height: "1rem",
+                        background: isActive
+                          ? "var(--color-accent)"
+                          : "var(--color-border-strong)",
+                        borderRadius: "999px",
+                        flexShrink: 0,
+                      }}
+                    />
+                    <span className="typography-body-sm flex-1 truncate">
+                      {slot.name} &times; {slot.combatants.length}
+                    </span>
+                    <div
+                      style={{
+                        width: "3rem",
+                        height: "0.5rem",
+                        background: "var(--color-border-subtle)",
+                        borderRadius: "999px",
+                        overflow: "hidden",
+                      }}
+                      title={`HP: ${totalCurrentHp} / ${totalMaxHp}`}
+                    >
+                      <div
+                        style={{
+                          width: `${hpPercent}%`,
+                          height: "100%",
+                          background: hpColor,
+                          borderRadius: "999px",
+                          transition: "width 0.2s ease, background 0.2s ease",
+                        }}
+                      />
+                    </div>
+                    <span
+                      className="typography-body-sm text-muted"
+                      style={{
+                        fontVariantNumeric: "tabular-nums",
+                        minWidth: "1.5rem",
+                        textAlign: "right",
+                      }}
+                    >
+                      {slot.initiative ?? "\u2014"}
+                    </span>
+                  </li>
+                );
+              }
+
+              return (
+                <GroupedInitiativeRow
+                  key={slot.groupId}
+                  group={slot}
+                  encounterId={encounterId}
+                  isActive={isActive}
+                  onSetInitiative={(value) =>
+                    anyMemberId
+                      ? setCombatantInitiative(encounterId, anyMemberId, value)
+                      : undefined
+                  }
+                  onRoll={() => rollSingleGroup(slot.groupId, anyMemberId)}
+                  onAddToGroup={() =>
+                    addCombatantToGroup(encounterId, slot.groupId)
+                  }
+                  onAdjustHp={(combatantId, delta) =>
+                    adjustHp(encounterId, combatantId, delta)
+                  }
+                  onSetHp={(combatantId, value) =>
+                    setHp(encounterId, combatantId, value)
+                  }
+                  {...(isRolling(anyMemberId)
+                    ? { rollingDisplay: displayValue(anyMemberId) }
+                    : {})}
+                  hasMap={!!encounter.map}
+                  onMapCombatantIds={onMapIds}
+                  pendingPlaceCombatantId={pendingCombatantId}
+                  onPlaceOnMap={(combatantId) =>
+                    setPendingPlace(
+                      pendingPlace?.kind === "combatant" &&
+                        pendingPlace.id === combatantId
+                        ? null
+                        : { kind: "combatant", id: combatantId }
+                    )
+                  }
+                  onRemoveFromMap={(combatantId) =>
+                    removeToken(encounterId, "combatant", combatantId)
+                  }
+                  conditions={conditionsMap}
+                  onToggleCondition={(combatantId, condition) =>
+                    toggleCondition(encounterId, combatantId, condition)
+                  }
+                  onClearConditions={(combatantId) =>
+                    clearConditions(encounterId, combatantId)
+                  }
+                />
+              );
+            }
+
+            if (slot.kind === "party") {
+              const pc = encounter.partyMembers.find((p) => p.id === slot.id);
               const pcOnMap = pc?.position !== undefined;
               const pcHpProps =
                 pc?.maxHp !== undefined && pc?.currentHp !== undefined
@@ -203,16 +384,16 @@ export function InitiativeTracker({ encounterId }: Props) {
                       currentHp: pc.currentHp,
                       maxHp: pc.maxHp,
                       onAdjustHp: (delta: number) =>
-                        adjustHp(encounterId, row.id, delta),
+                        adjustHp(encounterId, slot.id, delta),
                       onSetHp: (value: number) =>
-                        setHp(encounterId, row.id, value),
+                        setHp(encounterId, slot.id, value),
                     }
                   : {};
               if (condensed) {
                 return (
                   <CondensedInitiativeRow
-                    key={row.id}
-                    row={row}
+                    key={slot.id}
+                    row={slot}
                     isActive={isActive}
                     {...pcHpProps}
                   />
@@ -220,8 +401,8 @@ export function InitiativeTracker({ encounterId }: Props) {
               }
               return (
                 <InitiativeRow
-                  key={row.id}
-                  row={row}
+                  key={slot.id}
+                  row={slot}
                   isActive={isActive}
                   editableMod
                   {...pcHpProps}
@@ -232,38 +413,40 @@ export function InitiativeTracker({ encounterId }: Props) {
                   {...(pcOnMap
                     ? {
                         onRemoveFromMap: () =>
-                          removeToken(encounterId, "pc", row.id),
+                          removeToken(encounterId, "pc", slot.id),
                       }
                     : {})}
                   isPendingPlacement={
-                    pendingPlace?.kind === "pc" && pendingPlace.id === row.id
+                    pendingPlace?.kind === "pc" && pendingPlace.id === slot.id
                   }
                   {...(encounter.map && !pcOnMap
                     ? {
                         onPlaceOnMap: () =>
                           setPendingPlace(
                             pendingPlace?.kind === "pc" &&
-                              pendingPlace.id === row.id
+                              pendingPlace.id === slot.id
                               ? null
-                              : { kind: "pc", id: row.id }
+                              : { kind: "pc", id: slot.id }
                           ),
                       }
                     : {})}
                   onSetInitiative={(value) =>
-                    setPartyMemberInitiative(encounterId, row.id, value)
+                    setPartyMemberInitiative(encounterId, slot.id, value)
                   }
                   onSetMod={(mod) =>
-                    setPartyMemberInitiativeMod(encounterId, row.id, mod)
+                    setPartyMemberInitiativeMod(encounterId, slot.id, mod)
                   }
-                  onRoll={() => rollSingleParty(row.id)}
-                  {...(isRolling(row.id)
-                    ? { rollingDisplay: displayValue(row.id) }
+                  onRoll={() => rollSingleParty(slot.id)}
+                  {...(isRolling(slot.id)
+                    ? { rollingDisplay: displayValue(slot.id) }
                     : {})}
                   conditions={pc?.conditions ?? []}
                   onToggleCondition={(condition) =>
-                    toggleCondition(encounterId, row.id, condition)
+                    toggleCondition(encounterId, slot.id, condition)
                   }
-                  onClearConditions={() => clearConditions(encounterId, row.id)}
+                  onClearConditions={() =>
+                    clearConditions(encounterId, slot.id)
+                  }
                   {...(pc?.currentHp === 0 && pc?.maxHp !== undefined
                     ? {
                         deathSaves: pc.deathSaves ?? {
@@ -273,13 +456,17 @@ export function InitiativeTracker({ encounterId }: Props) {
                         onSetDeathSave: (
                           type: "success" | "failure",
                           count: number
-                        ) => setDeathSave(encounterId, row.id, type, count),
+                        ) => setDeathSave(encounterId, slot.id, type, count),
                       }
                     : {})}
                 />
               );
             }
-            const combatant = encounter.combatants.find((c) => c.id === row.id);
+
+            // slot.kind === "combatant" (ungrouped)
+            const combatant = encounter.combatants.find(
+              (c) => c.id === slot.id
+            );
             const ac = combatant
               ? acByMonsterId.get(combatant.monsterId)
               : undefined;
@@ -297,8 +484,9 @@ export function InitiativeTracker({ encounterId }: Props) {
                     ? { monster: monsterForRow }
                     : {}),
                   onAdjustHp: (delta: number) =>
-                    adjustHp(encounterId, row.id, delta),
-                  onSetHp: (value: number) => setHp(encounterId, row.id, value),
+                    adjustHp(encounterId, slot.id, delta),
+                  onSetHp: (value: number) =>
+                    setHp(encounterId, slot.id, value),
                 }
               : {};
             if (condensed) {
@@ -308,15 +496,15 @@ export function InitiativeTracker({ encounterId }: Props) {
                       currentHp: combatant.currentHp,
                       maxHp: combatant.maxHp,
                       onAdjustHp: (delta: number) =>
-                        adjustHp(encounterId, row.id, delta),
+                        adjustHp(encounterId, slot.id, delta),
                       onSetHp: (value: number) =>
-                        setHp(encounterId, row.id, value),
+                        setHp(encounterId, slot.id, value),
                     }
                   : {};
               return (
                 <CondensedInitiativeRow
-                  key={row.id}
-                  row={row}
+                  key={slot.id}
+                  row={slot}
                   isActive={isActive}
                   {...condensedHpProps}
                 />
@@ -324,48 +512,48 @@ export function InitiativeTracker({ encounterId }: Props) {
             }
             return (
               <InitiativeRow
-                key={row.id}
-                row={row}
+                key={slot.id}
+                row={slot}
                 isActive={isActive}
                 {...hpProps}
                 isOnMap={combatantOnMap}
                 {...(combatantOnMap
                   ? {
                       onRemoveFromMap: () =>
-                        removeToken(encounterId, "combatant", row.id),
+                        removeToken(encounterId, "combatant", slot.id),
                     }
                   : {})}
                 isPendingPlacement={
                   pendingPlace?.kind === "combatant" &&
-                  pendingPlace.id === row.id
+                  pendingPlace.id === slot.id
                 }
                 {...(encounter.map && !combatantOnMap
                   ? {
                       onPlaceOnMap: () =>
                         setPendingPlace(
                           pendingPlace?.kind === "combatant" &&
-                            pendingPlace.id === row.id
+                            pendingPlace.id === slot.id
                             ? null
-                            : { kind: "combatant", id: row.id }
+                            : { kind: "combatant", id: slot.id }
                         ),
                     }
                   : {})}
                 onSetInitiative={(value) =>
-                  setCombatantInitiative(encounterId, row.id, value)
+                  setCombatantInitiative(encounterId, slot.id, value)
                 }
-                onRoll={() => rollSingleCombatant(row.id)}
-                {...(isRolling(row.id)
-                  ? { rollingDisplay: displayValue(row.id) }
+                onRoll={() => rollSingleCombatant(slot.id)}
+                {...(isRolling(slot.id)
+                  ? { rollingDisplay: displayValue(slot.id) }
                   : {})}
-                onDuplicate={() => duplicateCombatant(encounterId, row.id)}
+                onDuplicate={() => duplicateCombatant(encounterId, slot.id)}
                 conditions={combatant?.conditions ?? []}
                 onToggleCondition={(condition) =>
-                  toggleCondition(encounterId, row.id, condition)
+                  toggleCondition(encounterId, slot.id, condition)
                 }
-                onClearConditions={() => clearConditions(encounterId, row.id)}
+                onClearConditions={() => clearConditions(encounterId, slot.id)}
                 {...(combatant?.concentrating ? { concentrating: true } : {})}
                 onToggleConcentration={() =>
-                  toggleConcentration(encounterId, row.id)
+                  toggleConcentration(encounterId, slot.id)
                 }
               />
             );
