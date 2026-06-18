@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-import type { Condition } from "@/lib/domain/encounter/encounter.schema";
+import {
+  type Condition,
+  CONDITIONS,
+} from "@/lib/domain/encounter/encounter.schema";
 import type { InitiativeGroup } from "@/page/encounters/utils/initiativeOrder";
 
 import { HpControl } from "../../../combatant-list/components/hp-control";
@@ -26,6 +29,8 @@ type Props = {
   conditions?: Record<string, Condition[]>;
   onToggleCondition?: (combatantId: string, condition: Condition) => void;
   onClearConditions?: (combatantId: string) => void;
+  onToggleGroupCondition?: (condition: Condition) => void;
+  onClearGroupConditions?: () => void;
 };
 
 export function GroupedInitiativeRow({
@@ -45,10 +50,19 @@ export function GroupedInitiativeRow({
   conditions,
   onToggleCondition,
   onClearConditions,
+  onToggleGroupCondition,
+  onClearGroupConditions,
 }: Props) {
   const [expanded, setExpanded] = useState(false);
 
   const { combatants } = group;
+
+  const groupConditions = useMemo(() => {
+    if (combatants.length === 0) return [];
+    return CONDITIONS.filter((cond) =>
+      combatants.every((c) => (conditions?.[c.id] ?? []).includes(cond))
+    );
+  }, [combatants, conditions]);
   const totalMaxHp = combatants.reduce((sum, c) => sum + c.maxHp, 0);
   const totalCurrentHp = combatants.reduce((sum, c) => sum + c.currentHp, 0);
   const hpPercent =
@@ -219,6 +233,18 @@ export function GroupedInitiativeRow({
           Mod {group.dexMod >= 0 ? `+${group.dexMod}` : group.dexMod}
         </span>
       </div>
+
+      {/* Group-level condition bar */}
+      {expanded && onToggleGroupCondition && onClearGroupConditions && (
+        <div className="flex flex-col gap-1 pl-4">
+          <span className="typography-kicker text-muted">Apply to all:</span>
+          <ConditionBadges
+            conditions={groupConditions}
+            onToggle={onToggleGroupCondition}
+            onClear={onClearGroupConditions}
+          />
+        </div>
+      )}
 
       {/* Expanded individual combatant rows */}
       {expanded && (
