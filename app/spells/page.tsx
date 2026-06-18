@@ -71,6 +71,7 @@ const SPELL_FILTER_STORAGE_KEY = "dnd.tools:spells:filters";
 
 const SPELL_PERSISTED_QUERY_KEYS = [
   "q",
+  "sort",
   ...Object.values(SPELL_FILTER_QUERY_PARAM_BY_KEY),
   SPELL_GROUP_MATCH_QUERY_PARAM,
   ...Object.values(SPELL_GROUP_MATCH_QUERY_PARAM_BY_KEY),
@@ -154,6 +155,22 @@ function SpellsPageContent() {
     spellsInScope,
     searchParams
   );
+  const initialSort = searchParams.get("sort");
+  const [sort, setSort] = useState<"name" | "level-asc" | "level-desc">(
+    initialSort === "level-asc" || initialSort === "level-desc"
+      ? initialSort
+      : "name"
+  );
+  const sortedSpells = useMemo(() => {
+    if (sort === "name") {
+      return [...filteredSpells].sort((a, b) => a.name.localeCompare(b.name));
+    }
+    if (sort === "level-asc") {
+      return [...filteredSpells].sort((a, b) => a.level - b.level);
+    }
+    // level-desc
+    return [...filteredSpells].sort((a, b) => b.level - a.level);
+  }, [filteredSpells, sort]);
   const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null);
   const isAdminMode = searchParams.get("admin") === "true";
   const filterGroups = useMemo<SpellFilterGroupType[]>(
@@ -387,7 +404,7 @@ function SpellsPageContent() {
           activeListTotal={spellsInScope.length}
           isLoading={isLoading}
           total={spells.length}
-          visible={filteredSpells.length}
+          visible={sortedSpells.length}
         />
         <div className="mt-2 flex items-center justify-between gap-3">
           <p className="typography-body-sm text-muted">
@@ -397,7 +414,7 @@ function SpellsPageContent() {
             <CopyVisibleNamesAction
               disabled={isLoading || isError}
               itemTypeLabel="spell"
-              names={filteredSpells.map((spell) => spell.name)}
+              names={sortedSpells.map((spell) => spell.name)}
             />
             <button
               className="admin-button-secondary typography-body-sm px-3 py-1"
@@ -472,6 +489,30 @@ function SpellsPageContent() {
                 ref={searchRef}
                 value={filters.query}
               />
+              <select
+                aria-label="Sort spells"
+                className="input-field typography-body-sm px-2 py-1"
+                onChange={(e) => {
+                  const v = e.target.value;
+                  const value =
+                    v === "level-asc" || v === "level-desc" ? v : "name";
+                  setSort(value);
+                  const params = new URLSearchParams(searchParams.toString());
+                  if (value === "name") {
+                    params.delete("sort");
+                  } else {
+                    params.set("sort", value);
+                  }
+                  router.replace(`${pathname}?${params.toString()}`, {
+                    scroll: false,
+                  });
+                }}
+                value={sort}
+              >
+                <option value="name">Sort: Name A-Z</option>
+                <option value="level-asc">Sort: Level Low→High</option>
+                <option value="level-desc">Sort: Level High→Low</option>
+              </select>
               <FilterLogicPopover
                 globalMatchMode={filters.groupMatchMode}
                 groups={MULTI_SELECTABLE_GROUPS.map((key) => ({
@@ -536,7 +577,7 @@ function SpellsPageContent() {
             Loading spells...
           </p>
         ) : null}
-        {!isLoading && !isError && !filteredSpells.length ? (
+        {!isLoading && !isError && !sortedSpells.length ? (
           <div className="mt-4 flex flex-col items-start gap-2">
             <p className="typography-body-sm text-muted">
               No spells match your filters.
@@ -553,7 +594,7 @@ function SpellsPageContent() {
         ) : null}
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
-          {filteredSpells.map((spell) => (
+          {sortedSpells.map((spell) => (
             <SpellCard
               detailHref={`/spells/${encodeURIComponent(spell.id)}`}
               isAdminMode={isAdminMode}
