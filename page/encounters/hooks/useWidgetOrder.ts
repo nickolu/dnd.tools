@@ -60,12 +60,25 @@ export function useWidgetOrder() {
     });
   }, []);
 
+  const reorder = useCallback((fromIndex: number, toIndex: number) => {
+    setOrder((prev) => {
+      if (fromIndex === toIndex) return prev;
+      const next = [...prev];
+      const spliced = next.splice(fromIndex, 1);
+      const moved = spliced[0];
+      if (moved === undefined) return prev;
+      next.splice(toIndex, 0, moved);
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
   const resetOrder = useCallback(() => {
     window.localStorage.removeItem(STORAGE_KEY);
     setOrder(DEFAULT_ORDER);
   }, []);
 
-  return { order, moveUp, moveDown, resetOrder };
+  return { order, moveUp, moveDown, reorder, resetOrder };
 }
 
 export type { WidgetId };

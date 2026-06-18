@@ -67,7 +67,10 @@ export function EncounterEditor({ encounterId }: Props) {
   // Warm the monster cache so MonsterAddPanel renders quickly.
   useMonsters();
 
-  const { order, moveUp, moveDown } = useWidgetOrder();
+  const { order, moveUp, moveDown, reorder } = useWidgetOrder();
+
+  const [dragFrom, setDragFrom] = useState<number | null>(null);
+  const [dragOver, setDragOver] = useState<number | null>(null);
 
   const [notesOpen, setNotesOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -190,6 +193,22 @@ export function EncounterEditor({ encounterId }: Props) {
   const safeEncounter = encounter;
   const allies = safeEncounter.combatants.filter((c) => c.side === "ally");
 
+  function handleDragStart(index: number) {
+    setDragFrom(index);
+  }
+
+  function handleDragOver(index: number) {
+    setDragOver(index);
+  }
+
+  function handleDragEnd() {
+    if (dragFrom !== null && dragOver !== null && dragFrom !== dragOver) {
+      reorder(dragFrom, dragOver);
+    }
+    setDragFrom(null);
+    setDragOver(null);
+  }
+
   function renderWidget(id: WidgetId, index: number, total: number) {
     const content = (() => {
       switch (id) {
@@ -219,10 +238,16 @@ export function EncounterEditor({ encounterId }: Props) {
     return (
       <WidgetWrapper
         key={id}
+        widgetId={id}
+        index={index}
         canMoveUp={index > 0}
         canMoveDown={index < total - 1}
         onMoveUp={() => moveUp(id)}
         onMoveDown={() => moveDown(id)}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+        isDragOver={dragOver === index}
       >
         {content}
       </WidgetWrapper>
