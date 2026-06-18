@@ -207,6 +207,11 @@ type EncounterLibraryStore = {
   ) => void;
   addMapShape: (encounterId: string, shape: Omit<MapShape, "id">) => void;
   removeMapShape: (encounterId: string, shapeId: string) => void;
+  moveMapShape: (
+    encounterId: string,
+    shapeId: string,
+    position: Position
+  ) => void;
   addMapDrawing: (encounterId: string, drawing: Omit<MapDrawing, "id">) => void;
   removeMapDrawing: (encounterId: string, drawingId: string) => void;
   clearMapDrawings: (encounterId: string) => void;
@@ -1683,6 +1688,27 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
                 }
               : e.map,
           })),
+        }));
+      },
+
+      moveMapShape: (
+        encounterId: string,
+        shapeId: string,
+        position: Position
+      ): void => {
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) => {
+            if (!e.map) return e;
+            return {
+              ...e,
+              map: {
+                ...e.map,
+                shapes: (e.map.shapes ?? []).map((s) =>
+                  s.id === shapeId ? { ...s, position } : s
+                ),
+              },
+            };
+          }),
         }));
       },
 

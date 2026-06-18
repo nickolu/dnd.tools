@@ -21,6 +21,7 @@ import { Token } from "./components/token";
 import { TokenTray } from "./components/token-tray";
 import { MAP_DEFAULTS } from "./constants";
 import { useMapViewport } from "./hooks/useMapViewport";
+import { useShapeDrag } from "./hooks/useShapeDrag";
 import { useTokenDrag } from "./hooks/useTokenDrag";
 import { useMapPlacementStore } from "./stores/useMapPlacementStore";
 import type { TokenRef, TokenViewModel } from "./types";
@@ -99,6 +100,7 @@ export function EncounterMap({ encounterId }: Props) {
   const removeToken = useEncounterLibraryStore((s) => s.removeToken);
   const addMapShape = useEncounterLibraryStore((s) => s.addMapShape);
   const removeMapShape = useEncounterLibraryStore((s) => s.removeMapShape);
+  const moveMapShape = useEncounterLibraryStore((s) => s.moveMapShape);
   const addMapDrawing = useEncounterLibraryStore((s) => s.addMapDrawing);
   const clearMapDrawings = useEncounterLibraryStore((s) => s.clearMapDrawings);
 
@@ -170,6 +172,22 @@ export function EncounterMap({ encounterId }: Props) {
     rows: map.rows,
     svgRef,
     onCommit: handleCommit,
+  });
+
+  const handleShapeCommit = useCallback(
+    (shapeId: string, pos: Position | null) => {
+      if (pos === null) return; // revert
+      moveMapShape(encounterId, shapeId, pos);
+    },
+    [encounterId, moveMapShape]
+  );
+
+  const { shapeDragState, getShapeHandlers } = useShapeDrag({
+    cellSize: map.cellSize,
+    cols: map.cols,
+    rows: map.rows,
+    svgRef,
+    onCommit: handleShapeCommit,
   });
 
   const { placed, tray } = useMemo(
@@ -467,19 +485,44 @@ export function EncounterMap({ encounterId }: Props) {
               )}
               {shapes.map((shape) => {
                 const isSelected = selectedShapeId === shape.id;
-                const px = shape.position.x * map.cellSize;
-                const py = shape.position.y * map.cellSize;
+                const isDraggingShape =
+                  shapeDragState !== null &&
+                  shapeDragState.shapeId === shape.id;
+                const displayPos = isDraggingShape
+                  ? {
+                      x:
+                        shape.position.x +
+                        (shapeDragState.currentPointer.px -
+                          shapeDragState.startPointer.px) /
+                          map.cellSize,
+                      y:
+                        shape.position.y +
+                        (shapeDragState.currentPointer.py -
+                          shapeDragState.startPointer.py) /
+                          map.cellSize,
+                    }
+                  : shape.position;
+                const px = displayPos.x * map.cellSize;
+                const py = displayPos.y * map.cellSize;
                 const sizePx = shape.size * map.cellSize;
-                const { cx, cy } = cellToPixel(shape.position, map.cellSize);
+                const { cx, cy } = cellToPixel(displayPos, map.cellSize);
                 const strokeDash = isSelected ? "6,3" : undefined;
+                const shapeHandlers = getShapeHandlers(
+                  shape.id,
+                  shape.position
+                );
                 const commonProps = {
                   fill: shape.color,
                   fillOpacity: 0.3,
                   stroke: shape.color,
                   strokeWidth: 2,
                   strokeDasharray: strokeDash,
-                  style: { pointerEvents: "all" as const, cursor: "pointer" },
+                  style: {
+                    pointerEvents: "all" as const,
+                    cursor: isDraggingShape ? "grabbing" : "grab",
+                  },
                   onClick: (e: React.MouseEvent) => {
+                    if (isDraggingShape) return;
                     e.stopPropagation();
                     setSelectedShapeId(shape.id);
                     setSelected(null);
@@ -487,25 +530,22 @@ export function EncounterMap({ encounterId }: Props) {
                 };
                 if (shape.kind === "square") {
                   return (
-                    <rect
-                      key={shape.id}
-                      x={px}
-                      y={py}
-                      width={sizePx}
-                      height={sizePx}
-                      {...commonProps}
-                    />
+                    <g key={shape.id} {...shapeHandlers}>
+                      <rect
+                        x={px}
+                        y={py}
+                        width={sizePx}
+                        height={sizePx}
+                        {...commonProps}
+                      />
+                    </g>
                   );
                 }
                 if (shape.kind === "circle") {
                   return (
-                    <circle
-                      key={shape.id}
-                      cx={cx}
-                      cy={cy}
-                      r={sizePx / 2}
-                      {...commonProps}
-                    />
+                    <g key={shape.id} {...shapeHandlers}>
+                      <circle cx={cx} cy={cy} r={sizePx / 2} {...commonProps} />
+                    </g>
                   );
                 }
                 // triangle
@@ -515,7 +555,9 @@ export function EncounterMap({ encounterId }: Props) {
                   `${px + sizePx},${py + sizePx}`,
                 ].join(" ");
                 return (
-                  <polygon key={shape.id} points={points} {...commonProps} />
+                  <g key={shape.id} {...shapeHandlers}>
+                    <polygon points={points} {...commonProps} />
+                  </g>
                 );
               })}
               {placed.map((tok) => {
