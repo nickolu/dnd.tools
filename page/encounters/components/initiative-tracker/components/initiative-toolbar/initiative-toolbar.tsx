@@ -8,6 +8,8 @@ type Props = {
   onRollAllies: () => void;
   onReset: () => void;
   onEnd: () => void;
+  onCopy: () => void;
+  copied?: boolean;
 };
 
 export function InitiativeToolbar({
@@ -16,6 +18,8 @@ export function InitiativeToolbar({
   onRollAllies,
   onReset,
   onEnd,
+  onCopy,
+  copied = false,
 }: Props) {
   const [confirmReset, setConfirmReset] = useState(false);
   const confirmResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
@@ -68,6 +72,13 @@ export function InitiativeToolbar({
         onClick={onRollAllies}
       >
         Roll allies
+      </button>
+      <button
+        type="button"
+        className="admin-button-secondary typography-body-sm px-2 py-1"
+        onClick={onCopy}
+      >
+        {copied ? "Copied!" : "Copy"}
       </button>
       <button
         type="button"
