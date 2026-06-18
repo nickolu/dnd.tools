@@ -50,7 +50,26 @@ type TipsEphemeral = {
   error: string | null;
 };
 
-type SavedPartyMember = { name: string; level: number };
+type SavedPartyMember = {
+  name: string;
+  level: number;
+  maxHp?: number;
+  armorClass?: number;
+  speed?: number;
+  passivePerception?: number;
+};
+
+function toSavedParty(members: PartyMember[]): SavedPartyMember[] {
+  return members.map((p) => {
+    const saved: SavedPartyMember = { name: p.name, level: p.level };
+    if (p.maxHp !== undefined) saved.maxHp = p.maxHp;
+    if (p.armorClass !== undefined) saved.armorClass = p.armorClass;
+    if (p.speed !== undefined) saved.speed = p.speed;
+    if (p.passivePerception !== undefined)
+      saved.passivePerception = p.passivePerception;
+    return saved;
+  });
+}
 
 export type EncounterTemplate = {
   id: string;
@@ -562,10 +581,37 @@ export function migrateEncounterLibrary(
   const rawSavedParty = Array.isArray(state.savedParty) ? state.savedParty : [];
   const savedParty = rawSavedParty
     .filter((p): p is Record<string, unknown> => isPlainObject(p))
-    .map((p) => ({
-      name: readString(p.name, "PC"),
-      level: clamp(Math.trunc(readFiniteNumber(p.level, 1)), 1, 20),
-    }));
+    .map((p) => {
+      const saved: SavedPartyMember = {
+        name: readString(p.name, "PC"),
+        level: clamp(Math.trunc(readFiniteNumber(p.level, 1)), 1, 20),
+      };
+      if (
+        typeof p.maxHp === "number" &&
+        Number.isFinite(p.maxHp) &&
+        p.maxHp > 0
+      )
+        saved.maxHp = Math.trunc(p.maxHp);
+      if (
+        typeof p.armorClass === "number" &&
+        Number.isFinite(p.armorClass) &&
+        p.armorClass > 0
+      )
+        saved.armorClass = Math.trunc(p.armorClass);
+      if (
+        typeof p.speed === "number" &&
+        Number.isFinite(p.speed) &&
+        p.speed >= 0
+      )
+        saved.speed = Math.trunc(p.speed);
+      if (
+        typeof p.passivePerception === "number" &&
+        Number.isFinite(p.passivePerception) &&
+        p.passivePerception > 0
+      )
+        saved.passivePerception = Math.trunc(p.passivePerception);
+      return saved;
+    });
   const rawTemplates = Array.isArray(state.templates) ? state.templates : [];
   const templates = rawTemplates
     .filter((t): t is Record<string, unknown> => isPlainObject(t))
@@ -603,6 +649,14 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           initiativeMod: 0,
           initiative: null,
           conditions: [],
+          ...(p.maxHp !== undefined
+            ? { maxHp: p.maxHp, currentHp: p.maxHp }
+            : {}),
+          ...(p.armorClass !== undefined ? { armorClass: p.armorClass } : {}),
+          ...(p.speed !== undefined ? { speed: p.speed } : {}),
+          ...(p.passivePerception !== undefined
+            ? { passivePerception: p.passivePerception }
+            : {}),
         }));
         const newEncounter: Encounter = {
           id,
@@ -733,6 +787,14 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
           initiativeMod: 0,
           initiative: null,
           conditions: [],
+          ...(p.maxHp !== undefined
+            ? { maxHp: p.maxHp, currentHp: p.maxHp }
+            : {}),
+          ...(p.armorClass !== undefined ? { armorClass: p.armorClass } : {}),
+          ...(p.speed !== undefined ? { speed: p.speed } : {}),
+          ...(p.passivePerception !== undefined
+            ? { passivePerception: p.passivePerception }
+            : {}),
         }));
         const combatants: Combatant[] = template.combatants.map((tc) => ({
           id: crypto.randomUUID(),
@@ -781,6 +843,10 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
             partyMembers: [...e.partyMembers, member],
           })),
         }));
+        const encounter = get().encounters.find((e) => e.id === id);
+        if (encounter) {
+          set({ savedParty: toSavedParty(encounter.partyMembers) });
+        }
         return memberId;
       },
 
@@ -791,6 +857,10 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
             partyMembers: e.partyMembers.filter((p) => p.id !== memberId),
           })),
         }));
+        const encounter = get().encounters.find((e) => e.id === id);
+        if (encounter) {
+          set({ savedParty: toSavedParty(encounter.partyMembers) });
+        }
       },
 
       updatePartyMember: (
@@ -849,6 +919,10 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
             }),
           })),
         }));
+        const encounter = get().encounters.find((e) => e.id === id);
+        if (encounter) {
+          set({ savedParty: toSavedParty(encounter.partyMembers) });
+        }
       },
 
       addCombatant: (id: string, input: AddCombatantInput): string[] => {

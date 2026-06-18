@@ -54,7 +54,7 @@ function seedEncounter(): {
 
 describe("encounter store initiative actions", () => {
   beforeEach(() => {
-    useEncounterLibraryStore.setState({ encounters: [] });
+    useEncounterLibraryStore.setState({ encounters: [], savedParty: [] });
   });
 
   it("setCombatantInitiative + setPartyMemberInitiative store integer values", () => {

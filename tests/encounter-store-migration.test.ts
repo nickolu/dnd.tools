@@ -197,7 +197,14 @@ describe("savedParty persistence (v4 → v5)", () => {
       {
         encounters: [],
         savedParty: [
-          { name: "Alice", level: 5 },
+          {
+            name: "Alice",
+            level: 5,
+            maxHp: 40,
+            armorClass: 15,
+            speed: 30,
+            passivePerception: 12,
+          },
           { name: "Bob", level: 99 }, // level clamped to 20
           { name: 42, level: 3 }, // name coerced to fallback
           "not an object", // filtered out
@@ -206,7 +213,14 @@ describe("savedParty persistence (v4 → v5)", () => {
       4
     );
     expect(migrated.savedParty).toEqual([
-      { name: "Alice", level: 5 },
+      {
+        name: "Alice",
+        level: 5,
+        maxHp: 40,
+        armorClass: 15,
+        speed: 30,
+        passivePerception: 12,
+      },
       { name: "Bob", level: 20 },
       { name: "PC", level: 3 },
     ]);
@@ -221,16 +235,23 @@ describe("savedParty store integration", () => {
   it("setSavedParty updates savedParty in the store", () => {
     useEncounterLibraryStore
       .getState()
-      .setSavedParty([{ name: "Alice", level: 5 }]);
+      .setSavedParty([{ name: "Alice", level: 5, maxHp: 40, armorClass: 15 }]);
     expect(useEncounterLibraryStore.getState().savedParty).toEqual([
-      { name: "Alice", level: 5 },
+      { name: "Alice", level: 5, maxHp: 40, armorClass: 15 },
     ]);
   });
 
   it("createEncounter auto-populates party members from savedParty", () => {
-    useEncounterLibraryStore
-      .getState()
-      .setSavedParty([{ name: "Alice", level: 5 }]);
+    useEncounterLibraryStore.getState().setSavedParty([
+      {
+        name: "Alice",
+        level: 5,
+        maxHp: 40,
+        armorClass: 15,
+        speed: 30,
+        passivePerception: 12,
+      },
+    ]);
     useEncounterLibraryStore.getState().createEncounter();
     const encounter = useEncounterLibraryStore.getState().encounters[0]!;
     expect(encounter.partyMembers).toHaveLength(1);
@@ -239,11 +260,27 @@ describe("savedParty store integration", () => {
     expect(encounter.partyMembers[0]!.kind).toBe("pc");
     expect(encounter.partyMembers[0]!.initiativeMod).toBe(0);
     expect(encounter.partyMembers[0]!.initiative).toBeNull();
+    expect(encounter.partyMembers[0]!.maxHp).toBe(40);
+    expect(encounter.partyMembers[0]!.currentHp).toBe(40);
+    expect(encounter.partyMembers[0]!.armorClass).toBe(15);
+    expect(encounter.partyMembers[0]!.speed).toBe(30);
+    expect(encounter.partyMembers[0]!.passivePerception).toBe(12);
   });
 
   it("createEncounter with empty savedParty creates encounter with no party members", () => {
     useEncounterLibraryStore.getState().createEncounter();
     const encounter = useEncounterLibraryStore.getState().encounters[0]!;
     expect(encounter.partyMembers).toEqual([]);
+  });
+
+  it("addPC auto-saves party to savedParty", () => {
+    const encounterId = useEncounterLibraryStore.getState().createEncounter();
+    useEncounterLibraryStore
+      .getState()
+      .addPC(encounterId, { name: "Alice", level: 5 });
+    const state = useEncounterLibraryStore.getState();
+    expect(state.savedParty).toHaveLength(1);
+    expect(state.savedParty[0]!.name).toBe("Alice");
+    expect(state.savedParty[0]!.level).toBe(5);
   });
 });
