@@ -212,9 +212,7 @@ export function EncounterEditor({ encounterId }: Props) {
             />
           );
         case "combatants":
-          return (
-            <CombatantList combatants={safeEncounter.combatants} />
-          );
+          return <CombatantList combatants={safeEncounter.combatants} />;
       }
     })();
 
