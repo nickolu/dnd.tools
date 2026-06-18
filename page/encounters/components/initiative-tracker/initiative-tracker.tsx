@@ -394,6 +394,24 @@ export function InitiativeTracker({ encounterId }: Props) {
                   onClearConditions={(combatantId) =>
                     clearConditions(encounterId, combatantId)
                   }
+                  onToggleGroupCondition={(condition) => {
+                    const allHave = slot.combatants.every((c) =>
+                      (c.conditions ?? []).includes(condition)
+                    );
+                    for (const c of slot.combatants) {
+                      const hasIt = (c.conditions ?? []).includes(condition);
+                      if (allHave && hasIt) {
+                        toggleCondition(encounterId, c.id, condition);
+                      } else if (!allHave && !hasIt) {
+                        toggleCondition(encounterId, c.id, condition);
+                      }
+                    }
+                  }}
+                  onClearGroupConditions={() => {
+                    for (const c of slot.combatants) {
+                      clearConditions(encounterId, c.id);
+                    }
+                  }}
                 />
               );
             }
