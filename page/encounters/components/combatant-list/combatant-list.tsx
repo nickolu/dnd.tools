@@ -3,10 +3,7 @@
 import type { Combatant } from "@/lib/domain/encounter/encounter.schema";
 import type { CombatantGroup } from "@/page/encounters/types";
 
-import { CombatantRow } from "./components/combatant-row";
-
 type Props = {
-  encounterId: string;
   combatants: Combatant[];
 };
 
@@ -29,13 +26,7 @@ function groupByMonster(combatants: Combatant[]): CombatantGroup[] {
   return [...groups.values()];
 }
 
-function autoSuffix(index: number, total: number): string {
-  if (total <= 1) return "";
-  if (index < 26) return ` ${String.fromCharCode(65 + index)}`;
-  return ` #${index + 1}`;
-}
-
-export function CombatantList({ encounterId, combatants }: Props) {
+export function CombatantList({ combatants }: Props) {
   const enemies = combatants.filter((c) => c.side === "enemy");
   const allies = combatants.filter((c) => c.side === "ally");
 
@@ -44,13 +35,11 @@ export function CombatantList({ encounterId, combatants }: Props) {
       <SideSection
         title="Enemies"
         groups={groupByMonster(enemies)}
-        encounterId={encounterId}
         emptyHint="No enemies yet — add monsters as enemies."
       />
       <SideSection
         title="Allies"
         groups={groupByMonster(allies)}
-        encounterId={encounterId}
         emptyHint="No allies yet."
       />
     </section>
@@ -60,12 +49,10 @@ export function CombatantList({ encounterId, combatants }: Props) {
 function SideSection({
   title,
   groups,
-  encounterId,
   emptyHint,
 }: {
   title: string;
   groups: CombatantGroup[];
-  encounterId: string;
   emptyHint: string;
 }) {
   const count = groups.reduce((s, g) => s + g.combatants.length, 0);
@@ -80,27 +67,15 @@ function SideSection({
       ) : (
         <ul className="flex flex-col gap-3">
           {groups.map((g) => (
-            <li
-              key={`${g.monsterId}:${g.side}`}
-              className="flex flex-col gap-1.5"
-            >
-              <span className="typography-kicker text-muted">
+            <li key={`${g.monsterId}:${g.side}`}>
+              <a
+                href={`/monsters/${g.monsterId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="typography-kicker text-muted hover:underline"
+              >
                 {g.monsterName} ×{g.combatants.length}
-              </span>
-              <ul className="flex flex-col gap-1.5">
-                {g.combatants.map((c, idx) => (
-                  <CombatantRow
-                    key={c.id}
-                    encounterId={encounterId}
-                    combatant={c}
-                    displayName={
-                      c.nameOverride ??
-                      `${c.monsterName}${autoSuffix(idx, g.combatants.length)}`
-                    }
-                    monsterId={c.monsterId}
-                  />
-                ))}
-              </ul>
+              </a>
             </li>
           ))}
         </ul>
