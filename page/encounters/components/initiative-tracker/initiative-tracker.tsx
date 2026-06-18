@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useMonsters } from "@/lib/query/hooks/useMonsters";
 import { selectEncounterById } from "@/lib/store/encounterSelectors";
 import { useEncounterLibraryStore } from "@/lib/store/useEncounterLibraryStore";
+import { formatInitiativeOrder } from "@/page/encounters/utils/formatInitiativeOrder";
 import { buildInitiativeSlots } from "@/page/encounters/utils/initiativeOrder";
 import { rollInitiative } from "@/page/encounters/utils/rollInitiative";
 
@@ -23,6 +24,7 @@ type Props = {
 
 export function InitiativeTracker({ encounterId }: Props) {
   const [condensed, setCondensed] = useState(false);
+  const [copied, setCopied] = useState(false);
   const encounter = useEncounterLibraryStore(selectEncounterById(encounterId));
   const setCombatantInitiative = useEncounterLibraryStore(
     (s) => s.setCombatantInitiative
@@ -157,6 +159,25 @@ export function InitiativeTracker({ encounterId }: Props) {
     setCombatantInitiative(encounterId, combatantId, rollInitiative(mod));
   }
 
+  function handleCopyInitiative() {
+    if (!encounter) return;
+    const text = formatInitiativeOrder(
+      sortedSlots,
+      encounter.initiative.round,
+      encounter.partyMembers,
+      encounter.combatants
+    );
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      })
+      .catch(() => {
+        // Silently fail if clipboard API is not available
+      });
+  }
+
   function rollSingleGroup(_groupId: string, anyMemberId: string) {
     const mod = dexModByCombatantId.get(anyMemberId) ?? 0;
     animateRoll([anyMemberId]);
@@ -206,6 +227,8 @@ export function InitiativeTracker({ encounterId }: Props) {
           }}
           onReset={() => resetInitiative(encounterId)}
           onEnd={() => endEncounter(encounterId)}
+          onCopy={handleCopyInitiative}
+          copied={copied}
         />
       )}
       {!hasRows ? (
