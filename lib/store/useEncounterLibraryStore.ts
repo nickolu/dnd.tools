@@ -714,10 +714,21 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
         const timer = setTimeout(() => {
           get().confirmDelete();
         }, 10000);
-        set((s) => ({
-          encounters: s.encounters.filter((e) => e.id !== id),
-          pendingDelete: { encounter, timer },
-        }));
+        set((s) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { [id]: _u, ...remainingUndo } = s.undoStacks;
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { [id]: _r, ...remainingRedo } = s.redoStacks;
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { [id]: _t, ...remainingTips } = s.tipsEphemeral;
+          return {
+            encounters: s.encounters.filter((e) => e.id !== id),
+            pendingDelete: { encounter, timer },
+            undoStacks: remainingUndo,
+            redoStacks: remainingRedo,
+            tipsEphemeral: remainingTips,
+          };
+        });
       },
 
       undoDelete: (): void => {
