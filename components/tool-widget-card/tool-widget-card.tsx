@@ -122,6 +122,9 @@ export function ToolWidgetCard({
             isActive={selectedFilterId === option.id}
             key={option.id}
             label={option.label}
+            {...(option.sublabel !== undefined
+              ? { sublabel: option.sublabel }
+              : {})}
             onClick={() => {
               const nextIntent = {
                 target: "filter",
