@@ -1,4 +1,7 @@
-import type { Combatant, PartyMember } from "@/lib/domain/encounter/encounter.schema";
+import type {
+  Combatant,
+  PartyMember,
+} from "@/lib/domain/encounter/encounter.schema";
 
 import type { InitiativeSlot } from "./initiativeOrder";
 

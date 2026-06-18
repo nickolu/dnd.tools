@@ -167,12 +167,15 @@ export function InitiativeTracker({ encounterId }: Props) {
       encounter.partyMembers,
       encounter.combatants
     );
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    }).catch(() => {
-      // Silently fail if clipboard API is not available
-    });
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      })
+      .catch(() => {
+        // Silently fail if clipboard API is not available
+      });
   }
 
   function rollSingleGroup(_groupId: string, anyMemberId: string) {
