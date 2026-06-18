@@ -212,6 +212,7 @@ type EncounterLibraryStore = {
     shapeId: string,
     position: Position
   ) => void;
+  resizeMapShape: (encounterId: string, shapeId: string, size: number) => void;
   addMapDrawing: (encounterId: string, drawing: Omit<MapDrawing, "id">) => void;
   removeMapDrawing: (encounterId: string, drawingId: string) => void;
   clearMapDrawings: (encounterId: string) => void;
@@ -1705,6 +1706,28 @@ export const useEncounterLibraryStore = create<EncounterLibraryStore>()(
                 ...e.map,
                 shapes: (e.map.shapes ?? []).map((s) =>
                   s.id === shapeId ? { ...s, position } : s
+                ),
+              },
+            };
+          }),
+        }));
+      },
+
+      resizeMapShape: (
+        encounterId: string,
+        shapeId: string,
+        size: number
+      ): void => {
+        const clamped = Math.max(1, Math.min(10, Math.round(size)));
+        set((state) => ({
+          encounters: updateEncounter(state.encounters, encounterId, (e) => {
+            if (!e.map) return e;
+            return {
+              ...e,
+              map: {
+                ...e.map,
+                shapes: (e.map.shapes ?? []).map((s) =>
+                  s.id === shapeId ? { ...s, size: clamped } : s
                 ),
               },
             };
